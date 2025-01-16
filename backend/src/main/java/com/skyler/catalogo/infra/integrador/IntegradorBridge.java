@@ -2,6 +2,7 @@ package com.skyler.catalogo.infra.integrador;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skyler.catalogo.infra.integrador.DTOs.FranquiaIntegrador;
+import com.skyler.catalogo.infra.integrador.DTOs.ProdutoIntegrador;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,6 +24,11 @@ public class IntegradorBridge extends IntegradorContext {
 
     public List<FranquiaIntegrador> getFranquiasAndLojas(){
         FranquiaIntegrador[] output = restTemplate.getForObject(this.integradorUrl + "/franquias",FranquiaIntegrador[].class);
+        return Arrays.stream(output).toList();
+    }
+
+    public List<ProdutoIntegrador> getProdutos(){
+        ProdutoIntegrador[] output = restTemplate.getForObject(this.integradorUrl + "/produtos",ProdutoIntegrador[].class);
         return Arrays.stream(output).toList();
     }
 

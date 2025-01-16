@@ -19,6 +19,8 @@ import java.util.UUID;
 public class Produto {
     @Id
     private String systemId = UUID.randomUUID().toString();
+    @Column(name="integrador_id")
+    private String produtoIntegradorId;
     private Integer erpId;
     private String sku;
     private String descricao;
@@ -41,13 +43,15 @@ public class Produto {
     @JsonBackReference
     private Franquia franquia;
 
-    public void addVariacaoIfNotExists(ProdutoVariacao variacao){
-        variacao.setProduto(this);
+    public void addOrUpdateVariacao(ProdutoVariacao variacao){
         Optional<ProdutoVariacao> existingOPT = variacoes.stream().filter(o->o.getSkuPonto().equals(variacao.getSkuPonto())).findFirst();
         if(existingOPT.isEmpty()){
+            variacao.setProduto(this);
             variacoes.add(variacao);
         }else{
-            System.out.println("oi");
-        }
+            ProdutoVariacao variacaoEnt = existingOPT.get();
+            variacaoEnt.setCor(variacao.getCor());
+            variacaoEnt.setTamanho(variacao.getTamanho());
+            variacaoEnt.setFotoUrl(variacao.getFotoUrl());        }
     }
 }

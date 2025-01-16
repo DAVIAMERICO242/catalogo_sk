@@ -14,6 +14,8 @@ import java.util.UUID;
 public class ProdutoVariacao {
     @Id
     private String systemId = UUID.randomUUID().toString();
+    @Column(name="integrador_id")
+    private String produtoVariacaoIntegradorId;
     private Integer erpId;
     private String skuPonto;//UNICO
     private String cor;

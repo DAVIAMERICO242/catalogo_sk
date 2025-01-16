@@ -13,14 +13,17 @@ import java.util.List;
 public class Integrador extends IntegradorContext implements ApplicationListener<ApplicationReadyEvent> {
 
     private final IntegradorFranquiasELojas integradorFranquiasELojas;
+    private final IntegradorProdutos integradorProdutos;
 
-    public Integrador(IntegradorFranquiasELojas integradorFranquiasELojas) {
+    public Integrador(IntegradorFranquiasELojas integradorFranquiasELojas, IntegradorProdutos integradorProdutos) {
         this.integradorFranquiasELojas = integradorFranquiasELojas;
+        this.integradorProdutos = integradorProdutos;
     }
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         this.integradorFranquiasELojas.updateLojasAndFranquias();
+        this.integradorProdutos.updateProdutos();
     }
 
 }
