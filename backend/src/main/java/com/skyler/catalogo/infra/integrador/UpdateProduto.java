@@ -2,9 +2,9 @@ package com.skyler.catalogo.infra.integrador;
 
 import com.skyler.catalogo.domain.franquias.Franquia;
 import com.skyler.catalogo.domain.franquias.FranquiaRepository;
-import com.skyler.catalogo.domain.produtos.Produto;
-import com.skyler.catalogo.domain.produtos.ProdutoRepository;
-import com.skyler.catalogo.domain.produtos.ProdutoVariacao;
+import com.skyler.catalogo.domain.produtos.entities.Produto;
+import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
+import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.infra.integrador.DTOs.ProdutoIntegrador;
 import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Async;
@@ -30,6 +30,10 @@ public class UpdateProduto {
             return;
         }
         Produto produtoEnt = new Produto();
+        Optional<Produto> produtoOptional = this.produtoRepository.findByIntegradorId(produto.getIntegradorId());
+        if(produtoOptional.isPresent()){
+            produtoEnt = produtoOptional.get();
+        }
         produtoEnt.setProdutoIntegradorId(produto.getIntegradorId());
         produtoEnt.setErpId(produto.getErpId());
         produtoEnt.setSku(produto.getSku());

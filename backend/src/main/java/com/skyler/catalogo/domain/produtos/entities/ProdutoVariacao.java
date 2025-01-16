@@ -1,4 +1,4 @@
-package com.skyler.catalogo.domain.produtos;
+package com.skyler.catalogo.domain.produtos.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

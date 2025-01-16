@@ -3,7 +3,7 @@ package com.skyler.catalogo.domain.catalogo;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.skyler.catalogo.domain.lojas.Loja;
-import com.skyler.catalogo.domain.produtos.Produto;
+import com.skyler.catalogo.domain.produtos.entities.Produto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
