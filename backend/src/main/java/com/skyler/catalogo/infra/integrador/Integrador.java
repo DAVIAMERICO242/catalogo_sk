@@ -2,6 +2,7 @@ package com.skyler.catalogo.infra.integrador;
 
 import com.skyler.catalogo.infra.integrador.DTOs.FranquiaIntegrador;
 import jakarta.transaction.Transactional;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class Integrador extends IntegradorContext implements ApplicationListener<ApplicationStartedEvent> {
+public class Integrador extends IntegradorContext implements ApplicationListener<ApplicationReadyEvent> {
 
     private final IntegradorFranquiasELojas integradorFranquiasELojas;
 
@@ -18,7 +19,7 @@ public class Integrador extends IntegradorContext implements ApplicationListener
     }
 
     @Override
-    public void onApplicationEvent(ApplicationStartedEvent event) {
+    public void onApplicationEvent(ApplicationReadyEvent event) {
         this.integradorFranquiasELojas.updateLojasAndFranquias();
     }
 
