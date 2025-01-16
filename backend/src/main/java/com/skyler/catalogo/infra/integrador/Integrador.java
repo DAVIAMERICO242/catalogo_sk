@@ -22,8 +22,12 @@ public class Integrador extends IntegradorContext implements ApplicationListener
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        this.integradorFranquiasELojas.updateLojasAndFranquias();
-        this.integradorProdutos.updateProdutos();
+        if(updateLojasAndFranquiasOnConstruct){
+            this.integradorFranquiasELojas.updateLojasAndFranquias();//criar cron
+        }
+        if(updateProdutosOnConstruct){
+            this.integradorProdutos.updateProdutos();//criar cron
+        }
     }
 
 }

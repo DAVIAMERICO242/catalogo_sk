@@ -7,6 +7,7 @@ import com.skyler.catalogo.domain.produtos.ProdutoRepository;
 import com.skyler.catalogo.domain.produtos.ProdutoVariacao;
 import com.skyler.catalogo.infra.integrador.DTOs.ProdutoIntegrador;
 import jakarta.transaction.Transactional;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class UpdateProduto {
         this.produtoRepository = produtoRepository;
     }
 
+    @Async
     @Transactional
     public void updateProduto(ProdutoIntegrador produto){
         Optional<Franquia> franquiaOPT = this.franquiaRepository.findByIntegradorId(produto.getFranquiaIntegradorId());
