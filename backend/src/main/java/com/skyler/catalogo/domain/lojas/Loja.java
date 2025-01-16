@@ -19,7 +19,7 @@ public class Loja {
     private String integradorId;
     private Integer erpId;
     private String nome;
-
+    private String slug;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="franquia_system_id")
     @JsonBackReference

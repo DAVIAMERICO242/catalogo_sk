@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.context.annotation.Lazy;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,4 +28,10 @@ public class Franquia {
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE},mappedBy = "franquia")
     @JsonManagedReference
     private Set<Loja> lojas = new HashSet<>();
+
+    public void addLojaIfNotExists(Loja loja){
+            loja.setFranquia(this);
+            this.lojas.add(loja);
+
+    }
 }
