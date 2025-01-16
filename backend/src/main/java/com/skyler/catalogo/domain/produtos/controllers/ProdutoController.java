@@ -24,4 +24,13 @@ public class ProdutoController {
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
     }
+
+    @GetMapping
+    public ResponseEntity getProdutos(String franquiaSystemId){
+        try{
+            return ResponseEntity.ok().body(this.produtoService.getProdutos(franquiaSystemId));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
 }

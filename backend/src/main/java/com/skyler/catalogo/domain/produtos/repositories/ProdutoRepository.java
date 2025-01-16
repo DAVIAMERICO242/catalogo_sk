@@ -22,6 +22,12 @@ public interface ProdutoRepository extends JpaRepository<Produto,String> {
             "WHERE p.produtoIntegradorId = :integradorId ")
     Optional<Produto> findByIntegradorId(String integradorId);
 
+    @Query("SELECT p FROM Produto p " +
+            "JOIN FETCH p.variacoes v " +
+            "JOIN FETCH p.franquia f " +
+            "WHERE f = :franquia ")
+    List<Produto> findAllByFranquia(Franquia franquia);
+
     @Override
     @Query("SELECT p FROM Produto p " +
             "JOIN FETCH p.variacoes v ")
