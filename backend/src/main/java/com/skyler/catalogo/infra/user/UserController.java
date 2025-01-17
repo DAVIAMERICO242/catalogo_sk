@@ -31,14 +31,26 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
             String jwt = jwtService.signToken(userOPT.get().getUsername());
-            return ResponseEntity.ok().body(
-                    new LoginResponse(
-                            userOPT.get().getBeautyName(),
-                            userOPT.get().getUsername(),
-                            userOPT.get().getPassword(),
-                            jwt,
-                            userOPT.get().getPassword().equals(basePass)
-                    ));
+            User user = userOPT.get();
+            LoginResponse output =  new LoginResponse();
+            output.setBeautyName(user.getBeautyName());
+            output.setUsername(user.getUsername());
+            output.setPassword(user.getPassword());
+            output.setToken(jwt);
+            output.setShouldChangeFirstPass(user.getPassword().equals(basePass));
+            LoginResponse.Loja loja = null;
+            if(user.getLoja()!=null){
+                loja = new LoginResponse.Loja();
+                loja.setNome(user.getLoja().getNome());
+                loja.setSlug(user.getLoja().getSlug());
+                loja.setSystemId(user.getLoja().getSystemId());
+            }
+            output.setLoja(loja);
+            LoginResponse.Franquia franquia = new LoginResponse.Franquia();
+            franquia.setNome(user.getFranquia().getNome());
+            franquia.setSystemId(user.getFranquia().getSystemId());
+            output.setFranquia(franquia);
+            return ResponseEntity.ok().body(output);
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
@@ -52,14 +64,26 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
             String jwt = jwtService.signToken(userOPT.get().getUsername());
-            return ResponseEntity.ok().body(
-                    new LoginResponse(
-                            userOPT.get().getBeautyName(),
-                            userOPT.get().getUsername(),
-                            userOPT.get().getPassword(),
-                            jwt,
-                            userOPT.get().getPassword().equals(basePass)
-                    ));
+            User user = userOPT.get();
+            LoginResponse output =  new LoginResponse();
+            output.setBeautyName(user.getBeautyName());
+            output.setUsername(user.getUsername());
+            output.setPassword(user.getPassword());
+            output.setToken(jwt);
+            output.setShouldChangeFirstPass(user.getPassword().equals(basePass));
+            LoginResponse.Loja loja = null;
+            if(user.getLoja()!=null){
+                loja = new LoginResponse.Loja();
+                loja.setNome(user.getLoja().getNome());
+                loja.setSlug(user.getLoja().getSlug());
+                loja.setSystemId(user.getLoja().getSystemId());
+            }
+            output.setLoja(loja);
+            LoginResponse.Franquia franquia = new LoginResponse.Franquia();
+            franquia.setNome(user.getFranquia().getNome());
+            franquia.setSystemId(user.getFranquia().getSystemId());
+            output.setFranquia(franquia);
+            return ResponseEntity.ok().body(output);
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
