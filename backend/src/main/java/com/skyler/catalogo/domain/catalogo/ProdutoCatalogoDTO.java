@@ -1,5 +1,6 @@
-package com.skyler.catalogo.domain.produtos.DTOs;
+package com.skyler.catalogo.domain.catalogo;
 
+import com.skyler.catalogo.domain.produtos.DTOs.ProdutoDTO;
 import lombok.Data;
 
 @Data

@@ -11,8 +11,8 @@ public interface LojaRepository extends JpaRepository<Loja,String> {
     @Override
     @Query("SELECT l FROM Loja l " +
             "JOIN FETCH l.franquia " +
-            "ORDER BY l.nome ASC " +
-            "WHERE (NOT l.nome LIKE '%CD%' AND NOT l.nome LIKE '%DASLEN%' AND NOT l.nome LIKE '%SITE%' AND NOT l.nome LIKE '%DIGITAL%' ) ")
+            "WHERE (NOT l.nome LIKE '%CD%' AND NOT l.nome LIKE '%DASLEN%' AND NOT l.nome LIKE '%SITE%' AND NOT l.nome LIKE '%DIGITAL%' ) " +
+            "ORDER BY l.nome ASC ")
     List<Loja> findAll();
 
     @Query("SELECT l FROM Loja l " +

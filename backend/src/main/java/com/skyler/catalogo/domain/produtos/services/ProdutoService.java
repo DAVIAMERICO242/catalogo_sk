@@ -46,37 +46,42 @@ public class ProdutoService {
         Franquia franquiaEnt = franquiaOPT.get();
         List<Produto> produtosEnt = this.produtoRepository.findAllByFranquia(franquiaEnt);
         for(Produto produtoEnt:produtosEnt){
-            ProdutoDTO produto = new ProdutoDTO();
-            ProdutoDTO.Franquia franquia = new ProdutoDTO.Franquia();
-            franquia.setFranquia(produtoEnt.getFranquia().getNome());
-            franquia.setFranquiaSystemId(produtoEnt.getFranquia().getSystemId());
-            produto.setFranquia(franquia);
-            produto.setSystemId(produtoEnt.getSystemId());
-            produto.setErpId(produtoEnt.getErpId());
-            produto.setSku(produtoEnt.getSku());
-            produto.setDescricao(produtoEnt.getDescricao());
-            produto.setCategoria(produtoEnt.getCategoria());
-            produto.setUnidade(produtoEnt.getUnidade());
-            produto.setModelagem(produtoEnt.getModelagem());
-            produto.setLinha(produtoEnt.getLinha());
-            produto.setColecao(produtoEnt.getColecao());
-            produto.setTipo(produtoEnt.getTipo());
-            produto.setGrupo(produtoEnt.getGrupo());
-            produto.setSubgrupo(produtoEnt.getSubgrupo());
-            produto.setPreco(produtoEnt.getPreco());
-            for(ProdutoVariacao variacaoEnt:produtoEnt.getVariacoes()){
-                ProdutoDTO.Variacao variacao = new ProdutoDTO.Variacao();
-                variacao.setSystemId(variacaoEnt.getSystemId());
-                variacao.setSku(variacaoEnt.getSkuPonto());
-                variacao.setErpId(variacaoEnt.getErpId());
-                variacao.setPhotoUrl(variacaoEnt.getFotoUrl());
-                variacao.setTamanho(variacaoEnt.getTamanho());
-                variacao.setCor(variacaoEnt.getCor());
-                produto.addVariacao(variacao);
-            }
-            produtos.add(produto);
+            produtos.add(this.entityToDTO(produtoEnt));
         }
         return produtos;
+    }
+
+
+    public ProdutoDTO entityToDTO(Produto produtoEnt){
+        ProdutoDTO produto = new ProdutoDTO();
+        ProdutoDTO.Franquia franquia = new ProdutoDTO.Franquia();
+        franquia.setFranquia(produtoEnt.getFranquia().getNome());
+        franquia.setFranquiaSystemId(produtoEnt.getFranquia().getSystemId());
+        produto.setFranquia(franquia);
+        produto.setSystemId(produtoEnt.getSystemId());
+        produto.setErpId(produtoEnt.getErpId());
+        produto.setSku(produtoEnt.getSku());
+        produto.setDescricao(produtoEnt.getDescricao());
+        produto.setCategoria(produtoEnt.getCategoria());
+        produto.setUnidade(produtoEnt.getUnidade());
+        produto.setModelagem(produtoEnt.getModelagem());
+        produto.setLinha(produtoEnt.getLinha());
+        produto.setColecao(produtoEnt.getColecao());
+        produto.setTipo(produtoEnt.getTipo());
+        produto.setGrupo(produtoEnt.getGrupo());
+        produto.setSubgrupo(produtoEnt.getSubgrupo());
+        produto.setPreco(produtoEnt.getPreco());
+        for(ProdutoVariacao variacaoEnt:produtoEnt.getVariacoes()){
+            ProdutoDTO.Variacao variacao = new ProdutoDTO.Variacao();
+            variacao.setSystemId(variacaoEnt.getSystemId());
+            variacao.setSku(variacaoEnt.getSkuPonto());
+            variacao.setErpId(variacaoEnt.getErpId());
+            variacao.setPhotoUrl(variacaoEnt.getFotoUrl());
+            variacao.setTamanho(variacaoEnt.getTamanho());
+            variacao.setCor(variacaoEnt.getCor());
+            produto.addVariacao(variacao);
+        }
+        return produto;
     }
 
 
