@@ -32,5 +32,11 @@ public class IntegradorBridge extends IntegradorContext {
         return Arrays.stream(output).toList();
     }
 
+    public List<IntegradorEstoque> getEstoque(List<String> skusBase,String lojaIntegradorId){
+        String skus = String.join(",", skusBase); // Combina os elementos da lista com ","
+        IntegradorEstoque[] output = restTemplate.getForObject(this.integradorUrl + "/estoque?skusBase="+skus+"&lojaIntegradorId="+lojaIntegradorId,IntegradorEstoque[].class);
+        return Arrays.stream(output).toList();
+    }
+
 
 }

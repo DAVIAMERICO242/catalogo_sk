@@ -2,11 +2,18 @@ package com.skyler.catalogo.domain.produtos.services;
 
 import com.skyler.catalogo.domain.franquias.Franquia;
 import com.skyler.catalogo.domain.franquias.FranquiaRepository;
+import com.skyler.catalogo.domain.lojas.Loja;
+import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.domain.produtos.DTOs.AtributosDTO;
 import com.skyler.catalogo.domain.produtos.DTOs.ProdutoDTO;
+import com.skyler.catalogo.domain.produtos.DTOs.ProdutoEstoqueDTO;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
+import com.skyler.catalogo.infra.integrador.IntegradorBridge;
+import com.skyler.catalogo.infra.integrador.IntegradorEstoque;
+import com.skyler.catalogo.infra.integrador.IntegradorFranquiasELojas;
+import com.skyler.catalogo.infra.integrador.IntegradorProdutos;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,10 +25,36 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final FranquiaRepository franquiaRepository;
+    private final LojaRepository lojaRepository;
+    private final IntegradorBridge integradorBridge;
 
-    public ProdutoService(ProdutoRepository produtoRepository, FranquiaRepository franquiaRepository) {
+    public ProdutoService(ProdutoRepository produtoRepository, FranquiaRepository franquiaRepository, LojaRepository lojaRepository, IntegradorBridge integradorBridge) {
         this.produtoRepository = produtoRepository;
         this.franquiaRepository = franquiaRepository;
+        this.lojaRepository = lojaRepository;
+        this.integradorBridge = integradorBridge;
+    }
+
+    public List<ProdutoEstoqueDTO> getEstoque(List<String> skusBase, String lojaSlug){
+        List<ProdutoEstoqueDTO> output = new ArrayList<>();
+        Optional<Loja> lojaOPT = this.lojaRepository.findByLojaSlug(lojaSlug);
+        if(lojaOPT.isEmpty()){
+            throw new RuntimeException("Slug da loja não encontrado");
+        }
+        Loja loja = lojaOPT.get();
+        List<IntegradorEstoque> data = this.integradorBridge.getEstoque(skusBase,loja.getIntegradorId());
+        for(IntegradorEstoque estoque:data){
+            ProdutoEstoqueDTO instance = new ProdutoEstoqueDTO();
+            instance.setSku(estoque.getSku());
+            for(IntegradorEstoque.Variacao variacao:estoque.getVariacoes()){
+                ProdutoEstoqueDTO.VariacaoEstoque estoqueDTO = new ProdutoEstoqueDTO.VariacaoEstoque();
+                estoqueDTO.setSku(variacao.getSku());
+                estoqueDTO.setEstoque(variacao.getEstoque());
+                instance.addVariacao(estoqueDTO);
+            }
+            output.add(instance);
+        }
+        return output;
     }
 
     public AtributosDTO getAtributos(String franquiaSystemId){
