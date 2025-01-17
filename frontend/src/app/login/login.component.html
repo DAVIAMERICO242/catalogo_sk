@@ -1,9 +1,36 @@
-<div *ngIf="this.loginMethod==='LOJA'">
-    <div class="text-xs text-gray-400">
-        Loja
-    </div>
-    <p-select styleClass="!w-[200px]" [options]="lojas" [(ngModel)]="this.selectedLoja" optionLabel="loja"/>
-</div>
-<div *ngIf="this.loginMethod==='USERNAME'">
 
+<div class="fixed right-0 h-full w-[400px] flex items-center shadow-lg">
+    <div class=" w-full p-8 ">
+        <div>
+            <div *ngIf="this.loginMethod==='LOJA'">
+                <div class="flex justify-center w-[300px] mb-4 ">
+                    <div>
+                        <div class="flex justify-center mb-3">
+                            <img src="skyler-favicon.png" class="w-[50px] h-[50px] rounded-lg"/>
+                        </div>
+                        <div>
+                            Catálogo Skyler
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <div class="text-xs text-gray-400">
+                        Loja
+                    </div>
+                    <p-select appendTo="body" [filter]="true" styleClass="!w-[300px]" [options]="lojas" [(ngModel)]="this.selectedLoja" optionLabel="loja"/>
+                </div>
+                <div>
+                    <div class="text-xs text-gray-400">
+                        Senha
+                    </div>
+                    <input class="!w-[300px]" type="password" pInputText/>
+                </div>
+                <p-button [loading]="this.loadingLogin" styleClass="!w-[300px] mt-5" (onClick)="this.submit()" label="Entrar">
+                </p-button>
+            </div>
+            <div *ngIf="this.loginMethod==='USERNAME'">
+            
+            </div>
+        </div>
+    </div>
 </div>
