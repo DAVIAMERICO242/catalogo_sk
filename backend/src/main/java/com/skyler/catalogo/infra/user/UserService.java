@@ -21,6 +21,7 @@ public class UserService {
                 return;
             }
             User user = new User();
+            user.setFranquia(franquia);
             user.setUsername(loja.getSlug());
             user.setPassword(basePass);
             user.setRole(Role.OPERACIONAL);

@@ -1,6 +1,7 @@
 package com.skyler.catalogo.infra.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.skyler.catalogo.domain.franquias.Franquia;
 import com.skyler.catalogo.domain.lojas.Loja;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -25,6 +26,10 @@ public class User implements UserDetails {
     @JoinColumn(name="loja_system_id")
     @JsonBackReference
     private Loja loja;
+    @OneToOne
+    @JoinColumn(name="franquia_system_id")
+    @JsonBackReference
+    private Franquia franquia;
     private String beautyName;
     private String username;
     private String password;
