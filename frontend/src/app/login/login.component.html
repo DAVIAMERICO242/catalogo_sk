@@ -1,1 +1,9 @@
-<div class="text-red-400">login works!</div>
+<div *ngIf="this.loginMethod==='LOJA'">
+    <div class="text-xs text-gray-400">
+        Loja
+    </div>
+    <p-select styleClass="!w-[200px]" [options]="lojas" [(ngModel)]="this.selectedLoja" optionLabel="loja"/>
+</div>
+<div *ngIf="this.loginMethod==='USERNAME'">
+
+</div>

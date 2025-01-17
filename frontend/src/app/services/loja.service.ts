@@ -4,12 +4,12 @@ import { env } from '../../env';
 
 export namespace Loja{
   export interface Loja{
-    nome:string,
+    loja:string,
     systemId:string,
     franquia:Franquia
   }
   export interface Franquia{
-    nome:string,
+    franquia:string,
     systemId:string
   }
 }

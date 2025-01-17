@@ -3,13 +3,14 @@ import { User, UserService } from '../services/user.service';
 import { LojaService } from '../services/loja.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Loja } from '../services/loja.service';
+import { SharedModule } from '../shared/shared.module';
 enum LoginMethod{
   LOJA="LOJA",
   USERNAME="USERNAME"
 }
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
   loadingLogin = false;
   loadingLojas = false;
   lojas:Loja.Loja[] = [];
+  selectedLoja!:Loja.Loja;
   payloadByUsername!:User.LoginRequest;
   payloadByLoja!:User.LoginRequestByLoja;
   loginMethod = LoginMethod.LOJA;

@@ -15,6 +15,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { SelectModule } from 'primeng/select';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
     InputTextModule,
     InputGroupModule, 
     InputGroupAddonModule,
+    SelectModule,
     InputNumberModule,
     SkeletonModule,
     DialogModule,
@@ -43,6 +45,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
     InputTextModule,
     SkeletonModule,
     InputGroupModule, 
+    SelectModule,
     InputGroupAddonModule,
     InputNumberModule,
     DialogModule,

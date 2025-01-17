@@ -20,9 +20,9 @@ public class LojaService {
         for(Loja lojaEnt:lojasEnt){
             LojaDTO loja = new LojaDTO();
             LojaDTO.Franquia franquia = new LojaDTO.Franquia();
-            loja.setNome(lojaEnt.getNome());
+            loja.setLoja(lojaEnt.getNome());
             loja.setSystemId(lojaEnt.getSystemId());
-            franquia.setNome(lojaEnt.getFranquia().getNome());
+            franquia.setFranquia(lojaEnt.getFranquia().getNome());
             franquia.setSystemId(lojaEnt.getFranquia().getSystemId());
             loja.setFranquia(franquia);
             output.add(loja);

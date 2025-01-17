@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class LojaDTO {
-    String nome;
+    String loja;
     String systemId;
     Franquia franquia;
     @Data
     public static class Franquia{
-        String nome;
+        String franquia;
         String systemId;
     }
 
