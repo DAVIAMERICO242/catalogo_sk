@@ -51,8 +51,12 @@ export class UserService {
     localStorage.setItem("context",JSON.stringify(payload));
   }
 
-  getContext(){
-    return JSON.parse(localStorage.getItem("context") || "") as User.LoginResponse;
+  getContext():User.LoginResponse|undefined{
+    const storage = localStorage.getItem("context");
+    if(!storage){
+      return undefined;
+    }
+    return JSON.parse(storage) as User.LoginResponse;
   }
 
   isAuthRoute(){

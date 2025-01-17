@@ -7,7 +7,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(UserService);
 
   const headers = new HttpHeaders({
-    "token":auth.getContext().token
+    "token":auth.getContext()?.token || ""
   })
 
   const clonedRequest = req.clone({
