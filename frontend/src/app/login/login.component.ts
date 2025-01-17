@@ -4,6 +4,7 @@ import { LojaService } from '../services/loja.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Loja } from '../services/loja.service';
 import { SharedModule } from '../shared/shared.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,8 @@ export class LoginComponent implements OnInit {
   transientContext!:User.LoginResponse;
   loadingLogin = false;
   loadingLojas = false;
+  loadingChangePass = false;
+  openChangePass = false;
   lojas:Loja.Loja[] = [];
   selectedLoja!:Loja.Loja;
   payloadByUsername!:User.LoginRequest;
@@ -25,7 +28,7 @@ export class LoginComponent implements OnInit {
   loginLoja = true;
   unauthorizedAttemp = false;
 
-  constructor(private auth:UserService,private lojaService:LojaService){
+  constructor(private auth:UserService,private lojaService:LojaService,private router:Router){
 
   }
 
@@ -56,6 +59,26 @@ export class LoginComponent implements OnInit {
   }
 
 
+  manageFirstPass(data:User.LoginResponse){
+    this.transientContext = data;
+    this.openChangePass = true;
+  }
+
+  submitFirstPass(){
+     this.loadingChangePass = true;
+     this.auth.changeFirstPassword(this.transientContext.token,this.transientContext.username,this.transientContext.password)
+     .subscribe({
+        next:()=>{
+          this.loadingChangePass = false;
+          this.auth.setContext(this.transientContext)
+          this.router.navigate(["/admin"])
+        },error:()=>{
+           this.loadingChangePass = false;
+           alert("Server error")
+        }
+     })
+  }
+
 
   submit(){
      this.unauthorizedAttemp = false;
@@ -64,6 +87,12 @@ export class LoginComponent implements OnInit {
       this.auth.loginByLoja(this.payloadByLoja).subscribe({
         next:(data)=>{
           this.loadingLogin = false;
+          if(data.shouldChangeFirstPass){
+            this.manageFirstPass(data)
+          }else{
+            this.auth.setContext(data);
+            this.router.navigate(["/admin"])
+          }
         
         },
         error:(e:HttpErrorResponse)=>{
@@ -76,7 +105,12 @@ export class LoginComponent implements OnInit {
         this.auth.login(this.payloadByUsername).subscribe({
             next:(data)=>{
               this.loadingLogin = false;
-    
+              if(data.shouldChangeFirstPass){
+                this.manageFirstPass(data)
+              }else{
+                this.auth.setContext(data);
+                this.router.navigate(["/admin"])
+              }
             },
             error:(e:HttpErrorResponse)=>{
               this.loadingLogin = false;

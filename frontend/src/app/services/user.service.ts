@@ -63,4 +63,8 @@ export class UserService {
     return this.http.get(env.BACKEND_URL+"/private-route")
   }
 
+  changeFirstPassword(jwt:string,username:string,password:string){
+    return this.http.put<void>(env.BACKEND_URL + `/change-password?username=${username}&password=${password}`,{})
+  }
+
 }

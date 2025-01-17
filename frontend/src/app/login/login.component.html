@@ -1,7 +1,7 @@
 
 <div class="fixed right-0 h-full w-[400px] flex items-center shadow-lg  bg-white bg-opacity-50 backdrop-blur-[100px]">
     <div class=" w-full p-8 ">
-        <div >
+        <div>
             <div *ngIf="loginLoja;else loginUser">
                 <div class="flex justify-center w-[300px] mb-4 ">
                     <div>
@@ -51,17 +51,18 @@
                     <div class="text-xs text-gray-400">
                         Usuário
                     </div>
-                    <input class="!w-[300px] !text-[12px] h-[45px]" pInputText/>
+                    <input [(ngModel)]="this.payloadByUsername.username" class="!w-[300px] !text-[12px] h-[45px]" pInputText/>
                 </div>
                 <div>
                     <div class="text-xs text-gray-400">
                         Senha
                     </div>
-                    <input class="!w-[300px]" type="password" pInputText/>
+                    <input [(ngModel)]="this.payloadByUsername.password" class="!w-[300px]" type="password" pInputText/>
                 </div>
                 <p-button [loading]="this.loadingLogin" styleClass="!w-[300px] mt-5" (onClick)="this.submit()" label="Entrar">
                 </p-button>
             </ng-template>
+            <div *ngIf="this.unauthorizedAttemp" class="text-white bg-red-600 rounded-full  px-1 py-2 text-xs w-[300px] text-center mt-4">Não autorizado</div>
         </div>
     </div>
 </div>
