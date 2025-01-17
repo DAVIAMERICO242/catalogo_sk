@@ -1,6 +1,8 @@
 package com.skyler.catalogo.domain.catalogo;
 
 import com.skyler.catalogo.domain.franquias.Franquia;
+import com.skyler.catalogo.domain.lojas.Loja;
+import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.domain.produtos.DTOs.ProdutoDTO;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
@@ -18,11 +20,13 @@ public class ProdutoCatalogoService {
     private final ProdutoCatalogoRepository produtoCatalogoRepository;
     private final ProdutoService produtoService;
     private final ProdutoRepository produtoRepository;
+    private final LojaRepository lojaRepository;
 
-    public ProdutoCatalogoService(ProdutoCatalogoRepository produtoCatalogoRepository, ProdutoService produtoService, ProdutoRepository produtoRepository) {
+    public ProdutoCatalogoService(ProdutoCatalogoRepository produtoCatalogoRepository, ProdutoService produtoService, ProdutoRepository produtoRepository, LojaRepository lojaRepository) {
         this.produtoCatalogoRepository = produtoCatalogoRepository;
         this.produtoService = produtoService;
         this.produtoRepository = produtoRepository;
+        this.lojaRepository = lojaRepository;
     }
 
     @Transactional
@@ -33,17 +37,25 @@ public class ProdutoCatalogoService {
         }
         Produto produto = produtoOPT.get();
         Franquia franquia = produto.getFranquia();
+        Optional<Loja> lojaOPT = this.lojaRepository.findByLojaSlug(payload.getLojaSlug());
+        if(lojaOPT.isEmpty()){
+            throw new RuntimeException("Nenhuma loja com esse slug encontrada");
+        }
         if(franquia == null){
             throw new RuntimeException("Produto sem franquia");
         }
         if(this.produtoCatalogoRepository.findByProdutoIdAndLojaSlug(payload.getSystemId(),payload.getLojaSlug()).isPresent()){
             throw new RuntimeException("Esse produto já está no catalogo dessa loja");
         }
-        List<String> slugs = franquia.getLojas().stream().map(o->o.getSlug()).toList();
-        if(!slugs.contains(payload.getLojaSlug())){
+        Loja loja = lojaOPT.get();
+        if(!franquia.getLojas().contains(loja)){
             throw new RuntimeException("O slug da loja informada não pertence a uma loja da franquia desse produto! ");
         }
-
+        ProdutoCatalogo produtoCatalogo = new ProdutoCatalogo();
+        produtoCatalogo.setLoja(loja);
+        produtoCatalogo.setProdutoBaseFranquia(produto);
+        produtoCatalogo.setCatalogPrice(produto.getPreco());
+        this.produtoCatalogoRepository.save(produtoCatalogo);
     }
 
     public List<ProdutoCatalogoDTO> getProdutosCatalogo(String lojaSlug){
