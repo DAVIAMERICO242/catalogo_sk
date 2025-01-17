@@ -14,6 +14,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class RoutesAuth {
+
+    private final JwtInterceptor jwtInterceptor;
+
+    public RoutesAuth(JwtInterceptor jwtInterceptor) {
+        this.jwtInterceptor = jwtInterceptor;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -22,8 +29,10 @@ public class RoutesAuth {
                 .cors(Customizer.withDefaults()) // Add this line to enable CORS
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(new AntPathRequestMatcher("/produtos/**", HttpMethod.GET.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(jwtInterceptor, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
