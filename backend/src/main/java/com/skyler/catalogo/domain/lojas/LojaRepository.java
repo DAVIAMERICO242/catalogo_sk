@@ -10,11 +10,13 @@ public interface LojaRepository extends JpaRepository<Loja,String> {
 
     @Override
     @Query("SELECT l FROM Loja l " +
-            "JOIN FETCH l.franquia ")
+            "JOIN FETCH l.franquia " +
+            "ORDER BY l.nome ASC " +
+            "WHERE (NOT l.nome LIKE '%CD%' AND NOT l.nome LIKE '%DASLEN%' AND NOT l.nome LIKE '%SITE%' AND NOT l.nome LIKE '%DIGITAL%' ) ")
     List<Loja> findAll();
 
     @Query("SELECT l FROM Loja l " +
             "JOIN FETCH l.franquia " +
-            "WHERE l.integradorId = :id")
+            "WHERE l.integradorId = :id ")
     Optional<Loja> findByIntegradorId(String id);
 }
