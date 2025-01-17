@@ -29,8 +29,18 @@ public class ProdutoCatalogoService {
         this.lojaRepository = lojaRepository;
     }
 
+    public void changePrecoCatalogo(Float preco, String produtoCatalogoId){
+        Optional<ProdutoCatalogo> catalogo = this.produtoCatalogoRepository.findById(produtoCatalogoId);
+        if(catalogo.isEmpty()){
+            throw new RuntimeException("Produto não encontrado");
+        }
+        ProdutoCatalogo produtoCatalogo = catalogo.get();
+        produtoCatalogo.setCatalogPrice(preco);
+        this.produtoCatalogoRepository.save(produtoCatalogo);
+    }
+
     @Transactional
-    public void cadastrarProdutoCatalogo(ProdutoCadastroDTO payload){
+    public ProdutoCatalogoDTO cadastrarProdutoCatalogo(ProdutoCadastroDTO payload){
         Optional<Produto> produtoOPT = this.produtoRepository.findById(payload.getSystemId());
         if(produtoOPT.isEmpty()){
             throw new RuntimeException("Produto não encontrado");
@@ -55,26 +65,30 @@ public class ProdutoCatalogoService {
         produtoCatalogo.setLoja(loja);
         produtoCatalogo.setProdutoBaseFranquia(produto);
         produtoCatalogo.setCatalogPrice(produto.getPreco());
-        this.produtoCatalogoRepository.save(produtoCatalogo);
+        return this.entityToDTO(this.produtoCatalogoRepository.save(produtoCatalogo));
     }
 
     public List<ProdutoCatalogoDTO> getProdutosCatalogo(String lojaSlug){
         List<ProdutoCatalogoDTO> output = new ArrayList<>();
         List<ProdutoCatalogo> catalogosEnt = this.produtoCatalogoRepository.findAllByLojaSlug(lojaSlug);
         for(ProdutoCatalogo catalogoEnt:catalogosEnt){
-            ProdutoCatalogoDTO produtoCatalogo = new ProdutoCatalogoDTO();
-            Produto produtoEnt = catalogoEnt.getProdutoBaseFranquia();
-            ProdutoDTO produto = this.produtoService.entityToDTO(produtoEnt);
-            ProdutoCatalogoDTO.Loja loja = new ProdutoCatalogoDTO.Loja();
-            loja.setLoja(catalogoEnt.getLoja().getNome());
-            loja.setSystemId(catalogoEnt.getLoja().getSystemId());
-            loja.setSlug(catalogoEnt.getLoja().getSlug());
-            produtoCatalogo.setValorCatalogo(catalogoEnt.getCatalogPrice());
-            produtoCatalogo.setProdutoBase(produto);
-            produtoCatalogo.setLojaCatalogo(loja);
-            output.add(produtoCatalogo);
+            output.add(this.entityToDTO(catalogoEnt));
         }
         return output;
+    }
+
+    public ProdutoCatalogoDTO entityToDTO(ProdutoCatalogo catalogoEnt){
+        ProdutoCatalogoDTO produtoCatalogo = new ProdutoCatalogoDTO();
+        Produto produtoEnt = catalogoEnt.getProdutoBaseFranquia();
+        ProdutoDTO produto = this.produtoService.entityToDTO(produtoEnt);
+        ProdutoCatalogoDTO.Loja loja = new ProdutoCatalogoDTO.Loja();
+        loja.setLoja(catalogoEnt.getLoja().getNome());
+        loja.setSystemId(catalogoEnt.getLoja().getSystemId());
+        loja.setSlug(catalogoEnt.getLoja().getSlug());
+        produtoCatalogo.setValorCatalogo(catalogoEnt.getCatalogPrice());
+        produtoCatalogo.setProdutoBase(produto);
+        produtoCatalogo.setLojaCatalogo(loja);
+        return produtoCatalogo;
     }
 
 
