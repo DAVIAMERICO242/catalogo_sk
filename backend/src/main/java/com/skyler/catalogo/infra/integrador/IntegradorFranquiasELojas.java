@@ -5,6 +5,7 @@ import com.skyler.catalogo.domain.franquias.FranquiaRepository;
 import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.infra.integrador.DTOs.FranquiaIntegrador;
+import com.skyler.catalogo.infra.user.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -15,48 +16,21 @@ import java.util.Optional;
 @Service
 public class IntegradorFranquiasELojas extends IntegradorContext{
 
-    private final IntegradorBridge integradorBridge;
-    private final FranquiaRepository franquiaRepository;
-    private final LojaRepository lojaRepository;
 
-    public IntegradorFranquiasELojas(IntegradorBridge integradorBridge, FranquiaRepository franquiaRepository, LojaRepository lojaRepository) {
+    private final UpdateLojaAndFranquiaMethod updateLojaAndFranquiaMethod;
+    private final IntegradorBridge integradorBridge;
+
+    public IntegradorFranquiasELojas(UpdateLojaAndFranquiaMethod updateLojaAndFranquiaMethod, IntegradorBridge integradorBridge) {
+        this.updateLojaAndFranquiaMethod = updateLojaAndFranquiaMethod;
         this.integradorBridge = integradorBridge;
-        this.franquiaRepository = franquiaRepository;
-        this.lojaRepository = lojaRepository;
     }
 
-    @Transactional
+
     public void updateLojasAndFranquias(){
         List<FranquiaIntegrador> franquias = integradorBridge.getFranquiasAndLojas();
-        List<Franquia> franquiasEnt = new ArrayList<>();
         List<String> runnedNomes = new ArrayList<>();
         for(FranquiaIntegrador franquia:franquias){
-            Franquia franquiaEnt = new Franquia();
-            Optional<Franquia> franquiaOPT = this.franquiaRepository.findByIntegradorId(franquia.getIntegradorId());
-            if(franquiaOPT.isPresent()){
-                franquiaEnt = franquiaOPT.get();
-            }
-            franquiaEnt.setIntegradorId(franquia.getIntegradorId());
-            franquiaEnt.setNome(franquia.getNome());
-            franquiaEnt.setIsMatriz(franquia.getIsMatriz());
-            franquiaEnt.setCnpj(franquia.getCnpj());
-            for(FranquiaIntegrador.Loja loja:franquia.getLojas()){
-                if(!runnedNomes.contains(loja.getNome())){
-                    Loja lojaEnt = new Loja();
-                    Optional<Loja> lojaOPT = this.lojaRepository.findByIntegradorId(loja.getIntegradorId());
-                    if(lojaOPT.isPresent()){
-                        lojaEnt = lojaOPT.get();
-                    }
-                    lojaEnt.setSlug(loja.getNome().toLowerCase().trim().replace("-","").replaceAll("\\s+", "-"));
-                    lojaEnt.setNome(loja.getNome());
-                    lojaEnt.setErpId(loja.getErpId());
-                    lojaEnt.setIntegradorId(loja.getIntegradorId());
-                    franquiaEnt.addLojaIfNotExists(lojaEnt);
-                    runnedNomes.add(loja.getNome());
-                }
-            }
-            franquiasEnt.add(franquiaEnt);
+            this.updateLojaAndFranquiaMethod.updateLojaAndFranquia(franquia,runnedNomes);
         }
-        franquiaRepository.saveAll(franquiasEnt);
     }
 }

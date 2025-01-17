@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,12 @@ public class Integrador extends IntegradorContext implements ApplicationListener
         if(updateProdutosOnConstruct){
             this.integradorProdutos.updateProdutos();//criar cron
         }
+    }
+
+    @Scheduled(cron = "0 0 20 * * *", zone = "America/Sao_Paulo")
+    public void updateCron(){
+        this.integradorFranquiasELojas.updateLojasAndFranquias();
+        this.integradorProdutos.updateProdutos();
     }
 
 }

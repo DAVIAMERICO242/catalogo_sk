@@ -21,7 +21,7 @@ import java.util.UUID;
 public class User implements UserDetails {
     @Id
     private String systemId = UUID.randomUUID().toString();
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="loja_system_id")
     @JsonBackReference
     private Loja loja;
