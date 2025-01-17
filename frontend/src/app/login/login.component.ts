@@ -4,10 +4,7 @@ import { LojaService } from '../services/loja.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Loja } from '../services/loja.service';
 import { SharedModule } from '../shared/shared.module';
-enum LoginMethod{
-  LOJA="LOJA",
-  USERNAME="USERNAME"
-}
+
 @Component({
   selector: 'app-login',
   imports: [SharedModule],
@@ -21,8 +18,11 @@ export class LoginComponent implements OnInit {
   lojas:Loja.Loja[] = [];
   selectedLoja!:Loja.Loja;
   payloadByUsername!:User.LoginRequest;
-  payloadByLoja!:User.LoginRequestByLoja;
-  loginMethod = LoginMethod.LOJA;
+  payloadByLoja:User.LoginRequestByLoja={
+     lojaSystemId:"",
+     password:""
+  };
+  loginLoja = true;
   unauthorizedAttemp = false;
 
   constructor(private auth:UserService,private lojaService:LojaService){
@@ -48,10 +48,19 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  changeLojaPayload(){
+       this.payloadByLoja = {
+          ...this.payloadByLoja,
+          lojaSystemId:this.selectedLoja.systemId,
+       }
+  }
+
+
+
   submit(){
      this.unauthorizedAttemp = false;
      this.loadingLogin = true;
-     if(this.loginMethod===LoginMethod.LOJA){
+     if(this.loginLoja){
       this.auth.loginByLoja(this.payloadByLoja).subscribe({
         next:(data)=>{
           this.loadingLogin = false;
@@ -63,7 +72,7 @@ export class LoginComponent implements OnInit {
         }
     })
      }
-     if(this.loginMethod===LoginMethod.USERNAME){
+    else{
         this.auth.login(this.payloadByUsername).subscribe({
             next:(data)=>{
               this.loadingLogin = false;
