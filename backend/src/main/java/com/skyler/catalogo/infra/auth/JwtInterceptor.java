@@ -24,7 +24,7 @@ public class JwtInterceptor extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtService.getTokenFromServelet(request);
-        if(token!=null){
+        if(token!=null && !token.isBlank()){
             try{
                 jwtService.validateToken(token);
                 User user = jwtService.getUserFromServelet(request);

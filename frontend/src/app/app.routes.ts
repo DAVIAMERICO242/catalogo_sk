@@ -3,6 +3,7 @@ import { CatalogoComponent } from './catalogo/catalogo.component';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { ProdutosComponent } from './admin/produtos/produtos.component';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
     {
@@ -16,6 +17,7 @@ export const routes: Routes = [
     {
         path:"admin",
         component:AdminComponent,
+        canActivate:[AuthGuard],
         children:[
             {
                 path:"",

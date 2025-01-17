@@ -23,6 +23,11 @@ public class UserController {
         this.jwtService = jwtService;
     }
 
+    @GetMapping("/private-route")
+    public ResponseEntity privateRoute(){
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequest request){
         try{
