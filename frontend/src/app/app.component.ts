@@ -2,11 +2,15 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PrimeNG } from 'primeng/config';
 import { MyTheme } from './app.config';
+import { MessageService } from 'primeng/api';
+import { SharedModule } from './shared/shared.module';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet,SharedModule],
   templateUrl: './app.component.html',
+  providers:[MessageService]
 })
 export class AppComponent {
   title = 'catalogo-sk';

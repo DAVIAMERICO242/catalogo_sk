@@ -1,7 +1,7 @@
 
 <div class="fixed right-0 h-full w-[400px] flex items-center shadow-lg  bg-white bg-opacity-50 backdrop-blur-[100px]">
     <div class=" w-full p-8 ">
-        <div>
+            <div (keydown.enter)="this.submit()">
             <div *ngIf="loginLoja;else loginUser">
                 <div class="flex justify-center w-[300px] mb-4 ">
                     <div>
@@ -67,3 +67,13 @@
     </div>
 </div>
 <img src="5594016.jpg" class="w-full h-full"/>
+
+<p-dialog appendTo="body" [modal]="true" header="Mudar senha" styleClass="!min-w-[500px]" [(visible)]="this.openChangePass">
+    <div (keydown.enter)="this.submitFirstPass()">
+        <div class="text-xs text-gray-400">Nova senha</div>
+        <div class="flex item-center gap-2">
+            <input [(ngModel)]="this.newPass" pInputText/>
+            <p-button [loading]="this.loadingChangePass" (onClick)="this.submitFirstPass()" label="Mudar senha"/>
+        </div>
+    </div>
+</p-dialog>

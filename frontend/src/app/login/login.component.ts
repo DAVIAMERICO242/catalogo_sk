@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Loja } from '../services/loja.service';
 import { SharedModule } from '../shared/shared.module';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -25,10 +26,11 @@ export class LoginComponent implements OnInit {
      lojaSystemId:"",
      password:""
   };
+  newPass =""
   loginLoja = true;
   unauthorizedAttemp = false;
 
-  constructor(private auth:UserService,private lojaService:LojaService,private router:Router){
+  constructor(private auth:UserService,private lojaService:LojaService,private router:Router,private message:MessageService){
 
   }
 
@@ -65,16 +67,23 @@ export class LoginComponent implements OnInit {
   }
 
   submitFirstPass(){
+     if(this.newPass.length<6){
+      alert("Minimo 6 digitos")
+      return;
+     }
      this.loadingChangePass = true;
-     this.auth.changeFirstPassword(this.transientContext.token,this.transientContext.username,this.transientContext.password)
+     this.auth.changeFirstPassword(this.transientContext.token,this.transientContext.username,this.newPass)
      .subscribe({
         next:()=>{
           this.loadingChangePass = false;
           this.auth.setContext(this.transientContext)
           this.router.navigate(["/admin"])
-        },error:()=>{
+        },error:(e:HttpErrorResponse)=>{
            this.loadingChangePass = false;
-           alert("Server error")
+           this.message.add({
+            severity:"error",
+            summary:e.error
+          })
         }
      })
   }

@@ -97,6 +97,9 @@ public class UserController {
     @PutMapping("/change-password")
     public ResponseEntity changePass(HttpServletRequest request, String username , String newPass){
         try{
+            if(newPass.equals(basePass)){
+                return ResponseEntity.badRequest().body("A senha não pode ser a padrão");
+            }
             User author = jwtService.getUserFromServelet(request);
             User user = userRepository.findByUsername(username).get();
             user.setPassword(newPass);

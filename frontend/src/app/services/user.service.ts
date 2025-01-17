@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from '../../env';
 
@@ -64,7 +64,10 @@ export class UserService {
   }
 
   changeFirstPassword(jwt:string,username:string,password:string){
-    return this.http.put<void>(env.BACKEND_URL + `/change-password?username=${username}&password=${password}`,{})
+    const headers = new HttpHeaders({
+      token:jwt
+    })
+    return this.http.put<void>(env.BACKEND_URL + `/change-password?username=${username}&newPass=${password}`,{},{headers})
   }
 
 }
