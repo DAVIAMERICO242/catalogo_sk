@@ -1,1 +1,53 @@
-<p>admin-nav works!</p>
+<div  class="h-[75px] w-full bg-black sticky top-0 flex items-center justify-between p-3 ">
+    <div (click)="this.emitSpanChange()" style="color: white;font-size: 30px;cursor: pointer; margin-left: 20px;" class="pi pi-bars"></div>
+    <div class="mr-[30px] cursor-pointer flex items-center gap-3">
+        <div class="text-white underline">Ir para a loja</div>
+        <div style="color: white; " class=" pi pi-arrow-up-right"></div>
+    </div>
+</div>
+<div [ngClass]="{'w-[80px]':!expanded,'w-[230px] ':expanded,'flex justify-center ':!expanded}" class="fixed transition-all ease-linear h-full bg-slate-100 border-[1px] border-solid border-slate-200 ">
+    <div *ngIf="!expanded;">
+        <ul  class="space-y-16 mt-[100px] flex flex-col items-center">
+            <img src="skyler-preto.jpg" class="mb-3 rounded-full w-[40px] h-[40px]"/>
+            <li (click)="changePage(PageEnum.PEDIDOS,'/produtos')" class="cursor-pointer">
+                <div [ngClass]="{'font-bold':focused==='PEDIDOS'}" class="pi pi-shopping-bag"></div>
+            </li>
+            <li (click)="changePage(PageEnum.CATALOGO,'/catalogo')" class="cursor-pointer">
+                <div [ngClass]="{'font-bold':focused==='CATALOGO'}" class="pi pi-objects-column"></div>
+            </li>
+            <li (click)="changePage(PageEnum.PRODUTOS,'/produtos')" class="cursor-pointer">
+                <div [ngClass]="{'font-bold':focused==='PRODUTOS'}" class="pi pi-inbox"></div>
+            </li>
+        </ul>
+    </div>
+    <div *ngIf="this.expanded" [ngClass]="{'opacity-0':!expanded}" >
+        <div class="mt-10 overflow-hidden">
+            <div class="mb-3  flex  flex-col items-center  ">
+                <img src="skyler-preto.jpg" class="mb-3 rounded-full w-[80px] h-[80px]"/>
+                <div class="font-bold text-nowrap ">{{beautyName}}</div>
+                <div (click)="this.auth.logout()" class="underline text-xs cursor-pointer">Sair</div>
+            </div>
+            <div class="h-[1px] w-full bg-slate-200 mt-5 mb-5"></div>
+            <ul class="space-y-7 p-5">
+                <li (click)="changePage(PageEnum.PEDIDOS,'/produtos')" class="cursor-pointer flex items-center gap-3">
+                    <div class="pi pi-shopping-bag"></div>
+                    <div [ngClass]="{'font-bold':focused==='PEDIDOS'}">
+                        Pedidos
+                    </div>
+                </li>
+                <li (click)="changePage(PageEnum.CATALOGO,'/catalogo')" class="cursor-pointer flex items-center gap-3">
+                    <div class="pi pi-objects-column"></div>
+                    <div [ngClass]="{'font-bold':focused==='CATALOGO'}">
+                        Catálogo
+                    </div>
+                </li>
+                <li (click)="changePage(PageEnum.PRODUTOS,'/produtos')" class="cursor-pointer flex items-center gap-3">
+                    <div class="pi pi-inbox"></div>
+                    <div [ngClass]="{'font-bold':focused==='PRODUTOS'}">
+                        Produtos
+                    </div>
+                </li>
+             </ul>
+        </div>
+    </div>
+</div>

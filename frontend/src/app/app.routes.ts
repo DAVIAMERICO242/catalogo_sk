@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { ProdutosComponent } from './admin/produtos/produtos.component';
 import { AuthGuard } from './auth.guard';
+import { PedidosComponent } from './admin/pedidos/pedidos.component';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,13 @@ export const routes: Routes = [
             {
                 path:"produtos",
                 component:ProdutosComponent
+            },
+            {
+                path:"catalogo",
+                component:CatalogoComponent
+            },{
+                path:"pedidos",
+                component:PedidosComponent
             }
         ]
     }

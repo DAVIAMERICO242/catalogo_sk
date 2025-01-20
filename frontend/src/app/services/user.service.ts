@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from '../../env';
+import { Router } from '@angular/router';
 
 
 export namespace User{
@@ -37,7 +38,7 @@ export namespace User{
 })
 export class UserService {
 
-  constructor(private http:HttpClient){}
+  constructor(private http:HttpClient, private route:Router){}
 
   login(payload:User.LoginRequest){
      return this.http.post<User.LoginResponse>(env.BACKEND_URL+"/login",payload);
@@ -68,6 +69,16 @@ export class UserService {
       token:jwt
     })
     return this.http.put<void>(env.BACKEND_URL + `/change-password?username=${username}&newPass=${password}`,{},{headers})
+  }
+
+  logout(){
+    this.clearContext();
+    this.route.navigate(["/login"])
+  }
+
+  private clearContext(){
+    localStorage.clear();
+
   }
 
 }

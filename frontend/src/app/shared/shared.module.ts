@@ -16,6 +16,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { SelectModule } from 'primeng/select';
+import { DrawerModule } from 'primeng/drawer';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { SelectModule } from 'primeng/select';
   imports: [
     CommonModule,
     FormsModule,
+    DrawerModule,
     InputTextModule,
     InputGroupModule, 
     InputGroupAddonModule,
@@ -42,6 +44,7 @@ import { SelectModule } from 'primeng/select';
   exports:[
     CommonModule,
     FormsModule,
+    DrawerModule,
     InputTextModule,
     SkeletonModule,
     InputGroupModule, 

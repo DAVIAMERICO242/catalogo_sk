@@ -30,9 +30,9 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity getProdutos(String franquiaSystemId){
+    public ResponseEntity getProdutosPaged(Integer page,String franquiaSystemId){
         try{
-            return ResponseEntity.ok().body(this.produtoService.getProdutos(franquiaSystemId));
+            return ResponseEntity.ok().body(this.produtoService.getProdutos(page,franquiaSystemId));
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

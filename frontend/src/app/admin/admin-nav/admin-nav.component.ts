@@ -1,11 +1,46 @@
-import { Component } from '@angular/core';
-
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SharedModule } from '../../shared/shared.module';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+enum Page{
+  PRODUTOS="PRODUTOS",
+  PEDIDOS="PEDIDOS",
+  CATALOGO="CATALOGO"
+}
 @Component({
   selector: 'app-admin-nav',
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './admin-nav.component.html'
 })
-export class AdminNavComponent {
+export class AdminNavComponent implements OnInit {
+  PageEnum = Page;
+  @Input({required:true})
+  expanded:boolean = false;
+  @Output()
+  expandedChange = new EventEmitter<boolean>()
+  beautyName=""
+  focused = Page.PRODUTOS
 
+  constructor(protected auth:UserService, private router:Router){
+
+  }
+  ngOnInit(): void {
+    const name = this.auth.getContext()?.beautyName
+    this.beautyName = name || ""
+  }
+
+  changePage(page:Page,route:string){
+    this.focused = page;
+    this.changeAdminRoute(route);
+  }
+
+  changeAdminRoute(route:string){
+    this.router.navigate(["/admin"+route])
+  }
+
+  emitSpanChange(){
+    this.expanded = !this.expanded;
+    this.expandedChange.emit(this.expanded)
+  }
 
 }

@@ -76,14 +76,14 @@ public class ProdutoService {
         return atributos;
     }
 
-    public Page<ProdutoDTO> getProdutos(String franquiaSystemId){
+    public Page<ProdutoDTO> getProdutos(Integer page,String franquiaSystemId){
         List<ProdutoDTO> produtos = new ArrayList<>();
         Optional<Franquia> franquiaOPT = this.franquiaRepository.findById(franquiaSystemId);
         if(franquiaOPT.isEmpty()){
             throw new RuntimeException("Franquia não encontrada");
         }
         Franquia franquiaEnt = franquiaOPT.get();
-        PageRequest pageRequest = PageRequest.of(0,50);
+        PageRequest pageRequest = PageRequest.of(page,50);
         Page<Produto> produtosEnt = this.produtoRepository.findAllPagedByFranquiaWithoutVariacoes(pageRequest,franquiaEnt);
         for(Produto produtoEnt:produtosEnt){
 //            Hibernate.initialize(produtoEnt.getVariacoes());
