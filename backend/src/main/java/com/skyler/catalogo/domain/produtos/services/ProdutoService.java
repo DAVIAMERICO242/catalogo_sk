@@ -14,6 +14,9 @@ import com.skyler.catalogo.infra.integrador.IntegradorBridge;
 import com.skyler.catalogo.infra.integrador.IntegradorEstoque;
 import com.skyler.catalogo.infra.integrador.IntegradorFranquiasELojas;
 import com.skyler.catalogo.infra.integrador.IntegradorProdutos;
+import org.hibernate.Hibernate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -77,8 +80,12 @@ public class ProdutoService {
             throw new RuntimeException("Franquia não encontrada");
         }
         Franquia franquiaEnt = franquiaOPT.get();
+        PageRequest pageRequest = PageRequest.of(0,50);
+        Page<Long> pageIds = this.produtoRepository.pagedIds(pageRequest,franquiaEnt);
         List<Produto> produtosEnt = this.produtoRepository.findAllByFranquia(franquiaEnt);
         for(Produto produtoEnt:produtosEnt){
+//            Hibernate.initialize(produtoEnt.getVariacoes());
+//            Hibernate.initialize(produtoEnt.getFranquia());
             produtos.add(this.entityToDTO(produtoEnt));
         }
         return produtos;

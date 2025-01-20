@@ -1,5 +1,6 @@
 package com.skyler.catalogo.domain.produtos.controllers;
 
+import com.skyler.catalogo.domain.produtos.DTOs.ProdutoDTO;
 import com.skyler.catalogo.domain.produtos.services.ProdutoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

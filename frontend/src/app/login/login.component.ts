@@ -21,7 +21,10 @@ export class LoginComponent implements OnInit {
   openChangePass = false;
   lojas:Loja.Loja[] = [];
   selectedLoja!:Loja.Loja;
-  payloadByUsername!:User.LoginRequest;
+  payloadByUsername:User.LoginRequest={
+    username:"",
+    password:""
+  }
   payloadByLoja:User.LoginRequestByLoja={
      lojaSystemId:"",
      password:""

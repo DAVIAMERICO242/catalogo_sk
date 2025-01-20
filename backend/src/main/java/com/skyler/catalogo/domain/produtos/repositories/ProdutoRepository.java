@@ -2,8 +2,11 @@ package com.skyler.catalogo.domain.produtos.repositories;
 
 import com.skyler.catalogo.domain.franquias.Franquia;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +25,27 @@ public interface ProdutoRepository extends JpaRepository<Produto,String> {
             "WHERE p.produtoIntegradorId = :integradorId ")
     Optional<Produto> findByIntegradorId(String integradorId);
 
+
+    @Query("SELECT p.systemId " +
+            "FROM Produto p " +
+            "WHERE p.franquia = :franquia")
+    Page<Long> pagedIds(PageRequest pageRequest,Franquia franquia);
+
+    @Query("SELECT p FROM Produto p " +
+            "JOIN FETCH p.variacoes v " +
+            "JOIN FETCH p.franquia f " +
+            "WHERE p.systemId IN :ids ")
+    List<Produto> findAllByIdIn(List<Long> ids);
+
     @Query("SELECT p FROM Produto p " +
             "JOIN FETCH p.variacoes v " +
             "JOIN FETCH p.franquia f " +
             "WHERE f = :franquia ")
     List<Produto> findAllByFranquia(Franquia franquia);
+
+    @Query("SELECT p FROM Produto p " +
+            "WHERE p.franquia = :franquia ")
+    Page<Produto> findAllByFranquiaPaged(PageRequest pageRequest,Franquia franquia);
 
     @Override
     @Query("SELECT p FROM Produto p " +
