@@ -1,7 +1,7 @@
 <div  class="h-[75px] w-full bg-black sticky top-0 flex items-center justify-between p-3 ">
     <div (click)="this.emitSpanChange()" style="color: white;font-size: 30px;cursor: pointer; margin-left: 20px;" class="pi pi-bars"></div>
     <div class="mr-[30px] cursor-pointer flex items-center gap-3">
-        <div class="text-white underline">Ir para a loja</div>
+        <div (click)="this.navigateToLoja()" class="text-white underline">Ir para a loja</div>
         <div style="color: white; " class=" pi pi-arrow-up-right"></div>
     </div>
 </div>

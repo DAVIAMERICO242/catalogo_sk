@@ -35,7 +35,7 @@ export namespace Produto{
     foto:string
   }
   export interface ProdutoPage{
-    content:Produto,
+    content:Produto[],
     totalPages:number,
     totalElements:number,
     last:boolean

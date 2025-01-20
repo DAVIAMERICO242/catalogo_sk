@@ -43,4 +43,8 @@ export class AdminNavComponent implements OnInit {
     this.expandedChange.emit(this.expanded)
   }
 
+  navigateToLoja(){
+    window.open("/","_blank")
+  }
+
 }
