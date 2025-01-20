@@ -2,6 +2,7 @@ package com.skyler.catalogo.domain.produtos.repositories;
 
 import com.skyler.catalogo.domain.franquias.Franquia;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
+import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,6 +43,16 @@ public interface ProdutoRepository extends JpaRepository<Produto,String> {
             "JOIN FETCH p.franquia f " +
             "WHERE f = :franquia ")
     List<Produto> findAllByFranquia(Franquia franquia);
+
+    @Query("SELECT p FROM Produto p " +
+            "JOIN FETCH p.franquia f " +
+            "WHERE f = :franquia ")
+    Page<Produto> findAllPagedByFranquiaWithoutVariacoes(PageRequest pageRequest,Franquia franquia);
+
+
+    @Query("SELECT p.variacoes FROM Produto p " +
+            "WHERE p.systemId = :productSystemId")
+    List<ProdutoVariacao> findVariacoesForProduct(String productSystemId);//o id do produto ja abstrai a franquia e o sku
 
     @Query("SELECT p FROM Produto p " +
             "WHERE p.franquia = :franquia ")

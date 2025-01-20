@@ -7,6 +7,7 @@ import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.domain.produtos.DTOs.AtributosDTO;
 import com.skyler.catalogo.domain.produtos.DTOs.ProdutoDTO;
 import com.skyler.catalogo.domain.produtos.DTOs.ProdutoEstoqueDTO;
+import com.skyler.catalogo.domain.produtos.DTOs.ProdutoVariacaoDTO;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
@@ -16,6 +17,7 @@ import com.skyler.catalogo.infra.integrador.IntegradorFranquiasELojas;
 import com.skyler.catalogo.infra.integrador.IntegradorProdutos;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ public class ProdutoService {
     private final FranquiaRepository franquiaRepository;
     private final LojaRepository lojaRepository;
     private final IntegradorBridge integradorBridge;
+
 
     public ProdutoService(ProdutoRepository produtoRepository, FranquiaRepository franquiaRepository, LojaRepository lojaRepository, IntegradorBridge integradorBridge) {
         this.produtoRepository = produtoRepository;
@@ -73,7 +76,7 @@ public class ProdutoService {
         return atributos;
     }
 
-    public List<ProdutoDTO> getProdutos(String franquiaSystemId){
+    public Page<ProdutoDTO> getProdutos(String franquiaSystemId){
         List<ProdutoDTO> produtos = new ArrayList<>();
         Optional<Franquia> franquiaOPT = this.franquiaRepository.findById(franquiaSystemId);
         if(franquiaOPT.isEmpty()){
@@ -81,14 +84,30 @@ public class ProdutoService {
         }
         Franquia franquiaEnt = franquiaOPT.get();
         PageRequest pageRequest = PageRequest.of(0,50);
-        Page<Long> pageIds = this.produtoRepository.pagedIds(pageRequest,franquiaEnt);
-        List<Produto> produtosEnt = this.produtoRepository.findAllByFranquia(franquiaEnt);
+        Page<Produto> produtosEnt = this.produtoRepository.findAllPagedByFranquiaWithoutVariacoes(pageRequest,franquiaEnt);
         for(Produto produtoEnt:produtosEnt){
 //            Hibernate.initialize(produtoEnt.getVariacoes());
 //            Hibernate.initialize(produtoEnt.getFranquia());
             produtos.add(this.entityToDTO(produtoEnt));
         }
-        return produtos;
+        return new PageImpl<>(produtos, pageRequest, produtosEnt.getTotalElements());
+    }
+
+    public List<ProdutoVariacaoDTO> getVariacao(String productId){
+        List<ProdutoVariacao> variacoes = this.produtoRepository.findVariacoesForProduct(productId);
+        List<ProdutoVariacaoDTO> output = new ArrayList<>();
+        for(ProdutoVariacao variacao:variacoes){
+            ProdutoVariacaoDTO instance = new ProdutoVariacaoDTO();
+            instance.setCor(variacao.getCor());
+            instance.setTamanho(variacao.getTamanho());
+            instance.setFoto(variacao.getFotoUrl());
+            instance.setErpId(variacao.getErpId());
+            instance.setIntegradorId(variacao.getProdutoVariacaoIntegradorId());
+            instance.setSku(variacao.getSkuPonto());
+            instance.setSystemId(variacao.getSystemId());
+            output.add(instance);
+        }
+        return output;
     }
 
 
@@ -111,16 +130,7 @@ public class ProdutoService {
         produto.setGrupo(produtoEnt.getGrupo());
         produto.setSubgrupo(produtoEnt.getSubgrupo());
         produto.setPreco(produtoEnt.getPreco());
-        for(ProdutoVariacao variacaoEnt:produtoEnt.getVariacoes()){
-            ProdutoDTO.Variacao variacao = new ProdutoDTO.Variacao();
-            variacao.setSystemId(variacaoEnt.getSystemId());
-            variacao.setSku(variacaoEnt.getSkuPonto());
-            variacao.setErpId(variacaoEnt.getErpId());
-            variacao.setPhotoUrl(variacaoEnt.getFotoUrl());
-            variacao.setTamanho(variacaoEnt.getTamanho());
-            variacao.setCor(variacaoEnt.getCor());
-            produto.addVariacao(variacao);
-        }
+        produto.setPhotoUrl(produtoEnt.getPhotoUrl());
         return produto;
     }
 

@@ -33,6 +33,8 @@ public class Produto {
     private String grupo;
     private String subgrupo;
     private Float preco;
+    private String photoUrl;
+    private Boolean wasPhotoChangedManually = false;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "produto",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonManagedReference
     @OrderBy("skuPonto ASC")

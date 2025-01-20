@@ -22,7 +22,7 @@ public class ProdutoDTO {
     String grupo;
     String subgrupo;
     Float preco;
-    List<Variacao> variacoes = new ArrayList<>();
+    String photoUrl;
 
     @Data
     public static class Franquia{
@@ -30,17 +30,5 @@ public class ProdutoDTO {
         String franquia;
     }
 
-    @Data
-    public static class Variacao{
-        String systemId;
-        Integer erpId;
-        String sku;
-        String cor;
-        String tamanho;
-        String photoUrl;
-    }
 
-    public void addVariacao(Variacao variacao){
-        this.variacoes.add(variacao);
-    }
 }

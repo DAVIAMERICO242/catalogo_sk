@@ -48,6 +48,9 @@ public class UpdateProduto {
         produtoEnt.setSubgrupo(produto.getSubgrupo());
         produtoEnt.setPreco(produto.getPreco());
         produtoEnt.setFranquia(franquiaOPT.get());
+        if(!produtoEnt.getWasPhotoChangedManually()){
+            produtoEnt.setPhotoUrl(Optional.ofNullable(produto.getVariacoes()).filter(o-> !o.isEmpty()).map(o->o.get(0)).map(o->o.getPhotoUrl()).orElse(null));
+        }
         for(ProdutoIntegrador.Variacao variacao:produto.getVariacoes()){
             ProdutoVariacao variacaoEnt = new ProdutoVariacao();
             variacaoEnt.setProdutoVariacaoIntegradorId(variacao.getIntegradorId());
