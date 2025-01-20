@@ -54,9 +54,11 @@ export class ProdutosService {
   constructor(private http:HttpClient){}
 
   setProdutosPaged(page:number,franquiaId:string){
+    this.loadingProdutosSub.next(true);
     this.http.get<Produto.ProdutoPage>(env.BACKEND_URL + `/produtos?page=${page}&franquiaSystemId=${franquiaId}`).subscribe({
       next:(data)=>{
         this.produtosSub.next(data);
+        this.loadingProdutosSub.next(false);
       },
       error:()=>{
         alert("Erro")

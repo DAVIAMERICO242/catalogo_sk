@@ -1,4 +1,4 @@
-<div>produtos works!</div>
+<app-admin-page-title iconClass="pi pi-inbox" title="Produtos"/>
 
 <div class="space-y-2 max-h-[80vh] p-4 border-[1px] border-solid border-slate-200 rounded-lg shadow-sm overflow-auto" *ngIf="(produtoService.produtosSub | async) as produtos">
     <div *ngFor="let item of produtos.content">
@@ -7,7 +7,7 @@
             <div class=" bg-gray-100 border-[1px] border-solid border-slate-300 shadow-sm  p-3 rounded-md w-full">
                 <div class="flex items-center gap-3">
                     <div>
-                        <img *ngIf="item.photoUrl" class="w-[50px] h-[50px]" [src]="item.photoUrl"/>
+                        <img  *ngIf="item.photoUrl" class="w-[50px] h-[50px]" [src]="item.photoUrl"/>
                         <div *ngIf="!item.photoUrl" class="pi pi-image !text-[40px] text-gray-300" ></div>
                     </div>
                     <div>
@@ -23,4 +23,11 @@
         </div>
       </div>
     </div>
+</div>
+<div *ngIf="this.produtoService.loadingProdutosSub | async" class="w-full xl:w-6/12 p-4">
+    <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
+    <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
+    <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
+    <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
+    <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
 </div>

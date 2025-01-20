@@ -3,10 +3,11 @@ import { ProdutosService } from '../../services/produtos.service';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { SharedModule } from '../../shared/shared.module';
+import { AdminPageTitleComponent } from "../admin-page-title/admin-page-title.component";
 
 @Component({
   selector: 'app-produtos',
-  imports: [SharedModule],
+  imports: [SharedModule, AdminPageTitleComponent],
   templateUrl: './produtos.component.html'
 })
 export class ProdutosComponent implements OnInit{
