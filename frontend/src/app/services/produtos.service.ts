@@ -40,6 +40,14 @@ export namespace Produto{
     totalElements:number,
     last:boolean
   }
+  export interface ProdutoEstoque{
+    sku:string,
+    estoque:VariacaoEstoque[]
+  }
+  export interface VariacaoEstoque{
+    sku:string,
+    estoque:number
+  }
 }
 @Injectable({
   providedIn: 'root'
@@ -65,4 +73,14 @@ export class ProdutosService {
       }
     });
   }
+
+  getProductVariation(productId:string){
+    return this.http.get<Produto.ProdutoVariacao[]>(env.BACKEND_URL + "/produtos/variacao" + "?productId=" + productId);
+  }
+
+  getStock(skus:string[],lojaSlug:string){
+    const skusStr = skus.join(",");
+    return this.http.get<Produto.ProdutoEstoque[]>(env.BACKEND_URL + "/produtos/estoque" + "?skusBase=" + skusStr + "&lojaSlug="+lojaSlug);
+  }
+
 }

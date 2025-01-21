@@ -1,0 +1,30 @@
+<div>
+    <button [loading]="this.loading" (click)="this.getVariacao();" class="bg-black !text-xs w-[120px] text-nowrap    " pButton >
+        Ver produto
+    </button>
+</div>
+<p-dialog [modal]="true" [(visible)]="this.openVariacao">
+    <div class="w-[550px] flex flex-wrap gap-3">
+        <div *ngFor="let item of this.variacoes">
+            <div class="p-2 border-[1px] border-solid border-slate-300 shadow-sm">
+                <div>
+                    <img *ngIf="item.foto" class="w-[150px] h-[150px]" [src]="item.foto"/>
+                    <div *ngIf="!item.foto" class="pi pi-image !text-[150px] text-gray-300" ></div>
+
+                </div>
+                <div class="text-[13px] mt-2">
+                    <div class=" text-gray-400 mb-3">Sku: {{item.sku}}</div>
+                    <div>
+                        Cor: {{item.cor}}
+                    </div>
+                    <div>
+                        Tamanho: {{item.tamanho}}
+                    </div>
+                    <div>
+                        Estoque: {{this.estoquesUI && this.estoquesUI[item.sku]}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>

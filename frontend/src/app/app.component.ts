@@ -3,12 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { PrimeNG } from 'primeng/config';
 import { MyTheme } from './app.config';
 import { MessageService } from 'primeng/api';
-import { SharedModule } from './shared/shared.module';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,SharedModule],
+  imports: [RouterOutlet,ToastModule],
   templateUrl: './app.component.html',
   providers:[MessageService]
 })

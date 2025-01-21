@@ -6,7 +6,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 import { AvatarModule } from 'primeng/avatar';
-import { Menubar } from 'primeng/menubar';
+import { MenubarModule } from 'primeng/menubar';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -17,6 +17,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { SelectModule } from 'primeng/select';
 import { DrawerModule } from 'primeng/drawer';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { DrawerModule } from 'primeng/drawer';
     CommonModule,
     FormsModule,
     DrawerModule,
+    TooltipModule,
     InputTextModule,
     InputGroupModule, 
     InputGroupAddonModule,
@@ -34,7 +36,7 @@ import { DrawerModule } from 'primeng/drawer';
     DialogModule,
     TableModule,
     AvatarModule,
-    Menubar,
+    MenubarModule,
     ToastModule,
     ButtonModule,
     DatePickerModule,
@@ -45,6 +47,7 @@ import { DrawerModule } from 'primeng/drawer';
     CommonModule,
     FormsModule,
     DrawerModule,
+    TooltipModule,
     InputTextModule,
     SkeletonModule,
     InputGroupModule, 
@@ -54,7 +57,7 @@ import { DrawerModule } from 'primeng/drawer';
     DialogModule,
     TableModule,
     AvatarModule,
-    Menubar,
+    MenubarModule,
     ToastModule,
     ButtonModule,
     DatePickerModule,
