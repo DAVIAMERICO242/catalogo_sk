@@ -1,10 +1,18 @@
 <app-admin-page-title iconClass="pi pi-inbox" title="Produtos"/>
 <div [ngClass]="{'opacity-70':this.produtoService.loadingProdutosSub.value , 'pointer-events-none':this.produtoService.loadingProdutosSub.value}" 
 class="space-y-2 max-h-[90vh] p-4  shadow-sm overflow-auto relative" *ngIf="(produtoService.produtosSub | async) as produtos;else fallback ">
-    <div class="flex item-center justify-between">
-        <div>
-            <input pInputText/>
-        </div>        
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-5">
+            <div class="flex items-center gap-1">
+                <div class="text-xs">Sku:</div>
+                <input [(ngModel)]="this.skuFilter" placeholder="Referência" class="!text-xs w-[130px] h-[30px]" pInputText/>
+            </div>        
+            <div class="flex items-center gap-1 ml-3">
+                <div class="text-xs">Nome:</div>
+                <input [(ngModel)]="this.nomeFilter" placeholder="produto" class="!text-xs w-[130px] h-[30px]" pInputText/>
+            </div>
+            <button (click)="this.produtoService.changePageContext(0);this.loadProdutos()" pButton class="!text-xs h-[30px]">Aplicar filtro</button>        
+        </div>
         <app-paginator (pageChange)="this.onPageChange($event)" [currentPage]="this.produtoService.pageSub.value" [totalRecordsUnpaged]="produtos.totalElements" [rowsPerPage]="50" />
     </div>
     <div *ngFor="let item of produtos.content">

@@ -15,17 +15,25 @@ import { PaginatorComponent } from "../../pure-ui-components/paginator/paginator
 export class ProdutosComponent implements OnInit,OnDestroy{
 
   subscriptions = new Subscription();
+  nomeFilter = "";
+  skuFilter = "";
 
   constructor(protected produtoService:ProdutosService,private userService:UserService){}
   
   ngOnInit(): void {
-    this.loadProdutos()
+    this.nomeFilter = this.produtoService.filterSub.value.nome || "";
+    this.skuFilter = this.produtoService.filterSub.value.sku || "";
+    if(!this.produtoService.produtosSub.value){
+      this.loadProdutos();
+    }
   }
+
+
 
   loadProdutos(){
     const franquiaId = this.userService.getContext()?.franquia.systemId;
     if(franquiaId){
-      this.produtoService.setProdutosPaged(franquiaId);
+      this.produtoService.setProdutosPaged(franquiaId,this.nomeFilter,this.skuFilter);
     }
   }
   
@@ -37,5 +45,6 @@ export class ProdutosComponent implements OnInit,OnDestroy{
     this.produtoService.changePageContext(page);
     this.loadProdutos();
   }
+
 
 }

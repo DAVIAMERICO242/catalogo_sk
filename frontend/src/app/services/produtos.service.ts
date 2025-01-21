@@ -48,6 +48,10 @@ export namespace Produto{
     sku:string,
     estoque:number
   }
+  export interface Filter{
+    nome?:string,
+    sku?:string
+  }
 }
 @Injectable({
   providedIn: 'root'
@@ -60,17 +64,35 @@ export class ProdutosService {
   produtos$ = this.produtosSub.asObservable();
   pageSub = new BehaviorSubject<number>(0);
   page$ = this.pageSub.asObservable();
+  filterSub = new BehaviorSubject<Produto.Filter>({});
+  filter$ = this.filterSub.asObservable();
+
   constructor(private http:HttpClient){}
 
-  setProdutosPaged(franquiaId:string){
+  setProdutosPaged(franquiaId: string, nome?: string, sku?: string) {
+    const params = new URLSearchParams();
+  
+    if (nome) {
+      params.append("nome", nome);
+    }
+    if (sku) {
+      params.append("sku", sku);
+    }
+  
     this.loadingProdutosSub.next(true);
-    this.http.get<Produto.ProdutoPage>(env.BACKEND_URL + `/produtos?page=${this.pageSub.value}&franquiaSystemId=${franquiaId}`).subscribe({
-      next:(data)=>{
+  
+    const queryParams = params.toString();
+    const url = env.BACKEND_URL + `/produtos?page=${this.pageSub.value}&franquiaSystemId=${franquiaId}` 
+                + (queryParams ? `&${queryParams}` : "");
+  
+    this.http.get<Produto.ProdutoPage>(url).subscribe({
+      next: (data) => {
+        this.changeFilter({nome,sku})
         this.produtosSub.next(data);
         this.loadingProdutosSub.next(false);
       },
-      error:()=>{
-        alert("Erro")
+      error: () => {
+        alert("Erro");
       }
     });
   }
@@ -86,6 +108,10 @@ export class ProdutosService {
 
   changePageContext(page:number){
     this.pageSub.next(page);
+  }
+
+  changeFilter(filter:Produto.Filter){
+    this.filterSub.next(filter);
   }
 
 }
