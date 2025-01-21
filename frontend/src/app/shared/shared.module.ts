@@ -18,7 +18,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { SelectModule } from 'primeng/select';
 import { DrawerModule } from 'primeng/drawer';
 import { TooltipModule } from 'primeng/tooltip';
-
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [],
@@ -41,7 +41,8 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     DatePickerModule,
     ToggleSwitchModule,
-    MultiSelectModule
+    MultiSelectModule,
+    PaginatorModule
   ],
   exports:[
     CommonModule,
@@ -62,7 +63,8 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     DatePickerModule,
     ToggleSwitchModule,
-    MultiSelectModule
+    MultiSelectModule,
+    PaginatorModule
   ]
 })
 export class SharedModule { }

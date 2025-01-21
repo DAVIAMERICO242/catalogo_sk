@@ -1,6 +1,7 @@
 <app-admin-page-title iconClass="pi pi-inbox" title="Produtos"/>
-
-<div class="space-y-2 max-h-[90vh] p-4  shadow-sm overflow-auto" *ngIf="(produtoService.produtosSub | async) as produtos">
+<div [ngClass]="{'opacity-70':this.produtoService.loadingProdutosSub.value , 'pointer-events-none':this.produtoService.loadingProdutosSub.value}" 
+class="space-y-2 max-h-[90vh] p-4  shadow-sm overflow-auto relative" *ngIf="(produtoService.produtosSub | async) as produtos;else fallback ">
+    <app-paginator (pageChange)="this.onPageChange($event)" [currentPage]="this.produtoService.pageSub.value" [totalRecordsUnpaged]="produtos.totalElements" [rowsPerPage]="50" />
     <div *ngFor="let item of produtos.content">
       <div >
          <div class="flex items-center ">
@@ -24,12 +25,15 @@
         </div>
       </div>
     </div>
+    <div *ngIf="this.produtoService.loadingProdutosSub.value" class="transform  absolute top-1/2 pi pi-spin pi-spinner left-[47%] !text-[40px]" ></div>
 </div>
-<div *ngIf="this.produtoService.loadingProdutosSub | async" class="w-full xl:w-6/12 p-4">
-    <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
-    <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
-    <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
-    <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
-    <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
-</div>
+<ng-template #fallback >
+    <div class="w-full xl:w-6/12 p-4">
+        <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
+    </div>
+</ng-template>
 <p-dialog/>

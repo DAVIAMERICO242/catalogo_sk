@@ -58,12 +58,13 @@ export class ProdutosService {
   loadingProdutos$ = this.loadingProdutosSub.asObservable();
   produtosSub = new BehaviorSubject<Produto.ProdutoPage | undefined>(undefined);
   produtos$ = this.produtosSub.asObservable();
-
+  pageSub = new BehaviorSubject<number>(0);
+  page$ = this.pageSub.asObservable();
   constructor(private http:HttpClient){}
 
-  setProdutosPaged(page:number,franquiaId:string){
+  setProdutosPaged(franquiaId:string){
     this.loadingProdutosSub.next(true);
-    this.http.get<Produto.ProdutoPage>(env.BACKEND_URL + `/produtos?page=${page}&franquiaSystemId=${franquiaId}`).subscribe({
+    this.http.get<Produto.ProdutoPage>(env.BACKEND_URL + `/produtos?page=${this.pageSub.value}&franquiaSystemId=${franquiaId}`).subscribe({
       next:(data)=>{
         this.produtosSub.next(data);
         this.loadingProdutosSub.next(false);
@@ -81,6 +82,10 @@ export class ProdutosService {
   getStock(skus:string[],lojaSlug:string){
     const skusStr = skus.join(",");
     return this.http.get<Produto.ProdutoEstoque[]>(env.BACKEND_URL + "/produtos/estoque" + "?skusBase=" + skusStr + "&lojaSlug="+lojaSlug);
+  }
+
+  changePageContext(page:number){
+    this.pageSub.next(page);
   }
 
 }
