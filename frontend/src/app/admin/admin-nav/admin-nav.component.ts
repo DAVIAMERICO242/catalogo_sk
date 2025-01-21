@@ -27,6 +27,16 @@ export class AdminNavComponent implements OnInit {
   ngOnInit(): void {
     const name = this.auth.getContext()?.beautyName
     this.beautyName = name || ""
+    const endPath = window.location.href;
+    if(endPath.endsWith("/pedidos")){
+      this.focused = Page.PEDIDOS
+    }
+    if(endPath.endsWith("/produtos")){
+      this.focused = Page.PRODUTOS
+    }
+    if(endPath.endsWith("/catalogo")){
+      this.focused = Page.CATALOGO
+    }
   }
 
   changePage(page:Page,route:string){
