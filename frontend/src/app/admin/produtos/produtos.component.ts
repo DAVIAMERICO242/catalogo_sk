@@ -29,7 +29,6 @@ export class ProdutosComponent implements OnInit,OnDestroy{
   }
 
 
-
   loadProdutos(){
     const franquiaId = this.userService.getContext()?.franquia.systemId;
     if(franquiaId){
@@ -43,6 +42,12 @@ export class ProdutosComponent implements OnInit,OnDestroy{
 
   onPageChange(page:number){
     this.produtoService.changePageContext(page);
+    this.loadProdutos();
+  }
+
+  clearFilter(){
+    this.nomeFilter = "";
+    this.skuFilter = "";
     this.loadProdutos();
   }
 

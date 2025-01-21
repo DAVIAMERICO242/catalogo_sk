@@ -11,7 +11,8 @@ class="space-y-2 max-h-[90vh] p-4  shadow-sm overflow-auto relative" *ngIf="(pro
                 <div class="text-xs">Nome:</div>
                 <input [(ngModel)]="this.nomeFilter" placeholder="produto" class="!text-xs w-[130px] h-[30px]" pInputText/>
             </div>
-            <button (click)="this.produtoService.changePageContext(0);this.loadProdutos()" pButton class="!text-xs h-[30px]">Aplicar filtro</button>        
+            <button (click)="this.produtoService.changePageContext(0);this.loadProdutos()" pButton class="!text-xs h-[30px]">Aplicar filtro</button>
+            <div (click)="this.produtoService.changePageContext(0);this.clearFilter()" class="pi pi-filter-slash cursor-pointer"></div>        
         </div>
         <app-paginator (pageChange)="this.onPageChange($event)" [currentPage]="this.produtoService.pageSub.value" [totalRecordsUnpaged]="produtos.totalElements" [rowsPerPage]="50" />
     </div>
