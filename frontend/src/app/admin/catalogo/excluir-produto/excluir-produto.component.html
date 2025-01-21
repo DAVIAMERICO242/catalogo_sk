@@ -1,4 +1,4 @@
-<app-confirmation-dialog [loading]="false" [open]="this.open"/>
-<div (click)="this.open=true" class="cursor-pointer absolute top-[0px] right-[0px] w-[20px] h-[20px] rounded-full bg-slate-300 flex items-center justify-center p-4">
+<app-confirmation-dialog (onConfirmation)="this.excluir()"  [loading]="this.loading" [(open)]="this.open"/>
+<div (click)="this.open=true" class="cursor-pointer absolute top-[0px] right-[0px] w-[20px] h-[20px] rounded-full bg-white border-[1px] border-solid border-slate-300 shadow-sm flex items-center justify-center p-4">
     <div class="pi pi-trash !text-black"></div>
 </div>

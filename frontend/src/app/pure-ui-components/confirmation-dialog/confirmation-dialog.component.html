@@ -1,12 +1,12 @@
-<p-dialog [(visible)]="this.open" [modal]="true" header="Confirmação">
-    <div class="text-[13px]">
+<p-dialog [(visible)]="this.open" (visibleChange)="openChange.emit($event)" styleClass="!w-[500px]" [modal]="true" header="Confirmação">
+    <div class="text-[16px]">
         {{confirmationTitle}}
     </div>
-    <div class="flex items-center gap-2 mt-3 justify-end">
-        <button pButton>
+    <div class="flex items-center gap-1 mt-3 justify-end">
+        <button (click)="this.close()" class="!bg-white  !text-black !border-none" pButton>
             Não
         </button>
-        <button pButton>
+        <button pButton [loading]="this.loading" (click)="emitConfirmation()" class="!bg-white !text-black !border-none font-bold !w-[70px]" >
             Sim
         </button>
     </div>

@@ -24,9 +24,8 @@ export class ProdutosComponent implements OnInit,OnDestroy{
   ngOnInit(): void {
     this.nomeFilter = this.produtoService.filterSub.value.nome || "";
     this.skuFilter = this.produtoService.filterSub.value.sku || "";
-    if(!this.produtoService.produtosSub.value){
-      this.loadProdutos();
-    }
+    this.loadProdutos();
+    
   }
 
 
@@ -38,7 +37,7 @@ export class ProdutosComponent implements OnInit,OnDestroy{
   }
   
   ngOnDestroy(): void {
-    console.log("Destroyed");
+    
   }
 
   onPageChange(page:number){

@@ -6,18 +6,20 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../services/user.service';
 import { ConfirmationDialogComponent } from "../../pure-ui-components/confirmation-dialog/confirmation-dialog.component";
 import { ExcluirProdutoComponent } from "./excluir-produto/excluir-produto.component";
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-catalogo',
   imports: [SharedModule, AdminPageTitleComponent, ExcluirProdutoComponent],
-  templateUrl: './catalogo.component.html'
+  templateUrl: './catalogo.component.html',
+  providers:[CatalogoService]
 })
 export class CatalogoComponent implements OnInit{
 
   catalogo!:Catalogo.Produto[];
   loadingCatalogo = false;
 
-  constructor(private catalogoService:CatalogoService,private auth:UserService){
+  constructor(private catalogoService:CatalogoService,private auth:UserService,private message:MessageService){
 
   }
 
@@ -38,6 +40,14 @@ export class CatalogoComponent implements OnInit{
         this.loadingCatalogo = false;
         alert(error.error);
       }
+    })
+  }
+
+  handleExclude(productId:string){
+    this.catalogo = this.catalogo.filter((e)=>e.produtoBase.systemId!==productId);
+    this.message.add({
+      severity:"success",
+      summary:"Sucesso"
     })
   }
 

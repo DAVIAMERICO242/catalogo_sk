@@ -14,7 +14,7 @@ export namespace Catalogo{
   }
   export interface Produto{
     produtoBase:ProdutoModel.Produto,
-    loja:Loja,
+    lojaCatalogo:Loja,
     valorCatalogo:number
   }
   export interface Loja{

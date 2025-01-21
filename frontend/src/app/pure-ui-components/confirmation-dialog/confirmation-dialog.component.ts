@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 
@@ -17,5 +17,19 @@ export class ConfirmationDialogComponent {
   @Input({required:true})
   open = false;
 
+  @Output()
+  openChange = new EventEmitter<boolean>();
+  
+  @Output()
   onConfirmation = new EventEmitter<void>();
+
+
+  close(){
+    this.openChange.emit(false);
+    this.open = false;
+  }
+
+  emitConfirmation(){
+    this.onConfirmation.emit();
+  }
 }
