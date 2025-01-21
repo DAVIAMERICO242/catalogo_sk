@@ -30,6 +30,10 @@ export class CatalogoService {
 
   constructor(private http:HttpClient) {}
 
+  getCatalogo(slug:string){
+    return this.http.get<Catalogo.Produto[]>(env.BACKEND_URL+"/catalogo?lojaSlug="+slug);
+  }
+
   adicionarProduto(payload:Catalogo.CadastroModel){
      return this.http.post<Catalogo.Produto>(env.BACKEND_URL+"/catalogo",payload);
   }
@@ -37,4 +41,6 @@ export class CatalogoService {
   removerProduto(payload:Catalogo.DeletarModel){
     return this.http.delete<void>(env.BACKEND_URL+"/catalogo",{body:payload})
   }
+
+
 }

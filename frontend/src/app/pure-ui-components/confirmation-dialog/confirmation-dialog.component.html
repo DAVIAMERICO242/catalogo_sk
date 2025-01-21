@@ -1,0 +1,13 @@
+<p-dialog [(visible)]="this.open" [modal]="true" header="Confirmação">
+    <div class="text-[13px]">
+        {{confirmationTitle}}
+    </div>
+    <div class="flex items-center gap-2 mt-3 justify-end">
+        <button pButton>
+            Não
+        </button>
+        <button pButton>
+            Sim
+        </button>
+    </div>
+</p-dialog>

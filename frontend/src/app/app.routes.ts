@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
-import { CatalogoComponent } from './catalogo/catalogo.component';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { ProdutosComponent } from './admin/produtos/produtos.component';
 import { AuthGuard } from './auth.guard';
 import { PedidosComponent } from './admin/pedidos/pedidos.component';
+import { CatalogoComponent as CatalogoAdmin} from './admin/catalogo/catalogo.component';
+import { CatalogoComponent } from './catalogo/catalogo.component';
 
 export const routes: Routes = [
     {
@@ -31,7 +32,7 @@ export const routes: Routes = [
             },
             {
                 path:"catalogo",
-                component:CatalogoComponent
+                component:CatalogoAdmin
             },{
                 path:"pedidos",
                 component:PedidosComponent

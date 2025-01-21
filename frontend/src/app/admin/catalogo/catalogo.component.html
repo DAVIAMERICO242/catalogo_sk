@@ -1,1 +1,31 @@
-<p>catalogo works!</p>
+<app-admin-page-title iconClass="pi pi-objects-column" title="Catálogo"/>
+<div class="p-5" *ngIf="!this.loadingCatalogo;else fallback">
+    <div class="flex flex-wrap gap-10 " *ngIf="this.catalogo.length;else empty">
+        <div *ngFor="let item of this.catalogo" class="p-3 border-[1px] border-solid border-slate-100 shadow-sm rounded-sm ">
+            <div class="w-[200px] relative">
+                <app-excluir-produto/>
+                <div>
+                    <img *ngIf="item.produtoBase.photoUrl" [src]="item.produtoBase.photoUrl" class="w-[200px] h-[200px]"/>
+                    <div *ngIf="!item.produtoBase.photoUrl" class=" pi pi-image !text-[200px] text-gray-300" ></div>
+                </div>
+                <div class="mt-4">
+                    <div class="text-xs text-slate-400">{{item.produtoBase.sku}}</div>
+                    <div class="text-sm mt-5 mb-2">Preço catálogo: {{item.valorCatalogo | currency:"BRL"}}</div>
+                    <div class="font-bold text-xs">{{item.produtoBase.descricao}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #empty>
+        <div class="text-lg text-slate-500">Nenhum item adicionado ao cátalogo</div>
+    </ng-template>
+</div>
+<ng-template #fallback >
+    <div class="w-full xl:w-6/12 p-4">
+        <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
+    </div>
+</ng-template>
