@@ -23,7 +23,8 @@ export namespace Produto{
     grupo:string,
     subgrupo:string,
     photoUrl:string,
-    preco:number
+    preco:number,
+    onCatalogo:boolean
   }
   export interface ProdutoVariacao{
     systemId:string,
@@ -69,7 +70,7 @@ export class ProdutosService {
 
   constructor(private http:HttpClient){}
 
-  setProdutosPaged(franquiaId: string, nome?: string, sku?: string) {
+  setProdutosPaged(lojaSlug: string, nome?: string, sku?: string) {
     const params = new URLSearchParams();
   
     if (nome) {
@@ -82,7 +83,7 @@ export class ProdutosService {
     this.loadingProdutosSub.next(true);
   
     const queryParams = params.toString();
-    const url = env.BACKEND_URL + `/produtos?page=${this.pageSub.value}&franquiaSystemId=${franquiaId}` 
+    const url = env.BACKEND_URL + `/produtos?page=${this.pageSub.value}&lojaSlug=${lojaSlug}` 
                 + (queryParams ? `&${queryParams}` : "");
   
     this.http.get<Produto.ProdutoPage>(url).subscribe({

@@ -31,9 +31,9 @@ export class ProdutosComponent implements OnInit,OnDestroy{
 
 
   loadProdutos(){
-    const franquiaId = this.userService.getContext()?.franquia.systemId;
-    if(franquiaId){
-      this.produtoService.setProdutosPaged(franquiaId,this.nomeFilter,this.skuFilter);
+    const slug = this.userService.getContext()?.loja.slug;
+    if(slug){
+      this.produtoService.setProdutosPaged(slug,this.nomeFilter,this.skuFilter);
     }
   }
   

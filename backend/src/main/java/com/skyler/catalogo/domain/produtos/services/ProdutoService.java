@@ -1,5 +1,8 @@
 package com.skyler.catalogo.domain.produtos.services;
 
+import com.skyler.catalogo.domain.catalogo.ProdutoCatalogo;
+import com.skyler.catalogo.domain.catalogo.ProdutoCatalogoDTO;
+import com.skyler.catalogo.domain.catalogo.ProdutoCatalogoRepository;
 import com.skyler.catalogo.domain.franquias.Franquia;
 import com.skyler.catalogo.domain.franquias.FranquiaRepository;
 import com.skyler.catalogo.domain.lojas.Loja;
@@ -33,13 +36,15 @@ public class ProdutoService {
     private final FranquiaRepository franquiaRepository;
     private final LojaRepository lojaRepository;
     private final IntegradorBridge integradorBridge;
+    private final ProdutoCatalogoRepository produtoCatalogoRepository;
 
 
-    public ProdutoService(ProdutoRepository produtoRepository, FranquiaRepository franquiaRepository, LojaRepository lojaRepository, IntegradorBridge integradorBridge) {
+    public ProdutoService(ProdutoRepository produtoRepository, FranquiaRepository franquiaRepository, LojaRepository lojaRepository, IntegradorBridge integradorBridge, ProdutoCatalogoRepository produtoCatalogoRepository) {
         this.produtoRepository = produtoRepository;
         this.franquiaRepository = franquiaRepository;
         this.lojaRepository = lojaRepository;
         this.integradorBridge = integradorBridge;
+        this.produtoCatalogoRepository = produtoCatalogoRepository;
     }
 
     public List<ProdutoEstoqueDTO> getEstoque(List<String> skusBase, String lojaSlug){
@@ -78,16 +83,20 @@ public class ProdutoService {
     }
 
     public Page<ProdutoDTO> getProdutos(Integer page,
-                                        String franquiaSystemId,
+                                        String lojaSlug,
                                         String nome,
                                         String sku
     ){
         List<ProdutoDTO> produtos = new ArrayList<>();
-        Optional<Franquia> franquiaOPT = this.franquiaRepository.findById(franquiaSystemId);
-        if(franquiaOPT.isEmpty()){
-            throw new RuntimeException("Franquia não encontrada");
+        Optional<Loja> loja = this.lojaRepository.findByLojaSlug(lojaSlug);
+        if(loja.isEmpty()){
+            throw new RuntimeException("Loja não encontrada");
         }
-        Franquia franquiaEnt = franquiaOPT.get();
+        Franquia franquiaEnt = loja.get().getFranquia();
+        if(franquiaEnt==null){
+            throw new RuntimeException("Loja sem franquia");
+        }
+        List<ProdutoCatalogo> catalogo = this.produtoCatalogoRepository.findAllByLojaSlug(lojaSlug);
         PageRequest pageRequest = PageRequest.of(page,50);
         Page<Produto> produtosEnt = this.produtoRepository.findAll(
                 ProdutoSpecifications.hasFranquiaWithoutVariacoes(franquiaEnt)
@@ -97,7 +106,7 @@ public class ProdutoService {
         for(Produto produtoEnt:produtosEnt){
 //            Hibernate.initialize(produtoEnt.getVariacoes());
 //            Hibernate.initialize(produtoEnt.getFranquia());
-            produtos.add(this.entityToDTO(produtoEnt));
+            produtos.add(this.entityToDTO(produtoEnt,catalogo));
         }
         return new PageImpl<>(produtos, pageRequest, produtosEnt.getTotalElements());
     }
@@ -120,7 +129,32 @@ public class ProdutoService {
     }
 
 
-    public ProdutoDTO entityToDTO(Produto produtoEnt){
+    public ProdutoDTO entityToDTO(Produto produtoEnt,List<ProdutoCatalogo> catalogo){
+        ProdutoDTO produto = new ProdutoDTO();
+        ProdutoDTO.Franquia franquia = new ProdutoDTO.Franquia();
+        Boolean onCatalogo = catalogo.stream().anyMatch(o->o.getProdutoBaseFranquia().equals(produtoEnt));
+        franquia.setFranquia(produtoEnt.getFranquia().getNome());
+        franquia.setFranquiaSystemId(produtoEnt.getFranquia().getSystemId());
+        produto.setFranquia(franquia);
+        produto.setSystemId(produtoEnt.getSystemId());
+        produto.setErpId(produtoEnt.getErpId());
+        produto.setSku(produtoEnt.getSku());
+        produto.setDescricao(produtoEnt.getDescricao());
+        produto.setCategoria(produtoEnt.getCategoria());
+        produto.setUnidade(produtoEnt.getUnidade());
+        produto.setModelagem(produtoEnt.getModelagem());
+        produto.setLinha(produtoEnt.getLinha());
+        produto.setColecao(produtoEnt.getColecao());
+        produto.setTipo(produtoEnt.getTipo());
+        produto.setGrupo(produtoEnt.getGrupo());
+        produto.setSubgrupo(produtoEnt.getSubgrupo());
+        produto.setPreco(produtoEnt.getPreco());
+        produto.setPhotoUrl(produtoEnt.getPhotoUrl());
+        produto.setOnCatalogo(onCatalogo);
+        return produto;
+    }
+
+    public ProdutoDTO entityToDTOExistingOnCatalogo(Produto produtoEnt){
         ProdutoDTO produto = new ProdutoDTO();
         ProdutoDTO.Franquia franquia = new ProdutoDTO.Franquia();
         franquia.setFranquia(produtoEnt.getFranquia().getNome());
@@ -140,6 +174,7 @@ public class ProdutoService {
         produto.setSubgrupo(produtoEnt.getSubgrupo());
         produto.setPreco(produtoEnt.getPreco());
         produto.setPhotoUrl(produtoEnt.getPhotoUrl());
+        produto.setOnCatalogo(true);
         return produto;
     }
 

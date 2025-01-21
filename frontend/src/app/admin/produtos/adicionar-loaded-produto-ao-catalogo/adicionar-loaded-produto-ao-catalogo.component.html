@@ -1,1 +1,2 @@
-<button pButton class="!bg-white font-semibold !text-black shadow-sm !border-none !text-xs w-[200px] text-nowrap">+ Adicionar ao catálogo</button>
+<button [loading]="this.loadingAdd" (click)="this.adicionarAoCatalogo()" *ngIf="!this.alreadyOnCatalogo" pButton class="!bg-white font-semibold !text-black shadow-sm !border-none !text-xs w-[200px] text-nowrap">+ Adicionar ao catálogo</button>
+<button [loading]="this.loadingRemove" (click)="this.removerDoCatalogo()" *ngIf="this.alreadyOnCatalogo" pButton class="!bg-white font-semibold !text-red-400 shadow-sm !border-none !text-xs w-[200px] text-nowrap"> - Remover do catálogo</button>

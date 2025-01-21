@@ -31,13 +31,13 @@ public class ProdutoController {
 
     @GetMapping
     public ResponseEntity getProdutosPaged(Integer page,
-                                           String franquiaSystemId,
+                                           String lojaSlug,
                                            @RequestParam(required = false) String nome,
                                            @RequestParam(required = false) String sku
 
                                            ){
         try{
-            return ResponseEntity.ok().body(this.produtoService.getProdutos(page,franquiaSystemId,nome,sku));
+            return ResponseEntity.ok().body(this.produtoService.getProdutos(page,lojaSlug,nome,sku));
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

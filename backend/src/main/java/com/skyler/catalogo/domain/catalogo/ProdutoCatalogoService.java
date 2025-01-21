@@ -80,7 +80,7 @@ public class ProdutoCatalogoService {
     public ProdutoCatalogoDTO entityToDTO(ProdutoCatalogo catalogoEnt){
         ProdutoCatalogoDTO produtoCatalogo = new ProdutoCatalogoDTO();
         Produto produtoEnt = catalogoEnt.getProdutoBaseFranquia();
-        ProdutoDTO produto = this.produtoService.entityToDTO(produtoEnt);
+        ProdutoDTO produto = this.produtoService.entityToDTOExistingOnCatalogo(produtoEnt);
         ProdutoCatalogoDTO.Loja loja = new ProdutoCatalogoDTO.Loja();
         loja.setLoja(catalogoEnt.getLoja().getNome());
         loja.setSystemId(catalogoEnt.getLoja().getSystemId());

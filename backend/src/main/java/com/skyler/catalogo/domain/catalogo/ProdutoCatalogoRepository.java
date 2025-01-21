@@ -1,6 +1,8 @@
 package com.skyler.catalogo.domain.catalogo;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -20,4 +22,13 @@ public interface ProdutoCatalogoRepository extends JpaRepository<ProdutoCatalogo
             "JOIN FETCH pc.produtoBaseFranquia pb " +
             "WHERE l.slug = :slug AND pb.systemId = :systemId ")
     Optional<ProdutoCatalogo> findByProdutoIdAndLojaSlug(String systemId, String slug);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM ProdutoCatalogo pc " +
+            "WHERE pc.produtoBaseFranquia IN " +
+            "(SELECT pb FROM Produto pb " +
+            "WHERE pb.systemId = :productId ) " +
+            "AND pc.loja IN (SELECT l FROM Loja l WHERE l.slug = :lojaSlug )  ")
+    void deleteByProductIdAndLojaSlug(String productId, String lojaSlug);
 }

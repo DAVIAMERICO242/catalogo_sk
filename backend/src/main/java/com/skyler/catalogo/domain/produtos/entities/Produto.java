@@ -2,6 +2,7 @@ package com.skyler.catalogo.domain.produtos.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.skyler.catalogo.domain.catalogo.ProdutoCatalogo;
 import com.skyler.catalogo.domain.franquias.Franquia;
 import jakarta.persistence.*;
 import lombok.Data;

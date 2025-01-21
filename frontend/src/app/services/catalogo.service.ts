@@ -8,6 +8,10 @@ export namespace Catalogo{
     systemId:string,
     lojaSlug:string
   }
+  export interface DeletarModel{
+    systemId:string,
+    lojaSlug:string
+  }
   export interface Produto{
     produtoBase:ProdutoModel.Produto,
     loja:Loja,
@@ -27,6 +31,10 @@ export class CatalogoService {
   constructor(private http:HttpClient) {}
 
   adicionarProduto(payload:Catalogo.CadastroModel){
-     return this.http.post<Catalogo.Produto>(env.BACKEND_URL+"/catalogo",{payload});
+     return this.http.post<Catalogo.Produto>(env.BACKEND_URL+"/catalogo",payload);
+  }
+
+  removerProduto(payload:Catalogo.DeletarModel){
+    return this.http.delete<void>(env.BACKEND_URL+"/catalogo",{body:payload})
   }
 }

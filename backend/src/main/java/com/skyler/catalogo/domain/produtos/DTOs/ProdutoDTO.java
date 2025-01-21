@@ -23,6 +23,7 @@ public class ProdutoDTO {
     String subgrupo;
     Float preco;
     String photoUrl;
+    Boolean onCatalogo;
 
     @Data
     public static class Franquia{

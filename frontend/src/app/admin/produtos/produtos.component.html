@@ -35,7 +35,7 @@ class="space-y-2 max-h-[90vh] p-4  shadow-sm overflow-auto relative" *ngIf="(pro
                     </div>
                 </div>
                 <div class="flex flex-col gap-3">
-                    <app-adicionar-loaded-produto-ao-catalogo [productId]="item.systemId"/>
+                    <app-adicionar-loaded-produto-ao-catalogo [alreadyOnCatalogo]="item.onCatalogo" [productId]="item.systemId"/>
                     <app-product-variation-view [skuBase]="item.sku" [productId]="item.systemId"/>
                 </div>
             </div>
