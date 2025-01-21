@@ -11,6 +11,7 @@ import com.skyler.catalogo.domain.produtos.DTOs.ProdutoVariacaoDTO;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
+import com.skyler.catalogo.domain.produtos.specifications.ProdutoSpecifications;
 import com.skyler.catalogo.infra.integrador.IntegradorBridge;
 import com.skyler.catalogo.infra.integrador.IntegradorEstoque;
 import com.skyler.catalogo.infra.integrador.IntegradorFranquiasELojas;
@@ -76,7 +77,11 @@ public class ProdutoService {
         return atributos;
     }
 
-    public Page<ProdutoDTO> getProdutos(Integer page,String franquiaSystemId){
+    public Page<ProdutoDTO> getProdutos(Integer page,
+                                        String franquiaSystemId,
+                                        String nome,
+                                        String sku
+    ){
         List<ProdutoDTO> produtos = new ArrayList<>();
         Optional<Franquia> franquiaOPT = this.franquiaRepository.findById(franquiaSystemId);
         if(franquiaOPT.isEmpty()){
@@ -84,7 +89,11 @@ public class ProdutoService {
         }
         Franquia franquiaEnt = franquiaOPT.get();
         PageRequest pageRequest = PageRequest.of(page,50);
-        Page<Produto> produtosEnt = this.produtoRepository.findAllPagedByFranquiaWithoutVariacoes(pageRequest,franquiaEnt);
+        Page<Produto> produtosEnt = this.produtoRepository.findAll(
+                ProdutoSpecifications.hasFranquiaWithoutVariacoes(franquiaEnt)
+                        .and(ProdutoSpecifications.nomeContains(nome))
+                        .and(ProdutoSpecifications.skuContains(sku))
+                ,pageRequest);
         for(Produto produtoEnt:produtosEnt){
 //            Hibernate.initialize(produtoEnt.getVariacoes());
 //            Hibernate.initialize(produtoEnt.getFranquia());

@@ -6,10 +6,11 @@ import { SharedModule } from '../../shared/shared.module';
 import { AdminPageTitleComponent } from "../admin-page-title/admin-page-title.component";
 import { ProductVariationViewComponent } from "./product-variation-view/product-variation-view.component";
 import { PaginatorComponent } from "../../pure-ui-components/paginator/paginator.component";
+import { AdicionarLoadedProdutoAoCatalogoComponent } from "./adicionar-loaded-produto-ao-catalogo/adicionar-loaded-produto-ao-catalogo.component";
 
 @Component({
   selector: 'app-produtos',
-  imports: [SharedModule, AdminPageTitleComponent, ProductVariationViewComponent, PaginatorComponent],
+  imports: [SharedModule, AdminPageTitleComponent, ProductVariationViewComponent, PaginatorComponent, AdicionarLoadedProdutoAoCatalogoComponent],
   templateUrl: './produtos.component.html'
 })
 export class ProdutosComponent implements OnInit,OnDestroy{
@@ -48,6 +49,12 @@ export class ProdutosComponent implements OnInit,OnDestroy{
   clearFilter(){
     this.nomeFilter = "";
     this.skuFilter = "";
+    this.produtoService.changePageContext(0);
+    this.loadProdutos();
+  }
+
+  applyFilters(){
+    this.produtoService.changePageContext(0);
     this.loadProdutos();
   }
 

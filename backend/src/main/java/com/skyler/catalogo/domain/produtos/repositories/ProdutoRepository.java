@@ -6,13 +6,14 @@ import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProdutoRepository extends JpaRepository<Produto,String> {
+public interface ProdutoRepository extends JpaRepository<Produto,String>, JpaSpecificationExecutor<Produto> {
 
     @Query("SELECT p FROM Produto p " +
             "JOIN FETCH p.variacoes v " +
@@ -44,6 +45,7 @@ public interface ProdutoRepository extends JpaRepository<Produto,String> {
             "WHERE f = :franquia ")
     List<Produto> findAllByFranquia(Franquia franquia);
 
+
     @Query("SELECT p FROM Produto p " +
             "JOIN FETCH p.franquia f " +
             "WHERE f = :franquia ")
@@ -58,10 +60,6 @@ public interface ProdutoRepository extends JpaRepository<Produto,String> {
             "WHERE p.franquia = :franquia ")
     Page<Produto> findAllByFranquiaPaged(PageRequest pageRequest,Franquia franquia);
 
-    @Override
-    @Query("SELECT p FROM Produto p " +
-            "JOIN FETCH p.variacoes v ")
-    List<Produto> findAll();
 
     @Query("SELECT p FROM Produto p " +
             "JOIN FETCH p.variacoes v " +

@@ -30,9 +30,14 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity getProdutosPaged(Integer page,String franquiaSystemId){
+    public ResponseEntity getProdutosPaged(Integer page,
+                                           String franquiaSystemId,
+                                           @RequestParam(required = false) String nome,
+                                           @RequestParam(required = false) String sku
+
+                                           ){
         try{
-            return ResponseEntity.ok().body(this.produtoService.getProdutos(page,franquiaSystemId));
+            return ResponseEntity.ok().body(this.produtoService.getProdutos(page,franquiaSystemId,nome,sku));
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
