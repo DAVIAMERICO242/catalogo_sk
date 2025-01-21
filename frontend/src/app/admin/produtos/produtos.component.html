@@ -1,7 +1,12 @@
 <app-admin-page-title iconClass="pi pi-inbox" title="Produtos"/>
 <div [ngClass]="{'opacity-70':this.produtoService.loadingProdutosSub.value , 'pointer-events-none':this.produtoService.loadingProdutosSub.value}" 
 class="space-y-2 max-h-[90vh] p-4  shadow-sm overflow-auto relative" *ngIf="(produtoService.produtosSub | async) as produtos;else fallback ">
-    <app-paginator (pageChange)="this.onPageChange($event)" [currentPage]="this.produtoService.pageSub.value" [totalRecordsUnpaged]="produtos.totalElements" [rowsPerPage]="50" />
+    <div class="flex item-center justify-between">
+        <div>
+            <input pInputText/>
+        </div>        
+        <app-paginator (pageChange)="this.onPageChange($event)" [currentPage]="this.produtoService.pageSub.value" [totalRecordsUnpaged]="produtos.totalElements" [rowsPerPage]="50" />
+    </div>
     <div *ngFor="let item of produtos.content">
       <div >
          <div class="flex items-center ">
