@@ -92,7 +92,7 @@ public class DescontoCarrinhoService {
             }
             entity = opt.get();
         }
-        if(entity.getSystemId()!=null && !entity.getSystemId().isBlank()){
+        if(dto.getSystemId()!=null && !dto.getSystemId().isBlank()){
             entity.setSystemId(dto.getSystemId());
         }
         Optional<Loja> lojaOPT = this.lojaRepository.findById(dto.getLoja().getSystemId());

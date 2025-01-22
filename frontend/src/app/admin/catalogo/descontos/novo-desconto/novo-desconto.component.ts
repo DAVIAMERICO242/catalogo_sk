@@ -40,7 +40,7 @@ export class NovoDescontoComponent implements OnInit {
       loja: loja,
       discountName: '',
       descriptionDelimitation: '',
-      isActive: false,
+      isActive: true,
       expiresAt: new Date(),
       cartRequiredQuantity: 1,
       totalCartValueDiscount:0

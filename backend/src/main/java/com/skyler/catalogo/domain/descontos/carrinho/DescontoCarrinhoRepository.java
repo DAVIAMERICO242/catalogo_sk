@@ -8,7 +8,7 @@ import java.util.List;
 public interface DescontoCarrinhoRepository extends JpaRepository<DescontoCarrinho,String> {
 
     @Query("SELECT dc FROM DescontoCarrinho dc " +
-            "JOIN FETCH dc.bonusOutOfCartCatalogProduct b " +
+            "LEFT JOIN FETCH dc.bonusOutOfCartCatalogProduct b " +
             "JOIN FETCH dc.loja l " +
             "WHERE l.systemId = :lojaId ")
     List<DescontoCarrinho> findAllByLojaId(String lojaId);

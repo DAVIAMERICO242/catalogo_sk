@@ -53,6 +53,6 @@ export class DescontosService {
   }
 
   getAllNivelLoja(lojaSystemId:string){
-    return this.http.get<Desconto.DescontoModel[]>(env.BACKEND_URL+"/desconto/nivel-loja");
+    return this.http.get<Desconto.DescontoModel[]>(env.BACKEND_URL+"/desconto/nivel-loja" + "?lojaId="+lojaSystemId);
   }
 }
