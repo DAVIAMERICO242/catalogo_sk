@@ -19,7 +19,7 @@ public class DescontoCarrinho {
 
     @Id
     private String systemId = UUID.randomUUID().toString();
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="loja_system_id")
     @JsonBackReference
     private Loja loja;
@@ -35,7 +35,7 @@ public class DescontoCarrinho {
     private Float expensiveItemValueDiscount;
     private Float expensiveItemDecimalPercentDiscount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="bonus_out_of_cart_catalog_product_id")
     @JsonBackReference
     private ProdutoCatalogo bonusOutOfCartCatalogProduct;

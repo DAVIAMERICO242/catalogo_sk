@@ -6,6 +6,8 @@ import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,11 +24,63 @@ public class DescontoCarrinhoService {
     }
 
 
+    public List<DescontoCarrinhoDTO> getDescontos(String lojaSystemId){
+        List<DescontoCarrinho> entities = this.descontoCarrinhoRepository.findAllByLojaId(lojaSystemId);
+        List<DescontoCarrinhoDTO> output = new ArrayList<>();
+        for(DescontoCarrinho entity:entities){
+            output.add(this.entityToDto(entity));
+        }
+        return output;
+    }
+
+
     public DescontoCarrinhoDTO criarAtualizarDesconto(DescontoCarrinhoDTO payload){
         DescontoCarrinhoDTO output = new DescontoCarrinhoDTO();
         DescontoCarrinho entity = this.dtoToEntity(payload);
         this.descontoCarrinhoRepository.save(entity);
         return output;
+    }
+
+    private DescontoCarrinhoDTO entityToDto(DescontoCarrinho entity){
+        DescontoCarrinhoDTO dto = new DescontoCarrinhoDTO();
+
+        if (entity.getSystemId() != null && !entity.getSystemId().isBlank()) {
+            dto.setSystemId(entity.getSystemId());
+        }
+
+        if (entity.getLoja() != null) {
+            DescontoCarrinhoDTO.Loja lojaDTO = new DescontoCarrinhoDTO.Loja();
+            lojaDTO.setSystemId(entity.getLoja().getSystemId());
+            lojaDTO.setNome(entity.getLoja().getNome());
+            lojaDTO.setSlug(entity.getLoja().getSlug());
+            dto.setLoja(lojaDTO);
+        }
+
+        dto.setDiscountName(entity.getDiscountName());
+        dto.setDescriptionDelimitation(entity.getDescriptionDelimitation());
+        dto.setIsActive(entity.getIsActive());
+        dto.setExpiresAt(entity.getExpiresAt());
+        dto.setCartRequiredQuantity(entity.getCartRequiredQuantity());
+        dto.setTotalCartValueDiscount(entity.getTotalCartValueDiscount());
+        dto.setTotalCartDecimalPercentDiscount(entity.getTotalCartDecimalPercentDiscount());
+        dto.setCheapestItemValueDiscount(entity.getCheapestItemValueDiscount());
+        dto.setCheapestItemDecimalPercentDiscount(entity.getCheapestItemDecimalPercentDiscount());
+        dto.setExpensiveItemValueDiscount(entity.getExpensiveItemValueDiscount());
+        dto.setExpensiveItemDecimalPercentDiscount(entity.getExpensiveItemDecimalPercentDiscount());
+
+        if (entity.getBonusOutOfCartCatalogProduct() != null) {
+            DescontoCarrinhoDTO.Produto produtoDTO = new DescontoCarrinhoDTO.Produto();
+            produtoDTO.setSystemId(entity.getBonusOutOfCartCatalogProduct().getSystemId());
+            produtoDTO.setSku(entity.getBonusOutOfCartCatalogProduct().getProdutoBaseFranquia().getSku());
+            produtoDTO.setNome(entity.getBonusOutOfCartCatalogProduct().getProdutoBaseFranquia().getDescricao());
+            // Preencha outros campos do ProdutoCatalogoDTO, se necessário
+            dto.setBonusOutOfCartCatalogProduct(produtoDTO);
+        }
+
+        dto.setShippingValueDiscount(entity.getShippingValueDiscount());
+        dto.setShippingDecimalPercentDiscount(entity.getShippingDecimalPercentDiscount());
+
+        return dto;
     }
 
     private DescontoCarrinho dtoToEntity(DescontoCarrinhoDTO dto){
