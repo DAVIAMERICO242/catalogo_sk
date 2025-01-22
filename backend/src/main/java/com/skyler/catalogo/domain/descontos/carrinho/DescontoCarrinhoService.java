@@ -2,6 +2,8 @@ package com.skyler.catalogo.domain.descontos.carrinho;
 
 import com.skyler.catalogo.domain.catalogo.ProdutoCatalogo;
 import com.skyler.catalogo.domain.catalogo.ProdutoCatalogoRepository;
+import com.skyler.catalogo.domain.descontos.carrinho.terms.DelimitedTermsFromCartDiscount;
+import com.skyler.catalogo.domain.descontos.carrinho.terms.ExcludedTermsFromCartDiscount;
 import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
 import org.springframework.stereotype.Service;
@@ -57,7 +59,12 @@ public class DescontoCarrinhoService {
         }
 
         dto.setDiscountName(entity.getDiscountName());
-        dto.setDescriptionDelimitation(entity.getDescriptionDelimitation());
+        for(DelimitedTermsFromCartDiscount term:entity.getDelimitedTerms()){
+            dto.addDelimitedTerm(term.getDelimitedTerm());
+        }
+        for(ExcludedTermsFromCartDiscount term:entity.getExcludedTerms()){
+            dto.addExcludedTerm(term.getExcludedTerm());
+        }
         dto.setIsActive(entity.getIsActive());
         dto.setExpiresAt(entity.getExpiresAt());
         dto.setCartRequiredQuantity(entity.getCartRequiredQuantity());
@@ -101,7 +108,20 @@ public class DescontoCarrinhoService {
         }
         entity.setLoja(lojaOPT.get());
         entity.setDiscountName(dto.getDiscountName());
-        entity.setDescriptionDelimitation(dto.getDescriptionDelimitation());
+        for(String term:dto.getDelimitedTerms()){
+            if(entity.getDelimitedTerms().stream().filter(o->o.getDelimitedTerm().equals(term)).findAny().isEmpty()){
+                DelimitedTermsFromCartDiscount delimitedTermEntity = new DelimitedTermsFromCartDiscount();
+                delimitedTermEntity.setDelimitedTerm(term);
+                entity.addDelimitedTerm(delimitedTermEntity);
+            }
+        }
+        for(String term:dto.getExcludedTerms()){
+            if(entity.getExcludedTerms().stream().filter(o->o.getExcludedTerm().equals(term)).findAny().isEmpty()){
+                ExcludedTermsFromCartDiscount excludedTermEntity = new ExcludedTermsFromCartDiscount();
+                excludedTermEntity.setExcludedTerm(term);
+                entity.addExcludedTerm(excludedTermEntity);
+            }
+        }
         entity.setIsActive(dto.getIsActive());
         entity.setExpiresAt(dto.getExpiresAt());
         entity.setCartRequiredQuantity(dto.getCartRequiredQuantity());

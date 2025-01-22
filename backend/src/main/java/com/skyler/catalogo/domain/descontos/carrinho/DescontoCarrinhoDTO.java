@@ -3,13 +3,14 @@ package com.skyler.catalogo.domain.descontos.carrinho;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class DescontoCarrinhoDTO {
     String systemId;
     Loja loja;
     String discountName;
-    String descriptionDelimitation;
     Boolean isActive;
     LocalDateTime expiresAt;
     Integer cartRequiredQuantity;
@@ -22,6 +23,17 @@ public class DescontoCarrinhoDTO {
     Produto bonusOutOfCartCatalogProduct;
     Float shippingValueDiscount;
     Float shippingDecimalPercentDiscount;
+    List<String> delimitedTerms = new ArrayList<>();
+    List<String> excludedTerms = new ArrayList<>();
+
+    public void addDelimitedTerm(String term){
+        this.delimitedTerms.add(term);
+    }
+
+    public void addExcludedTerm(String term){
+        this.excludedTerms.add(term);
+    }
+
     @Data
     public static class Loja{
         String nome;
