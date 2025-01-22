@@ -25,7 +25,7 @@ public class DescontoCarrinho {
     private Loja loja;
     private String discountName;
     private String descriptionDelimitation;
-    private Boolean isActive;
+    private Boolean isActive = true;
     private LocalDateTime expiresAt;
     private Integer cartRequiredQuantity;
     private Float totalCartValueDiscount;

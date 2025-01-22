@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
-import { Desconto } from '../../../../services/descontos.service';
+import { Desconto, DescontosService } from '../../../../services/descontos.service';
 import { DescontosBeautyNomes } from '../descontos.component';
 import { UserService } from '../../../../services/user.service';
+import { MessageService } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-novo-desconto',
@@ -12,11 +14,12 @@ import { UserService } from '../../../../services/user.service';
 export class NovoDescontoComponent implements OnInit {
   open = false;
   @Input({required:true})
-  descontoTipos:DescontosBeautyNomes[] = []
+  descontoTipos:DescontosBeautyNomes[] = [];
   payload!:Desconto.DescontoModel;
-  focusedTipo!:DescontosBeautyNomes
+  focusedTipo!:DescontosBeautyNomes;
+  loadingSave = false;
 
-  constructor(private auth:UserService) {
+  constructor(private auth:UserService,private message:MessageService,private descontoService:DescontosService) {
     
   }
   
@@ -63,4 +66,45 @@ export class NovoDescontoComponent implements OnInit {
   testar(){
     alert(this.payload.totalCartDecimalPercentDiscount);
   }
+
+  submit(){
+    if(!this.payload.discountName){
+      this.message.add({
+        severity:"error",
+        summary:"O desconto precisa de um nome"
+      })
+      return;
+    }
+    switch(this.focusedTipo.pure_name){
+        case Desconto.DescontoTipo.DESCONTO_TOTAL_CARRINHO:
+          if(!this.payload.totalCartValueDiscount && !this.payload.totalCartDecimalPercentDiscount){
+            this.message.add({
+              severity:"error",
+              summary:"O valor do desconto é 0"
+            })
+            return;
+          }
+
+    }
+    this.loadingSave = true;
+    this.descontoService.atualizarCadastrarNivelLoja(this.payload).subscribe({
+      next:()=>{
+        this.loadingSave = false;
+        this.message.add({
+          severity:"success",
+          summary:"Sucesso"
+        });
+        this.open = false;
+      },
+      error:(err:HttpErrorResponse)=>{
+        this.loadingSave = false;
+        this.message.add({
+          severity:"error",
+          summary:err.error
+        })
+      }
+    })
+
+  }
+
 }

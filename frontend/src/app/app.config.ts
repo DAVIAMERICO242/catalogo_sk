@@ -12,9 +12,9 @@ export const MyTheme = definePreset(Aura, {
   semantic: {
       primary: {
           50: '{slate.100}',
-          100: '{slate.950}',
-          200: '{slate.950}',
-          300: '{slate.950}',
+          100: '{slate.100}',
+          200: '{slate.100}',
+          300: '{slate.100}',
           400: '{slate.950}',
           500: '{slate.950}',
           600: '{slate.950}',
