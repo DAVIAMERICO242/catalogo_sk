@@ -69,6 +69,17 @@ public class ProdutoService {
         return output;
     }
 
+    public List<String> getTermos(String franquiaSystemId){
+        List<String> output = new ArrayList<>();
+        Optional<Franquia> franquiaOPT = this.franquiaRepository.findById(franquiaSystemId);
+        if(franquiaOPT.isEmpty()){
+            throw new RuntimeException("Franquia não encontrada");
+        }
+        List<String> termos = this.produtoRepository.getTermos(franquiaOPT.get());
+        termos.sort(String::compareToIgnoreCase); // Ordena em ordem alfabética ignorando maiúsculas/minúsculas
+        return termos;
+    }
+
     public AtributosDTO getAtributos(String franquiaSystemId){
         Optional<Franquia> franquiaOPT = this.franquiaRepository.findById(franquiaSystemId);
         if(franquiaOPT.isEmpty()){

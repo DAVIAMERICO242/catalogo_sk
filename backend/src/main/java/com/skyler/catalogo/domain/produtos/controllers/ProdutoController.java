@@ -29,6 +29,15 @@ public class ProdutoController {
         }
     }
 
+    @GetMapping("/termos")
+    public ResponseEntity getTermos(String franquiaSystemId){
+        try{
+            return ResponseEntity.ok().body(this.produtoService.getTermos(franquiaSystemId));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
     @GetMapping
     public ResponseEntity getProdutosPaged(Integer page,
                                            String lojaSlug,

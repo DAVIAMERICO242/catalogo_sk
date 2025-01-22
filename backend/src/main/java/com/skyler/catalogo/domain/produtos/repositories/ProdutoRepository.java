@@ -82,5 +82,33 @@ public interface ProdutoRepository extends JpaRepository<Produto,String>, JpaSpe
             "WHERE f = :franquia")
     List<String> getGrupos(Franquia franquia);
 
+    @Query("SELECT DISTINCT(p.subgrupo) FROM Produto p " +
+            "JOIN p.franquia f " +
+            "WHERE f = :franquia")
+    List<String> getSubGrupos(Franquia franquia);
+
+    @Query("SELECT DISTINCT(p.linha) FROM Produto p " +
+            "JOIN p.franquia f " +
+            "WHERE f = :franquia")
+    List<String> getLinhas(Franquia franquia);
+
+    @Query("SELECT DISTINCT(p.tipo) FROM Produto p " +
+            "JOIN p.franquia f " +
+            "WHERE f = :franquia")
+    List<String> getTipos(Franquia franquia);
+
+    @Query("SELECT DISTINCT p.categoria FROM Produto p JOIN p.franquia f WHERE f = :franquia " +
+            "UNION " +
+            "SELECT DISTINCT p.modelagem FROM Produto p JOIN p.franquia f WHERE f = :franquia " +
+            "UNION " +
+            "SELECT DISTINCT p.grupo FROM Produto p JOIN p.franquia f WHERE f = :franquia " +
+            "UNION " +
+            "SELECT DISTINCT p.subgrupo FROM Produto p JOIN p.franquia f WHERE f = :franquia " +
+            "UNION " +
+            "SELECT DISTINCT p.linha FROM Produto p JOIN p.franquia f WHERE f = :franquia " +
+            "UNION " +
+            "SELECT DISTINCT p.tipo FROM Produto p JOIN p.franquia f WHERE f = :franquia " +
+            "ORDER BY 1 ASC")
+    List<String> getTermos(Franquia franquia);
 
 }
