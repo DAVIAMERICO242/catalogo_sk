@@ -1,6 +1,6 @@
 <app-admin-page-title  iconClass="pi pi-objects-column" title="Catálogo"/>
 <div class="p-5" *ngIf="!this.loadingCatalogo;else fallback">
-    <div class="flex flex-wrap gap-10 " *ngIf="this.catalogo.length;else empty">
+    <div class="flex flex-wrap gap-10  " *ngIf="this.catalogo.length;else empty">
         <div *ngFor="let item of this.catalogo" class="p-3 border-[1px] border-solid border-slate-100 shadow-sm rounded-sm ">
             <div class="w-[200px] relative">
                 <app-excluir-produto (onExclude)="handleExclude($event)" [payload]="{systemId:item.produtoBase.systemId,lojaSlug:item.lojaCatalogo.slug}"/>

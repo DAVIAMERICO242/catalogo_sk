@@ -1,6 +1,6 @@
 <app-admin-page-title iconClass="pi pi-inbox" title="Produtos"/>
 <div [ngClass]="{'opacity-70':this.produtoService.loadingProdutosSub.value , 'pointer-events-none':this.produtoService.loadingProdutosSub.value}" 
-class="space-y-2 max-h-[90vh] p-4  shadow-sm overflow-auto relative" *ngIf="(produtoService.produtosSub | async) as produtos;else fallback ">
+class="space-y-2 p-4  shadow-sm  relative" *ngIf="(produtoService.produtosSub | async) as produtos;else fallback ">
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-5">
             <div class="flex items-center gap-1">
@@ -16,33 +16,35 @@ class="space-y-2 max-h-[90vh] p-4  shadow-sm overflow-auto relative" *ngIf="(pro
         </div>
         <app-paginator (pageChange)="this.onPageChange($event)" [currentPage]="this.produtoService.pageSub.value" [totalRecordsUnpaged]="produtos.totalElements" [rowsPerPage]="50" />
     </div>
-    <div *ngFor="let item of produtos.content">
-      <div >
-         <div class="flex items-center ">
-            <div class=" bg-gray-100 border-[1px] border-solid border-slate-300 shadow-sm  p-3 rounded-md w-full flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div>
-                        <img  *ngIf="item.photoUrl" class="w-[50px] h-[50px]" [src]="item.photoUrl"/>
-                        <div *ngIf="!item.photoUrl" class="pi pi-image !text-[40px] text-gray-300" ></div>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-1 mb-3">
-                            <div class="font-bold text-[12px]">sku:{{item.sku}}</div>
-                            <div class="h-[10px] bg-black w-[1px]"></div>
-                            <div class="text-[12px]">Preço: {{item.preco | currency:"BRL"}}</div>
+    <div >
+        <div  *ngFor="let item of produtos.content">
+          <div >
+             <div class="flex items-center ">
+                <div class=" bg-gray-100 border-[1px] border-solid border-slate-300 shadow-sm  p-3 rounded-md w-full flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div>
+                            <img  *ngIf="item.photoUrl" class="w-[50px] h-[50px]" [src]="item.photoUrl"/>
+                            <div *ngIf="!item.photoUrl" class="pi pi-image !text-[40px] text-gray-300" ></div>
                         </div>
-                        <div class="text-xs">{{item.descricao}}</div>
+                        <div>
+                            <div class="flex items-center gap-1 mb-3">
+                                <div class="font-bold text-[12px]">sku:{{item.sku}}</div>
+                                <div class="h-[10px] bg-black w-[1px]"></div>
+                                <div class="text-[12px]">Preço: {{item.preco | currency:"BRL"}}</div>
+                            </div>
+                            <div class="text-xs">{{item.descricao}}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="flex flex-col gap-3">
-                    <app-adicionar-loaded-produto-ao-catalogo [alreadyOnCatalogo]="item.onCatalogo" [productId]="item.systemId"/>
-                    <app-product-variation-view [skuBase]="item.sku" [productId]="item.systemId"/>
+                    <div class="flex flex-col gap-3">
+                        <app-adicionar-loaded-produto-ao-catalogo [alreadyOnCatalogo]="item.onCatalogo" [productId]="item.systemId"/>
+                        <app-product-variation-view [skuBase]="item.sku" [productId]="item.systemId"/>
+                    </div>
                 </div>
             </div>
+          </div>
         </div>
-      </div>
     </div>
-    <div *ngIf="this.produtoService.loadingProdutosSub.value" class="transform  absolute top-1/2 pi pi-spin pi-spinner left-[47%] !text-[40px]" ></div>
+    <div *ngIf="this.produtoService.loadingProdutosSub.value" class="transform  absolute top-[200px] pi pi-spin pi-spinner left-[47%] !text-[40px]" ></div>
 </div>
 <ng-template #fallback >
     <div class="w-full xl:w-6/12 p-4">
