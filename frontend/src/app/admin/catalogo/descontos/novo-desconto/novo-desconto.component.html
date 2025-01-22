@@ -1,0 +1,49 @@
+<button (click)="this.open=true" pButton class="!rounded-md !bg-black px-2 py-1 shadow-sm !border-[1px] !border-solid flex items-center gap-2">
+    <div class="text-[13px] text-white ">+ Novo desconto</div>
+</button>
+<p-drawer (onHide)="this.definePayLoadModel()" class="[&_.p-overlay-mask]:!opacity-100" styleClass="!w-[600px]" position="right" header="Novo desconto" [(visible)]="this.open">
+    <div class="w-[480px] ">
+        <div class="flex justify-end mb-5">
+            <button (click)="this.testar()" class="!bg-black !text-sm" pButton>
+                Salvar desconto
+            </button>
+        </div>
+        <div class="w-full h-[1px] bg-slate-300 mb-5">
+
+        </div>
+        <div class="flex flex-wrap">
+            <div class="flex item-center gap-4 mb-7">
+                <div>
+                    <div class="text-xs mb-1">Tipo:</div>
+                    <p-select [(ngModel)]="this.focusedTipo" (onChange)="this.manageTipoChange()" styleClass="!w-[300px]" [options]="this.descontoTipos" optionLabel="beauty_name"/>
+                </div>
+            </div>
+            <div class = "mb-7">
+                <div class="text-xs mb-1">Nome desconto:</div>
+                <input [(ngModel)]="this.payload.discountName" pInputText/>
+            </div>
+            <div *ngIf="focusedTipo.pure_name=='DESCONTO_TOTAL_CARRINHO'">
+                <div class="mb-7">
+                    <div class="text-xs mb-1">Termo produto:</div>
+                    <input [(ngModel)]="this.payload.descriptionDelimitation" pInputText/>
+                </div>
+                <div class="flex item-center gap-4 mb-7">
+                    <div>
+                        <div class="text-xs mb-1">Desconto valor:</div>
+                        <p-input-number [(ngModel)]="this.payload.totalCartValueDiscount" styleClass="!w-[300px]" [min]="0"  [showButtons]="true"/>
+                    </div>
+                    <div>
+                        <div class="text-xs mb-1">Desconto percentual (1-100):</div>
+                        <p-input-number  [(ngModel)]="totalCartDecimalPercentDiscountView" prefix="%" [min]="0" [max]="100" [showButtons]="true"/>
+                    </div>
+                </div>
+                <div class="flex item-center gap-4">
+                    <div>
+                        <div class="text-xs mb-1">Quantidade mínima de produtos no carrinho:</div>
+                        <p-input-number class="!w-[270px]" [(ngModel)]="this.payload.cartRequiredQuantity" [min]="0" [showButtons]="true"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-drawer >

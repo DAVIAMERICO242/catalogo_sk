@@ -7,10 +7,11 @@ import { UserService } from '../../services/user.service';
 import { ConfirmationDialogComponent } from "../../pure-ui-components/confirmation-dialog/confirmation-dialog.component";
 import { ExcluirProdutoComponent } from "./excluir-produto/excluir-produto.component";
 import { MessageService } from 'primeng/api';
+import { DescontosComponent } from "./descontos/descontos.component";
 
 @Component({
   selector: 'app-catalogo',
-  imports: [SharedModule, AdminPageTitleComponent, ExcluirProdutoComponent],
+  imports: [SharedModule, AdminPageTitleComponent, ExcluirProdutoComponent, DescontosComponent],
   templateUrl: './catalogo.component.html',
   providers:[CatalogoService]
 })

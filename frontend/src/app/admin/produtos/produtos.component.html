@@ -16,9 +16,8 @@ class="space-y-2 p-4  shadow-sm  relative" *ngIf="(produtoService.produtosSub | 
         </div>
         <app-paginator (pageChange)="this.onPageChange($event)" [currentPage]="this.produtoService.pageSub.value" [totalRecordsUnpaged]="produtos.totalElements" [rowsPerPage]="50" />
     </div>
-    <div >
+    <div>
         <div  *ngFor="let item of produtos.content">
-
              <div class="flex items-center ">
                 <div class="mb-2 bg-gray-100 border-[1px] border-solid border-slate-300 shadow-sm  p-3 rounded-md w-full flex items-center justify-between">
                     <div class="flex items-center gap-3">

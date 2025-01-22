@@ -1,0 +1,9 @@
+<button (click)="this.open=true" pButton class=" !bg-black px-2 py-1 shadow-sm !border-[1px] !border-solid flex items-center gap-2">
+    <div class="pi pi-percentage !text-white !text-xs"></div>
+    <div class="text-[13px] text-white ">Gerenciar descontos</div>
+</button>
+<p-dialog header="Descontos" styleClass="!min-w-[600px]" [modal]="true" [(visible)]="open">
+    <div>
+        <app-novo-desconto [descontoTipos]="this.descontosTipos"/>
+    </div>
+</p-dialog>
