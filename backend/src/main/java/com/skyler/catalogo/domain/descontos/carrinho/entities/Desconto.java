@@ -60,4 +60,14 @@ public class Desconto{
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "desconto")
     @JsonManagedReference
     private Set<ExcludedTermos> excludedTermos;
+
+    public void addDelimitedTermo(DelimitedTermos termo){
+        termo.setDesconto(this);
+        this.delimitedTermos.add(termo);
+    }
+
+    public void addExcludedTermo(ExcludedTermos termo){
+        termo.setDesconto(this);
+        this.excludedTermos.add(termo);
+    }
 }

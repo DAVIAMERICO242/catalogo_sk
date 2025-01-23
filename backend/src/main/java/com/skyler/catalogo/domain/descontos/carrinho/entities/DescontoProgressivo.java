@@ -23,4 +23,9 @@ public class DescontoProgressivo {
     @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true,cascade = CascadeType.ALL,mappedBy = "descontoProgressivo")
     @JsonManagedReference
     private Set<DescontoProgressivoIntervalos> intervalos = new HashSet<>();
+
+    public void addInterval(DescontoProgressivoIntervalos intervalo){
+        intervalo.setDescontoProgressivo(this);
+        this.intervalos.add(intervalo);
+    }
 }
