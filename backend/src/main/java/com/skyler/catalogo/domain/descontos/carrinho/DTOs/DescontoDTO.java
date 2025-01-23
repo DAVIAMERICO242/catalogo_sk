@@ -11,12 +11,12 @@ public class DescontoDTO {
     DescontoTipo tipo;
     LocalDateTime expiresAt;
     Boolean isActive;
-    DescontoFrete descontoFrete;
-    DescontoSimples descontoSimples;
-    DescontoSimplesTermo descontoSimplesTermo;
-    DescontoGenericoCarrinho descontoGenericoCarrinho;
-    DescontoMaiorValor descontoMaiorValor;
-    DescontoMenorValor descontoMenorValor;
-    DescontoProgressivo descontoProgressivo;
-    LojaDesconto loja;
+    DescontoFreteDTO descontoFrete;
+    DescontoSimplesDTO descontoSimples;
+    DescontoSimplesTermoDTO descontoSimplesTermo;
+    DescontoGenericoCarrinhoDTO descontoGenericoCarrinho;
+    DescontoMaiorValorDTO descontoMaiorValor;
+    DescontoMenorValorDTO descontoMenorValor;
+    DescontoProgressivoDTO descontoProgressivo;
+    LojaDescontoDTO loja;
 }

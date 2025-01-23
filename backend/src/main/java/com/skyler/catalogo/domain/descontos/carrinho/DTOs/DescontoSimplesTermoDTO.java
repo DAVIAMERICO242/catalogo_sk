@@ -1,10 +1,8 @@
 package com.skyler.catalogo.domain.descontos.carrinho.DTOs;
 
-import com.skyler.catalogo.domain.lojas.Loja;
-
 import java.util.List;
 
-public class DescontoSimplesTermo {
+public class DescontoSimplesTermoDTO {
     String systemId;
     List<String> delimitedCategorias;
     List<String> excludedCategorias;

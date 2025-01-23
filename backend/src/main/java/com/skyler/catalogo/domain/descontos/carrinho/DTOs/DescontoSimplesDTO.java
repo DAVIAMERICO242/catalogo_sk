@@ -1,10 +1,7 @@
 package com.skyler.catalogo.domain.descontos.carrinho.DTOs;
 
-import lombok.Data;
-
-@Data
-public class DescontoGenericoCarrinho {
+public class DescontoSimplesDTO {
     String systemId;
-    Float minValue;
+    ProdutoDescontoDTO produto;
     Float percentDecimalDiscount;
 }

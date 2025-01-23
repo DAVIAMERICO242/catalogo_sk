@@ -2,9 +2,10 @@ package com.skyler.catalogo.domain.descontos.carrinho.DTOs;
 
 import java.util.List;
 
-public class DescontoMaiorValor {
+public class DescontoMenorValorDTO {
     String systemId;
     Integer lowerQuantityLimitToApply;
+    Integer lowerValueLimitToApply;
     List<String> delimitedCategorias;
     List<String> excludedCategorias;
     List<String> delimitedLinhas;

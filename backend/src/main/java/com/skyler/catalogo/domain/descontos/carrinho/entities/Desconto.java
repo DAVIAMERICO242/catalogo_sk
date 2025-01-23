@@ -16,11 +16,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Table(name="cart_discounts")
+@Table(name="discounts")
 @Data
 @Entity
 @EqualsAndHashCode(of="systemId")
-public class DescontoCarrinho {
+public class Desconto{
 
     @Id
     private String systemId = UUID.randomUUID().toString();
