@@ -8,15 +8,13 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name="discounts_shipping")
-public class DescontoFrete {
+@Table(name="discounts_simples_termo")
+public class DescontoSimplesTermo {
     @Id
     private String systemId = UUID.randomUUID().toString();
-    private Float lowerValueLimitToApply;
     private Float percentDecimalDiscount;
-
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="discount_system_id")
     @JsonBackReference
+    @JoinColumn(name="discount_system_id")
     private Desconto desconto;
 }

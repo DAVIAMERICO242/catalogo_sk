@@ -1,5 +1,6 @@
 package com.skyler.catalogo.domain.descontos.carrinho.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class DescontoProgressivoIntervalos {
     private Integer minQuantity;
     private Float percentDecimalDiscount;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name="discount_progressive_system_id")
     private DescontoProgressivo descontoProgressivo;
 
