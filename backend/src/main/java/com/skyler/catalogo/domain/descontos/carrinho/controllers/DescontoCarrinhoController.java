@@ -1,8 +1,6 @@
 package com.skyler.catalogo.domain.descontos.carrinho.controllers;
 
-import com.skyler.catalogo.domain.descontos.carrinho.DTOs.DescontoCarrinhoDTO;
 import com.skyler.catalogo.domain.descontos.carrinho.services.DescontoCarrinhoService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
