@@ -33,25 +33,25 @@ public class Desconto{
     private String discountName;
     private Boolean isActive = true;
     private LocalDateTime expiresAt;
-    @OneToOne(mappedBy = "desconto")
+    @OneToOne(mappedBy = "desconto",cascade = CascadeType.ALL)
     @JsonManagedReference
     private DescontoFrete descontoFrete;
-    @OneToOne(mappedBy = "desconto")
+    @OneToOne(mappedBy = "desconto",cascade = CascadeType.ALL)
     @JsonManagedReference
     private DescontoGenericoCarrinho descontoGenericoCarrinho;
-    @OneToOne(mappedBy = "desconto")
+    @OneToOne(mappedBy = "desconto",cascade = CascadeType.ALL)
     @JsonManagedReference
     private DescontoMaiorValor descontoMaiorValor;
-    @OneToOne(mappedBy = "desconto")
+    @OneToOne(mappedBy = "desconto",cascade = CascadeType.ALL)
     @JsonManagedReference
     private DescontoMenorValor descontoMenorValor;
-    @OneToOne(mappedBy = "desconto")
+    @OneToOne(mappedBy = "desconto",cascade = CascadeType.ALL)
     @JsonManagedReference
     private DescontoProgressivo descontoProgressivo;
-    @OneToOne(mappedBy = "desconto")
+    @OneToOne(mappedBy = "desconto",cascade = CascadeType.ALL)
     @JsonManagedReference
     private DescontoSimplesProduto descontoSimplesProduto;
-    @OneToOne(mappedBy = "desconto")
+    @OneToOne(mappedBy = "desconto",cascade = CascadeType.ALL)
     @JsonManagedReference
     private DescontoSimplesTermo descontoSimplesTermo;
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "desconto")

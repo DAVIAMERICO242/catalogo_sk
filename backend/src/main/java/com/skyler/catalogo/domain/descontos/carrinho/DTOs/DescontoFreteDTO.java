@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class DescontoFreteDTO {
     String systemId;
-    Integer lowerValueLimitToApply;
+    Float lowerValueLimitToApply;
     Float percentDecimalDiscount;
 }

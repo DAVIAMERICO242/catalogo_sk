@@ -1,17 +1,18 @@
 package com.skyler.catalogo.domain.descontos.carrinho.controllers;
 
-import com.skyler.catalogo.domain.descontos.carrinho.services.DescontoCarrinhoService;
+import com.skyler.catalogo.domain.descontos.carrinho.services.DescontoService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/desconto")
-public class DescontoCarrinhoController {
+public class DescontoController {
 
-    private final DescontoCarrinhoService descontoCarrinhoService;
+    private final DescontoService descontoService;
 
-    public DescontoCarrinhoController(DescontoCarrinhoService descontoCarrinhoService) {
-        this.descontoCarrinhoService = descontoCarrinhoService;
+    public DescontoController(DescontoService descontoService) {
+        this.descontoService = descontoService;
     }
+
 
 //    @GetMapping("/nivel-loja")
 //    public ResponseEntity getNivelLoja(String lojaId){
