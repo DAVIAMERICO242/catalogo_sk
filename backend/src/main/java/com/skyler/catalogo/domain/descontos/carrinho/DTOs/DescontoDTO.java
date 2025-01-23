@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class DescontoDTO {
     String systemId;
+    String nome;
     DescontoTipo tipo;
     LocalDateTime expiresAt;
     Boolean isActive;

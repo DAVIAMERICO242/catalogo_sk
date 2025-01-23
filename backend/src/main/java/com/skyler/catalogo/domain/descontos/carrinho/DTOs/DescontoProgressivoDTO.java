@@ -5,12 +5,12 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class DescontoProgressivoDTO {
+public class DescontoProgressivoDTO implements DelimitedExcludedInterface {
     String systemId;
     List<String> delimitedCategorias;
     List<String> excludedCategorias;
     List<String> delimitedLinhas;
-    List<String> excludedLinha;
+    List<String> excludedLinhas;
     List<String> delimitedGrupos;
     List<String> excludedGrupos;
     List<IntervalDescontoDTO> intervalos;
