@@ -1,15 +1,15 @@
-package com.skyler.catalogo.domain.descontos.carrinho;
+package com.skyler.catalogo.domain.descontos.carrinho.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.skyler.catalogo.domain.catalogo.ProdutoCatalogo;
-import com.skyler.catalogo.domain.descontos.carrinho.terms.DelimitedTermsFromCartDiscount;
-import com.skyler.catalogo.domain.descontos.carrinho.terms.ExcludedTermsFromCartDiscount;
+import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import com.skyler.catalogo.domain.lojas.Loja;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -28,16 +28,21 @@ public class DescontoCarrinho {
     @JoinColumn(name="loja_system_id")
     @JsonBackReference
     private Loja loja;
+    @Enumerated(EnumType.STRING)
+    private DescontoTipo descontoTipo;
     private String discountName;
     private Boolean isActive = true;
+    private Boolean isDiscountCumulative = false;
+    private Boolean isIntervalCumulative = false;
     private LocalDateTime expiresAt;
-    private Integer cartRequiredQuantity;
-    private Float totalCartValueDiscount;
-    private Float totalCartDecimalPercentDiscount;
-    private Float cheapestItemValueDiscount;
-    private Float cheapestItemDecimalPercentDiscount;
-    private Float expensiveItemValueDiscount;
-    private Float expensiveItemDecimalPercentDiscount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="single_product_catalog_id")
+    @JsonBackReference
+    private ProdutoCatalogo relatedProduct;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true,mappedBy = "descontoCarrinho")
+    private Set<DescontoIntervalDetails> intervalDetails;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "descontoCarrinho",fetch = FetchType.LAZY,orphanRemoval = true)
     @JsonManagedReference
@@ -47,13 +52,6 @@ public class DescontoCarrinho {
     @JsonManagedReference
     private Set<ExcludedTermsFromCartDiscount> excludedTerms = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="bonus_out_of_cart_catalog_product_id")
-    @JsonBackReference
-    private ProdutoCatalogo bonusOutOfCartCatalogProduct;
-
-    private Float shippingValueDiscount;
-    private Float shippingDecimalPercentDiscount;
 
     public void addDelimitedTerm(DelimitedTermsFromCartDiscount term){
         term.setDescontoCarrinho(this);
