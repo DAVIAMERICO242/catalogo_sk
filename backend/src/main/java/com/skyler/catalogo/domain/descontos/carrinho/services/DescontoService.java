@@ -21,16 +21,21 @@ public class DescontoService {
     private final LojaRepository lojaRepository;
     private final ProdutoCatalogoRepository produtoCatalogoRepository;
     private final DescontoRepository descontoRepository;
+    private final DescontoMapper descontoMapper;
 
-    public DescontoService(LojaRepository lojaRepository, ProdutoCatalogoRepository produtoCatalogoRepository, DescontoRepository descontoRepository) {
+    public DescontoService(LojaRepository lojaRepository, ProdutoCatalogoRepository produtoCatalogoRepository, DescontoRepository descontoRepository, DescontoMapper descontoMapper) {
         this.lojaRepository = lojaRepository;
         this.produtoCatalogoRepository = produtoCatalogoRepository;
         this.descontoRepository = descontoRepository;
+        this.descontoMapper = descontoMapper;
     }
 
     public List<DescontoDTO> getDescontosForLoja(String lojaSystemId){
         List<DescontoDTO> descontoDTOList = new ArrayList<>();
-
+        List<Desconto> descontos = this.descontoRepository.findAllByLojaId(lojaSystemId);
+        for(Desconto desconto:descontos){
+            descontoDTOList.add(this.descontoMapper.entityToDTO(desconto));
+        }
         return descontoDTOList;
     }
 

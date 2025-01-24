@@ -11,4 +11,10 @@ public interface DelimitedExcludedInterface {
     List<String> getExcludedLinhas();
     List<String> getDelimitedGrupos();
     List<String> getExcludedGrupos();
+    void addDelimitedCategoria(String termo);
+    void addDelimitedLinha(String termo);
+    void addDelimitedGrupo(String termo);
+    void addExcudedCategoria(String termo);
+    void addExcludedLinha(String termo);
+    void addExcludedGrupo(String termo);
 }
