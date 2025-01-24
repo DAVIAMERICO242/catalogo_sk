@@ -2,22 +2,22 @@
     <div class="text-[13px] text-white ">+ Novo desconto</div>
 </button>
 <p-drawer class="[&_.p-drawer-content.ng-star-inserted]:!overflow-visible [&_.p-overlay-mask]:!opacity-100" styleClass="!w-[600px]" position="right" header="Novo desconto" [(visible)]="this.open">
-    <div class="w-[480px] ">
+    <div class="w-[480px] mt-12 ">
         <div class="w-full h-[1px] bg-slate-300 mb-5">
 
         </div>
         <div class="flex item-center gap-4 mb-7">
             <div>
-                <div class="text-xs mb-1">Tipo:</div>
+                <div class="text-xs mb-1 font-bold">Tipo:</div>
                 <p-select [(ngModel)]="this.focusedTipo" (onChange)="this.manageTipoChange()" styleClass="!w-[300px]" [options]="this.descontoTipos" optionLabel="beauty_name"/>
             </div>
         </div>
         <div class = "mb-7">
-            <div class="text-xs mb-1">Nome desconto:</div>
-            <input [(ngModel)]="this.payload.nome" pInputText/>
+            <div class="text-xs mb-1 font-bold">Nome desconto:</div>
+            <input class="!w-[300px]" [(ngModel)]="this.payload.nome" pInputText/>
         </div>
-        <div class="font-semibold mb-7">Regras de aplicação:</div>
-        <div >
+        <div class="p-5 border-[1px] border-solid border-slate-200 bg-slate-50 rounded-lg shadow-sm w-fit" >
+            <div class="font-bold mb-3">Regras desconto:</div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_FRETE">
                 <app-desconto-frete-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div>
