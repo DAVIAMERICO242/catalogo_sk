@@ -11,6 +11,7 @@ export namespace Desconto{
     isActive:boolean,
     loja:LojaModel,
     descontoFrete?:DescontoFreteModel,
+    descontoGenericoCarrinho?:DescontoGenericoCarrinhoModel;
     descontoSimples?:DescontoSimplesProdutoModel,
     descontoSimplesTermo?:DescontoSimplesTermoModel,
     descontoMaiorValor?:DescontoMaiorValorModel,
@@ -31,7 +32,7 @@ export namespace Desconto{
     produto:ProdutoModel,
     percentDecimalDiscount:number
   }
-  interface ProdutoModel{
+  export interface ProdutoModel{
     systemId:string,
     nome:string,
     baseValue:number,
@@ -96,7 +97,7 @@ export class DescontosService {
   constructor(private http:HttpClient){}
 
   atualizarCadastrarDesconto(payload:Desconto.DescontoModel){
-    return this.http.post<Desconto.DescontoModel>(env.BACKEND_URL+"/desconto",payload);
+    return this.http.post<Desconto.DescontoModel>(env.BACKEND_URL+"/descontos",payload);
   }
 
   getDescontos(lojaId:string){

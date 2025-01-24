@@ -11,7 +11,9 @@
 body{
     height:100vh;
 }
-
+.p-drawer-content{
+  overflow:visible !important;
+}
 *{
     margin:0;
     padding:0;

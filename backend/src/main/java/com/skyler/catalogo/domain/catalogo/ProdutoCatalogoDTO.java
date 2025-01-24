@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ProdutoCatalogoDTO {
+    String systemId;
     ProdutoDTO produtoBase;
     Loja lojaCatalogo;
     Float valorCatalogo;

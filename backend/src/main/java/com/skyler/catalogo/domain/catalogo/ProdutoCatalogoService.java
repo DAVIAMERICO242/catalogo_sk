@@ -85,6 +85,7 @@ public class ProdutoCatalogoService {
         loja.setLoja(catalogoEnt.getLoja().getNome());
         loja.setSystemId(catalogoEnt.getLoja().getSystemId());
         loja.setSlug(catalogoEnt.getLoja().getSlug());
+        produtoCatalogo.setSystemId(catalogoEnt.getSystemId());
         produtoCatalogo.setValorCatalogo(catalogoEnt.getCatalogPrice());
         produtoCatalogo.setProdutoBase(produto);
         produtoCatalogo.setLojaCatalogo(loja);

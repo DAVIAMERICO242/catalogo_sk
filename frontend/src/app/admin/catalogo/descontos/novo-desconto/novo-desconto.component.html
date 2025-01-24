@@ -1,13 +1,8 @@
 <button (click)="this.open=true" pButton class="!rounded-md !bg-black px-2 py-1 shadow-sm !border-[1px] !border-solid flex items-center gap-2">
     <div class="text-[13px] text-white ">+ Novo desconto</div>
 </button>
-<p-drawer (onHide)="this.definePayLoadModel()" class="[&_.p-overlay-mask]:!opacity-100" styleClass="!w-[600px]" position="right" header="Novo desconto" [(visible)]="this.open">
+<p-drawer class="[&_.p-drawer-content.ng-star-inserted]:!overflow-visible [&_.p-overlay-mask]:!opacity-100" styleClass="!w-[600px]" position="right" header="Novo desconto" [(visible)]="this.open">
     <div class="w-[480px] ">
-        <div class="flex justify-end mb-5">
-            <button [loading]="this.loadingSave" (click)="this.submit()" class="!bg-black !text-sm" pButton>
-                Salvar desconto
-            </button>
-        </div>
         <div class="w-full h-[1px] bg-slate-300 mb-5">
 
         </div>
@@ -21,16 +16,16 @@
             <div class="text-xs mb-1">Nome desconto:</div>
             <input [(ngModel)]="this.payload.nome" pInputText/>
         </div>
-        <div class="font-semibold">Regras de aplicação:</div>
-        <div class="flex flex-wrap">
+        <div class="font-semibold mb-7">Regras de aplicação:</div>
+        <div >
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_FRETE">
-                <app-desconto-frete-form/>
+                <app-desconto-frete-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_GENERICO_CARRINHO">
-                <app-desconto-generico-carrinho-form/>
+                <app-desconto-generico-carrinho-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_SIMPLES_PRODUTO">
-                <app-desconto-simples-produto-form/>
+                <app-desconto-simples-produto-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_SIMPLES_TERMO">
                 <app-desconto-simples-termo-form/>

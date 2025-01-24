@@ -1,1 +1,19 @@
-<p>desconto-simples-produto-form works!</p>
+<div class="space-y-4 mb-5" *ngIf="this.payload.descontoSimples">
+    <div>
+        <div  class="text-xs text-gray-400">
+            Produto catálogo
+        </div>
+        <p-select [filter]="true" styleClass="!w-[300px] !z-[999] !text-xs h-[40px] flex items-center "  [(ngModel)]="this.payload.descontoSimples.produto" [options]="produtosTranslated" optionLabel="nome" />
+    </div>
+    <div>
+        <div  class="text-xs text-gray-400">
+            Desconto no produto (%)
+        </div>
+        <p-input-number [showButtons]="true"  prefix="%" [(ngModel)]="desconto" [min]="0" [max]="100"/>
+    </div>
+</div>
+<div class="flex justify-end mb-5">
+    <button [loading]="this.loading" (click)="this.save()" class="!bg-black !text-sm w-full" pButton>
+        Salvar desconto
+    </button>
+</div>

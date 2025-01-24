@@ -42,6 +42,7 @@ export class NovoDescontoComponent implements OnInit {
     if(contextualLoja){
       this.payload = {
         ...this.payload,
+        tipo:this.focusedTipo.pure_name,
         systemId: '',
         loja: {
           nome:contextualLoja?.nome,
@@ -75,7 +76,13 @@ export class NovoDescontoComponent implements OnInit {
   //   alert(this.payload.totalCartDecimalPercentDiscount);
   // }
 
-  submit(){//o resto é validado no componente relativo ao tipo de desconto
+
+  childSave(payload:Desconto.DescontoModel){
+    this.payload = payload;
+    this.submit();
+  }
+
+  private submit(){//o resto é validado no componente relativo ao tipo de desconto
     if(!this.payload.nome){
       this.message.add({
         severity:"error",

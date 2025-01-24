@@ -7,6 +7,7 @@ import com.skyler.catalogo.domain.descontos.carrinho.entities.*;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.TermoTipo;
 import com.skyler.catalogo.domain.descontos.carrinho.repositories.DescontoRepository;
+import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
 import jdk.dynalink.linker.LinkerServices;
 import org.springframework.stereotype.Service;
@@ -108,10 +109,7 @@ public class DescontoService {
 
     public DescontoDTO cadastrarAtualizarDescontoProgressivo(DescontoDTO descontoDTO){
         Desconto entity = this.getUseCaseEntity(descontoDTO.getSystemId());
-        entity.setDescontoTipo(descontoDTO.getTipo());
-        entity.setDiscountName(descontoDTO.getNome());
-        entity.setIsActive(descontoDTO.getIsActive());
-        entity.setExpiresAt(descontoDTO.getExpiresAt());
+        this.arrumarEssencial(entity,descontoDTO);
         DescontoProgressivo descontoProgressivo = new DescontoProgressivo();
         if(entity.getDescontoProgressivo()!=null){
             descontoProgressivo = entity.getDescontoProgressivo();
@@ -135,10 +133,7 @@ public class DescontoService {
 
     public DescontoDTO cadastrarAtualizarDescontoMenorValor(DescontoDTO descontoDTO){
         Desconto entity = this.getUseCaseEntity(descontoDTO.getSystemId());
-        entity.setDescontoTipo(descontoDTO.getTipo());
-        entity.setDiscountName(descontoDTO.getNome());
-        entity.setIsActive(descontoDTO.getIsActive());
-        entity.setExpiresAt(descontoDTO.getExpiresAt());
+        this.arrumarEssencial(entity,descontoDTO);
         DescontoMenorValor descontoMenorValor = new DescontoMenorValor();
         if(entity.getDescontoMaiorValor()!=null){
             descontoMenorValor = entity.getDescontoMenorValor();
@@ -157,10 +152,7 @@ public class DescontoService {
 
     public DescontoDTO cadastrarAtualizarDescontoMaiorValor(DescontoDTO descontoDTO){
         Desconto entity = this.getUseCaseEntity(descontoDTO.getSystemId());
-        entity.setDescontoTipo(descontoDTO.getTipo());
-        entity.setDiscountName(descontoDTO.getNome());
-        entity.setIsActive(descontoDTO.getIsActive());
-        entity.setExpiresAt(descontoDTO.getExpiresAt());
+        this.arrumarEssencial(entity,descontoDTO);
         DescontoMaiorValor descontoMaiorValor = new DescontoMaiorValor();
         if(entity.getDescontoMaiorValor()!=null){
             descontoMaiorValor = entity.getDescontoMaiorValor();
@@ -179,10 +171,7 @@ public class DescontoService {
 
     public DescontoDTO cadastrarAtualizarDescontoSimplesTermo(DescontoDTO descontoDTO){
         Desconto entity = this.getUseCaseEntity(descontoDTO.getSystemId());
-        entity.setDescontoTipo(descontoDTO.getTipo());
-        entity.setDiscountName(descontoDTO.getNome());
-        entity.setIsActive(descontoDTO.getIsActive());
-        entity.setExpiresAt(descontoDTO.getExpiresAt());
+        this.arrumarEssencial(entity,descontoDTO);
         DescontoSimplesTermo descontoSimplesTermo = new DescontoSimplesTermo();
         if(entity.getDescontoSimplesTermo()!=null){
             descontoSimplesTermo = entity.getDescontoSimplesTermo();
@@ -200,16 +189,13 @@ public class DescontoService {
 
     public DescontoDTO cadastrarAtualizarDescontoSimplesProduto(DescontoDTO descontoDTO){
         Desconto entity = this.getUseCaseEntity(descontoDTO.getSystemId());
-        entity.setDescontoTipo(descontoDTO.getTipo());
-        entity.setDiscountName(descontoDTO.getNome());
-        entity.setIsActive(descontoDTO.getIsActive());
-        entity.setExpiresAt(descontoDTO.getExpiresAt());
+        this.arrumarEssencial(entity,descontoDTO);
         DescontoSimplesProduto descontoSimplesProduto = new DescontoSimplesProduto();
         if(entity.getDescontoSimplesProduto()!=null){
             descontoSimplesProduto = entity.getDescontoSimplesProduto();
         }
         descontoSimplesProduto.setDesconto(entity);
-        descontoSimplesProduto.setPercentDecimalDiscount(descontoDTO.getDescontoFrete().getPercentDecimalDiscount());
+        descontoSimplesProduto.setPercentDecimalDiscount(descontoDTO.getDescontoSimples().getPercentDecimalDiscount());
         Optional<ProdutoCatalogo> produtoCatalogoOptional = this.produtoCatalogoRepository.findById(descontoDTO.getDescontoSimples().getProduto().getSystemId());
         if(produtoCatalogoOptional.isEmpty()){
             throw new RuntimeException("Produto não encontrado");
@@ -232,10 +218,7 @@ public class DescontoService {
 
     public DescontoDTO cadastrarAtualizarDescontoGenericoCarrinho(DescontoDTO descontoDTO){
         Desconto entity = this.getUseCaseEntity(descontoDTO.getSystemId());
-        entity.setDescontoTipo(descontoDTO.getTipo());
-        entity.setDiscountName(descontoDTO.getNome());
-        entity.setIsActive(descontoDTO.getIsActive());
-        entity.setExpiresAt(descontoDTO.getExpiresAt());
+        this.arrumarEssencial(entity,descontoDTO);
         DescontoGenericoCarrinho descontoGenericoCarrinho = new DescontoGenericoCarrinho();
         if(entity.getDescontoGenericoCarrinho()!=null){
             descontoGenericoCarrinho = entity.getDescontoGenericoCarrinho();
@@ -253,10 +236,7 @@ public class DescontoService {
 
     public DescontoDTO cadastrarAtualizarDescontoFrete(DescontoDTO descontoDTO){
         Desconto entity = this.getUseCaseEntity(descontoDTO.getSystemId());
-        entity.setDescontoTipo(descontoDTO.getTipo());
-        entity.setDiscountName(descontoDTO.getNome());
-        entity.setIsActive(descontoDTO.getIsActive());
-        entity.setExpiresAt(descontoDTO.getExpiresAt());
+        this.arrumarEssencial(entity,descontoDTO);
         DescontoFrete descontoFrete = new DescontoFrete();
         if(entity.getDescontoFrete()!=null){
             descontoFrete = entity.getDescontoFrete();
@@ -320,6 +300,18 @@ public class DescontoService {
             excludedTermos.setTermo(termo);
             entity.addExcludedTermo(excludedTermos);
         }
+    }
+
+    private void arrumarEssencial(Desconto entity,DescontoDTO descontoDTO){
+        Optional<Loja> lojaOptional = this.lojaRepository.findById(descontoDTO.getLoja().getSystemId());
+        if(lojaOptional.isEmpty()){
+            throw new RuntimeException("Loja não encontrada");
+        }
+        entity.setDescontoTipo(descontoDTO.getTipo());
+        entity.setDiscountName(descontoDTO.getNome());
+        entity.setIsActive(descontoDTO.getIsActive());
+        entity.setExpiresAt(descontoDTO.getExpiresAt());
+        entity.setLoja(lojaOptional.get());
     }
 
 
