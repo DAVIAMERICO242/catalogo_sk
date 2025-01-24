@@ -8,8 +8,11 @@ import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.TermoTipo;
 import com.skyler.catalogo.domain.descontos.carrinho.repositories.DescontoRepository;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
+import jdk.dynalink.linker.LinkerServices;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,12 @@ public class DescontoService {
         this.lojaRepository = lojaRepository;
         this.produtoCatalogoRepository = produtoCatalogoRepository;
         this.descontoRepository = descontoRepository;
+    }
+
+    public List<DescontoDTO> getDescontosForLoja(String lojaSystemId){
+        List<DescontoDTO> descontoDTOList = new ArrayList<>();
+
+        return descontoDTOList;
     }
 
     public DescontoDTO cadastrarAtualizarDesconto(DescontoDTO descontoDTO){
