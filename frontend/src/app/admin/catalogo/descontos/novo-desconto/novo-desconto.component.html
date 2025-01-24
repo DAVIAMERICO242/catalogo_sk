@@ -9,7 +9,7 @@
         <div class="flex item-center gap-4 mb-7">
             <div>
                 <div class="text-xs mb-1 font-bold">Tipo:</div>
-                <p-select [(ngModel)]="this.focusedTipo" (onChange)="this.manageTipoChange()" styleClass="!w-[300px]" [options]="this.descontoTipos" optionLabel="beauty_name"/>
+                <p-select [(ngModel)]="this.focusedTipo" (onChange)="this.manageTipoChange()" styleClass="!w-[300px] !text-sm !h-[40px] flex items-center" [options]="this.descontoTipos" optionLabel="beauty_name"/>
             </div>
         </div>
         <div class = "mb-7">

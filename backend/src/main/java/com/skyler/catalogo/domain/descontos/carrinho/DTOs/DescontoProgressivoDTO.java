@@ -2,18 +2,19 @@ package com.skyler.catalogo.domain.descontos.carrinho.DTOs;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class DescontoProgressivoDTO implements DelimitedExcludedInterface {
     String systemId;
-    List<String> delimitedCategorias;
-    List<String> excludedCategorias;
-    List<String> delimitedLinhas;
-    List<String> excludedLinhas;
-    List<String> delimitedGrupos;
-    List<String> excludedGrupos;
-    List<IntervalDescontoDTO> intervalos;
+    List<String> delimitedCategorias = new ArrayList<>();
+    List<String> excludedCategorias = new ArrayList<>();
+    List<String> delimitedLinhas = new ArrayList<>();
+    List<String> excludedLinhas = new ArrayList<>();
+    List<String> delimitedGrupos = new ArrayList<>();
+    List<String> excludedGrupos = new ArrayList<>();
+    List<IntervalDescontoDTO> intervalos = new ArrayList<>();
 
     public void addIntervalo(IntervalDescontoDTO intervalDescontoDTO){
         this.intervalos.add(intervalDescontoDTO);

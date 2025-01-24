@@ -49,7 +49,6 @@ export class NovoDescontoComponent implements OnInit {
           slug:contextualLoja?.slug,
           systemId:contextualLoja?.systemId
         },
-        nome: '',
         isActive: true,
         expiresAt: new Date(),
       };
