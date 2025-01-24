@@ -135,14 +135,14 @@ public class DescontoService {
         Desconto entity = this.getUseCaseEntity(descontoDTO.getSystemId());
         this.arrumarEssencial(entity,descontoDTO);
         DescontoMenorValor descontoMenorValor = new DescontoMenorValor();
-        if(entity.getDescontoMaiorValor()!=null){
+        if(entity.getDescontoMenorValor()!=null){
             descontoMenorValor = entity.getDescontoMenorValor();
         }
         descontoMenorValor.setDesconto(entity);
-        descontoMenorValor.setLowerQuantityLimitToApply(descontoDTO.getDescontoMaiorValor().getLowerQuantityLimitToApply());
-        descontoMenorValor.setPercentDecimalDiscount(descontoDTO.getDescontoMaiorValor().getPercentDecimalDiscount());
+        descontoMenorValor.setLowerQuantityLimitToApply(descontoDTO.getDescontoMenorValor().getLowerQuantityLimitToApply());
+        descontoMenorValor.setPercentDecimalDiscount(descontoDTO.getDescontoMenorValor().getPercentDecimalDiscount());
         entity.setDescontoMenorValor(descontoMenorValor);
-        this.arrumarTermos(descontoDTO.getDescontoMaiorValor(),entity);
+        this.arrumarTermos(descontoDTO.getDescontoMenorValor(),entity);
         this.descontoRepository.save(entity);
         DescontoMenorValorDTO descontoMenorValorDTO = descontoDTO.getDescontoMenorValor();
         descontoMenorValorDTO.setSystemId(descontoMenorValor.getSystemId());
