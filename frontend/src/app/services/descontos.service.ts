@@ -4,42 +4,90 @@ import { env } from '../../env';
 
 export namespace Desconto{
   export interface DescontoModel{
-    systemId:string;
-    loja:Loja;
-    discountName:string;
-    descriptionDelimitation?:string,
-    isActive:boolean,
+    systemId:string,
+    nome:string,
+    tipo:DescontoTipo,
     expiresAt:Date,
-    cartRequiredQuantity:number,
-    totalCartValueDiscount?:number,
-    totalCartDecimalPercentDiscount?:number,
-    cheapestItemValueDiscount?:number,
-    cheapestItemDecimalPercentDiscount?:number,
-    expensiveItemValueDiscount?:number,
-    expensiveItemDecimalPercentDiscount?:number,
-    bonusOutOfCartCatalogProduct?:Produto,
-    shippingValueDiscount?:number,
-    shippingDecimalPercentDiscount?:number
+    isActive:boolean,
+    loja:LojaModel,
+    descontoFrete:DescontoFreteModel,
+    descontoSimples:DescontoSimplesProdutoModel,
+    descontoSimplesTermo:DescontoSimplesTermoModel,
+    descontoMaiorValor:DescontoMaiorValorModel,
+    descontoMenorValor:DescontoMenorValorModel,
+    descontoProgressivo:DescontoProgressivoModel
+
+  }
+  export interface DescontoFreteModel{
+    systemId:string;
+    lowerValueLimitToApply:number;
+    percentDecimalDiscount:number;
+  }
+  export interface DescontoSimplesTermoModel extends DelimitedExcludedModel{
+    systemId:string,
+    percentDecimalDiscount:string
+  }
+  export interface DescontoSimplesProdutoModel{
+    systemId:string,
+    produto:ProdutoModel,
+    percentDecimalDiscount:number
+  }
+  interface ProdutoModel{
+    systemId:string,
+    nome:string,
+    baseValue:number,
+    catalogValue:number
+  }
+  export interface DescontoProgressivoModel extends DelimitedExcludedModel{
+    systemId:string,
+    intervalos:IntervaloModel[]
+  }
+  interface IntervaloModel{
+    minQuantity:number,
+    percentDecimalDiscount:number
+  }
+  export interface DescontoMenorValorModel extends DelimitedExcludedModel{
+    systemId:string,
+    lowerQuantityLimitToApply:number,
+    percentDecimalDiscount:number
+  }
+  export interface DescontoMaiorValorModel extends DelimitedExcludedModel{
+    systemId:string,
+    lowerQuantityLimitToApply:number,
+    percentDecimalDiscount:number
+  }
+  export interface DescontoGenericoCarrinhoModel{
+    systemId:string,
+    minValue:number,
+    percentDecimalDiscount:number
   }
 
-  export interface Loja{
-    nome:string,
+  interface DelimitedExcludedModel{
+    delimitedCategorias:string[],
+    excludedCategorias:string[],
+    delimitedLinhas:string[],
+    excludedLinhas:string[],
+    delimitedGrupos:string[],
+    excludedGrupos:string[]
+  }
+
+  interface LojaModel{
     systemId:string,
+    nome:string,
     slug:string
   }
 
-  export interface Produto{
-    nome:string,
-    sku:string,
-    systemId:string
-  }
-  export enum DescontoTipo{//so existe no frontend
-    DESCONTO_TOTAL_CARRINHO="DESCONTO_TOTAL_CARRINHO",
+  export enum DescontoTipo{
+    DESCONTO_FRETE="DESCONTO_FRETE",
+    DESCONTO_GENERICO_CARRINHO="DESCONTO_GENERICO_CARRINHO",
+    DESCONTO_SIMPLES_PRODUTO="DESCONTO_SIMPLES_PRODUTO",
+    DESCONTO_SIMPLES_TERMO="DESCONTO_SIMPLES_TERMO",
     DESCONTO_PECA_MAIOR_VALOR="DESCONTO_PECA_MAIOR_VALOR",
     DESCONTO_PECA_MENOR_VALOR="DESCONTO_PECA_MENOR_VALOR",
-    DESCONTO_TERMO="DESCONTO_TERMO",
-    COMPRE_X_GANHE_1="COMPRE_X_GANHE_1"
+    DESCONTO_PROGRESSIVO="DESCONTO_PROGRESSIVO"
   }
+
+
 }
 @Injectable({
   providedIn: 'root'
@@ -48,11 +96,5 @@ export class DescontosService {
 
   constructor(private http:HttpClient) {}
 
-  atualizarCadastrarNivelLoja(payload:Desconto.DescontoModel){
-    return this.http.post<Desconto.DescontoModel>(env.BACKEND_URL+"/desconto/nivel-loja",payload);
-  }
 
-  getAllNivelLoja(lojaSystemId:string){
-    return this.http.get<Desconto.DescontoModel[]>(env.BACKEND_URL+"/desconto/nivel-loja" + "?lojaId="+lojaSystemId);
-  }
 }
