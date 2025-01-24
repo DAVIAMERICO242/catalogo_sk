@@ -84,6 +84,28 @@ export class DescontoProgressivoFormComponent implements OnInit,DescontoForm {
         return false;
       }
     }
+    const distribuicao = this.payload.descontoProgressivo?.intervalos;
+    if(distribuicao){
+      for(let i=0;i<distribuicao.length;i++){
+        if(i>0){
+          const previousQuantity = distribuicao[i-1].minQuantity;
+          const previousDiscount = distribuicao[i-1].percentDecimalDiscount;
+          if(distribuicao[i].minQuantity<=previousQuantity || distribuicao[i].percentDecimalDiscount<=previousDiscount){
+            this.message.add({
+              severity:"error",
+              summary:"Há valores posteriores MENORES OU IGUAIS que anteriores"
+            })
+            return false;
+          }
+        }
+      }
+    }
+    if(!distribuicao?.length){
+      this.message.add({
+        severity:"error",
+        summary:"Nenhuma intervalo encontrado"
+      })
+    }
     return true;
   }
   save(): void {
