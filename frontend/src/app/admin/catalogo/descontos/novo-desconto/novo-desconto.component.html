@@ -11,39 +11,39 @@
         <div class="w-full h-[1px] bg-slate-300 mb-5">
 
         </div>
+        <div class="flex item-center gap-4 mb-7">
+            <div>
+                <div class="text-xs mb-1">Tipo:</div>
+                <p-select [(ngModel)]="this.focusedTipo" (onChange)="this.manageTipoChange()" styleClass="!w-[300px]" [options]="this.descontoTipos" optionLabel="beauty_name"/>
+            </div>
+        </div>
+        <div class = "mb-7">
+            <div class="text-xs mb-1">Nome desconto:</div>
+            <input [(ngModel)]="this.payload.nome" pInputText/>
+        </div>
+        <div class="font-semibold">Regras de aplicação:</div>
         <div class="flex flex-wrap">
-            <div class="flex item-center gap-4 mb-7">
-                <div>
-                    <div class="text-xs mb-1">Tipo:</div>
-                    <p-select [(ngModel)]="this.focusedTipo" (onChange)="this.manageTipoChange()" styleClass="!w-[300px]" [options]="this.descontoTipos" optionLabel="beauty_name"/>
-                </div>
+            <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_FRETE">
+                <app-desconto-frete-form/>
             </div>
-            <div class = "mb-7">
-                <div class="text-xs mb-1">Nome desconto:</div>
-                <input [(ngModel)]="this.payload.discountName" pInputText/>
+            <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_GENERICO_CARRINHO">
+                <app-desconto-generico-carrinho-form/>
             </div>
-            <div *ngIf="focusedTipo.pure_name=='DESCONTO_TOTAL_CARRINHO'">
-                <div class="mb-7">
-                    <div class="text-xs mb-1">Termo produto:</div>
-                    <input [(ngModel)]="this.payload.descriptionDelimitation" pInputText/>
-                </div>
-                <div class="flex item-center gap-4 mb-7">
-                    <div>
-                        <div class="text-xs mb-1">Desconto valor:</div>
-                        <p-input-number mode="currency" currency="BRL" [(ngModel)]="this.payload.totalCartValueDiscount" styleClass="!w-[300px]" [min]="0"  [showButtons]="true"/>
-                    </div>
-                    <div>
-                        <div class="text-xs mb-1 text-nowrap">Desconto percentual no carrinho:</div>
-                        <p-input-number  [(ngModel)]="totalCartDecimalPercentDiscountView" prefix="%" [min]="0" [max]="100" [showButtons]="true"/>
-                    </div>
-                </div>
-                <div class="flex item-center gap-4">
-                    <div>
-                        <div class="text-xs mb-1">Quantidade mínima de produtos no carrinho:</div>
-                        <p-input-number class="!w-[270px]" [(ngModel)]="this.payload.cartRequiredQuantity" [min]="1" [showButtons]="true"/>
-                    </div>
-                </div>
+            <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_SIMPLES_PRODUTO">
+                <app-desconto-simples-produto-form/>
             </div>
+            <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_SIMPLES_TERMO">
+                <app-desconto-simples-termo-form/>
+            </div>
+            <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_PECA_MAIOR_VALOR">
+                <app-desconto-maior-valor-form/>
+            </div>
+            <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_PECA_MENOR_VALOR">
+                <app-desconto-menor-valor-form/>
+            </div>
+            <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_PROGRESSIVO">
+                <app-desconto-progressivo-form/>
+            </div> 
         </div>
     </div>
 </p-drawer >

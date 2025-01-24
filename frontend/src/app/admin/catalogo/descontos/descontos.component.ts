@@ -29,20 +29,26 @@ export class DescontosComponent implements OnInit {
       const pure_name  = key;
       let beauty_name = "";
       switch (pure_name){
-        case Desconto.DescontoTipo.DESCONTO_TOTAL_CARRINHO:
-          beauty_name = "Desconto total carrinho"
+        case Desconto.DescontoTipo.DESCONTO_FRETE:
+          beauty_name = "Desconto frete"
           break;
-        case Desconto.DescontoTipo.DESCONTO_TERMO:
-          beauty_name = "Desconto baseado no termo do produto"
+        case Desconto.DescontoTipo.DESCONTO_GENERICO_CARRINHO:
+          beauty_name = "Desconto carrinho a partir de um valor X"
+          break;
+        case Desconto.DescontoTipo.DESCONTO_SIMPLES_PRODUTO:
+          beauty_name = "Desconto simples produto"
+          break;
+        case Desconto.DescontoTipo.DESCONTO_SIMPLES_TERMO:
+          beauty_name = "Desconto em uma categoria, linha, grupo de produto"
           break;
         case Desconto.DescontoTipo.DESCONTO_PECA_MAIOR_VALOR:
-          beauty_name = "Desconto peça maior valor"
+          beauty_name = "Desconto peça de maior valor no carrinho"
           break;
         case Desconto.DescontoTipo.DESCONTO_PECA_MENOR_VALOR:
-          beauty_name = "Desconto peça menor valor"
+          beauty_name = "Desconto peça de menor valor no carrinho"
           break;
-        case Desconto.DescontoTipo.COMPRE_X_GANHE_1:
-          beauty_name = "Compre X e ganhe uma peça de presente"
+        case Desconto.DescontoTipo.DESCONTO_PROGRESSIVO:
+          beauty_name = "Desconto progressivo"
           break;
       }
       this.descontosTipos.push({
@@ -57,7 +63,7 @@ export class DescontosComponent implements OnInit {
     const lojaId = this.auth.getContext()?.loja.systemId;
     if(lojaId){
       this.loadingDescontos = true;
-      this.descontoService.getAllNivelLoja(lojaId).subscribe({
+      this.descontoService.getDescontos(lojaId).subscribe({
         next:(data)=>{
           this.descontos = data;
           this.loadingDescontos = false;

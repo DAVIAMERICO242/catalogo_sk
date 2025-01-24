@@ -5,10 +5,17 @@ import { DescontosBeautyNomes } from '../descontos.component';
 import { UserService } from '../../../../services/user.service';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DescontoFreteFormComponent } from "../desconto-frete-form/desconto-frete-form.component";
+import { DescontoGenericoCarrinhoFormComponent } from "../desconto-generico-carrinho-form/desconto-generico-carrinho-form.component";
+import { DescontoSimplesProdutoFormComponent } from "../desconto-simples-produto-form/desconto-simples-produto-form.component";
+import { DescontoSimplesTermoFormComponent } from "../desconto-simples-termo-form/desconto-simples-termo-form.component";
+import { DescontoMaiorValorFormComponent } from "../desconto-maior-valor-form/desconto-maior-valor-form.component";
+import { DescontoMenorValorFormComponent } from "../desconto-menor-valor-form/desconto-menor-valor-form.component";
+import { DescontoProgressivoFormComponent } from "../desconto-progressivo-form/desconto-progressivo-form.component";
 
 @Component({
   selector: 'app-novo-desconto',
-  imports: [SharedModule],
+  imports: [SharedModule, DescontoFreteFormComponent, DescontoGenericoCarrinhoFormComponent, DescontoSimplesProdutoFormComponent, DescontoSimplesTermoFormComponent, DescontoMaiorValorFormComponent, DescontoMenorValorFormComponent, DescontoProgressivoFormComponent],
   templateUrl: './novo-desconto.component.html'
 })
 export class NovoDescontoComponent implements OnInit {
@@ -18,6 +25,8 @@ export class NovoDescontoComponent implements OnInit {
   payload!:Desconto.DescontoModel;
   focusedTipo!:DescontosBeautyNomes;
   loadingSave = false;
+
+  DescontoTipoEnum = Desconto.DescontoTipo;
 
   constructor(private auth:UserService,private message:MessageService,private descontoService:DescontosService) {
     
@@ -30,64 +39,73 @@ export class NovoDescontoComponent implements OnInit {
 
   definePayLoadModel(){
     const contextualLoja = this.auth.getContext()?.loja;
-    const loja:Desconto.Loja = {
-      nome:contextualLoja?.nome as string,
-      slug:contextualLoja?.slug  as string,
-      systemId:contextualLoja?.systemId  as string
+    if(contextualLoja){
+      this.payload = {
+        ...this.payload,
+        systemId: '',
+        loja: {
+          nome:contextualLoja?.nome,
+          slug:contextualLoja?.slug,
+          systemId:contextualLoja?.systemId
+        },
+        nome: '',
+        isActive: true,
+        expiresAt: new Date(),
+      };
     }
-    this.payload = {
-      systemId: '',
-      loja: loja,
-      discountName: '',
-      descriptionDelimitation: '',
-      isActive: true,
-      expiresAt: new Date(),
-      cartRequiredQuantity: 1,
-      totalCartValueDiscount:0
-    };
   }
 
   manageTipoChange(){
     this.definePayLoadModel();
   }
 
-  get totalCartDecimalPercentDiscountView(): number {
-    if(this.payload.totalCartDecimalPercentDiscount){
-      return this.payload.totalCartDecimalPercentDiscount*100;
-    }else{
-      return 0;
-    }
-  }
+  // get totalCartDecimalPercentDiscountView(): number {
+  //   if(this.payload.totalCartDecimalPercentDiscount){
+  //     return this.payload.totalCartDecimalPercentDiscount*100;
+  //   }else{
+  //     return 0;
+  //   }
+  // }
 
-  set totalCartDecimalPercentDiscountView(val:number){
-    this.payload.totalCartDecimalPercentDiscount = val / 100;
-  }
+  // set totalCartDecimalPercentDiscountView(val:number){
+  //   this.payload.totalCartDecimalPercentDiscount = val / 100;
+  // }
 
-  testar(){
-    alert(this.payload.totalCartDecimalPercentDiscount);
-  }
+  // testar(){
+  //   alert(this.payload.totalCartDecimalPercentDiscount);
+  // }
 
-  submit(){
-    if(!this.payload.discountName){
+  submit(){//o resto é validado no componente relativo ao tipo de desconto
+    if(!this.payload.nome){
       this.message.add({
         severity:"error",
         summary:"O desconto precisa de um nome"
       })
       return;
     }
-    switch(this.focusedTipo.pure_name){
-        case Desconto.DescontoTipo.DESCONTO_TOTAL_CARRINHO:
-          if(!this.payload.totalCartValueDiscount && !this.payload.totalCartDecimalPercentDiscount){
-            this.message.add({
-              severity:"error",
-              summary:"O valor do desconto é 0"
-            })
-            return;
-          }
-
+    if(!this.payload.tipo){
+      this.message.add({
+        severity:"error",
+        summary:"Tipo inválido"
+      })
+      return;
+    }
+    if(!this.payload.loja){
+      this.message.add({
+        severity:"error",
+        summary:"Loja inválida"
+      })
+      return;
+    }
+    if(!this.payload.expiresAt){
+      this.message.add({
+        severity:"error",
+        summary:"Data de expiração não informada"
+      })
+      return;
     }
     this.loadingSave = true;
-    this.descontoService.atualizarCadastrarNivelLoja(this.payload).subscribe({
+    this.descontoService.atualizarCadastrarDesconto(this.payload).subscribe({
       next:()=>{
         this.loadingSave = false;
         this.message.add({
@@ -104,7 +122,8 @@ export class NovoDescontoComponent implements OnInit {
         })
       }
     })
-
   }
+
+
 
 }

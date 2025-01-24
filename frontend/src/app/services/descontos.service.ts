@@ -10,13 +10,12 @@ export namespace Desconto{
     expiresAt:Date,
     isActive:boolean,
     loja:LojaModel,
-    descontoFrete:DescontoFreteModel,
-    descontoSimples:DescontoSimplesProdutoModel,
-    descontoSimplesTermo:DescontoSimplesTermoModel,
-    descontoMaiorValor:DescontoMaiorValorModel,
-    descontoMenorValor:DescontoMenorValorModel,
-    descontoProgressivo:DescontoProgressivoModel
-
+    descontoFrete?:DescontoFreteModel,
+    descontoSimples?:DescontoSimplesProdutoModel,
+    descontoSimplesTermo?:DescontoSimplesTermoModel,
+    descontoMaiorValor?:DescontoMaiorValorModel,
+    descontoMenorValor?:DescontoMenorValorModel,
+    descontoProgressivo?:DescontoProgressivoModel
   }
   export interface DescontoFreteModel{
     systemId:string;
@@ -94,7 +93,15 @@ export namespace Desconto{
 })
 export class DescontosService {
 
-  constructor(private http:HttpClient) {}
+  constructor(private http:HttpClient){}
+
+  atualizarCadastrarDesconto(payload:Desconto.DescontoModel){
+    return this.http.post<Desconto.DescontoModel>(env.BACKEND_URL+"/desconto",payload);
+  }
+
+  getDescontos(lojaId:string){
+    return this.http.get<Desconto.DescontoModel[]>(env.BACKEND_URL+"/descontos?lojaId="+lojaId);
+  }
 
 
 }

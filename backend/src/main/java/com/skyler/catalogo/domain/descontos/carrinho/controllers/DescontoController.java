@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/desconto")
+@RequestMapping("/descontos")
 public class DescontoController {
 
     private final DescontoService descontoService;
@@ -17,7 +17,7 @@ public class DescontoController {
 
 
     @GetMapping
-    public ResponseEntity getDescontos(String lojaId){
+    public ResponseEntity getDescontos(@RequestParam String lojaId){
         try{
             return ResponseEntity.ok().body(this.descontoService.getDescontosForLoja(lojaId));
         }catch (Exception e){
