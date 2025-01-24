@@ -1,1 +1,77 @@
-<p>desconto-menor-valor-form works!</p>
+<div class="space-y-4 mb-5 mt-5" *ngIf="this.payload.descontoMenorValor">
+    <div>
+        <div  class="text-sm text-black mb-3">
+            Quantidade mínimo de produtos no carrinho:
+        </div>
+        <div class="mb-3">
+            <div class="text-xs text-gray-400">
+                Quantidade
+            </div>
+            <p-input-number [(ngModel)]="this.payload.descontoMenorValor.lowerQuantityLimitToApply" [min]="2" [showButtons]="true"/>
+        </div>
+        <div  class="text-sm text-black mb-3">
+            Aplicar promoção para:
+        </div>
+        <div class="flex items-center gap-3">
+            <div>
+                <div class="text-xs text-gray-400">
+                    Categoria
+                </div>
+                <p-multi-select [options]="this.termos.categorias" [(ngModel)]="this.payload.descontoMenorValor.delimitedCategorias" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+            <div>
+                <div class="text-xs text-gray-400">
+                    Linha
+                </div>
+                <p-multi-select [options]="this.termos.linhas" [(ngModel)]="this.payload.descontoMenorValor.delimitedLinhas" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+            <div>
+                <div class="text-xs text-gray-400">
+                    Grupo
+                </div>
+                <p-multi-select [options]="this.termos.grupos" [(ngModel)]="this.payload.descontoMenorValor.delimitedGrupos" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div  class="text-sm text-black mb-3">
+            Excluir promoção para:
+        </div>
+        <div class="flex items-center gap-3">
+            <div>
+                <div class="text-xs text-gray-400">
+                    Categoria
+                </div>
+                <p-multi-select [options]="this.termos.categorias" [(ngModel)]="this.payload.descontoMenorValor.excludedCategorias" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+            <div>
+                <div class="text-xs text-gray-400">
+                    Linha
+                </div>
+                <p-multi-select [options]="this.termos.linhas" [(ngModel)]="this.payload.descontoMenorValor.excludedLinhas" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+            <div>
+                <div class="text-xs text-gray-400">
+                    Grupo
+                </div>
+                <p-multi-select [options]="this.termos.grupos" [(ngModel)]="this.payload.descontoMenorValor.excludedGrupos" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div  class="text-sm text-black">
+            Desconto (%):
+        </div>
+    </div>
+    <div>
+        <div  class="text-xs text-gray-400">
+            Desconto (%)
+        </div>
+        <p-input-number class="!w-full" [showButtons]="true"  prefix="%" [(ngModel)]="desconto" [min]="0" [max]="100"/>
+    </div>
+</div>
+<div class="flex justify-end mb-5">
+    <button [loading]="this.loading" (click)="this.save()" class="!bg-black !text-sm w-full" pButton>
+        Salvar desconto
+    </button>
+</div>
