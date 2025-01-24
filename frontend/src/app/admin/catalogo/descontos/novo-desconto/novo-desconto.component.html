@@ -37,7 +37,7 @@
                 <app-desconto-menor-valor-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_PROGRESSIVO">
-                <app-desconto-progressivo-form/>
+                <app-desconto-progressivo-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div> 
         </div>
     </div>

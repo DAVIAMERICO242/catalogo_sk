@@ -1,0 +1,20 @@
+<button (click)="this.open=true" class="!text-sm w-full p-1 border-[1px] !bg-white !border-solid !border-slate-300 !shadow-sm !text-black rounded-lg" pButton>
+    Configurar desconto progressivo
+</button>
+<p-dialog (onHide)="this.propagarOnClose()" appendTo="body" [modal]="true" header="Distruibuição" styleClass="!w-[600px]" [(visible)]="open">
+    <div *ngFor="let item of this.distribuicao;let i = index">
+        <div class="mb-5 flex items-center gap-3">
+            <div >
+                <div class="text-xs font-bold">Quantidade carrinho</div>
+                <p-input-number [min]="getMinQuantityForIndex(i)" [(ngModel)]="item.minQuantity" [showButtons]="true" [min]="0"/>
+            </div>
+            <div >
+                <div class="text-xs font-bold">Desconto</div>
+                <p-input-number [ngModel]="this.round(item.percentDecimalDiscount*100)" (ngModelChange)="this.updatePorcentagem(i,$event)" [showButtons]="true" prefix="%" [min]="0"/>
+            </div>
+        </div>
+    </div>
+    <button (click)="this.validarEFechar()" class="w-full !bg-black" pButton>
+        Salvar
+    </button>
+</p-dialog>

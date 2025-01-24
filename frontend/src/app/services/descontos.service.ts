@@ -42,7 +42,7 @@ export namespace Desconto{
     systemId:string,
     intervalos:IntervaloModel[]
   }
-  interface IntervaloModel{
+  export interface IntervaloModel{
     minQuantity:number,
     percentDecimalDiscount:number
   }
