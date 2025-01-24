@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.skyler.catalogo.domain.catalogo.ProdutoCatalogo;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name="discounts_simples")
+@EqualsAndHashCode(of = "systemId")
 public class DescontoSimplesProduto {
     @Id
     private String systemId = UUID.randomUUID().toString();

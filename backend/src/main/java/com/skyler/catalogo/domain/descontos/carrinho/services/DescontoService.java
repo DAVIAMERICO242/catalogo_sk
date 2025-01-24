@@ -121,6 +121,8 @@ public class DescontoService {
             descontoProgressivoIntervalos.setMinQuantity(interval.getMinQuantity());
             descontoProgressivoIntervalos.setPercentDecimalDiscount(interval.getPercentDecimalDiscount());
             descontoProgressivoIntervalos.setDescontoProgressivo(descontoProgressivo);
+            descontoProgressivoIntervalos.setDescontoProgressivo(descontoProgressivo);
+            descontoProgressivo.addInterval(descontoProgressivoIntervalos);
         }
         entity.setDescontoProgressivo(descontoProgressivo);
         this.arrumarTermos(descontoDTO.getDescontoProgressivo(),entity);

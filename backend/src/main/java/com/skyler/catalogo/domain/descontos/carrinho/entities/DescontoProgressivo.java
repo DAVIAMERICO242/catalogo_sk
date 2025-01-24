@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.context.annotation.Lazy;
 
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name="discounts_progressive")
+@EqualsAndHashCode(of = "systemId")
 public class DescontoProgressivo {
     @Id
     private String systemId = UUID.randomUUID().toString();
