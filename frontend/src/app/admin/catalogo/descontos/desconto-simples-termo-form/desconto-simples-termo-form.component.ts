@@ -19,7 +19,11 @@ export class DescontoSimplesTermoFormComponent implements OnInit,DescontoForm {
   @Output()
   onSave: EventEmitter<Desconto.DescontoModel> = new EventEmitter<Desconto.DescontoModel>();
   loadingTermos = false;
-  termos!:Produto.Termos;
+  termos:Produto.Termos = {
+    categorias:[],
+    grupos:[],
+    linhas:[]
+  };
   constructor(private message:MessageService,private produtoService:ProdutosService,private auth:UserService){}
 
   ngOnInit(): void {
