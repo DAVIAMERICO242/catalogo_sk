@@ -29,21 +29,52 @@ public class DescontoService {
         if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_FRETE)){
             return this.cadastrarAtualizarDescontoFrete(descontoDTO);
         }
-        if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_GENERICO_CARRINHO)){
+        else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_GENERICO_CARRINHO)){
             return this.cadastrarAtualizarDescontoGenericoCarrinho(descontoDTO);
         }
-        if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_SIMPLES_PRODUTO)){
+        else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_SIMPLES_PRODUTO)){
             return this.cadastrarAtualizarDescontoSimplesProduto(descontoDTO);
         }
-        if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_SIMPLES_TERMO)){
+        else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_SIMPLES_TERMO)){
             return this.cadastrarAtualizarDescontoSimplesTermo(descontoDTO);
         }
-        if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_PECA_MAIOR_VALOR)){
+        else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_PECA_MAIOR_VALOR)){
             return this.cadastrarAtualizarDescontoMaiorValor(descontoDTO);
         }
-        if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_PECA_MENOR_VALOR)){
+        else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_PECA_MENOR_VALOR)){
             return this.cadastrarAtualizarDescontoMenorValor(descontoDTO);
         }
+        else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_PROGRESSIVO)){
+            return this.cadastrarAtualizarDescontoProgressivo(descontoDTO);
+        }
+        return null;
+    }
+
+    public DescontoDTO cadastrarAtualizarDescontoProgressivo(DescontoDTO descontoDTO){
+        Desconto entity = this.getUseCaseEntity(descontoDTO.getSystemId());
+        entity.setDescontoTipo(descontoDTO.getTipo());
+        entity.setDiscountName(descontoDTO.getNome());
+        entity.setIsActive(descontoDTO.getIsActive());
+        entity.setExpiresAt(descontoDTO.getExpiresAt());
+        DescontoProgressivo descontoProgressivo = new DescontoProgressivo();
+        if(entity.getDescontoProgressivo()!=null){
+            descontoProgressivo = entity.getDescontoProgressivo();
+        }
+        descontoProgressivo.setDesconto(entity);
+        descontoProgressivo.getIntervalos().clear();
+        for(IntervalDescontoDTO interval:descontoDTO.getDescontoProgressivo().getIntervalos()){
+            DescontoProgressivoIntervalos descontoProgressivoIntervalos = new DescontoProgressivoIntervalos();
+            descontoProgressivoIntervalos.setMinQuantity(interval.getMinQuantity());
+            descontoProgressivoIntervalos.setPercentDecimalDiscount(interval.getPercentDecimalDiscount());
+            descontoProgressivoIntervalos.setDescontoProgressivo(descontoProgressivo);
+        }
+        entity.setDescontoProgressivo(descontoProgressivo);
+        this.arrumarTermos(descontoDTO.getDescontoProgressivo(),entity);
+        this.descontoRepository.save(entity);
+        DescontoProgressivoDTO descontoProgressivoDTO = descontoDTO.getDescontoProgressivo();
+        descontoProgressivoDTO.setSystemId(descontoProgressivo.getSystemId());
+        descontoDTO.setDescontoProgressivo(descontoProgressivoDTO);
+        return descontoDTO;
     }
 
     public DescontoDTO cadastrarAtualizarDescontoMenorValor(DescontoDTO descontoDTO){
@@ -56,6 +87,7 @@ public class DescontoService {
         if(entity.getDescontoMaiorValor()!=null){
             descontoMenorValor = entity.getDescontoMenorValor();
         }
+        descontoMenorValor.setDesconto(entity);
         descontoMenorValor.setLowerQuantityLimitToApply(descontoDTO.getDescontoMaiorValor().getLowerQuantityLimitToApply());
         descontoMenorValor.setPercentDecimalDiscount(descontoDTO.getDescontoMaiorValor().getPercentDecimalDiscount());
         entity.setDescontoMenorValor(descontoMenorValor);
@@ -77,6 +109,7 @@ public class DescontoService {
         if(entity.getDescontoMaiorValor()!=null){
             descontoMaiorValor = entity.getDescontoMaiorValor();
         }
+        descontoMaiorValor.setDesconto(entity);
         descontoMaiorValor.setLowerQuantityLimitToApply(descontoDTO.getDescontoMaiorValor().getLowerQuantityLimitToApply());
         descontoMaiorValor.setPercentDecimalDiscount(descontoDTO.getDescontoMaiorValor().getPercentDecimalDiscount());
         entity.setDescontoMaiorValor(descontoMaiorValor);
@@ -98,6 +131,7 @@ public class DescontoService {
         if(entity.getDescontoSimplesTermo()!=null){
             descontoSimplesTermo = entity.getDescontoSimplesTermo();
         }
+        descontoSimplesTermo.setDesconto(entity);
         descontoSimplesTermo.setPercentDecimalDiscount(descontoDTO.getDescontoSimplesTermo().getPercentDecimalDiscount());
         entity.setDescontoSimplesTermo(descontoSimplesTermo);
         this.arrumarTermos(descontoDTO.getDescontoSimplesTermo(),entity);
@@ -118,6 +152,7 @@ public class DescontoService {
         if(entity.getDescontoSimplesProduto()!=null){
             descontoSimplesProduto = entity.getDescontoSimplesProduto();
         }
+        descontoSimplesProduto.setDesconto(entity);
         descontoSimplesProduto.setPercentDecimalDiscount(descontoDTO.getDescontoFrete().getPercentDecimalDiscount());
         Optional<ProdutoCatalogo> produtoCatalogoOptional = this.produtoCatalogoRepository.findById(descontoDTO.getDescontoSimples().getProduto().getSystemId());
         if(produtoCatalogoOptional.isEmpty()){
@@ -149,6 +184,7 @@ public class DescontoService {
         if(entity.getDescontoGenericoCarrinho()!=null){
             descontoGenericoCarrinho = entity.getDescontoGenericoCarrinho();
         }
+        descontoGenericoCarrinho.setDesconto(entity);
         descontoGenericoCarrinho.setPercentDecimalDiscount(descontoDTO.getDescontoGenericoCarrinho().getPercentDecimalDiscount());
         descontoGenericoCarrinho.setMinValue(descontoDTO.getDescontoGenericoCarrinho().getMinValue());
         entity.setDescontoGenericoCarrinho(descontoGenericoCarrinho);
@@ -169,6 +205,7 @@ public class DescontoService {
         if(entity.getDescontoFrete()!=null){
             descontoFrete = entity.getDescontoFrete();
         }
+        descontoFrete.setDesconto(entity);
         descontoFrete.setPercentDecimalDiscount(descontoDTO.getDescontoFrete().getPercentDecimalDiscount());
         descontoFrete.setLowerValueLimitToApply(descontoDTO.getDescontoFrete().getLowerValueLimitToApply());
         entity.setDescontoFrete(descontoFrete);
