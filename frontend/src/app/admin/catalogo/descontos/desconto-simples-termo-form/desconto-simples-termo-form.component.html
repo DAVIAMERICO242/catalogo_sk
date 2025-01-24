@@ -1,1 +1,68 @@
-<p>desconto-simples-termo-form works!</p>
+<div class="space-y-4 mb-5 mt-5" *ngIf="this.payload.descontoSimplesTermo">
+    <div>
+        <div  class="text-sm text-black mb-3">
+            Aplicar promoção para:
+        </div>
+        <div class="flex items-center gap-3">
+            <div>
+                <div class="text-xs text-gray-400">
+                    Categoria
+                </div>
+                <p-multi-select [options]="this.termos.categorias" [(ngModel)]="this.payload.descontoSimplesTermo.delimitedCategorias" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+            <div>
+                <div class="text-xs text-gray-400">
+                    Linha
+                </div>
+                <p-multi-select [options]="this.termos.linhas" [(ngModel)]="this.payload.descontoSimplesTermo.delimitedLinhas" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+            <div>
+                <div class="text-xs text-gray-400">
+                    Grupo
+                </div>
+                <p-multi-select [options]="this.termos.grupos" [(ngModel)]="this.payload.descontoSimplesTermo.delimitedGrupos" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div  class="text-sm text-black mb-3">
+            Excluir promoção para:
+        </div>
+        <div class="flex items-center gap-3">
+            <div>
+                <div class="text-xs text-gray-400">
+                    Categoria
+                </div>
+                <p-multi-select [options]="this.termos.categorias" [(ngModel)]="this.payload.descontoSimplesTermo.excludedCategorias" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+            <div>
+                <div class="text-xs text-gray-400">
+                    Linha
+                </div>
+                <p-multi-select [options]="this.termos.linhas" [(ngModel)]="this.payload.descontoSimplesTermo.excludedLinhas" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+            <div>
+                <div class="text-xs text-gray-400">
+                    Grupo
+                </div>
+                <p-multi-select [options]="this.termos.grupos" [(ngModel)]="this.payload.descontoSimplesTermo.excludedGrupos" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div  class="text-sm text-black">
+            Desconto (%):
+        </div>
+    </div>
+    <div>
+        <div  class="text-xs text-gray-400">
+            Desconto (%)
+        </div>
+        <p-input-number class="!w-full" [showButtons]="true"  prefix="%" [(ngModel)]="desconto" [min]="0" [max]="100"/>
+    </div>
+</div>
+<div class="flex justify-end mb-5">
+    <button [loading]="this.loading" (click)="this.save()" class="!bg-black !text-sm w-full" pButton>
+        Salvar desconto
+    </button>
+</div>

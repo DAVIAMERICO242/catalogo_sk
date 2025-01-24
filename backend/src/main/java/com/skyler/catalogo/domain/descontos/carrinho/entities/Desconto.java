@@ -56,10 +56,10 @@ public class Desconto{
     private DescontoSimplesTermo descontoSimplesTermo;
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "desconto")
     @JsonManagedReference
-    private Set<DelimitedTermos> delimitedTermos;
+    private Set<DelimitedTermos> delimitedTermos = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "desconto")
     @JsonManagedReference
-    private Set<ExcludedTermos> excludedTermos;
+    private Set<ExcludedTermos> excludedTermos = new HashSet<>();
 
     public void addDelimitedTermo(DelimitedTermos termo){
         termo.setDesconto(this);

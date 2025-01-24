@@ -53,6 +53,11 @@ export namespace Produto{
     nome?:string,
     sku?:string
   }
+  export interface Termos{
+    categorias:string[],
+    linhas:string[],
+    grupos:string[]
+  }
 }
 @Injectable({
   providedIn: 'root'
@@ -105,6 +110,10 @@ export class ProdutosService {
   getStock(skus:string[],lojaSlug:string){
     const skusStr = skus.join(",");
     return this.http.get<Produto.ProdutoEstoque[]>(env.BACKEND_URL + "/produtos/estoque" + "?skusBase=" + skusStr + "&lojaSlug="+lojaSlug);
+  }
+
+  getTermos(franquiaId:string){
+    return this.http.get<Produto.Termos>(env.BACKEND_URL+"/produtos/termos?franquiaSystemId="+franquiaId)
   }
 
   changePageContext(page:number){

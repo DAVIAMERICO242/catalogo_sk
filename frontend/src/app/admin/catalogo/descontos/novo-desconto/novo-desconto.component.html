@@ -28,7 +28,7 @@
                 <app-desconto-simples-produto-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_SIMPLES_TERMO">
-                <app-desconto-simples-termo-form/>
+                <app-desconto-simples-termo-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_PECA_MAIOR_VALOR">
                 <app-desconto-maior-valor-form/>
@@ -41,4 +41,4 @@
             </div> 
         </div>
     </div>
-</p-drawer >
+</p-drawer>

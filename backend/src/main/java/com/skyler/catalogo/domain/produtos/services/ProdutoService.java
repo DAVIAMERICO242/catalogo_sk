@@ -7,10 +7,7 @@ import com.skyler.catalogo.domain.franquias.Franquia;
 import com.skyler.catalogo.domain.franquias.FranquiaRepository;
 import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
-import com.skyler.catalogo.domain.produtos.DTOs.AtributosDTO;
-import com.skyler.catalogo.domain.produtos.DTOs.ProdutoDTO;
-import com.skyler.catalogo.domain.produtos.DTOs.ProdutoEstoqueDTO;
-import com.skyler.catalogo.domain.produtos.DTOs.ProdutoVariacaoDTO;
+import com.skyler.catalogo.domain.produtos.DTOs.*;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
@@ -69,15 +66,16 @@ public class ProdutoService {
         return output;
     }
 
-    public List<String> getTermos(String franquiaSystemId){
-        List<String> output = new ArrayList<>();
+    public TermoDTO getTermos(String franquiaSystemId){
+        TermoDTO output = new TermoDTO();
         Optional<Franquia> franquiaOPT = this.franquiaRepository.findById(franquiaSystemId);
         if(franquiaOPT.isEmpty()){
             throw new RuntimeException("Franquia não encontrada");
         }
-        List<String> termos = this.produtoRepository.getTermos(franquiaOPT.get());
-        termos.sort(String::compareToIgnoreCase); // Ordena em ordem alfabética ignorando maiúsculas/minúsculas
-        return termos;
+        output.setCategorias(this.produtoRepository.getCategorias(franquiaOPT.get()));
+        output.setLinhas(this.produtoRepository.getLinhas(franquiaOPT.get()));
+        output.setGrupos(this.produtoRepository.getGrupos(franquiaOPT.get()));
+        return output;
     }
 
     public AtributosDTO getAtributos(String franquiaSystemId){

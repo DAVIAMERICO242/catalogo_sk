@@ -25,7 +25,7 @@ export namespace Desconto{
   }
   export interface DescontoSimplesTermoModel extends DelimitedExcludedModel{
     systemId:string,
-    percentDecimalDiscount:string
+    percentDecimalDiscount:number
   }
   export interface DescontoSimplesProdutoModel{
     systemId:string,
