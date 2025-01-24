@@ -27,24 +27,66 @@ public class DescontoService {
 
     public DescontoDTO cadastrarAtualizarDesconto(DescontoDTO descontoDTO){
         if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_FRETE)){
+            descontoDTO.setDescontoProgressivo(null);
+            descontoDTO.setDescontoMaiorValor(null);
+            descontoDTO.setDescontoMenorValor(null);
+            descontoDTO.setDescontoSimples(null);
+            descontoDTO.setDescontoSimplesTermo(null);
+            descontoDTO.setDescontoGenericoCarrinho(null);
             return this.cadastrarAtualizarDescontoFrete(descontoDTO);
         }
         else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_GENERICO_CARRINHO)){
+            descontoDTO.setDescontoProgressivo(null);
+            descontoDTO.setDescontoMaiorValor(null);
+            descontoDTO.setDescontoMenorValor(null);
+            descontoDTO.setDescontoSimples(null);
+            descontoDTO.setDescontoSimplesTermo(null);
+            descontoDTO.setDescontoFrete(null);
             return this.cadastrarAtualizarDescontoGenericoCarrinho(descontoDTO);
         }
         else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_SIMPLES_PRODUTO)){
+            descontoDTO.setDescontoProgressivo(null);
+            descontoDTO.setDescontoMaiorValor(null);
+            descontoDTO.setDescontoMenorValor(null);
+            descontoDTO.setDescontoSimplesTermo(null);
+            descontoDTO.setDescontoFrete(null);
+            descontoDTO.setDescontoGenericoCarrinho(null);
             return this.cadastrarAtualizarDescontoSimplesProduto(descontoDTO);
         }
         else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_SIMPLES_TERMO)){
+            descontoDTO.setDescontoProgressivo(null);
+            descontoDTO.setDescontoMaiorValor(null);
+            descontoDTO.setDescontoMenorValor(null);
+            descontoDTO.setDescontoSimples(null);
+            descontoDTO.setDescontoFrete(null);
+            descontoDTO.setDescontoGenericoCarrinho(null);
             return this.cadastrarAtualizarDescontoSimplesTermo(descontoDTO);
         }
         else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_PECA_MAIOR_VALOR)){
+            descontoDTO.setDescontoProgressivo(null);
+            descontoDTO.setDescontoSimplesTermo(null);
+            descontoDTO.setDescontoMenorValor(null);
+            descontoDTO.setDescontoSimples(null);
+            descontoDTO.setDescontoFrete(null);
+            descontoDTO.setDescontoGenericoCarrinho(null);
             return this.cadastrarAtualizarDescontoMaiorValor(descontoDTO);
         }
         else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_PECA_MENOR_VALOR)){
+            descontoDTO.setDescontoProgressivo(null);
+            descontoDTO.setDescontoSimplesTermo(null);
+            descontoDTO.setDescontoMaiorValor(null);
+            descontoDTO.setDescontoSimples(null);
+            descontoDTO.setDescontoFrete(null);
+            descontoDTO.setDescontoGenericoCarrinho(null);
             return this.cadastrarAtualizarDescontoMenorValor(descontoDTO);
         }
         else if(descontoDTO.getTipo().equals(DescontoTipo.DESCONTO_PROGRESSIVO)){
+            descontoDTO.setDescontoSimplesTermo(null);
+            descontoDTO.setDescontoMenorValor(null);
+            descontoDTO.setDescontoMaiorValor(null);
+            descontoDTO.setDescontoSimples(null);
+            descontoDTO.setDescontoFrete(null);
+            descontoDTO.setDescontoGenericoCarrinho(null);
             return this.cadastrarAtualizarDescontoProgressivo(descontoDTO);
         }
         return null;
