@@ -27,7 +27,6 @@ export class DescontoSimplesProdutoFormComponent implements OnInit,DescontoForm 
         percentDecimalDiscount:0,
         produto: {
           baseValue:0,
-          catalogValue:0,
           nome:"",
           systemId:""
         }
@@ -41,7 +40,6 @@ export class DescontoSimplesProdutoFormComponent implements OnInit,DescontoForm 
            systemId:e.systemId,
            baseValue:e.produtoBase.preco,
            nome:e.produtoBase.descricao,
-           catalogValue:e.valorCatalogo
        })
     })
   }

@@ -40,7 +40,6 @@ export namespace Desconto{
     systemId:string,
     nome:string,
     baseValue:number,
-    catalogValue:number
   }
   export interface DescontoProgressivoModel extends DelimitedExcludedModel{
     systemId:string,

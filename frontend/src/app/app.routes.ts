@@ -10,15 +10,15 @@ import { CatalogoComponent } from './catalogo/catalogo.component';
 export const routes: Routes = [
     {
         path:"",
-        component:CatalogoComponent
+        loadComponent:()=>import("./catalogo/catalogo.component").then((m)=>m.CatalogoComponent)
     },
     {
         path:"login",
-        component:LoginComponent
+        loadComponent:()=>import("./login/login.component").then(m=>m.LoginComponent)
     },
     {
         path:"admin",
-        component:AdminComponent,
+        loadComponent:()=>import("./admin/admin.component").then(m=>m.AdminComponent),
         canActivate:[AuthGuard],
         children:[
             {
@@ -28,14 +28,14 @@ export const routes: Routes = [
             },
             {
                 path:"produtos",
-                component:ProdutosComponent
+                loadComponent:()=>import("./admin/produtos/produtos.component").then(m=>m.ProdutosComponent)
             },
             {
                 path:"catalogo",
-                component:CatalogoAdmin
+                loadComponent:()=>import("./admin/catalogo/catalogo.component").then(m=>m.CatalogoComponent)
             },{
                 path:"pedidos",
-                component:PedidosComponent
+                loadComponent:()=>import("./admin/pedidos/pedidos.component").then(m=>m.PedidosComponent)
             }
         ]
     }
