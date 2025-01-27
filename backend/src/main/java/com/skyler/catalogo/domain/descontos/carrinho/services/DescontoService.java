@@ -216,7 +216,6 @@ public class DescontoService {
         ProdutoDescontoDTO produtoDescontoDTO = descontoSimplesDTO.getProduto();
         produtoDescontoDTO.setSystemId(produtoCatalogo.getSystemId());
         produtoDescontoDTO.setNome(produtoCatalogo.getProdutoBaseFranquia().getDescricao());
-        produtoDescontoDTO.setCatalogValue(produtoCatalogo.getCatalogPrice());
         produtoDescontoDTO.setBaseValue(produtoCatalogo.getProdutoBaseFranquia().getPreco());
         descontoSimplesDTO.setProduto(produtoDescontoDTO);
         descontoDTO.setDescontoSimples(descontoSimplesDTO);

@@ -25,5 +25,4 @@ public class ProdutoCatalogo {
     @JoinColumn(name="loja_system_id")
     @JsonBackReference
     private Loja loja;
-    private Float catalogPrice;//preço no catalogo, inclui promoções
 }

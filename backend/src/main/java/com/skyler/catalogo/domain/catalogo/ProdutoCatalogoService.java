@@ -29,15 +29,15 @@ public class ProdutoCatalogoService {
         this.lojaRepository = lojaRepository;
     }
 
-    public void changePrecoCatalogo(Float preco, String produtoCatalogoId){
-        Optional<ProdutoCatalogo> catalogo = this.produtoCatalogoRepository.findById(produtoCatalogoId);
-        if(catalogo.isEmpty()){
-            throw new RuntimeException("Produto não encontrado");
-        }
-        ProdutoCatalogo produtoCatalogo = catalogo.get();
-        produtoCatalogo.setCatalogPrice(preco);
-        this.produtoCatalogoRepository.save(produtoCatalogo);
-    }
+//    public void changePrecoCatalogo(Float preco, String produtoCatalogoId){
+//        Optional<ProdutoCatalogo> catalogo = this.produtoCatalogoRepository.findById(produtoCatalogoId);
+//        if(catalogo.isEmpty()){
+//            throw new RuntimeException("Produto não encontrado");
+//        }
+//        ProdutoCatalogo produtoCatalogo = catalogo.get();
+//        produtoCatalogo.setCatalogPrice(preco);
+//        this.produtoCatalogoRepository.save(produtoCatalogo);
+//    }
 
     @Transactional
     public ProdutoCatalogoDTO cadastrarProdutoCatalogo(ProdutoCadastroDTO payload){
@@ -64,7 +64,7 @@ public class ProdutoCatalogoService {
         ProdutoCatalogo produtoCatalogo = new ProdutoCatalogo();
         produtoCatalogo.setLoja(loja);
         produtoCatalogo.setProdutoBaseFranquia(produto);
-        produtoCatalogo.setCatalogPrice(produto.getPreco());
+//        produtoCatalogo.setCatalogPrice(produto.getPreco());
         return this.entityToDTO(this.produtoCatalogoRepository.save(produtoCatalogo));
     }
 
@@ -86,7 +86,6 @@ public class ProdutoCatalogoService {
         loja.setSystemId(catalogoEnt.getLoja().getSystemId());
         loja.setSlug(catalogoEnt.getLoja().getSlug());
         produtoCatalogo.setSystemId(catalogoEnt.getSystemId());
-        produtoCatalogo.setValorCatalogo(catalogoEnt.getCatalogPrice());
         produtoCatalogo.setProdutoBase(produto);
         produtoCatalogo.setLojaCatalogo(loja);
         return produtoCatalogo;

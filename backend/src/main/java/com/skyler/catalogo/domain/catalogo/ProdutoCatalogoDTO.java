@@ -8,7 +8,6 @@ public class ProdutoCatalogoDTO {
     String systemId;
     ProdutoDTO produtoBase;
     Loja lojaCatalogo;
-    Float valorCatalogo;
     @Data
     public static class Loja{
         String systemId;

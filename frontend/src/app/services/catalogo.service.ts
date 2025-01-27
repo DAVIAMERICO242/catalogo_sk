@@ -17,7 +17,6 @@ export namespace Catalogo{
     systemId:string,
     produtoBase:ProdutoModel.Produto,
     lojaCatalogo:Loja,
-    valorCatalogo:number
   }
   export interface Loja{
     systemId:string,

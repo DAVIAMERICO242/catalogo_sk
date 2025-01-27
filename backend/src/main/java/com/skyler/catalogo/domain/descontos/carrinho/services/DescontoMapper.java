@@ -95,7 +95,6 @@ public class DescontoMapper {
         produtoDescontoDTO.setSystemId(descontoSimplesProduto.getProdutoCatalogo().getSystemId());
         produtoDescontoDTO.setNome(descontoSimplesProduto.getProdutoCatalogo().getProdutoBaseFranquia().getDescricao());
         produtoDescontoDTO.setBaseValue(descontoSimplesProduto.getProdutoCatalogo().getProdutoBaseFranquia().getPreco());
-        produtoDescontoDTO.setCatalogValue(descontoSimplesProduto.getProdutoCatalogo().getCatalogPrice());
         descontoSimplesDTO.setProduto(produtoDescontoDTO);
         output.setDescontoSimples(descontoSimplesDTO);
         return output;
