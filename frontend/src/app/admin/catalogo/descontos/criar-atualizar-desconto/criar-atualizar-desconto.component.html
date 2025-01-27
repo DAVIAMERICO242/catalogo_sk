@@ -4,11 +4,11 @@
 <span *ngIf="this.update" (click)="this.open=true" class="underline cursor-pointer">
     Gerenciar
 </span>
-<p-drawer class="[&_.p-drawer-content.ng-star-inserted]:!overflow-visible [&_.p-overlay-mask]:!opacity-100" styleClass="!w-[600px]" position="right" 
+<p-drawer class="[&_.p-drawer-content.ng-star-inserted]:!overflow-visible [&_.p-overlay-mask]:!opacity-100 !overflow-auto" styleClass="!w-[600px] !overflow-auto" position="right" 
 [header]="this.update?'Atualizar desconto':'Novo desconto'"
 
 [(visible)]="this.open">
-    <div class="w-[480px] mt-12 ">
+    <div class="w-full h-full mt-12 ">
         <div class="w-full h-[1px] bg-slate-300 mb-5">
 
         </div>

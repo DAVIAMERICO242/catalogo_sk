@@ -6,6 +6,7 @@
     <div class="mb-7">
         <app-criar-atualizar-desconto (onSave)="this.onDescontoUpdate($event)" [update]="false" [descontoTipos]="this.descontosTipos"/>
     </div>
+    <div class="text-sm text-gray-500 font-bold">Descontos expirados e ativos não serão aplicados</div>
     <p-table [value]="this.descontos" >
         <ng-template #header >
             <tr>
