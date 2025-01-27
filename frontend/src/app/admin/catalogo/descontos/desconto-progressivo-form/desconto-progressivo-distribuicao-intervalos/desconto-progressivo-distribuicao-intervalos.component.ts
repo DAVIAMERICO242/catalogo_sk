@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../../../../../shared/shared.module';
 import { Desconto } from '../../../../../services/descontos.service';
 import { MessageService } from 'primeng/api';
@@ -8,7 +8,7 @@ import { MessageService } from 'primeng/api';
   imports: [SharedModule],
   templateUrl: './desconto-progressivo-distribuicao-intervalos.component.html'
 })
-export class DescontoProgressivoDistribuicaoIntervalosComponent {
+export class DescontoProgressivoDistribuicaoIntervalosComponent implements OnInit {
   @Input({required:true})
   distribuicao:Desconto.IntervaloModel[] = [];
   @Output()
@@ -16,6 +16,9 @@ export class DescontoProgressivoDistribuicaoIntervalosComponent {
   open = false;
 
   constructor(private message:MessageService) { }
+  ngOnInit(): void {
+    this.distribuicao = this.distribuicao.sort((a,b)=>a.minQuantity - b.minQuantity);
+  }
   
   
   updatePorcentagem(index:number,val:number){

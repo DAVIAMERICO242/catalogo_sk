@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
 import { Desconto, DescontosService } from '../../../../services/descontos.service';
 import { DescontosBeautyNomes } from '../descontos.component';
@@ -24,6 +24,8 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   descontoTipos:DescontosBeautyNomes[] = [];
   @Input()
   payload!:Desconto.DescontoModel;
+  @Output()
+  onSave = new EventEmitter<Desconto.DescontoModel>();
   @Input({required:true})
   update = false;
   focusedTipo!:DescontosBeautyNomes;
@@ -32,6 +34,8 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   nowAfter = new Date();
 
   DescontoTipoEnum = Desconto.DescontoTipo;
+
+
 
   constructor(private auth:UserService,private message:MessageService,private descontoService:DescontosService) {
     
@@ -106,7 +110,9 @@ export class CriarAtualizarDescontoComponent implements OnInit {
     }
     this.loadingSave = true;
     this.descontoService.atualizarCadastrarDesconto(this.payload).subscribe({
-      next:()=>{
+      next:(data)=>{
+        this.payload = data;
+        this.onSave.emit(data);
         this.loadingSave = false;
         this.message.add({
           severity:"success",
@@ -123,6 +129,8 @@ export class CriarAtualizarDescontoComponent implements OnInit {
       }
     })
   }
+
+  
 
 
 

@@ -4,7 +4,10 @@
 <span *ngIf="this.update" (click)="this.open=true" class="underline cursor-pointer">
     Gerenciar
 </span>
-<p-drawer class="[&_.p-drawer-content.ng-star-inserted]:!overflow-visible [&_.p-overlay-mask]:!opacity-100" styleClass="!w-[600px]" position="right" header="Novo desconto" [(visible)]="this.open">
+<p-drawer class="[&_.p-drawer-content.ng-star-inserted]:!overflow-visible [&_.p-overlay-mask]:!opacity-100" styleClass="!w-[600px]" position="right" 
+[header]="this.update?'Atualizar desconto':'Novo desconto'"
+
+[(visible)]="this.open">
     <div class="w-[480px] mt-12 ">
         <div class="w-full h-[1px] bg-slate-300 mb-5">
 

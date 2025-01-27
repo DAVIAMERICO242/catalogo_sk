@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="this.open" (visibleChange)="openChange.emit($event)" styleClass="!w-[500px]" [modal]="true" header="Confirmação">
+<p-dialog appendTo="body" [(visible)]="this.open" (visibleChange)="openChange.emit($event)" styleClass="!w-[500px]" [modal]="true" header="Confirmação">
     <div class="text-[16px]">
         {{confirmationTitle}}
     </div>

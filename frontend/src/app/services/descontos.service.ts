@@ -132,5 +132,9 @@ export class DescontosService {
     );
   }
 
+  delete(id:string){
+    return this.http.delete(env.BACKEND_URL+"/descontos?id="+id);
+  }
+
 
 }

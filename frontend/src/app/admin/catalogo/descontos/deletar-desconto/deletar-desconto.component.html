@@ -1,0 +1,2 @@
+<span (click)="this.open=true" class="cursor-pointer text-red-600">Deletar</span>
+<app-confirmation-dialog (onConfirmation)="this.deletar()" [(open)]="this.open" [loading]="this.loading" />

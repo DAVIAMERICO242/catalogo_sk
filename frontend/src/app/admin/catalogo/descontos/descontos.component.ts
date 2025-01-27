@@ -6,6 +6,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { DatetimeBrazilPipe } from "../../../pipes/datetime-brazil.pipe";
 import { DateBrazilPipe } from '../../../pipes/date-brazil.pipe';
 import { CriarAtualizarDescontoComponent } from './criar-atualizar-desconto/criar-atualizar-desconto.component';
+import { DeletarDescontoComponent } from "./deletar-desconto/deletar-desconto.component";
 
 export interface DescontosBeautyNomes{
   pure_name:Desconto.DescontoTipo,
@@ -14,7 +15,7 @@ export interface DescontosBeautyNomes{
 
 @Component({
   selector: 'app-descontos',
-  imports: [SharedModule, DatetimeBrazilPipe, DateBrazilPipe, CriarAtualizarDescontoComponent],
+  imports: [SharedModule, DatetimeBrazilPipe, DateBrazilPipe, CriarAtualizarDescontoComponent, DeletarDescontoComponent],
   templateUrl: './descontos.component.html'
 })
 export class DescontosComponent implements OnInit {
@@ -85,6 +86,25 @@ export class DescontosComponent implements OnInit {
   getBeautyName(val:Desconto.DescontoTipo){
     return this.descontosTipos.find((e)=>e.pure_name===val)?.beauty_name;
 
+  }
+
+  onDescontoUpdate(val:Desconto.DescontoModel){
+    const isPresent = this.descontos.find(e=>e.systemId===val.systemId)
+    if(isPresent){
+      this.descontos = this.descontos.map((e)=>{
+        if(e.systemId===val.systemId){
+          return val  
+        }else{
+          return e;
+        }
+      })
+    }else{
+      this.descontos.unshift(val);
+    }
+  }
+
+  onDescontoDelete(val:string){
+    this.descontos = this.descontos.filter((e)=>e.systemId!==val);
   }
 
 }
