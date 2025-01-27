@@ -19,6 +19,19 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>8.5.0</version> <!-- Verifique se há uma versão mais recente -->
+		</dependency>
+
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>4.11.0</version> <!-- Certifique-se de usar uma versão compatível -->
+		</dependency>
+
+
+		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>5.8.2</version> <!-- Use a versão mais recente -->
