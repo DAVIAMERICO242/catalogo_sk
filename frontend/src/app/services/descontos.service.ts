@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { env } from '../../env';
 import { DatePipe } from '@angular/common';
 import { BackendDatePipe } from '../pipes/backend-date.pipe';
+import { map } from 'rxjs';
 
 export namespace Desconto{
   export interface DescontoModel{
@@ -12,6 +13,7 @@ export namespace Desconto{
     expiresAt:Date,
     isActive:boolean,
     loja:LojaModel,
+    createdAt:Date | undefined,
     descontoFrete?:DescontoFreteModel,
     descontoGenericoCarrinho?:DescontoGenericoCarrinhoModel;
     descontoSimples?:DescontoSimplesProdutoModel,
@@ -104,11 +106,29 @@ export class DescontosService {
       ...payload,
       expiresAt:this.dateToBackend.transform(payload.expiresAt)
     }
-    return this.http.post<Desconto.DescontoModel>(env.BACKEND_URL+"/descontos",data);
+    return this.http.post<Desconto.DescontoModel>(env.BACKEND_URL+"/descontos",data).pipe(
+      map((raw)=>{
+        return {
+          ...raw,
+          expiresAt:new Date(raw.expiresAt),
+          createdAt: new Date(raw.createdAt as Date)
+        }
+      })
+    );
   }
 
   getDescontos(lojaId:string){
-    return this.http.get<Desconto.DescontoModel[]>(env.BACKEND_URL+"/descontos?lojaId="+lojaId);
+    return this.http.get<Desconto.DescontoModel[]>(env.BACKEND_URL+"/descontos?lojaId="+lojaId).pipe(
+      map((raw)=>{
+        return raw.map((e)=>{
+          return{
+            ...e,
+            expiresAt:new Date(e.expiresAt),
+            createdAt:new Date(e.createdAt as Date)
+          }
+        })
+      })
+    );
   }
 
 

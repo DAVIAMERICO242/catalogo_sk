@@ -65,6 +65,20 @@ export class DescontoProgressivoDistribuicaoIntervalosComponent {
     this.open=false;
   }
 
+  adicionarIntervaloPadraoSeNaoConfigurado(){
+    if(this.open && !this.distribuicao.length){
+      this.distribuicao = [
+        {
+          minQuantity:1,
+          percentDecimalDiscount:0.2
+        },{
+          minQuantity:2,
+          percentDecimalDiscount:0.25
+        }
+      ]
+    }
+  }
+
   addInterval(){
     const lastIndex = this.distribuicao.length - 1;
     const previousQuantity = this.distribuicao[lastIndex].minQuantity;

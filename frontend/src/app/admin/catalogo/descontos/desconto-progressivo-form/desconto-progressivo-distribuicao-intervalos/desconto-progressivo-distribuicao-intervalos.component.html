@@ -1,7 +1,7 @@
 <button (click)="this.open=true" class="!text-sm w-full p-1 border-[1px] !bg-white !border-solid !border-slate-300 !shadow-sm !text-black rounded-lg" pButton>
     Configurar desconto progressivo
 </button>
-<p-dialog (onHide)="this.propagarOnClose()" appendTo="body" [modal]="true" header="Distruibuição" styleClass="!w-[600px]" [(visible)]="open">
+<p-dialog (onShow)="this.adicionarIntervaloPadraoSeNaoConfigurado()" (onHide)="this.propagarOnClose()" appendTo="body" [modal]="true" header="Distruibuição" styleClass="!w-[600px]" [(visible)]="open">
     <div class="max-h-[400px] overflow-auto">
         <div *ngFor="let item of this.distribuicao;let i = index">
             <div class="flex gap-4 items-center">

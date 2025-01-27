@@ -36,15 +36,7 @@ export class DescontoProgressivoFormComponent implements OnInit,DescontoForm {
       excludedGrupos:[],
       excludedLinhas:[],
       systemId:"",
-      intervalos:[
-        {
-          minQuantity:1,
-          percentDecimalDiscount:0.2
-        },{
-          minQuantity:2,
-          percentDecimalDiscount:0.25
-        }
-      ]
+      intervalos:[]
     }
     this.loadTermos();
   }

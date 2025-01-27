@@ -33,6 +33,7 @@ public class Desconto{
     private DescontoTipo descontoTipo;
     private String discountName;
     private Boolean isActive = true;
+    private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDate expiresAt;
     @OneToOne(mappedBy = "desconto",cascade = CascadeType.ALL)
     @JsonManagedReference
