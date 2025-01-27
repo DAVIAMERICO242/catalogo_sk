@@ -60,7 +60,7 @@ public class MinioService implements ApplicationListener<ApplicationReadyEvent> 
         );
     }
 
-    public List<String> getFileUrls(String pathFromBucketStartWithoutPointAndSlash) throws Exception{
+    public List<String> getFileUrlsFromPath(String pathFromBucketStartWithoutPointAndSlash) throws Exception{
         List<String> output = new ArrayList<>();
         Iterable<Result<Item>> objects = authenticatedMinioClient.listObjects(
                 ListObjectsArgs
