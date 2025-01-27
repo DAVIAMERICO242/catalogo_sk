@@ -19,6 +19,7 @@ import { SelectModule } from 'primeng/select';
 import { DrawerModule } from 'primeng/drawer';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [],
@@ -33,6 +34,7 @@ import { PaginatorModule } from 'primeng/paginator';
     SelectModule,
     InputNumberModule,
     SkeletonModule,
+    ProgressBarModule,
     DialogModule,
     TableModule,
     AvatarModule,
@@ -46,6 +48,7 @@ import { PaginatorModule } from 'primeng/paginator';
   ],
   exports:[
     CommonModule,
+    ProgressBarModule,
     FormsModule,
     DrawerModule,
     TooltipModule,
