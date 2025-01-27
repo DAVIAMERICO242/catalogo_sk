@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from '../../env';
+import { DatePipe } from '@angular/common';
+import { BackendDatePipe } from '../pipes/backend-date.pipe';
 
 export namespace Desconto{
   export interface DescontoModel{
@@ -87,17 +89,22 @@ export namespace Desconto{
     DESCONTO_PROGRESSIVO="DESCONTO_PROGRESSIVO"
   }
 
-
 }
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DescontosService {
 
-  constructor(private http:HttpClient){}
+
+  constructor(private http:HttpClient,private dateToBackend:BackendDatePipe){
+  }
 
   atualizarCadastrarDesconto(payload:Desconto.DescontoModel){
-    return this.http.post<Desconto.DescontoModel>(env.BACKEND_URL+"/descontos",payload);
+    const data = {
+      ...payload,
+      expiresAt:this.dateToBackend.transform(payload.expiresAt)
+    }
+    return this.http.post<Desconto.DescontoModel>(env.BACKEND_URL+"/descontos",data);
   }
 
   getDescontos(lojaId:string){

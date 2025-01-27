@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.context.annotation.Lazy;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class Desconto{
     private DescontoTipo descontoTipo;
     private String discountName;
     private Boolean isActive = true;
-    private LocalDateTime expiresAt;
+    private LocalDate expiresAt;
     @OneToOne(mappedBy = "desconto",cascade = CascadeType.ALL)
     @JsonManagedReference
     private DescontoFrete descontoFrete;
