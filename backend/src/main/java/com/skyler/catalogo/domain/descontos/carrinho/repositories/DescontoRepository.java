@@ -1,9 +1,12 @@
 package com.skyler.catalogo.domain.descontos.carrinho.repositories;
 
 import com.skyler.catalogo.domain.descontos.carrinho.entities.Desconto;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface DescontoRepository extends JpaRepository<Desconto,String> {
@@ -42,4 +45,11 @@ public interface DescontoRepository extends JpaRepository<Desconto,String> {
             "LEFT JOIN FETCH d.excludedTermos et " +
             "WHERE d.loja.systemId = :lojaId  ")
     List<Desconto> findAll();
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Desconto d " +
+            "SET d.isActive = false " +
+            "WHERE d.expiresAt <= :now ")
+    void updateExpirados(LocalDate now);
 }
