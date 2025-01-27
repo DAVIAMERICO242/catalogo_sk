@@ -1,6 +1,9 @@
-<button (click)="this.open=true" pButton class="!rounded-md !bg-black px-2 py-1 shadow-sm !border-[1px] !border-solid flex items-center gap-2">
+<button *ngIf="!this.update" (click)="this.open=true" pButton class="!rounded-md !bg-black px-2 py-1 shadow-sm !border-[1px] !border-solid flex items-center gap-2">
     <div class="text-[13px] text-white ">+ Novo desconto</div>
 </button>
+<span *ngIf="this.update" (click)="this.open=true" class="underline cursor-pointer">
+    Gerenciar
+</span>
 <p-drawer class="[&_.p-drawer-content.ng-star-inserted]:!overflow-visible [&_.p-overlay-mask]:!opacity-100" styleClass="!w-[600px]" position="right" header="Novo desconto" [(visible)]="this.open">
     <div class="w-[480px] mt-12 ">
         <div class="w-full h-[1px] bg-slate-300 mb-5">
@@ -23,7 +26,7 @@
         <div class="p-5 border-[1px] border-solid border-slate-200 bg-slate-50 rounded-lg shadow-sm w-fit" >
             <div class="font-bold mb-3">Regras desconto:</div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_FRETE">
-                <app-desconto-frete-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
+                <app-desconto-frete-form  (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_GENERICO_CARRINHO">
                 <app-desconto-generico-carrinho-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
@@ -41,7 +44,7 @@
                 <app-desconto-menor-valor-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div>
             <div *ngIf="this.focusedTipo.pure_name===DescontoTipoEnum.DESCONTO_PROGRESSIVO">
-                <app-desconto-progressivo-form (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
+                <app-desconto-progressivo-form  (onSave)="this.childSave($event)" [loading]="this.loadingSave" [payload]="this.payload"/>
             </div> 
         </div>
     </div>

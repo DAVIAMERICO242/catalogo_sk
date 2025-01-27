@@ -28,16 +28,21 @@ export class DescontoSimplesTermoFormComponent implements OnInit,DescontoForm {
   constructor(private message:MessageService,private produtoService:ProdutosService,private auth:UserService){}
 
   ngOnInit(): void {
-    this.descontoSimplesTermo = {
-      delimitedCategorias:[],
-      delimitedGrupos:[],
-      delimitedLinhas:[],
-      excludedCategorias:[],
-      excludedGrupos:[],
-      excludedLinhas:[],
-      percentDecimalDiscount:0,
-      systemId:""
+    if(!this.payload.descontoSimplesTermo){
+      this.descontoSimplesTermo = {
+        delimitedCategorias:[],
+        delimitedGrupos:[],
+        delimitedLinhas:[],
+        excludedCategorias:[],
+        excludedGrupos:[],
+        excludedLinhas:[],
+        percentDecimalDiscount:0,
+        systemId:""
+      }
+    }else{
+      this.descontoSimplesTermo = {...this.payload.descontoSimplesTermo}
     }
+
     this.loadTermos();
   }
 

@@ -22,10 +22,14 @@ export class DescontoGenericoCarrinhoFormComponent implements OnInit,DescontoFor
   constructor(private message:MessageService){}
 
   ngOnInit(): void {
-    this.descontoGenericoCarrinho = {
-      minValue:1,
-      percentDecimalDiscount:0,
-      systemId:""
+    if(!this.payload.descontoGenericoCarrinho){
+      this.descontoGenericoCarrinho = {
+        minValue:1,
+        percentDecimalDiscount:0,
+        systemId:""
+      }
+    }else{
+      this.descontoGenericoCarrinho = {...this.payload.descontoGenericoCarrinho};
     }
   }
 

@@ -26,16 +26,20 @@ export class DescontoMenorValorFormComponent implements OnInit{
   };
   constructor(private message:MessageService,private produtoService:ProdutosService,private auth:UserService){}
   ngOnInit(): void {
-    this.descontoMenorValor = {
-      delimitedCategorias:[],
-      delimitedGrupos:[],
-      delimitedLinhas:[],
-      excludedCategorias:[],
-      excludedGrupos:[],
-      excludedLinhas:[],
-      lowerQuantityLimitToApply:2,
-      percentDecimalDiscount:0,
-      systemId:""
+    if(!this.payload.descontoMenorValor){
+      this.descontoMenorValor = {
+        delimitedCategorias:[],
+        delimitedGrupos:[],
+        delimitedLinhas:[],
+        excludedCategorias:[],
+        excludedGrupos:[],
+        excludedLinhas:[],
+        lowerQuantityLimitToApply:2,
+        percentDecimalDiscount:0,
+        systemId:""
+      }
+    }else{
+      this.descontoMenorValor = {...this.payload.descontoMenorValor}
     }
     this.loadTermos();
   }

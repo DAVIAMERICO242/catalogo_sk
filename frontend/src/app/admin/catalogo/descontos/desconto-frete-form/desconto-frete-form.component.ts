@@ -21,10 +21,14 @@ export class DescontoFreteFormComponent implements OnInit,DescontoForm{
   constructor(private message:MessageService){}
   
   ngOnInit(): void {
-    this.descontoFrete = {
-      lowerValueLimitToApply:0,
-      percentDecimalDiscount:0,
-      systemId:""
+    if(!this.payload.descontoFrete){
+      this.descontoFrete = {
+        lowerValueLimitToApply:0,
+        percentDecimalDiscount:0,
+        systemId:""
+      }
+    }else{
+      this.descontoFrete = {...this.payload.descontoFrete}
     }
   }
 

@@ -28,15 +28,19 @@ export class DescontoProgressivoFormComponent implements OnInit,DescontoForm {
   };
   constructor(private message:MessageService,private produtoService:ProdutosService,private auth:UserService){}
   ngOnInit(): void {
-    this.descontoProgressivo = {
-      delimitedCategorias:[],
-      delimitedGrupos:[],
-      delimitedLinhas:[],
-      excludedCategorias:[],
-      excludedGrupos:[],
-      excludedLinhas:[],
-      systemId:"",
-      intervalos:[]
+    if(!this.payload.descontoProgressivo){
+      this.descontoProgressivo = {
+        delimitedCategorias:[],
+        delimitedGrupos:[],
+        delimitedLinhas:[],
+        excludedCategorias:[],
+        excludedGrupos:[],
+        excludedLinhas:[],
+        systemId:"",
+        intervalos:[]
+      }
+    }else{
+      this.descontoProgressivo = {...this.payload.descontoProgressivo};
     }
     this.loadTermos();
   }

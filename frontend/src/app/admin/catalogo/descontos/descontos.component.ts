@@ -3,9 +3,9 @@ import { Desconto, DescontosService } from '../../../services/descontos.service'
 import { UserService } from '../../../services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SharedModule } from '../../../shared/shared.module';
-import { NovoDescontoComponent } from "./novo-desconto/novo-desconto.component";
 import { DatetimeBrazilPipe } from "../../../pipes/datetime-brazil.pipe";
 import { DateBrazilPipe } from '../../../pipes/date-brazil.pipe';
+import { CriarAtualizarDescontoComponent } from './criar-atualizar-desconto/criar-atualizar-desconto.component';
 
 export interface DescontosBeautyNomes{
   pure_name:Desconto.DescontoTipo,
@@ -14,7 +14,7 @@ export interface DescontosBeautyNomes{
 
 @Component({
   selector: 'app-descontos',
-  imports: [SharedModule, NovoDescontoComponent, DatetimeBrazilPipe, DateBrazilPipe],
+  imports: [SharedModule, DatetimeBrazilPipe, DateBrazilPipe, CriarAtualizarDescontoComponent],
   templateUrl: './descontos.component.html'
 })
 export class DescontosComponent implements OnInit {

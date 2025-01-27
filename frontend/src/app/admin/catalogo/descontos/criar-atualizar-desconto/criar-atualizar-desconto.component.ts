@@ -14,15 +14,18 @@ import { DescontoMenorValorFormComponent } from "../desconto-menor-valor-form/de
 import { DescontoProgressivoFormComponent } from "../desconto-progressivo-form/desconto-progressivo-form.component";
 
 @Component({
-  selector: 'app-novo-desconto',
+  selector: 'app-criar-atualizar-desconto',
   imports: [SharedModule, DescontoFreteFormComponent, DescontoGenericoCarrinhoFormComponent, DescontoSimplesProdutoFormComponent, DescontoSimplesTermoFormComponent, DescontoMaiorValorFormComponent, DescontoMenorValorFormComponent, DescontoProgressivoFormComponent],
-  templateUrl: './novo-desconto.component.html'
+  templateUrl: './criar-atualizar-desconto.component.html'
 })
-export class NovoDescontoComponent implements OnInit {
+export class CriarAtualizarDescontoComponent implements OnInit {
   open = false;
   @Input({required:true})
   descontoTipos:DescontosBeautyNomes[] = [];
+  @Input()
   payload!:Desconto.DescontoModel;
+  @Input({required:true})
+  update = false;
   focusedTipo!:DescontosBeautyNomes;
   loadingSave = false;
 
@@ -36,8 +39,13 @@ export class NovoDescontoComponent implements OnInit {
   
   ngOnInit(): void {
     this.nowAfter.setDate(this.nowAfter.getDate()+1);
-    this.focusedTipo = this.descontoTipos[0];
-    this.definePayLoadModel();
+    if(!this.update){
+      this.focusedTipo = this.descontoTipos[0];
+      this.definePayLoadModel();
+    }else{
+      this.focusedTipo = this.descontoTipos.find((e)=>e.pure_name===this.payload.tipo) as DescontosBeautyNomes;
+      this.payload = {...this.payload}
+    }
   }
 
   definePayLoadModel(){
@@ -46,7 +54,7 @@ export class NovoDescontoComponent implements OnInit {
       this.payload = {
         ...this.payload,
         tipo:this.focusedTipo.pure_name,
-        systemId: '',
+        systemId: this.payload?.systemId || "",
         loja: {
           nome:contextualLoja?.nome,
           slug:contextualLoja?.slug,

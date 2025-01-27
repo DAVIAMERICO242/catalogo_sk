@@ -29,16 +29,21 @@ export class DescontoMaiorValorFormComponent implements OnInit,DescontoForm {
     
   }
   ngOnInit(): void {
-    this.descontoMaiorValor = {
-      delimitedCategorias:[],
-      delimitedGrupos:[],
-      delimitedLinhas:[],
-      excludedCategorias:[],
-      excludedGrupos:[],
-      excludedLinhas:[],
-      lowerQuantityLimitToApply:2,
-      percentDecimalDiscount:0,
-      systemId:""
+
+    if(!this.payload.descontoMaiorValor){
+      this.descontoMaiorValor = {
+        delimitedCategorias:[],
+        delimitedGrupos:[],
+        delimitedLinhas:[],
+        excludedCategorias:[],
+        excludedGrupos:[],
+        excludedLinhas:[],
+        lowerQuantityLimitToApply:2,
+        percentDecimalDiscount:0,
+        systemId:""
+      }
+    }else{
+      this.descontoMaiorValor = {...this.payload.descontoMaiorValor}
     }
     this.loadTermos();
   }

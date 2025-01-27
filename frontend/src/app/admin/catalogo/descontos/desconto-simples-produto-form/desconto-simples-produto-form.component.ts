@@ -21,16 +21,21 @@ export class DescontoSimplesProdutoFormComponent implements OnInit,DescontoForm 
   produtosTranslated:Desconto.ProdutoModel[] = [];
   constructor(private message:MessageService,private catalogService:CatalogoService){}
   ngOnInit(): void {
-    this.descontoSimples = {
-      systemId:"",
-      percentDecimalDiscount:0,
-      produto: {
-        baseValue:0,
-        catalogValue:0,
-        nome:"",
-        systemId:""
+    if(!this.payload.descontoSimples){
+      this.descontoSimples = {
+        systemId:"",
+        percentDecimalDiscount:0,
+        produto: {
+          baseValue:0,
+          catalogValue:0,
+          nome:"",
+          systemId:""
+        }
       }
+    }else{
+      this.descontoSimples = {...this.payload.descontoSimples}
     }
+
     this.catalogService.contextualCatalogoSub.value.forEach((e)=>{
        this.produtosTranslated.push({
            systemId:e.systemId,

@@ -4,7 +4,7 @@
 </button>
 <p-dialog header="Descontos" styleClass="!min-w-[60vw]" [modal]="true" [(visible)]="open">
     <div class="mb-7">
-        <app-novo-desconto [descontoTipos]="this.descontosTipos"/>
+        <app-criar-atualizar-desconto [update]="false" [descontoTipos]="this.descontosTipos"/>
     </div>
     <p-table [value]="this.descontos" >
         <ng-template #header >
@@ -53,10 +53,15 @@
                     {{this.forceType(row).expiresAt | dateBrazil}}
                 </td>
                 <td>
-                    <span class="underline cursor-pointer">Gerenciar</span>
+                    <app-criar-atualizar-desconto [payload]="this.forceType(row)" [update]="true" [descontoTipos]="this.descontosTipos"/>
                     /<span class="cursor-pointer text-red-600">Deletar</span>
                 </td>
             </tr>
+        </ng-template>
+        <ng-template #empty>
+            <div class="text-sm">
+                Nenhum dado encontrado!
+            </div>
         </ng-template>
     </p-table>
 </p-dialog>
