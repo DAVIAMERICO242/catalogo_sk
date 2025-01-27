@@ -12,16 +12,16 @@ import { SharedModule } from '../../../../shared/shared.module';
 })
 export class DescontoSimplesProdutoFormComponent implements OnInit,DescontoForm {
   @Input({required:true})
-  payload!: Desconto.DescontoModel;
+  payload!:Readonly<Desconto.DescontoModel>;
   @Input({required:true})
   loading: boolean = false;
   @Output()
   onSave: EventEmitter<Desconto.DescontoModel> = new EventEmitter<Desconto.DescontoModel>();
+  descontoSimples!:Desconto.DescontoSimplesProdutoModel;
   produtosTranslated:Desconto.ProdutoModel[] = [];
   constructor(private message:MessageService,private catalogService:CatalogoService){}
   ngOnInit(): void {
-    this.payload={...this.payload};
-    this.payload.descontoSimples = {
+    this.descontoSimples = {
       systemId:"",
       percentDecimalDiscount:0,
       produto: {
@@ -41,27 +41,27 @@ export class DescontoSimplesProdutoFormComponent implements OnInit,DescontoForm 
     })
   }
   get desconto(){
-    if(this.payload.descontoSimples?.percentDecimalDiscount){
-      return Math.round(this.payload.descontoSimples.percentDecimalDiscount * 100);
+    if(this.descontoSimples?.percentDecimalDiscount){
+      return Math.round(this.descontoSimples.percentDecimalDiscount * 100);
     }else{
       return 0;
     }
   }
 
   set desconto(val:number){
-    if(this.payload.descontoSimples){
-      this.payload.descontoSimples.percentDecimalDiscount = val/100;
+    if(this.descontoSimples){
+      this.descontoSimples.percentDecimalDiscount = val/100;
     }
   }
   validate(): boolean {
-    if(!this.payload.descontoSimples?.produto.systemId){
+    if(!this.descontoSimples?.produto.systemId){
       this.message.add({
         severity:"Error",
         summary:"Produto catalogo inválido"
       })
       return false;
     }
-    if(!this.payload.descontoSimples.percentDecimalDiscount){
+    if(!this.descontoSimples.percentDecimalDiscount){
       this.message.add({
         severity:"Error",
         summary:"Desconto não pode ser nulo"
@@ -74,7 +74,11 @@ export class DescontoSimplesProdutoFormComponent implements OnInit,DescontoForm 
     if(!this.validate()){
       return;
     }
-    this.onSave.emit(this.payload);
+    const buffer = {
+      ...this.payload,
+      descontoSimples:this.descontoSimples
+    }
+    this.onSave.emit(buffer);
   }
 
 }

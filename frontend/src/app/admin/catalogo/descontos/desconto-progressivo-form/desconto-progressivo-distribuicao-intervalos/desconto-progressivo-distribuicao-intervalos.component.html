@@ -2,18 +2,26 @@
     Configurar desconto progressivo
 </button>
 <p-dialog (onHide)="this.propagarOnClose()" appendTo="body" [modal]="true" header="Distruibuição" styleClass="!w-[600px]" [(visible)]="open">
-    <div *ngFor="let item of this.distribuicao;let i = index">
-        <div class="mb-5 flex items-center gap-3">
-            <div >
-                <div class="text-xs font-bold">Quantidade carrinho</div>
-                <p-input-number [min]="getMinQuantityForIndex(i)" [(ngModel)]="item.minQuantity" [showButtons]="true" [min]="0"/>
-            </div>
-            <div >
-                <div class="text-xs font-bold">Desconto</div>
-                <p-input-number [ngModel]="this.round(item.percentDecimalDiscount*100)" (ngModelChange)="this.updatePorcentagem(i,$event)" [showButtons]="true" prefix="%" [min]="0"/>
+    <div class="max-h-[400px] overflow-auto">
+        <div *ngFor="let item of this.distribuicao;let i = index">
+            <div class="flex gap-4 items-center">
+                <div class="mb-5 flex items-center gap-3">
+                    <div>
+                        <div class="text-xs font-bold">Quantidade carrinho</div>
+                        <p-input-number [min]="getMinQuantityForIndex(i)" [(ngModel)]="item.minQuantity" [showButtons]="true" [min]="0"/>
+                    </div>
+                    <div >
+                        <div class="text-xs font-bold">Desconto</div>
+                        <p-input-number [ngModel]="this.round(item.percentDecimalDiscount*100)" (ngModelChange)="this.updatePorcentagem(i,$event)" [showButtons]="true" prefix="%" [min]="0"/>
+                    </div>
+                </div>
+                <div (click)="removeInterval(i)" *ngIf="i>1" class="cursor-pointer pi pi-minus-circle">
+
+                </div>
             </div>
         </div>
     </div>
+    <div (click)="this.addInterval()" class="cursor-pointer underline text-sm mb-7">+    Adicionar intervalo</div>
     <button (click)="this.validarEFechar()" class="w-full !bg-black" pButton>
         Salvar
     </button>

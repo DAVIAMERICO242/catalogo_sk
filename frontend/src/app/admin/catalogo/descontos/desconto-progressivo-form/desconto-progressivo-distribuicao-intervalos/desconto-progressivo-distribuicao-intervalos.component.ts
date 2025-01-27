@@ -65,4 +65,22 @@ export class DescontoProgressivoDistribuicaoIntervalosComponent {
     this.open=false;
   }
 
+  addInterval(){
+    const lastIndex = this.distribuicao.length - 1;
+    const previousQuantity = this.distribuicao[lastIndex].minQuantity;
+    const previousDiscount = this.distribuicao[lastIndex].percentDecimalDiscount;
+
+    const newIntervalQuantity = previousQuantity + 1;
+    const newIntervalDiscount = previousDiscount + 0.05;
+
+    this.distribuicao.push({
+      minQuantity:newIntervalQuantity,
+      percentDecimalDiscount:newIntervalDiscount
+    })
+  }
+
+  removeInterval(index:number){
+    this.distribuicao = this.distribuicao.filter((e,i)=>i!==index);
+  }
+
 }

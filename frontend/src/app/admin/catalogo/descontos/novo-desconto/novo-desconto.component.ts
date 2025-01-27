@@ -26,6 +26,8 @@ export class NovoDescontoComponent implements OnInit {
   focusedTipo!:DescontosBeautyNomes;
   loadingSave = false;
 
+  nowAfter = new Date();
+
   DescontoTipoEnum = Desconto.DescontoTipo;
 
   constructor(private auth:UserService,private message:MessageService,private descontoService:DescontosService) {
@@ -33,6 +35,7 @@ export class NovoDescontoComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.nowAfter.setDate(this.nowAfter.getDate()+1);
     this.focusedTipo = this.descontoTipos[0];
     this.definePayLoadModel();
   }
@@ -49,8 +52,7 @@ export class NovoDescontoComponent implements OnInit {
           slug:contextualLoja?.slug,
           systemId:contextualLoja?.systemId
         },
-        isActive: true,
-        expiresAt: new Date(),
+        isActive: true
       };
     }
   }
@@ -58,23 +60,6 @@ export class NovoDescontoComponent implements OnInit {
   manageTipoChange(){
     this.definePayLoadModel();
   }
-
-  // get totalCartDecimalPercentDiscountView(): number {
-  //   if(this.payload.totalCartDecimalPercentDiscount){
-  //     return this.payload.totalCartDecimalPercentDiscount*100;
-  //   }else{
-  //     return 0;
-  //   }
-  // }
-
-  // set totalCartDecimalPercentDiscountView(val:number){
-  //   this.payload.totalCartDecimalPercentDiscount = val / 100;
-  // }
-
-  // testar(){
-  //   alert(this.payload.totalCartDecimalPercentDiscount);
-  // }
-
 
   childSave(payload:Desconto.DescontoModel){
     this.payload = payload;

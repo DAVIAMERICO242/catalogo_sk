@@ -14,11 +14,12 @@ import { DescontoProgressivoDistribuicaoIntervalosComponent } from "./desconto-p
 })
 export class DescontoProgressivoFormComponent implements OnInit,DescontoForm {
   @Input({required:true})
-  payload!: Desconto.DescontoModel;
+  payload!:Readonly<Desconto.DescontoModel>;
   @Input({required:true})
   loading: boolean = false;
   @Output()
   onSave: EventEmitter<Desconto.DescontoModel> = new EventEmitter<Desconto.DescontoModel>();
+  descontoProgressivo!:Desconto.DescontoProgressivoModel;
   loadingTermos = false;
   termos:Produto.Termos = {
     categorias:[],
@@ -27,8 +28,7 @@ export class DescontoProgressivoFormComponent implements OnInit,DescontoForm {
   };
   constructor(private message:MessageService,private produtoService:ProdutosService,private auth:UserService){}
   ngOnInit(): void {
-    this.payload = {...this.payload};
-    this.payload.descontoProgressivo = {
+    this.descontoProgressivo = {
       delimitedCategorias:[],
       delimitedGrupos:[],
       delimitedLinhas:[],
@@ -75,8 +75,8 @@ export class DescontoProgressivoFormComponent implements OnInit,DescontoForm {
     }
   }
   validate(): boolean {
-    if(this.payload.descontoProgressivo){
-      if(!this.payload.descontoProgressivo.intervalos.length){
+    if(this.descontoProgressivo){
+      if(!this.descontoProgressivo.intervalos.length){
         this.message.add({
           severity:"error",
           summary:"Nenhum intervalo configurado"
@@ -84,7 +84,7 @@ export class DescontoProgressivoFormComponent implements OnInit,DescontoForm {
         return false;
       }
     }
-    const distribuicao = this.payload.descontoProgressivo?.intervalos;
+    const distribuicao = this.descontoProgressivo?.intervalos;
     if(distribuicao){
       for(let i=0;i<distribuicao.length;i++){
         if(i>0){
@@ -112,12 +112,16 @@ export class DescontoProgressivoFormComponent implements OnInit,DescontoForm {
     if(!this.validate()){
       return;
     }
-    this.onSave.emit(this.payload);
+    const buffer={
+      ...this.payload,
+      descontoProgressivo:this.descontoProgressivo
+    }
+    this.onSave.emit(buffer);
   }
 
   changeDistribuicao(intervals:Desconto.IntervaloModel[]){
-    if(this.payload.descontoProgressivo?.intervalos){
-      this.payload.descontoProgressivo.intervalos = intervals;
+    if(this.descontoProgressivo?.intervalos){
+      this.descontoProgressivo.intervalos = intervals;
       console.log("DISTRIBUIÇÃO SALVA NO PAI")
       console.log(intervals);
     }

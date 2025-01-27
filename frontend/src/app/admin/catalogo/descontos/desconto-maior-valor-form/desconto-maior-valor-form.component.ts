@@ -13,21 +13,23 @@ import { UserService } from '../../../../services/user.service';
 })
 export class DescontoMaiorValorFormComponent implements OnInit,DescontoForm {
   @Input({required:true})
-  payload!: Desconto.DescontoModel;
+  payload!: Readonly<Desconto.DescontoModel>;
   @Input({required:true})
   loading: boolean = false;
   @Output()
   onSave: EventEmitter<Desconto.DescontoModel> = new EventEmitter<Desconto.DescontoModel>();
   loadingTermos = false;
+  descontoMaiorValor!:Desconto.DescontoMaiorValorModel;
   termos:Produto.Termos = {
     categorias:[],
     grupos:[],
     linhas:[]
   };
-  constructor(private message:MessageService,private produtoService:ProdutosService,private auth:UserService){}
+  constructor(private message:MessageService,private produtoService:ProdutosService,private auth:UserService){
+    
+  }
   ngOnInit(): void {
-    this.payload = {...this.payload};
-    this.payload.descontoMaiorValor = {
+    this.descontoMaiorValor = {
       delimitedCategorias:[],
       delimitedGrupos:[],
       delimitedLinhas:[],
@@ -41,15 +43,15 @@ export class DescontoMaiorValorFormComponent implements OnInit,DescontoForm {
     this.loadTermos();
   }
   get desconto(){
-    if(this.payload.descontoMaiorValor?.percentDecimalDiscount){
-      return Math.round(this.payload.descontoMaiorValor.percentDecimalDiscount * 100);
+    if(this.descontoMaiorValor?.percentDecimalDiscount){
+      return Math.round(this.descontoMaiorValor.percentDecimalDiscount * 100);
     }else{
       return 0;
     }
   }
   set desconto(val:number){
-    if(this.payload.descontoMaiorValor){
-      this.payload.descontoMaiorValor.percentDecimalDiscount = val/100;
+    if(this.descontoMaiorValor){
+      this.descontoMaiorValor.percentDecimalDiscount = val/100;
     }
   }
   loadTermos(){
@@ -67,15 +69,15 @@ export class DescontoMaiorValorFormComponent implements OnInit,DescontoForm {
     }
   }
   validate(): boolean {
-    if(this.payload.descontoMaiorValor){
-      if(!this.payload.descontoMaiorValor.percentDecimalDiscount){
+    if(this.descontoMaiorValor){
+      if(!this.descontoMaiorValor.percentDecimalDiscount){
         this.message.add({
           severity:"error",
           summary:"O desconto não pode ser nulo"
         })
         return false;
       }
-      if(this.payload.descontoMaiorValor.lowerQuantityLimitToApply<2){
+      if(this.descontoMaiorValor.lowerQuantityLimitToApply<2){
         this.message.add({
           severity:"error",
           summary:"A quantidade mínima do carrinho é 2"
@@ -89,7 +91,11 @@ export class DescontoMaiorValorFormComponent implements OnInit,DescontoForm {
     if(!this.validate()){
       return;
     }
-    this.onSave.emit(this.payload);
+    const buffer = {
+      ...this.payload,
+      descontoMaiorValor:this.descontoMaiorValor
+    }
+    this.onSave.emit(buffer);
   }
 
 }

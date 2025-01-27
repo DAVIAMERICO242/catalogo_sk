@@ -13,15 +13,15 @@ export class DescontoFreteFormComponent implements OnInit,DescontoForm{
   @Input({required:true})
   loading = false;
   @Input({required:true})
-  payload!:Desconto.DescontoModel;
+  payload!:Readonly<Desconto.DescontoModel>;
+  descontoFrete!:Desconto.DescontoFreteModel;
   @Output()
   onSave = new EventEmitter<Desconto.DescontoModel>();
 
   constructor(private message:MessageService){}
   
   ngOnInit(): void {
-    this.payload={...this.payload};
-    this.payload.descontoFrete = {
+    this.descontoFrete = {
       lowerValueLimitToApply:0,
       percentDecimalDiscount:0,
       systemId:""
@@ -30,21 +30,21 @@ export class DescontoFreteFormComponent implements OnInit,DescontoForm{
 
 
   get desconto(){
-    if(this.payload.descontoFrete?.percentDecimalDiscount){
-      return Math.round(this.payload.descontoFrete.percentDecimalDiscount * 100);
+    if(this.descontoFrete?.percentDecimalDiscount){
+      return Math.round(this.descontoFrete.percentDecimalDiscount * 100);
     }else{
       return 0;
     }
   }
 
   set desconto(val:number){
-    if(this.payload.descontoFrete){
-      this.payload.descontoFrete.percentDecimalDiscount = val/100;
+    if(this.descontoFrete){
+      this.descontoFrete.percentDecimalDiscount = val/100;
     }
   }
 
   validate(){
-    if(!this.payload.descontoFrete?.percentDecimalDiscount){
+    if(!this.descontoFrete?.percentDecimalDiscount){
       this.message.add({
         severity:"error",
         summary:"O desconto não pode ser nulo"
@@ -58,6 +58,10 @@ export class DescontoFreteFormComponent implements OnInit,DescontoForm{
     if(!this.validate()){
       return;
     }
-    this.onSave.emit(this.payload);
+    const buffer = {
+      ...this.payload,
+      descontoFrete:this.descontoFrete
+    }
+    this.onSave.emit(buffer);
   }
 }

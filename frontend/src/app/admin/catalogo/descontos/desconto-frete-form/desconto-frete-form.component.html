@@ -1,9 +1,9 @@
-<div class="flex item-center gap-4 mb-6" *ngIf="this.payload.descontoFrete">
+<div class="flex item-center gap-4 mb-6" *ngIf="this.descontoFrete">
     <div>
         <div class="text-xs text-gray-400">
             Valor mínimo carrinho (R$)
         </div>
-        <p-input-number [showButtons]="true"  mode="currency" currency="BRL" [(ngModel)]="this.payload.descontoFrete.lowerValueLimitToApply" [min]="0"/>
+        <p-input-number [showButtons]="true"  mode="currency" currency="BRL" [(ngModel)]="this.descontoFrete.lowerValueLimitToApply" [min]="0"/>
     </div>
     <div>
         <div  class="text-xs text-gray-400">

@@ -13,8 +13,12 @@
             </div>
         </div>
         <div class = "mb-7">
-            <div class="text-xs mb-1 font-bold">Nome desconto:</div>
-            <input class="!w-[300px]" [(ngModel)]="this.payload.nome" pInputText/>
+            <div class="text-xs mb-1 font-bold">Nome do desconto:</div>
+            <input  class="!w-[300px]" [(ngModel)]="this.payload.nome" pInputText/>
+        </div>
+        <div class="mb-7">
+            <div class="text-xs mb-1 font-bold">Data de expiração:</div>
+            <p-date-picker [minDate]="this.nowAfter"[showIcon]="true" styleClass="!w-[300px]" [(ngModel)]="this.payload.expiresAt" dateFormat="dd/mm/yy"/>
         </div>
         <div class="p-5 border-[1px] border-solid border-slate-200 bg-slate-50 rounded-lg shadow-sm w-fit" >
             <div class="font-bold mb-3">Regras desconto:</div>

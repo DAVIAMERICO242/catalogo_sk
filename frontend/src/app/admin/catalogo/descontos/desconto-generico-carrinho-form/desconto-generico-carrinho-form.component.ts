@@ -11,17 +11,18 @@ import { SharedModule } from '../../../../shared/shared.module';
 })
 export class DescontoGenericoCarrinhoFormComponent implements OnInit,DescontoForm {
   @Input({required:true})
-  payload!: Desconto.DescontoModel;
+  payload!:Readonly<Desconto.DescontoModel>;
   @Input({required:true})
   loading: boolean = false;
   @Output()
   onSave = new EventEmitter<Desconto.DescontoModel>();
 
+  descontoGenericoCarrinho!:Desconto.DescontoGenericoCarrinhoModel;
+
   constructor(private message:MessageService){}
 
   ngOnInit(): void {
-    this.payload={...this.payload};
-    this.payload.descontoGenericoCarrinho = {
+    this.descontoGenericoCarrinho = {
       minValue:1,
       percentDecimalDiscount:0,
       systemId:""
@@ -29,21 +30,21 @@ export class DescontoGenericoCarrinhoFormComponent implements OnInit,DescontoFor
   }
 
   get desconto(){
-    if(this.payload.descontoGenericoCarrinho?.percentDecimalDiscount){
-      return Math.round(this.payload.descontoGenericoCarrinho.percentDecimalDiscount * 100);
+    if(this.descontoGenericoCarrinho?.percentDecimalDiscount){
+      return Math.round(this.descontoGenericoCarrinho.percentDecimalDiscount * 100);
     }else{
       return 0;
     }
   }
 
   set desconto(val:number){
-    if(this.payload.descontoGenericoCarrinho){
-      this.payload.descontoGenericoCarrinho.percentDecimalDiscount = val/100;
+    if(this.descontoGenericoCarrinho){
+      this.descontoGenericoCarrinho.percentDecimalDiscount = val/100;
     }
   }
 
   validate(){
-    if(!this.payload.descontoGenericoCarrinho?.percentDecimalDiscount){
+    if(!this.descontoGenericoCarrinho?.percentDecimalDiscount){
       this.message.add({
         severity:"error",
         summary:"O desconto não pode ser nulo"
@@ -57,7 +58,11 @@ export class DescontoGenericoCarrinhoFormComponent implements OnInit,DescontoFor
     if(!this.validate()){
       return;
     }
-    this.onSave.emit(this.payload);
+    const buffer = {
+      ...this.payload,
+     descontoGenericoCarrinho: this.descontoGenericoCarrinho
+    }
+    this.onSave.emit(buffer);
   }
 }
 

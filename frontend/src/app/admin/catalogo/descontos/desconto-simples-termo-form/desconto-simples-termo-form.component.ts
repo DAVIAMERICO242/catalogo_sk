@@ -13,7 +13,7 @@ import { SharedModule } from '../../../../shared/shared.module';
 })
 export class DescontoSimplesTermoFormComponent implements OnInit,DescontoForm {
   @Input({required:true})
-  payload!:Desconto.DescontoModel;
+  payload!:Readonly<Desconto.DescontoModel>;
   @Input({required:true})
   loading: boolean = false;
   @Output()
@@ -24,11 +24,11 @@ export class DescontoSimplesTermoFormComponent implements OnInit,DescontoForm {
     grupos:[],
     linhas:[]
   };
+  descontoSimplesTermo!:Desconto.DescontoSimplesTermoModel;
   constructor(private message:MessageService,private produtoService:ProdutosService,private auth:UserService){}
 
   ngOnInit(): void {
-    this.payload={...this.payload};
-    this.payload.descontoSimplesTermo = {
+    this.descontoSimplesTermo = {
       delimitedCategorias:[],
       delimitedGrupos:[],
       delimitedLinhas:[],
@@ -56,27 +56,27 @@ export class DescontoSimplesTermoFormComponent implements OnInit,DescontoForm {
     }
   }
   get desconto(){
-    if(this.payload.descontoSimplesTermo?.percentDecimalDiscount){
-      return Math.round(this.payload.descontoSimplesTermo.percentDecimalDiscount * 100);
+    if(this.descontoSimplesTermo?.percentDecimalDiscount){
+      return Math.round(this.descontoSimplesTermo.percentDecimalDiscount * 100);
     }else{
       return 0;
     }
   }
 
   set desconto(val:number){
-    if(this.payload.descontoSimplesTermo){
-      this.payload.descontoSimplesTermo.percentDecimalDiscount = val/100;
+    if(this.descontoSimplesTermo){
+      this.descontoSimplesTermo.percentDecimalDiscount = val/100;
     }
   }
 
   validate(): boolean {
     if(
-      !this.payload.descontoSimplesTermo?.delimitedCategorias.length
-      && !this.payload.descontoSimplesTermo?.delimitedGrupos.length
-      && !this.payload.descontoSimplesTermo?.delimitedLinhas.length
-      && !this.payload.descontoSimplesTermo?.excludedCategorias.length
-      && !this.payload.descontoSimplesTermo?.excludedGrupos.length
-      && !this.payload.descontoSimplesTermo?.excludedLinhas.length
+      !this.descontoSimplesTermo?.delimitedCategorias.length
+      && !this.descontoSimplesTermo?.delimitedGrupos.length
+      && !this.descontoSimplesTermo?.delimitedLinhas.length
+      && !this.descontoSimplesTermo?.excludedCategorias.length
+      && !this.descontoSimplesTermo?.excludedGrupos.length
+      && !this.descontoSimplesTermo?.excludedLinhas.length
     ){
       this.message.add({
         severity:"error",
@@ -84,7 +84,7 @@ export class DescontoSimplesTermoFormComponent implements OnInit,DescontoForm {
       })
       return false;
     }
-    if(!this.payload.descontoSimplesTermo.percentDecimalDiscount){
+    if(!this.descontoSimplesTermo.percentDecimalDiscount){
       this.message.add({
         severity:"error",
         summary:"O desconto não pode ser nulo"
@@ -96,7 +96,11 @@ export class DescontoSimplesTermoFormComponent implements OnInit,DescontoForm {
     if(!this.validate()){
       return
     }
-    this.onSave.emit(this.payload);
+    const buffer = {
+      ...this.payload,
+      descontoSimplesTermo:this.descontoSimplesTermo
+    }
+    this.onSave.emit(buffer);
   }
 
 }

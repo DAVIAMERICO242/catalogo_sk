@@ -1,4 +1,4 @@
-<div class="space-y-4 mb-5 mt-5" *ngIf="this.payload.descontoMenorValor">
+<div class="space-y-4 mb-5 mt-5" *ngIf="this.descontoMenorValor">
     <div>
         <div  class="text-sm text-black mb-3">
             Quantidade mínima de produtos no carrinho:
@@ -7,7 +7,7 @@
             <div class="text-xs text-gray-400">
                 Quantidade
             </div>
-            <p-input-number [(ngModel)]="this.payload.descontoMenorValor.lowerQuantityLimitToApply" [min]="2" [showButtons]="true"/>
+            <p-input-number [(ngModel)]="this.descontoMenorValor.lowerQuantityLimitToApply" [min]="2" [showButtons]="true"/>
         </div>
         <div  class="text-sm text-black mb-3">
             Aplicar promoção para:
@@ -17,19 +17,19 @@
                 <div class="text-xs text-gray-400">
                     Categoria
                 </div>
-                <p-multi-select [options]="this.termos.categorias" [(ngModel)]="this.payload.descontoMenorValor.delimitedCategorias" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+                <p-multi-select [options]="this.termos.categorias" [(ngModel)]="this.descontoMenorValor.delimitedCategorias" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
             </div>
             <div>
                 <div class="text-xs text-gray-400">
                     Linha
                 </div>
-                <p-multi-select [options]="this.termos.linhas" [(ngModel)]="this.payload.descontoMenorValor.delimitedLinhas" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+                <p-multi-select [options]="this.termos.linhas" [(ngModel)]="this.descontoMenorValor.delimitedLinhas" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
             </div>
             <div>
                 <div class="text-xs text-gray-400">
                     Grupo
                 </div>
-                <p-multi-select [options]="this.termos.grupos" [(ngModel)]="this.payload.descontoMenorValor.delimitedGrupos" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+                <p-multi-select [options]="this.termos.grupos" [(ngModel)]="this.descontoMenorValor.delimitedGrupos" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
             </div>
         </div>
     </div>
@@ -42,19 +42,19 @@
                 <div class="text-xs text-gray-400">
                     Categoria
                 </div>
-                <p-multi-select [options]="this.termos.categorias" [(ngModel)]="this.payload.descontoMenorValor.excludedCategorias" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+                <p-multi-select [options]="this.termos.categorias" [(ngModel)]="this.descontoMenorValor.excludedCategorias" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
             </div>
             <div>
                 <div class="text-xs text-gray-400">
                     Linha
                 </div>
-                <p-multi-select [options]="this.termos.linhas" [(ngModel)]="this.payload.descontoMenorValor.excludedLinhas" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+                <p-multi-select [options]="this.termos.linhas" [(ngModel)]="this.descontoMenorValor.excludedLinhas" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
             </div>
             <div>
                 <div class="text-xs text-gray-400">
                     Grupo
                 </div>
-                <p-multi-select [options]="this.termos.grupos" [(ngModel)]="this.payload.descontoMenorValor.excludedGrupos" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
+                <p-multi-select [options]="this.termos.grupos" [(ngModel)]="this.descontoMenorValor.excludedGrupos" styleClass="!w-[120px]  !text-xs h-[40px] flex items-center "/>
             </div>
         </div>
     </div>
