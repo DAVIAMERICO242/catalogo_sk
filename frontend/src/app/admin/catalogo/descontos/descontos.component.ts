@@ -4,6 +4,8 @@ import { UserService } from '../../../services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SharedModule } from '../../../shared/shared.module';
 import { NovoDescontoComponent } from "./novo-desconto/novo-desconto.component";
+import { DatetimeBrazilPipe } from "../../../pipes/datetime-brazil.pipe";
+import { DateBrazilPipe } from '../../../pipes/date-brazil.pipe';
 
 export interface DescontosBeautyNomes{
   pure_name:Desconto.DescontoTipo,
@@ -12,7 +14,7 @@ export interface DescontosBeautyNomes{
 
 @Component({
   selector: 'app-descontos',
-  imports: [SharedModule, NovoDescontoComponent],
+  imports: [SharedModule, NovoDescontoComponent, DatetimeBrazilPipe, DateBrazilPipe],
   templateUrl: './descontos.component.html'
 })
 export class DescontosComponent implements OnInit {
@@ -22,7 +24,8 @@ export class DescontosComponent implements OnInit {
   loadingDescontos = false;
   open = false;
   
-  constructor(private descontoService:DescontosService,private auth:UserService){}
+  constructor(private descontoService:DescontosService,private auth:UserService){
+  }
 
   ngOnInit(): void {
     for(let key in Desconto.DescontoTipo){
@@ -73,6 +76,15 @@ export class DescontosComponent implements OnInit {
         }
       })
     }
+  }
+
+  forceType(val:any){
+    return val as Desconto.DescontoModel;
+  }
+
+  getBeautyName(val:Desconto.DescontoTipo){
+    return this.descontosTipos.find((e)=>e.pure_name===val)?.beauty_name;
+
   }
 
 }

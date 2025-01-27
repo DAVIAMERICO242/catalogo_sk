@@ -12,6 +12,7 @@ public class DescontoDTO {
     String nome;
     DescontoTipo tipo;
     LocalDate expiresAt;
+    LocalDateTime createdAt;
     Boolean isActive;
     DescontoFreteDTO descontoFrete;
     DescontoSimplesDTO descontoSimples;

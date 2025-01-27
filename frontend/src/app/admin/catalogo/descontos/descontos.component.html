@@ -2,8 +2,61 @@
     <div class="pi pi-percentage !text-white !text-xs"></div>
     <div class="text-[13px] text-white ">Gerenciar descontos</div>
 </button>
-<p-dialog header="Descontos" styleClass="!min-w-[600px]" [modal]="true" [(visible)]="open">
-    <div>
+<p-dialog header="Descontos" styleClass="!min-w-[60vw]" [modal]="true" [(visible)]="open">
+    <div class="mb-7">
         <app-novo-desconto [descontoTipos]="this.descontosTipos"/>
     </div>
+    <p-table [value]="this.descontos" >
+        <ng-template #header >
+            <tr>
+                <th>
+                    Loja
+                </th>
+                <th>
+                    Nome
+                </th>
+                <th>
+                    Tipo
+                </th>
+                <th>
+                    Ativo?
+                </th>
+                <th>
+                    Criação
+                </th>
+                <th>
+                    Expira em
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-row>
+            <tr class="text-sm">
+                <td>
+                    {{this.forceType(row).loja.nome}}
+                </td>
+                <td>
+                    {{this.forceType(row).nome}}
+                </td>
+                <td>
+                    {{this.getBeautyName(this.forceType(row).tipo)}}
+                </td>
+                <td>
+                    {{this.forceType(row).isActive?"Sim":"Não"}}
+                </td>
+                <td>
+                    {{this.forceType(row).createdAt  | datetimeBrazil}}
+                </td>
+                <td>
+                    {{this.forceType(row).expiresAt | dateBrazil}}
+                </td>
+                <td>
+                    <span class="underline cursor-pointer">Gerenciar</span>
+                    /<span class="cursor-pointer text-red-600">Deletar</span>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </p-dialog>

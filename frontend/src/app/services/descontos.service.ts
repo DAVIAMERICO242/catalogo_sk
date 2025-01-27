@@ -13,7 +13,7 @@ export namespace Desconto{
     expiresAt:Date,
     isActive:boolean,
     loja:LojaModel,
-    createdAt:Date | undefined,
+    createdAt:Date | undefined ,
     descontoFrete?:DescontoFreteModel,
     descontoGenericoCarrinho?:DescontoGenericoCarrinhoModel;
     descontoSimples?:DescontoSimplesProdutoModel,
@@ -110,8 +110,8 @@ export class DescontosService {
       map((raw)=>{
         return {
           ...raw,
-          expiresAt:new Date(raw.expiresAt),
-          createdAt: new Date(raw.createdAt as Date)
+          expiresAt:new Date(raw.expiresAt + "T00:00:00-03:00"),
+          createdAt:new Date((raw.createdAt as Date))
         }
       })
     );
@@ -120,13 +120,14 @@ export class DescontosService {
   getDescontos(lojaId:string){
     return this.http.get<Desconto.DescontoModel[]>(env.BACKEND_URL+"/descontos?lojaId="+lojaId).pipe(
       map((raw)=>{
-        return raw.map((e)=>{
+        const buffer = raw.map((e)=>{
           return{
             ...e,
-            expiresAt:new Date(e.expiresAt),
-            createdAt:new Date(e.createdAt as Date)
+            expiresAt:new Date(e.expiresAt + "T00:00:00-03:00"),
+            createdAt:new Date((e.createdAt as Date))
           }
         })
+        return buffer;
       })
     );
   }

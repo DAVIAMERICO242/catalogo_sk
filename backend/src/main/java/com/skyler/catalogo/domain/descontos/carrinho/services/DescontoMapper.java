@@ -156,6 +156,7 @@ public class DescontoMapper {
         output.setIsActive(entity.getIsActive());
         output.setExpiresAt(entity.getExpiresAt());
         output.setTipo(entity.getDescontoTipo());
+        output.setCreatedAt(entity.getCreatedAt());
         lojaDescontoDTO.setSystemId(entity.getLoja().getSystemId());
         lojaDescontoDTO.setNome(entity.getLoja().getNome());
         lojaDescontoDTO.setSlug(entity.getLoja().getSlug());
