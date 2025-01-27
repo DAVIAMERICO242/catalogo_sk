@@ -39,6 +39,7 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   
   ngOnInit(): void {
     this.nowAfter.setDate(this.nowAfter.getDate()+1);
+    this.nowAfter.setHours(0, 0, 0, 0);  // Set the time to 00:00:00.000
     if(!this.update){
       this.focusedTipo = this.descontoTipos[0];
       this.definePayLoadModel();
