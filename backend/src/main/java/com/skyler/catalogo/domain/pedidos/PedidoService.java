@@ -135,7 +135,7 @@ public class PedidoService {
         pedido.setTelefone(pedidoDTO.getTelefone());
         pedido.setValor(pedidoDTO.getValor());
         pedido.setValorFrete(pedidoDTO.getValorFrete());
-        Set<String> variacoesIds = new HashSet<>(pedidoDTO.getProdutosComprados().stream()
+        Set<String> variacoesIds = new HashSet<>(pedidoDTO.getProdutos().stream()
                 .flatMap(produto -> produto.getVariacoesCompradas().stream())
                 .map(o->o.getSystemId())
                 .collect(Collectors.toList()));

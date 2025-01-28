@@ -2,9 +2,11 @@ package com.skyler.catalogo.domain.descontos.carrinho.services;
 
 import com.skyler.catalogo.domain.descontos.carrinho.entities.DelimitedTermos;
 import com.skyler.catalogo.domain.descontos.carrinho.entities.Desconto;
+import com.skyler.catalogo.domain.descontos.carrinho.entities.DescontoProgressivoIntervalos;
 import com.skyler.catalogo.domain.descontos.carrinho.entities.ExcludedTermos;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.TermoTipo;
+import com.skyler.catalogo.domain.descontos.carrinho.interfaces.Discountable;
 import com.skyler.catalogo.domain.descontos.carrinho.repositories.DescontoRepository;
 import com.skyler.catalogo.domain.pedidos.PedidoDTO;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
@@ -14,6 +16,7 @@ import com.skyler.catalogo.domain.produtos.repositories.ProdutoVariacaoRepositor
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DiscountCalculator {
 
@@ -27,19 +30,19 @@ public class DiscountCalculator {
         this.produtoVariacaoRepository = produtoVariacaoRepository;
     }
 
-    private Float getFinalDiscountValueForCurrentEpochAndOrder(PedidoDTO pedidoDTO){
+    private Float getFinalDiscountValueForCurrentEpochAndOrder(Discountable discountable){//vale pra carrinho e pedido
         List<Desconto> descontos = this.descontoRepository.findAllActiveAndNotExpiredByLojaId(
                 LocalDate.now(),
-                pedidoDTO.getLoja().getSystemId()
+                discountable.getLoja().getSystemId()
         );
-        List<Produto> produtosBase = this.produtoRepository.findAllByIdIn(pedidoDTO.getProdutosComprados().stream().map(o->o.getSystemId()).toList());
+        List<Produto> produtosBase = this.produtoRepository.findAllByIdIn(discountable.getProdutos().stream().map(o->o.getSystemId()).toList());
         Float initialValue = produtosBase.stream()
                 .map(p -> p.getPreco()) // Extrai os preços como Float
                 .reduce(0f, Float::sum);
         Float finalValue = initialValue;
         for(Desconto desconto:descontos){
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_FRETE)){
-                finalValue = finalValue - pedidoDTO.getValorFrete()*(1 - desconto.getDescontoFrete().getPercentDecimalDiscount());
+                finalValue = finalValue - discountable.getValorFrete()*(1 - desconto.getDescontoFrete().getPercentDecimalDiscount());
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_GENERICO_CARRINHO)){
                 finalValue = finalValue - finalValue*(desconto.getDescontoGenericoCarrinho().getPercentDecimalDiscount());
@@ -52,7 +55,7 @@ public class DiscountCalculator {
                 }
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_SIMPLES_TERMO)){
-                for(PedidoDTO.Produto produto:pedidoDTO.getProdutosComprados()){
+                for(Discountable.Produto produto:discountable.getProdutos()){
                     Produto regardingProduto = produtosBase.stream().filter(o->o.getSystemId().equals(produto.getSystemId())).findFirst().orElse(null);
                     if(regardingProduto==null){
                         continue;
@@ -92,6 +95,30 @@ public class DiscountCalculator {
                             .min(Comparator.comparing(Produto::getPreco))
                             .orElse(null); // Retorna null caso o Stream esteja vazio
                     finalValue = finalValue - produtoComMaiorPreco.getPreco()*(1-desconto.getDescontoMaiorValor().getPercentDecimalDiscount());
+                }
+            }
+            if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_PROGRESSIVO)){
+                List<Produto> produtosParticipantes = this.getProdutosParticipantesDelimitedTermosExcludedTermos(
+                        produtosBase,
+                        desconto.getDelimitedTermos(),
+                        desconto.getExcludedTermos()
+                );
+                if(!produtosParticipantes.isEmpty()){
+                    List<String> produtosParticipantesIds = produtosParticipantes.stream().map(o->o.getSystemId()).toList();
+                    List<Discountable.ProdutoVariacao> variacoesParticipantesFromDiscountableNotUnique = discountable.getProdutos().stream()
+                            .filter(o->produtosParticipantesIds.contains(o.getSystemId()))
+                            .flatMap(produto -> produto.getVariacoesCompradas().stream())
+                            .toList();
+                    Set<DescontoProgressivoIntervalos> descontoProgressivoIntervalos = desconto.getDescontoProgressivo().getIntervalos();
+                    List<DescontoProgressivoIntervalos> intervalosOrdenadosDesc = descontoProgressivoIntervalos.stream()
+                            .sorted(Comparator.comparing(DescontoProgressivoIntervalos::getMinQuantity).reversed())
+                            .toList();
+                    for(DescontoProgressivoIntervalos intervalo:intervalosOrdenadosDesc){
+                        if(variacoesParticipantesFromDiscountableNotUnique.size()>=intervalo.getMinQuantity()){
+                            finalValue = finalValue - finalValue*intervalo.getPercentDecimalDiscount();
+                            break;
+                        }
+                    }
                 }
             }
         }
