@@ -24,6 +24,7 @@ import java.util.UUID;
 public class Desconto{
 
     @Id
+    @Column(name="system_id")
     private String systemId = UUID.randomUUID().toString();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="loja_system_id")

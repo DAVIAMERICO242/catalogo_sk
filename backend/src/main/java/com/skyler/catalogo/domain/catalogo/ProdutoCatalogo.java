@@ -16,6 +16,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of="systemId")
 public class ProdutoCatalogo {
     @Id
+    @Column(name="system_id")
     private String systemId = UUID.randomUUID().toString();
     @ManyToOne
     @JoinColumn(name="produto_system_id")

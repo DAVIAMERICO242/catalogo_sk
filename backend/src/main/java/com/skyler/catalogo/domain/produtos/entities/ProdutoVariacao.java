@@ -13,6 +13,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of="systemId")
 public class ProdutoVariacao {
     @Id
+    @Column(name="system_id")
     private String systemId = UUID.randomUUID().toString();
     @Column(name="integrador_id")
     private String produtoVariacaoIntegradorId;
