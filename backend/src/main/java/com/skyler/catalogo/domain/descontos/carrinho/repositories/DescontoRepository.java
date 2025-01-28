@@ -11,6 +11,10 @@ import java.util.List;
 
 public interface DescontoRepository extends JpaRepository<Desconto,String> {
 
+    @Query("SELECT COUNT(da) FROM DescontosAplicados da " +
+            "WHERE da.desconto.systemId = :id")
+    int numeroAplicacoes(String id);
+
     @Query("SELECT d FROM Desconto d " +
             "LEFT JOIN FETCH d.loja l " +
             "LEFT JOIN FETCH d.descontoFrete df " +

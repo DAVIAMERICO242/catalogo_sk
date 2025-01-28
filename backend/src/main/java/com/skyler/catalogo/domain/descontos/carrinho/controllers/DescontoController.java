@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.*;
 public class DescontoController {
 
     private final DescontoService descontoService;
-    private final DescontoRepository descontoRepository;
 
-    public DescontoController(DescontoService descontoService, DescontoRepository descontoRepository) {
+    public DescontoController(DescontoService descontoService) {
         this.descontoService = descontoService;
-        this.descontoRepository = descontoRepository;
     }
 
 
@@ -40,7 +38,7 @@ public class DescontoController {
     @DeleteMapping
     public ResponseEntity deletar(String id){
         try{
-            this.descontoRepository.deleteById(id);
+            this.descontoService.deletarDesconto(id);
             return ResponseEntity.ok().build();
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());

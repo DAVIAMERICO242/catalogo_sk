@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DescontosService } from '../../../../services/descontos.service';
 import { ConfirmationDialogComponent } from "../../../../pure-ui-components/confirmation-dialog/confirmation-dialog.component";
 import { MessageService } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-deletar-desconto',
@@ -33,9 +34,12 @@ export class DeletarDescontoComponent {
           summary:"Sucesso"
         })
       },
-      error:()=>{
+      error:(e:HttpErrorResponse)=>{
         this.loading = false;
-        alert("ERRO")
+        this.message.add({
+          severity:"error",
+          summary:e.error
+        })
       }
     })
   }

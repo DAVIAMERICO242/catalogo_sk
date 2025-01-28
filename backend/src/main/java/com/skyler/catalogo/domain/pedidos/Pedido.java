@@ -41,7 +41,6 @@ public class Pedido {
     private Float valorFrete;
     private Boolean pago;
 
-
     @ManyToMany
     @JoinTable(name = "orders_products",
             joinColumns = @JoinColumn(name="order_id",referencedColumnName = "system_id"),

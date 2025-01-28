@@ -31,6 +31,13 @@ public class DescontoService {
         this.descontoMapper = descontoMapper;
     }
 
+    public void deletarDesconto(String id){
+        if(this.descontoRepository.numeroAplicacoes(id)>0){
+            throw new RuntimeException("Existem pedidos associados a esse desconto.");
+        }
+        this.descontoRepository.deleteById(id);
+    }
+
     public List<DescontoDTO> getDescontosForLoja(String lojaSystemId){
         List<DescontoDTO> descontoDTOList = new ArrayList<>();
         List<Desconto> descontos = this.descontoRepository.findAllByLojaId(lojaSystemId);
