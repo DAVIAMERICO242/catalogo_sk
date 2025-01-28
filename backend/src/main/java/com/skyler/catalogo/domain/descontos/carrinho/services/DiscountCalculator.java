@@ -33,7 +33,7 @@ public class DiscountCalculator {
         this.produtoVariacaoRepository = produtoVariacaoRepository;
     }
 
-    private List<DescontoAplicadoDTO> getDiscountChainForCurrentEpochAndDiscountable(Discountable discountable){//vale pra carrinho e pedido
+    public List<DescontoAplicadoDTO> getDiscountChainForCurrentEpochAndDiscountable(Discountable discountable){//vale pra carrinho e pedido
         List<DescontoAplicadoDTO> output = new ArrayList<>();
         List<Desconto> descontos = this.descontoRepository.findAllActiveAndNotExpiredByLojaId(
                 LocalDate.now(),

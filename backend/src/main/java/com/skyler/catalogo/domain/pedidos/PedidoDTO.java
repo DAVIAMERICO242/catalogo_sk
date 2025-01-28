@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 public class PedidoDTO implements Discountable {
     private String systemId;
-    private Loja loja;
+    private Discountable.Loja loja;
     private LocalDateTime moment;
     private String documento;
     private String nome;
@@ -27,8 +27,19 @@ public class PedidoDTO implements Discountable {
     private Float valor;
     private Float valorFrete;
     private Boolean pago;
-    private List<Produto> produtos = new ArrayList<>();
+    private List<Discountable.Produto> produtos = new ArrayList<>();
     private List<DescontoAplicadoDTO> descontosAplicados = new ArrayList<>();
+
+    @Override
+    public Discountable.Loja getLoja(){
+        return this.loja;
+    }
+
+    @Override
+    public List<Discountable.Produto> getProdutos(){
+        return this.produtos;
+    }
+
 
     public void addProdutoComprado(Produto produto){
         this.produtos.add(produto);
@@ -39,26 +50,26 @@ public class PedidoDTO implements Discountable {
     }
 
     @Data
-    public static class Loja{
+    public static class Loja implements Discountable.Loja{
         String systemId;
         String slug;
         String nome;
     }
 
     @Data
-    public static class Produto{
+    public static class Produto implements Discountable.Produto{
         String systemId;
         String sku;
         String nome;
         Float valorBase;
-        List<ProdutoVariacao> variacoesCompradas = new ArrayList<>();
-        public void addVariacaoComprada(ProdutoVariacao variacaoComprada){
+        List<Discountable.ProdutoVariacao> variacoesCompradas = new ArrayList<>();
+        public void addVariacaoComprada(Discountable.ProdutoVariacao variacaoComprada){
             this.variacoesCompradas.add(variacaoComprada);
         }
     }
 
     @Data
-    public static class ProdutoVariacao{
+    public static class ProdutoVariacao implements Discountable.ProdutoVariacao{
         String systemId;
         String sku;
         String cor;
