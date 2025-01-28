@@ -128,7 +128,7 @@ public class DiscountCalculator {
                     Float descontoVal = produtoComMenorPreco.getPreco()*(1-desconto.getDescontoMenorValor().getPercentDecimalDiscount());
                     finalValue = finalValue - descontoVal;
                     DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
-                    descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_PECA_MAIOR_VALOR);
+                    descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_PECA_MENOR_VALOR);
                     descontoAplicadoDTO.setNome(desconto.getDiscountName());
                     descontoAplicadoDTO.setValorAplicado(descontoVal);
                     output.add(descontoAplicadoDTO);
@@ -155,7 +155,7 @@ public class DiscountCalculator {
                             Float descontoVal = finalValue*intervalo.getPercentDecimalDiscount();
                             finalValue = finalValue - descontoVal;
                             DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
-                            descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_PECA_MAIOR_VALOR);
+                            descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_PROGRESSIVO);
                             descontoAplicadoDTO.setNome(desconto.getDiscountName());
                             descontoAplicadoDTO.setValorAplicado(descontoVal);
                             output.add(descontoAplicadoDTO);
