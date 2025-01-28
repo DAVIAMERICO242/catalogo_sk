@@ -47,6 +47,19 @@ public class MinioService implements ApplicationListener<ApplicationReadyEvent> 
         }
     }
 
+    public void removeDirectory(String dir){
+        try {
+            authenticatedMinioClient.removeObject(
+                    RemoveObjectArgs.builder()
+                            .bucket(bucket)
+                            .object(dir)
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void postBase64(String base64, String fileNameWithExtension, String pathFromBucketStartWithoutPointAndSlash) throws Exception{
         byte[] decoded = Base64.getDecoder().decode(base64);
         InputStream inputStream = new java.io.ByteArrayInputStream(decoded);
@@ -80,7 +93,7 @@ public class MinioService implements ApplicationListener<ApplicationReadyEvent> 
                 output.add(fileUrl);
 
                 // Imprimir a URL do arquivo
-                System.out.println("URL do arquivo: " + fileUrl.toString());
+                System.out.println("URL do arquivo: " + fileUrl);
             }
         }
         return output;

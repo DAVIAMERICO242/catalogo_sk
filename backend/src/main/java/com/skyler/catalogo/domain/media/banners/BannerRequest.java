@@ -7,6 +7,7 @@ import java.util.List;
 @Data
 public class BannerRequest {
     String lojaId;
+    Integer index;
     List<Media> media;
 
     @Data

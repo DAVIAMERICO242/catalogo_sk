@@ -43,7 +43,9 @@ public class UpdateLojaAndFranquiaMethod {
                 if(lojaOPT.isPresent()){
                     lojaEnt = lojaOPT.get();
                 }
-                lojaEnt.setSlug(loja.getNome().toLowerCase().trim().replace("-","").replaceAll("\\s+", "-"));
+                if(lojaEnt.getSlug()==null){
+                    lojaEnt.setSlug(loja.getNome().toLowerCase().trim().replace("-","").replaceAll("\\s+", "-"));
+                }
                 lojaEnt.setNome(loja.getNome());
                 lojaEnt.setErpId(loja.getErpId());
                 lojaEnt.setIntegradorId(loja.getIntegradorId());
