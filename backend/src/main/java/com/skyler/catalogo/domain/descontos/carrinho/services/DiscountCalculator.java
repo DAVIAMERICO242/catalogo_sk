@@ -1,5 +1,6 @@
 package com.skyler.catalogo.domain.descontos.carrinho.services;
 
+import com.skyler.catalogo.domain.descontos.carrinho.DTOs.DescontoAplicadoDTO;
 import com.skyler.catalogo.domain.descontos.carrinho.entities.DelimitedTermos;
 import com.skyler.catalogo.domain.descontos.carrinho.entities.Desconto;
 import com.skyler.catalogo.domain.descontos.carrinho.entities.DescontoProgressivoIntervalos;
@@ -30,7 +31,8 @@ public class DiscountCalculator {
         this.produtoVariacaoRepository = produtoVariacaoRepository;
     }
 
-    private Float getFinalDiscountValueForCurrentEpochAndOrder(Discountable discountable){//vale pra carrinho e pedido
+    private List<DescontoAplicadoDTO> getDiscountChainForCurrentEpochAndDiscountable(Discountable discountable){//vale pra carrinho e pedido
+        List<DescontoAplicadoDTO> output = new ArrayList<>();
         List<Desconto> descontos = this.descontoRepository.findAllActiveAndNotExpiredByLojaId(
                 LocalDate.now(),
                 discountable.getLoja().getSystemId()
@@ -42,15 +44,33 @@ public class DiscountCalculator {
         Float finalValue = initialValue;
         for(Desconto desconto:descontos){
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_FRETE)){
-                finalValue = finalValue - discountable.getValorFrete()*(1 - desconto.getDescontoFrete().getPercentDecimalDiscount());
+                Float descontoVal = discountable.getValorFrete()*(1 - desconto.getDescontoFrete().getPercentDecimalDiscount());
+                finalValue = finalValue - descontoVal;
+                DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
+                descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_FRETE);
+                descontoAplicadoDTO.setNome(desconto.getDiscountName());
+                descontoAplicadoDTO.setValorAplicado(descontoVal);
+                output.add(descontoAplicadoDTO);
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_GENERICO_CARRINHO)){
-                finalValue = finalValue - finalValue*(desconto.getDescontoGenericoCarrinho().getPercentDecimalDiscount());
+                Float descontoVal =  finalValue*(desconto.getDescontoGenericoCarrinho().getPercentDecimalDiscount());
+                finalValue = finalValue - descontoVal;
+                DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
+                descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_GENERICO_CARRINHO);
+                descontoAplicadoDTO.setNome(desconto.getDiscountName());
+                descontoAplicadoDTO.setValorAplicado(descontoVal);
+                output.add(descontoAplicadoDTO);
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_SIMPLES_PRODUTO)){//errado, tem que loopar nas variações
                 for(Produto produto:produtosBase){
                     if(produto.getProdutosCatalogo().contains(desconto.getDescontoSimplesProduto().getProdutoCatalogo())){
-                        finalValue = finalValue - produto.getPreco()*(1 - desconto.getDescontoSimplesProduto().getPercentDecimalDiscount());
+                        Float descontoVal = produto.getPreco()*(1 - desconto.getDescontoSimplesProduto().getPercentDecimalDiscount());
+                        finalValue = finalValue - descontoVal;
+                        DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
+                        descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_SIMPLES_PRODUTO);
+                        descontoAplicadoDTO.setNome(desconto.getDiscountName());
+                        descontoAplicadoDTO.setValorAplicado(descontoVal);
+                        output.add(descontoAplicadoDTO);
                     }
                 }
             }
@@ -68,6 +88,11 @@ public class DiscountCalculator {
                                 desconto.getDescontoSimplesTermo().getPercentDecimalDiscount()
                         );
                         finalValue = finalValue - descontoVal;
+                        DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
+                        descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_SIMPLES_TERMO);
+                        descontoAplicadoDTO.setNome(desconto.getDiscountName());
+                        descontoAplicadoDTO.setValorAplicado(descontoVal);
+                        output.add(descontoAplicadoDTO);
                     }
                 }
             }
@@ -81,7 +106,13 @@ public class DiscountCalculator {
                     Produto produtoComMaiorPreco = produtosParticipantes.stream()
                             .max(Comparator.comparing(Produto::getPreco))
                             .orElse(null); // Retorna null caso o Stream esteja vazio
-                    finalValue = finalValue - produtoComMaiorPreco.getPreco()*(1-desconto.getDescontoMaiorValor().getPercentDecimalDiscount());
+                    Float descontoVal = produtoComMaiorPreco.getPreco()*(1-desconto.getDescontoMaiorValor().getPercentDecimalDiscount());
+                    finalValue = finalValue - descontoVal;
+                    DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
+                    descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_PECA_MAIOR_VALOR);
+                    descontoAplicadoDTO.setNome(desconto.getDiscountName());
+                    descontoAplicadoDTO.setValorAplicado(descontoVal);
+                    output.add(descontoAplicadoDTO);
                 }
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_PECA_MENOR_VALOR)){//nao é cumulativo
@@ -91,10 +122,16 @@ public class DiscountCalculator {
                         desconto.getExcludedTermos()
                 );
                 if(!produtosParticipantes.isEmpty()){
-                    Produto produtoComMaiorPreco = produtosParticipantes.stream()
+                    Produto produtoComMenorPreco = produtosParticipantes.stream()
                             .min(Comparator.comparing(Produto::getPreco))
                             .orElse(null); // Retorna null caso o Stream esteja vazio
-                    finalValue = finalValue - produtoComMaiorPreco.getPreco()*(1-desconto.getDescontoMaiorValor().getPercentDecimalDiscount());
+                    Float descontoVal = produtoComMenorPreco.getPreco()*(1-desconto.getDescontoMenorValor().getPercentDecimalDiscount());
+                    finalValue = finalValue - descontoVal;
+                    DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
+                    descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_PECA_MAIOR_VALOR);
+                    descontoAplicadoDTO.setNome(desconto.getDiscountName());
+                    descontoAplicadoDTO.setValorAplicado(descontoVal);
+                    output.add(descontoAplicadoDTO);
                 }
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_PROGRESSIVO)){
@@ -115,15 +152,23 @@ public class DiscountCalculator {
                             .toList();
                     for(DescontoProgressivoIntervalos intervalo:intervalosOrdenadosDesc){
                         if(variacoesParticipantesFromDiscountableNotUnique.size()>=intervalo.getMinQuantity()){
-                            finalValue = finalValue - finalValue*intervalo.getPercentDecimalDiscount();
+                            Float descontoVal = finalValue*intervalo.getPercentDecimalDiscount();
+                            finalValue = finalValue - descontoVal;
+                            DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
+                            descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_PECA_MAIOR_VALOR);
+                            descontoAplicadoDTO.setNome(desconto.getDiscountName());
+                            descontoAplicadoDTO.setValorAplicado(descontoVal);
+                            output.add(descontoAplicadoDTO);
                             break;
                         }
                     }
                 }
             }
         }
-        return finalValue;
+        return output;
     }
+
+
 
 
     private List<Produto> getProdutosParticipantesDelimitedTermosExcludedTermos(

@@ -1,6 +1,7 @@
 package com.skyler.catalogo.domain.pedidos;
 
 
+import com.skyler.catalogo.domain.descontos.carrinho.DTOs.DescontoAplicadoDTO;
 import com.skyler.catalogo.domain.descontos.carrinho.entities.Desconto;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.TermoTipo;
@@ -99,7 +100,7 @@ public class PedidoService {
             dto.addProdutoComprado(produtoComprado);
         }
         for(DescontosAplicados descontosAplicados:pedido.getDescontosAplicados()){
-            PedidoDTO.Desconto desconto = new PedidoDTO.Desconto();
+            DescontoAplicadoDTO desconto = new DescontoAplicadoDTO();
             desconto.setSystemId(descontosAplicados.getDesconto().getSystemId());
             desconto.setTipo(descontosAplicados.getDesconto().getDescontoTipo());
             desconto.setNome(descontosAplicados.getDesconto().getDiscountName());
@@ -142,7 +143,7 @@ public class PedidoService {
         List<ProdutoVariacao> variations = this.produtoVariacaoRepository.findAllById(variacoesIds);
         pedido.setProdutos(new HashSet<>(variations));
         if(pedido.getDescontosAplicados().isEmpty()){
-            for(PedidoDTO.Desconto desconto:pedidoDTO.getDescontosAplicados()){
+            for(DescontoAplicadoDTO desconto:pedidoDTO.getDescontosAplicados()){
                 Optional<Desconto> desconto1 = this.descontoRepository.findById(desconto.getSystemId());
                 if(desconto1.isPresent()){
                     Desconto descontoEnt = desconto1.get();

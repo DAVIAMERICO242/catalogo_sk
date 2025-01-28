@@ -1,5 +1,6 @@
 package com.skyler.catalogo.domain.pedidos;
 
+import com.skyler.catalogo.domain.descontos.carrinho.DTOs.DescontoAplicadoDTO;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.carrinho.interfaces.Discountable;
 import lombok.Data;
@@ -27,13 +28,13 @@ public class PedidoDTO implements Discountable {
     private Float valorFrete;
     private Boolean pago;
     private List<Produto> produtos = new ArrayList<>();
-    private List<Desconto> descontosAplicados = new ArrayList<>();
+    private List<DescontoAplicadoDTO> descontosAplicados = new ArrayList<>();
 
     public void addProdutoComprado(Produto produto){
         this.produtos.add(produto);
     }
 
-    public void addDescontoAplicado(Desconto desconto){
+    public void addDescontoAplicado(DescontoAplicadoDTO desconto){
         this.descontosAplicados.add(desconto);
     }
 
@@ -66,11 +67,4 @@ public class PedidoDTO implements Discountable {
         String fotoUrl;
     }
 
-    @Data
-    public static class Desconto{
-        String systemId;
-        String nome;
-        DescontoTipo tipo;
-        Float valorAplicado;
-    }
 }

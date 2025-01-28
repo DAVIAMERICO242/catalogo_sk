@@ -1,5 +1,7 @@
 package com.skyler.catalogo.domain.descontos.carrinho.interfaces;
 
+import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
+
 import java.util.List;
 
 public interface Discountable {
