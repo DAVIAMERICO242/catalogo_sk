@@ -27,7 +27,7 @@ public class Pedido {
     @Id
     @Column(name="system_id")
     private String systemId = UUID.randomUUID().toString();
-    private LocalDateTime moment;
+    private LocalDateTime moment = LocalDateTime.now();
     private String documento;
     private String nome;
     private Integer numero;
@@ -39,7 +39,7 @@ public class Pedido {
     private String telefone;
     private Float valor;
     private Float valorFrete;
-    private Boolean pago;
+    private Boolean pago = false;
 
     @ManyToMany
     @JoinTable(name = "orders_products",

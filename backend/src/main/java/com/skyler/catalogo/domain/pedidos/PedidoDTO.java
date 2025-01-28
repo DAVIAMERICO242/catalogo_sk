@@ -4,6 +4,7 @@ import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,15 +24,26 @@ public class PedidoDTO {
     private Float valor;
     private Float valorFrete;
     private Boolean pago;
-    private List<ProdutoVariacao> variacoesCompradas;
-    private List<Desconto> descontosAplicados;
+    private List<ProdutoVariacao> variacoesCompradas = new ArrayList<>();
+    private List<Desconto> descontosAplicados = new ArrayList<>();
+
+    public void addVariacaoComprada(ProdutoVariacao variacao){
+        this.variacoesCompradas.add(variacao);
+    }
+
+    public void addDescontoAplicado(Desconto desconto){
+        this.descontosAplicados.add(desconto);
+    }
 
     @Data
     public static class ProdutoVariacao{
         String systemId;
-        String nome;
+        String nomeProdutoBase;
         String sku;
+        String cor;
+        String tamanho;
         Float valorBase;
+        String fotoUrl;
     }
 
     @Data
