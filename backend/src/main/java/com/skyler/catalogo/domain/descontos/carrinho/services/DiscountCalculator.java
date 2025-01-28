@@ -14,11 +14,13 @@ import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoVariacaoRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class DiscountCalculator {
 
     private final DescontoRepository descontoRepository;
