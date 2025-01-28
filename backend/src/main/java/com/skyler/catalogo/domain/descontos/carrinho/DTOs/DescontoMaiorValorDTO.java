@@ -1,5 +1,6 @@
 package com.skyler.catalogo.domain.descontos.carrinho.DTOs;
 
+import com.skyler.catalogo.domain.descontos.carrinho.interfaces.DelimitedExcludedInterface;
 import lombok.Data;
 
 import java.util.ArrayList;

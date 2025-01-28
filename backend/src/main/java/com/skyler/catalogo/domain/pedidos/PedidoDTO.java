@@ -11,6 +11,7 @@ import java.util.UUID;
 @Data
 public class PedidoDTO {
     private String systemId;
+    private Loja loja;
     private LocalDateTime moment;
     private String documento;
     private String nome;
@@ -24,11 +25,11 @@ public class PedidoDTO {
     private Float valor;
     private Float valorFrete;
     private Boolean pago;
-    private List<ProdutoVariacao> variacoesCompradas = new ArrayList<>();
+    private List<Produto> produtosComprados = new ArrayList<>();
     private List<Desconto> descontosAplicados = new ArrayList<>();
 
-    public void addVariacaoComprada(ProdutoVariacao variacao){
-        this.variacoesCompradas.add(variacao);
+    public void addProdutoComprado(Produto produto){
+        this.produtosComprados.add(produto);
     }
 
     public void addDescontoAplicado(Desconto desconto){
@@ -36,9 +37,27 @@ public class PedidoDTO {
     }
 
     @Data
+    public static class Loja{
+        String systemId;
+        String slug;
+        String nome;
+    }
+
+    @Data
+    public static class Produto{
+        String systemId;
+        String sku;
+        String nome;
+        Float valorBase;
+        List<ProdutoVariacao> variacoesCompradas = new ArrayList<>();
+        public void addVariacaoComprada(ProdutoVariacao variacaoComprada){
+            this.variacoesCompradas.add(variacaoComprada);
+        }
+    }
+
+    @Data
     public static class ProdutoVariacao{
         String systemId;
-        String nomeProdutoBase;
         String sku;
         String cor;
         String tamanho;

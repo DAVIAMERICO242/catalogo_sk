@@ -6,10 +6,10 @@ import com.skyler.catalogo.domain.descontos.carrinho.DTOs.*;
 import com.skyler.catalogo.domain.descontos.carrinho.entities.*;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.TermoTipo;
+import com.skyler.catalogo.domain.descontos.carrinho.interfaces.DelimitedExcludedInterface;
 import com.skyler.catalogo.domain.descontos.carrinho.repositories.DescontoRepository;
 import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
-import jdk.dynalink.linker.LinkerServices;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -277,7 +277,7 @@ public class DescontoService {
         return descontoOPT.orElseGet(Desconto::new);
     }
 
-    private void arrumarTermos(DelimitedExcludedInterface object,Desconto entity){
+    private void arrumarTermos(DelimitedExcludedInterface object, Desconto entity){
         entity.getDelimitedTermos().clear();
         entity.getExcludedTermos().clear();
         for(String termo:object.getDelimitedCategorias()){

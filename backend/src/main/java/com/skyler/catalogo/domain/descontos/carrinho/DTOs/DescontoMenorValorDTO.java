@@ -1,12 +1,13 @@
 package com.skyler.catalogo.domain.descontos.carrinho.DTOs;
 
+import com.skyler.catalogo.domain.descontos.carrinho.interfaces.DelimitedExcludedInterface;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class DescontoMenorValorDTO implements DelimitedExcludedInterface{
+public class DescontoMenorValorDTO implements DelimitedExcludedInterface {
     String systemId;
     Integer lowerQuantityLimitToApply;
     List<String> delimitedCategorias = new ArrayList<>();

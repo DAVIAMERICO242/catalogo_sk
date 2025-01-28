@@ -46,6 +46,10 @@ public class Produto {
     @JsonBackReference
     private Franquia franquia;
 
+    @OneToMany(mappedBy = "produtoBaseFranquia")
+    @JsonManagedReference
+    private Set<ProdutoCatalogo> produtosCatalogo;
+
     public void addOrUpdateVariacao(ProdutoVariacao variacao){
         Optional<ProdutoVariacao> existingOPT = variacoes.stream().filter(o->o.getSkuPonto().equals(variacao.getSkuPonto())).findFirst();
         if(existingOPT.isEmpty()){

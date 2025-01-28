@@ -37,7 +37,7 @@ public interface ProdutoRepository extends JpaRepository<Produto,String>, JpaSpe
             "JOIN FETCH p.variacoes v " +
             "JOIN FETCH p.franquia f " +
             "WHERE p.systemId IN :ids ")
-    List<Produto> findAllByIdIn(List<Long> ids);
+    List<Produto> findAllByIdIn(List<String> ids);
 
     @Query("SELECT p FROM Produto p " +
             "JOIN FETCH p.variacoes v " +

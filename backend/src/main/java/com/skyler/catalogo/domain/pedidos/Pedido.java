@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.skyler.catalogo.domain.catalogo.ProdutoCatalogo;
 import com.skyler.catalogo.domain.descontos.carrinho.entities.Desconto;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
+import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -40,6 +41,11 @@ public class Pedido {
     private Float valor;
     private Float valorFrete;
     private Boolean pago = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="loja_id")
+    @JsonBackReference
+    private Loja loja;
 
     @ManyToMany
     @JoinTable(name = "orders_products",

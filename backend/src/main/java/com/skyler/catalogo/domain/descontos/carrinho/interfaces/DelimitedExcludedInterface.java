@@ -1,6 +1,4 @@
-package com.skyler.catalogo.domain.descontos.carrinho.DTOs;
-
-import lombok.Data;
+package com.skyler.catalogo.domain.descontos.carrinho.interfaces;
 
 import java.util.List;
 

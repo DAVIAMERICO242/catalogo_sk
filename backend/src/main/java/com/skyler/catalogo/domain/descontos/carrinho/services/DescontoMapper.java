@@ -4,6 +4,7 @@ import com.skyler.catalogo.domain.descontos.carrinho.DTOs.*;
 import com.skyler.catalogo.domain.descontos.carrinho.entities.*;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.carrinho.enums.TermoTipo;
+import com.skyler.catalogo.domain.descontos.carrinho.interfaces.DelimitedExcludedInterface;
 import org.springframework.stereotype.Service;
 
 @Service
