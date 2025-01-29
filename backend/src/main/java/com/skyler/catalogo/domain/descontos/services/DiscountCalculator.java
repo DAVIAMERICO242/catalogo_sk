@@ -1,7 +1,6 @@
 package com.skyler.catalogo.domain.descontos.services;
 
 import com.skyler.catalogo.domain.descontos.DTOs.DescontoAplicadoDTO;
-import com.skyler.catalogo.domain.descontos.DTOs.descontavel.ProdutoDescontavel;
 import com.skyler.catalogo.domain.descontos.entities.DelimitedTermos;
 import com.skyler.catalogo.domain.descontos.entities.Desconto;
 import com.skyler.catalogo.domain.descontos.entities.DescontoProgressivoIntervalos;
@@ -10,6 +9,7 @@ import com.skyler.catalogo.domain.descontos.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.enums.TermoTipo;
 import com.skyler.catalogo.domain.descontos.interfaces.Discountable;
 import com.skyler.catalogo.domain.descontos.repositories.DescontoRepository;
+import com.skyler.catalogo.domain.pedidos.DTOs.ProdutoPedidoDTO;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoVariacaoRepository;
@@ -75,7 +75,7 @@ public class DiscountCalculator {
                 }
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_SIMPLES_TERMO)){
-                for(ProdutoDescontavel produto:discountable.getProdutos()){
+                for(ProdutoPedidoDTO produto:discountable.getProdutos()){
                     Produto regardingProduto = produtosBase.stream().filter(o->o.getSystemId().equals(produto.getSystemId())).findFirst().orElse(null);
                     if(regardingProduto==null){
                         continue;
@@ -142,7 +142,7 @@ public class DiscountCalculator {
                 );
                 if(!produtosParticipantes.isEmpty()){
                     List<String> produtosParticipantesIds = produtosParticipantes.stream().map(o->o.getSystemId()).toList();
-                    List<ProdutoDescontavel.ProdutoVariacao> variacoesParticipantesFromDiscountableNotUnique = discountable.getProdutos().stream()
+                    List<ProdutoPedidoDTO.ProdutoVariacao> variacoesParticipantesFromDiscountableNotUnique = discountable.getProdutos().stream()
                             .filter(o->produtosParticipantesIds.contains(o.getSystemId()))
                             .flatMap(produto -> produto.getVariacoesCompradas().stream())
                             .toList();

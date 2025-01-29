@@ -2,7 +2,6 @@ package com.skyler.catalogo.domain.pedidos;
 
 
 import com.skyler.catalogo.domain.descontos.DTOs.DescontoAplicadoDTO;
-import com.skyler.catalogo.domain.descontos.DTOs.descontavel.ProdutoDescontavel;
 import com.skyler.catalogo.domain.descontos.entities.Desconto;
 import com.skyler.catalogo.domain.descontos.repositories.DescontoRepository;
 import com.skyler.catalogo.domain.descontos.services.DescontoService;
@@ -63,22 +62,7 @@ public class PedidoService {
         output.setTelefone(pedidoBeforeCalculationsDTO.getTelefone());
         output.setValorFrete(pedidoBeforeCalculationsDTO.getValorFrete());
         output.setPago(false);
-        for(ProdutoDescontavel produtoDescontavel:pedidoBeforeCalculationsDTO.getProdutos()){
-            ProdutoPedidoDTO produtoPedidoDTO = new ProdutoPedidoDTO();
-            produtoPedidoDTO.setNome(produtoDescontavel.getNome());
-            produtoPedidoDTO.setSystemId(produtoDescontavel.getSystemId());
-            produtoPedidoDTO.setSku(produtoDescontavel.getSku());
-            for(ProdutoDescontavel.ProdutoVariacao produtoVariacaoDescontavel:produtoDescontavel.getVariacoesCompradas()){
-                ProdutoPedidoDTO.ProdutoVariacao produtoVariacao = new ProdutoPedidoDTO.ProdutoVariacao();
-                produtoVariacao.setSystemId(produtoVariacaoDescontavel.getSystemId());
-                produtoVariacao.setSku(produtoVariacaoDescontavel.getSku());
-                produtoVariacao.setCor(produtoVariacaoDescontavel.getCor());
-                produtoVariacao.setTamanho(produtoVariacaoDescontavel.getTamanho());
-                produtoVariacao.setFotoUrl(produtoVariacaoDescontavel.getFotoUrl());
-                produtoPedidoDTO.addVariacao(produtoVariacao);
-            }
-            output.addProdutoComprado(produtoPedidoDTO);
-        }
+        output.setProdutos(pedidoBeforeCalculationsDTO.getProdutos());
         List<DescontoAplicadoDTO> descontos = this.discountCalculator.getDiscountChainForCurrentEpochAndDiscountable(pedidoBeforeCalculationsDTO);
         output.setDescontosAplicados(descontos);
 

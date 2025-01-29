@@ -1,7 +1,4 @@
 package com.skyler.catalogo.domain.pedidos.DTOs;
-
-import com.skyler.catalogo.domain.descontos.DTOs.descontavel.LojaDescontavel;
-import com.skyler.catalogo.domain.descontos.DTOs.descontavel.ProdutoDescontavel;
 import com.skyler.catalogo.domain.descontos.interfaces.Discountable;
 import lombok.Data;
 
@@ -11,7 +8,7 @@ import java.util.List;
 
 @Data
 public class PedidoBeforeCalculationsDTO implements Discountable {
-    private LojaDescontavel loja;
+    private LojaPedidoDTO loja;
     private LocalDateTime moment;
     private String documento;
     private String nome;
@@ -23,8 +20,8 @@ public class PedidoBeforeCalculationsDTO implements Discountable {
     private String cep;
     private String telefone;
     private Float valorFrete;
-    private List<ProdutoDescontavel> produtos = new ArrayList<>();
-    public void addProdutoComprado(ProdutoDescontavel produto){
+    private List<ProdutoPedidoDTO> produtos = new ArrayList<>();
+    public void addProdutoComprado(ProdutoPedidoDTO produto){
         this.produtos.add(produto);
     }
 
