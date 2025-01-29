@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Pedidos } from '../../../services/pedidos.service';
+import { Pedidos, PedidosService } from '../../../services/pedidos.service';
 import { SharedModule } from '../../../shared/shared.module';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-status-pedido',
@@ -10,5 +11,7 @@ import { SharedModule } from '../../../shared/shared.module';
 export class StatusPedidoComponent {
   @Input({required:true})
   pedido!:Pedidos.Pedido;
+  constructor(private pedidoService:PedidosService,private message:MessageService){}
+
 
 }

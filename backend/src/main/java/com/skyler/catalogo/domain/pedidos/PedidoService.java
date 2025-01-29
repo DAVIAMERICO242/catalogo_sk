@@ -50,8 +50,15 @@ public class PedidoService {
         this.pedidoRepository.save(this.dtoToEntity(mature));
     }
 
-
-
+    public void mudarStatus(String pedidoId){
+        Optional<Pedido> optionalPedido = this.pedidoRepository.findById(pedidoId);
+        if(optionalPedido.isEmpty()){
+            throw new RuntimeException("Pedido não encontrado");
+        }
+        Pedido pedido = optionalPedido.get();
+        pedido.setPago(!pedido.getPago());
+        this.pedidoRepository.save(pedido);
+    }
 
     private PedidoAfterCalculationsDTO getPedidoMature(PedidoBeforeCalculationsDTO pedidoBeforeCalculationsDTO){
         PedidoAfterCalculationsDTO output = new PedidoAfterCalculationsDTO();

@@ -1,6 +1,7 @@
 package com.skyler.catalogo.domain.pedidos.controllers;
 
 import com.skyler.catalogo.domain.pedidos.DTOs.PedidoBeforeCalculationsDTO;
+import com.skyler.catalogo.domain.pedidos.Pedido;
 import com.skyler.catalogo.domain.pedidos.PedidoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,16 @@ public class PedidoController {
     public ResponseEntity getPedidos(String lojaId){
         try{
             return ResponseEntity.ok().body(this.pedidoService.getPedidos(lojaId));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
+    @PutMapping("/mudar-status")
+    public ResponseEntity mudarStatus(String pedidoId){
+        try{
+            this.pedidoService.mudarStatus(pedidoId);
+            return ResponseEntity.status(200).build();
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
