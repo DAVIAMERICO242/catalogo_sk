@@ -20,6 +20,7 @@
             <p-table [showGridlines]="true" [stripedRows]="true" [value]="this.pedidos">
                 <ng-template #header>
                     <tr class="!text-sm">
+                        <th></th>
                         <th>
                             Data
                         </th>
@@ -49,6 +50,9 @@
                 <ng-template #body let-row>
                     <tr class="text-sm">
                         <td>
+                            <app-pedido-view [pedido]="this.forceType(row)"/>
+                        </td>
+                        <td>
                             <div>
                                 <div class="italic">
                                     {{this.forceType(row).moment | datetimeBrazil}}
@@ -63,10 +67,14 @@
                         </td>
                         <td>
                             <div *ngIf="this.forceType(row).pago">
-                                Pago
+                                <div class="cursor-pointer px-3 py-1 rounded-lg bg-green-400 text-center text-white">
+                                    Pago
+                                </div>
                             </div>
                             <div *ngIf="!this.forceType(row).pago">
-                                Não pago
+                                <div class="cursor-pointer px-3 py-1 rounded-lg bg-red-400 text-center text-white">
+                                    Não pago
+                                </div>
                             </div>
                         </td>
                         <td>

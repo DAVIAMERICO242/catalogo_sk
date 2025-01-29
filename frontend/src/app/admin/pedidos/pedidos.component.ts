@@ -7,10 +7,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AdminPageTitleComponent } from "../admin-page-title/admin-page-title.component";
 import { DatetimeBrazilPipe } from "../../pipes/datetime-brazil.pipe";
 import { DateBrazilPipe } from '../../pipes/date-brazil.pipe';
+import { PedidoViewComponent } from "./pedido-view/pedido-view.component";
 
 @Component({
   selector: 'app-pedidos',
-  imports: [SharedModule, AdminPageTitleComponent, DatetimeBrazilPipe],
+  imports: [SharedModule, AdminPageTitleComponent, DatetimeBrazilPipe, PedidoViewComponent],
   templateUrl: './pedidos.component.html'
 })
 export class PedidosComponent implements OnInit{
