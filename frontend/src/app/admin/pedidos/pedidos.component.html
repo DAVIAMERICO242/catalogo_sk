@@ -84,7 +84,7 @@
                             {{this.forceType(row).valor | currency:"BRL"}}
                         </td>
                         <td>
-                            {{this.getTotalDescontos(this.forceType(row).descontosAplicados) | currency:"BRL"}}
+                            <app-detalhar-desconto [descontosAplicados]="this.forceType(row).descontosAplicados"/>
                         </td>
                         <td>
                             {{this.forceType(row).valorFrete | currency:"BRL"}}

@@ -8,10 +8,11 @@ import { AdminPageTitleComponent } from "../admin-page-title/admin-page-title.co
 import { DatetimeBrazilPipe } from "../../pipes/datetime-brazil.pipe";
 import { DateBrazilPipe } from '../../pipes/date-brazil.pipe';
 import { PedidoViewComponent } from "./pedido-view/pedido-view.component";
+import { DetalharDescontoComponent } from "./detalhar-desconto/detalhar-desconto.component";
 
 @Component({
   selector: 'app-pedidos',
-  imports: [SharedModule, AdminPageTitleComponent, DatetimeBrazilPipe, PedidoViewComponent],
+  imports: [SharedModule, AdminPageTitleComponent, DatetimeBrazilPipe, PedidoViewComponent, DetalharDescontoComponent],
   templateUrl: './pedidos.component.html'
 })
 export class PedidosComponent implements OnInit{
