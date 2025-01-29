@@ -104,6 +104,10 @@ export class PedidosService {
     )
   }
 
+  alterarStatus(pedidoId:string){
+    return this.http.put(env.BACKEND_URL+"/pedidos/mudar-status?pedidoId="+pedidoId,{})
+  }
+
   reducePedido(pedido:Pedidos.Pedido):Pedidos.PedidoReducedTypes.PedidoReduced{
     const buffer:Pedidos.PedidoReducedTypes.PedidoReduced = {
       ...pedido,

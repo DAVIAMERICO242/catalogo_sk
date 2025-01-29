@@ -1,10 +1,13 @@
-<div *ngIf="pedido.pago">
-    <div class="text-nowrap cursor-pointer px-3 py-1 rounded-lg bg-green-400 text-center text-white">
-        Pago
+<div (click)="this.openAlterar=true">
+    <div  *ngIf="pedido.pago">
+        <div class="text-nowrap cursor-pointer px-3 py-1 rounded-lg bg-green-400 text-center text-white">
+            Pago
+        </div>
+    </div>
+    <div  *ngIf="!pedido.pago">
+        <div class="text-nowrap cursor-pointer px-3 py-1 rounded-lg bg-red-400 text-center text-white">
+            Não pago
+        </div>
     </div>
 </div>
-<div *ngIf="!pedido.pago">
-    <div class="text-nowrap cursor-pointer px-3 py-1 rounded-lg bg-red-400 text-center text-white">
-        Não pago
-    </div>
-</div>
+<app-confirmation-dialog [loading]="this.loadingAlterar" [(open)]="openAlterar" (onConfirmation)="this.alterar()"></app-confirmation-dialog>
