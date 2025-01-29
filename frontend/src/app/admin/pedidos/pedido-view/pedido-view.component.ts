@@ -30,5 +30,23 @@ export class PedidoViewComponent implements OnInit {
   getBeautyAddress(row:Pedidos.Pedido){
     return  row.numero + " ," + "    Rua: " + row.rua + ",   " + "Bairro: " + row.bairro + " ," + "Cidade: " + row.cidade + "/" + row.estado;
   }
+
+  asReducedVariation(val:any){
+    return val as Pedidos.PedidoReducedTypes.VariacaoPedidoReduced;
+  }
+
+  getParentNameOfVariationId(variationId:string){
+    const parentName = this.pedido.produtos.find((e)=>e.variacoesCompradas.map(e1=>e1.systemId).includes(variationId))?.nome || "";
+    console.log(parentName)
+    return parentName;
+  }
+
+  getValorBruto(){
+    return this.pedido.produtos.reduce((a,b)=>a+b.valorBase,0)
+  }
+
+  getTotalDescontos(){
+    return this.pedido.descontosAplicados.reduce((a,b)=>a+b.valorAplicado,0)
+  }
   
 }
