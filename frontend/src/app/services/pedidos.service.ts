@@ -16,7 +16,18 @@ export namespace Pedidos{
     telefone:string,
   }
   export interface Pedido extends PedidoCustomerDetails{
-
+    systemId:string,
+    loja:LojaPedido,
+    pago:boolean,
+    valorFrete:number
+    valor:number,
+    produtos:ProdutoPedido[],
+    descontosAplicados:DescontoAplicado[]
+  }
+  export interface LojaPedido{
+    systemId:string,
+    slug:string,
+    nome:string
   }
   export interface ProdutoPedido{
     systemId:string,
@@ -24,7 +35,7 @@ export namespace Pedidos{
     nome:string,
     valorBase:number,
     variacoesCompradas:VariacaoPedido[],
-    descontosAplicados:DescontoAplicado[]
+
   }
   export interface VariacaoPedido{
     systemId:string,
@@ -42,7 +53,12 @@ export namespace Pedidos{
   }
   export namespace PedidoRequestTypes{
     export interface PedidoRequest extends PedidoCustomerDetails{
+      loja:LojaPedidoRequest,
+      valorFrete:number,
       produtos: ProdutoPedidoRequest[]
+    }
+    export interface LojaPedidoRequest{
+      systemId:string
     }
     export interface ProdutoPedidoRequest{
       systemId:string,
