@@ -14,7 +14,7 @@ import { CepPipePipe } from '../../../pipes/cep-pipe.pipe';
 export class PedidoViewComponent implements OnInit {
   @Input({required:true})
   pedido!:Pedidos.Pedido;
-  pedidoReduced!:Pedidos.PedidoReducedTypes.PedidoReduced;
+  pedidoVariacoesReduced!:Pedidos.PedidoReducedTypes.VariacaoPedidoReduced[];
   open = false;
 
   constructor(private pedidoService:PedidosService) {
@@ -23,8 +23,8 @@ export class PedidoViewComponent implements OnInit {
   
   
   ngOnInit(): void {
-    this.pedidoReduced = this.pedidoService.reducePedido(this.pedido);
-    console.log(this.pedidoReduced)
+    this.pedidoVariacoesReduced = this.pedidoService.reducePedido(this.pedido).produtos.flatMap(e => e.variacoesCompradas);
+    console.log(this.pedidoVariacoesReduced);
   }
 
   getBeautyAddress(row:Pedidos.Pedido){

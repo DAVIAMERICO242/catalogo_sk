@@ -4,7 +4,7 @@
     <div class="text-xs text-nowrap">Ver pedido</div>
 </div>
 <p-dialog header="Pedido" appendTo="body" [modal]="true" [dismissableMask]="true" [(visible)]="this.open" styleClass="!min-w-[600px]">
-    <div class="text-sm">
+    <div class="text-sm mb-3">
         <div class="mb-5">
             <div>
                 <b>Cliente:</b> {{this.pedido.nome}}
@@ -25,4 +25,7 @@
             </div>
         </div>
     </div>
+    <p-table [value]="this.pedidoVariacoesReduced">
+
+    </p-table>
 </p-dialog>

@@ -110,13 +110,15 @@ export class PedidosService {
       produtos:pedido.produtos.map((e)=>{
          return{
           ...e,
-          variacoesCompradas: e.variacoesCompradas.map((e1):Pedidos.PedidoReducedTypes.VariacaoPedidoReduced=>{
-            const ocorrencias = e.variacoesCompradas.filter(e=>e.systemId===e1.systemId).length
-            return{
-              ...e1,
-              quantidade:ocorrencias
-            }
-          })
+          variacoesCompradas: [
+            ...e.variacoesCompradas.reduce((map, e1) => {
+              if (!map.has(e1.systemId)) {
+                map.set(e1.systemId, { ...e1, quantidade: 0 });
+              }
+              map.get(e1.systemId)!.quantidade += 1;
+              return map;
+            }, new Map<string, Pedidos.PedidoReducedTypes.VariacaoPedidoReduced>()).values()
+          ]
          }
       })
     }
