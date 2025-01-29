@@ -1,13 +1,34 @@
-import { Component, Input } from '@angular/core';
-import { Pedidos } from '../../../services/pedidos.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Pedidos, PedidosService } from '../../../services/pedidos.service';
+import { SharedModule } from '../../../shared/shared.module';
+import { DocumentoPipe } from '../../../pipes/documento.pipe';
+import { PhonePipePipe } from '../../../pipes/phone-pipe.pipe';
+import { CepPipePipe } from '../../../pipes/cep-pipe.pipe';
+
 
 @Component({
   selector: 'app-pedido-view',
-  imports: [],
+  imports: [SharedModule,DocumentoPipe,PhonePipePipe,CepPipePipe],
   templateUrl: './pedido-view.component.html'
 })
-export class PedidoViewComponent {
+export class PedidoViewComponent implements OnInit {
   @Input({required:true})
   pedido!:Pedidos.Pedido;
+  pedidoReduced!:Pedidos.PedidoReducedTypes.PedidoReduced;
+  open = false;
+
+  constructor(private pedidoService:PedidosService) {
+    
+  }
+  
+  
+  ngOnInit(): void {
+    this.pedidoReduced = this.pedidoService.reducePedido(this.pedido);
+    console.log(this.pedidoReduced)
+  }
+
+  getBeautyAddress(row:Pedidos.Pedido){
+    return  row.numero + " ," + "    Rua: " + row.rua + ",   " + "Bairro: " + row.bairro + " ," + "Cidade: " + row.cidade + "/" + row.estado;
+  }
   
 }

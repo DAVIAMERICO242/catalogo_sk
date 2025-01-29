@@ -54,6 +54,18 @@ export namespace Pedidos{
     tipo:Desconto.DescontoTipo,
     valorAplicado:number
   }
+  export namespace PedidoReducedTypes{
+    export interface PedidoReduced extends Pedido{
+      produtos:ProdutosPedidoReduced[]
+    }
+    export interface ProdutosPedidoReduced extends ProdutoPedido{
+      variacoesCompradas:VariacaoPedidoReduced[]
+    }
+
+    export interface VariacaoPedidoReduced extends VariacaoPedido{
+      quantidade:number
+    }
+  }
   export namespace PedidoRequestTypes{
     export interface PedidoRequest extends PedidoCustomerDetails{
       loja:LojaPedidoRequest,
@@ -90,6 +102,25 @@ export class PedidosService {
         })
       })
     )
+  }
+
+  reducePedido(pedido:Pedidos.Pedido):Pedidos.PedidoReducedTypes.PedidoReduced{
+    const buffer:Pedidos.PedidoReducedTypes.PedidoReduced = {
+      ...pedido,
+      produtos:pedido.produtos.map((e)=>{
+         return{
+          ...e,
+          variacoesCompradas: e.variacoesCompradas.map((e1):Pedidos.PedidoReducedTypes.VariacaoPedidoReduced=>{
+            const ocorrencias = e.variacoesCompradas.filter(e=>e.systemId===e1.systemId).length
+            return{
+              ...e1,
+              quantidade:ocorrencias
+            }
+          })
+         }
+      })
+    }
+    return buffer;
   }
 
 
