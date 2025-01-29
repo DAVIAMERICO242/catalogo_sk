@@ -67,7 +67,6 @@ public class PedidoService {
             ProdutoPedidoDTO produtoPedidoDTO = new ProdutoPedidoDTO();
             produtoPedidoDTO.setNome(produtoDescontavel.getNome());
             produtoPedidoDTO.setSystemId(produtoDescontavel.getSystemId());
-            produtoPedidoDTO.setValorBase(produtoDescontavel.getValorBase());
             produtoPedidoDTO.setSku(produtoDescontavel.getSku());
             for(ProdutoDescontavel.ProdutoVariacao produtoVariacaoDescontavel:produtoDescontavel.getVariacoesCompradas()){
                 ProdutoPedidoDTO.ProdutoVariacao produtoVariacao = new ProdutoPedidoDTO.ProdutoVariacao();
@@ -75,7 +74,6 @@ public class PedidoService {
                 produtoVariacao.setSku(produtoVariacaoDescontavel.getSku());
                 produtoVariacao.setCor(produtoVariacaoDescontavel.getCor());
                 produtoVariacao.setTamanho(produtoVariacaoDescontavel.getTamanho());
-                produtoVariacao.setValorBase(produtoVariacaoDescontavel.getValorBase());
                 produtoVariacao.setFotoUrl(produtoVariacaoDescontavel.getFotoUrl());
                 produtoPedidoDTO.addVariacao(produtoVariacao);
             }

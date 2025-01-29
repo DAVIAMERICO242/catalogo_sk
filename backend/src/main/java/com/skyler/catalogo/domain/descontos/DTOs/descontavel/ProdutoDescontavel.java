@@ -11,7 +11,6 @@ public class ProdutoDescontavel {
     String systemId;
     String sku;
     String nome;
-    Float valorBase;
     List<ProdutoVariacao> variacoesCompradas = new ArrayList<>();
     public void addVariacao(ProdutoVariacao variacaoComprada){
         this.variacoesCompradas.add(variacaoComprada);
@@ -22,7 +21,6 @@ public class ProdutoDescontavel {
         String sku;
         String cor;
         String tamanho;
-        Float valorBase;
         String fotoUrl;
     }
 }
