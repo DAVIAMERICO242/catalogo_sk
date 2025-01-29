@@ -9,10 +9,7 @@ import com.skyler.catalogo.domain.descontos.services.DescontoService;
 import com.skyler.catalogo.domain.descontos.services.DiscountCalculator;
 import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
-import com.skyler.catalogo.domain.pedidos.DTOs.LojaPedidoDTO;
-import com.skyler.catalogo.domain.pedidos.DTOs.PedidoAfterCalculationsDTO;
-import com.skyler.catalogo.domain.pedidos.DTOs.PedidoBeforeCalculationsDTO;
-import com.skyler.catalogo.domain.pedidos.DTOs.ProdutoPedidoDTO;
+import com.skyler.catalogo.domain.pedidos.DTOs.*;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoVariacaoRepository;
@@ -51,6 +48,8 @@ public class PedidoService {
         PedidoAfterCalculationsDTO mature = this.getPedidoMature(pedidoSemValores);
         this.pedidoRepository.save(this.dtoToEntity(mature));
     }
+
+
 
 
     private PedidoAfterCalculationsDTO getPedidoMature(PedidoBeforeCalculationsDTO pedidoBeforeCalculationsDTO){
