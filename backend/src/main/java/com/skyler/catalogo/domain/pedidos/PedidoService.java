@@ -1,11 +1,11 @@
 package com.skyler.catalogo.domain.pedidos;
 
 
-import com.skyler.catalogo.domain.descontos.carrinho.DTOs.DescontoAplicadoDTO;
-import com.skyler.catalogo.domain.descontos.carrinho.entities.Desconto;
-import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
-import com.skyler.catalogo.domain.descontos.carrinho.enums.TermoTipo;
-import com.skyler.catalogo.domain.descontos.carrinho.repositories.DescontoRepository;
+import com.skyler.catalogo.domain.descontos.DTOs.DescontoAplicadoDTO;
+import com.skyler.catalogo.domain.descontos.DTOs.descontavel.LojaDescontavel;
+import com.skyler.catalogo.domain.descontos.DTOs.descontavel.ProdutoDescontavel;
+import com.skyler.catalogo.domain.descontos.entities.Desconto;
+import com.skyler.catalogo.domain.descontos.repositories.DescontoRepository;
 import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
@@ -13,8 +13,6 @@ import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoVariacaoRepository;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,28 +37,11 @@ public class PedidoService {
         this.pedidoRepository.save(this.dtoToEntity(pedidoDTO));
     }
 
-//    private void validarPedido(PedidoDTO pedidoDTO){
-//        if(pedidoDTO.getDescontosAplicados().isEmpty()){
-//            List<ProdutoVariacao> produtoVariacaos = this.produtoVariacaoRepository.findAllById(
-//                    new HashSet<>(pedidoDTO.getVariacoesCompradas().stream().map(o->o.getSystemId()).toList())
-//            );
-//            Float trueValue = produtoVariacaos.stream()
-//                    .map(p -> p.getProduto().getPreco()) // Extrai os preços como Float
-//                    .reduce(0f, Float::sum);
-//            if(Math.abs(trueValue - pedidoDTO.getValor())>0.5){
-//                throw new RuntimeException("Pedido inválido!");
-//            }
-//        }else{
-//
-//        }
-//    }
-
-
 
     private PedidoDTO entityToDto(Pedido pedido){//usar join fetch
         PedidoDTO dto = new PedidoDTO();
         dto.setSystemId(pedido.getSystemId());
-        PedidoDTO.Loja loja = new PedidoDTO.Loja();
+        LojaDescontavel loja = new LojaDescontavel();
         loja.setSystemId(pedido.getLoja().getSystemId());
         loja.setNome(pedido.getLoja().getNome());
         loja.setSlug(pedido.getLoja().getSlug());
@@ -80,21 +61,21 @@ public class PedidoService {
         dto.setPago(pedido.getPago());
         List<Produto> produtosBase = new HashSet<>(pedido.getProdutos().stream().map(o->o.getProduto()).toList()).stream().toList();
         for(Produto produtoBase:produtosBase){
-            PedidoDTO.Produto produtoComprado = new PedidoDTO.Produto();
+            ProdutoDescontavel produtoComprado = new ProdutoDescontavel();
             produtoComprado.setSystemId(produtoBase.getSystemId());
             produtoComprado.setNome(produtoBase.getDescricao());
             produtoComprado.setSku(produtoBase.getSku());
             produtoComprado.setValorBase(produtoBase.getPreco());
             for(ProdutoVariacao produtoVariacao:produtoBase.getVariacoes()){
                 if(pedido.getProdutos().stream().anyMatch(o->o.getSystemId().equals(produtoVariacao.getSystemId()))){//esses produtos sao as variacoes
-                    PedidoDTO.ProdutoVariacao produtoVariacaoDTO = new PedidoDTO.ProdutoVariacao();
+                    ProdutoDescontavel.ProdutoVariacao produtoVariacaoDTO = new ProdutoDescontavel.ProdutoVariacao();
                     produtoVariacaoDTO.setSystemId(produtoVariacao.getSystemId());
                     produtoVariacaoDTO.setSku(produtoVariacao.getSkuPonto());
                     produtoVariacaoDTO.setCor(produtoVariacao.getCor());
                     produtoVariacaoDTO.setTamanho(produtoVariacao.getTamanho());
                     produtoVariacaoDTO.setValorBase(produtoBase.getPreco());
                     produtoVariacaoDTO.setFotoUrl(produtoVariacao.getFotoUrl());
-                    produtoComprado.addVariacaoComprada(produtoVariacaoDTO);
+                    produtoComprado.addVariacao(produtoVariacaoDTO);
                 }
             }
             dto.addProdutoComprado(produtoComprado);

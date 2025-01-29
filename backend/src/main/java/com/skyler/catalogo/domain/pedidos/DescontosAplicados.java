@@ -2,7 +2,7 @@ package com.skyler.catalogo.domain.pedidos;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.skyler.catalogo.domain.descontos.carrinho.entities.Desconto;
+import com.skyler.catalogo.domain.descontos.entities.Desconto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

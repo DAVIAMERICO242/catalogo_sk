@@ -2,21 +2,14 @@ package com.skyler.catalogo.domain.pedidos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.skyler.catalogo.domain.catalogo.ProdutoCatalogo;
-import com.skyler.catalogo.domain.descontos.carrinho.entities.Desconto;
-import com.skyler.catalogo.domain.descontos.carrinho.enums.DescontoTipo;
 import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.Type;
-import org.hibernate.mapping.Join;
-import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
