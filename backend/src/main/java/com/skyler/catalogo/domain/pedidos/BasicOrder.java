@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 public interface BasicOrder {
     LojaPedidoDTO getLoja();
-    LocalDateTime getMoment();
     String getDocumento();
     String getNome();
     Integer getNumero();

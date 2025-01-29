@@ -34,6 +34,7 @@ public class RoutesAuth {
                         .requestMatchers(new AntPathRequestMatcher("/lojas",HttpMethod.GET.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/catalogo",HttpMethod.GET.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/media/banner",HttpMethod.GET.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/pedidos",HttpMethod.POST.toString())).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtInterceptor, UsernamePasswordAuthenticationFilter.class)

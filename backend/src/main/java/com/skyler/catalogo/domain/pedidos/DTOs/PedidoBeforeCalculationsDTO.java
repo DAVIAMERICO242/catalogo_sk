@@ -10,7 +10,6 @@ import java.util.List;
 @Data
 public class PedidoBeforeCalculationsDTO implements Discountable,BasicOrder {
     private LojaPedidoDTO loja;
-    private LocalDateTime moment;
     private String documento;
     private String nome;
     private Integer numero;

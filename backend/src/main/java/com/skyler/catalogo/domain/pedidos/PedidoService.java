@@ -1,6 +1,7 @@
 package com.skyler.catalogo.domain.pedidos;
 
 
+import com.skyler.catalogo.domain.descontos.DTOs.AfterAppliedChain;
 import com.skyler.catalogo.domain.descontos.DTOs.DescontoAplicadoDTO;
 import com.skyler.catalogo.domain.descontos.entities.Desconto;
 import com.skyler.catalogo.domain.descontos.repositories.DescontoRepository;
@@ -37,9 +38,18 @@ public class PedidoService {
         this.discountCalculator = discountCalculator;
     }
 
+    public List<PedidoAfterCalculationsDTO> getPedidos(String lojaSystemId){
+        List<PedidoAfterCalculationsDTO> output = new ArrayList<>();
+        List<Pedido> pedidos = this.pedidoRepository.findAllByLojaId(lojaSystemId);
+        for(Pedido pedido:pedidos){
+            output.add(this.entityToDto(pedido));
+        }
+        return output;
+    }
 
     public void novoPedido(PedidoBeforeCalculationsDTO pedidoSemValores){
-        this.pedidoRepository.save(this.dtoToEntity(this.getPedidoMature(pedidoSemValores)));
+        PedidoAfterCalculationsDTO mature = this.getPedidoMature(pedidoSemValores);
+        this.pedidoRepository.save(this.dtoToEntity(mature));
     }
 
 
@@ -50,7 +60,6 @@ public class PedidoService {
         lojaPedidoDTO.setSystemId(pedidoBeforeCalculationsDTO.getLoja().getSystemId());
         lojaPedidoDTO.setSlug(pedidoBeforeCalculationsDTO.getLoja().getSlug());
         output.setLoja(lojaPedidoDTO);
-        output.setMoment(pedidoBeforeCalculationsDTO.getMoment());
         output.setDocumento(pedidoBeforeCalculationsDTO.getDocumento());
         output.setNome(pedidoBeforeCalculationsDTO.getNome());
         output.setNumero(pedidoBeforeCalculationsDTO.getNumero());
@@ -63,9 +72,9 @@ public class PedidoService {
         output.setValorFrete(pedidoBeforeCalculationsDTO.getValorFrete());
         output.setPago(false);
         output.setProdutos(pedidoBeforeCalculationsDTO.getProdutos());
-        List<DescontoAplicadoDTO> descontos = this.discountCalculator.getDiscountChainForCurrentEpochAndDiscountable(pedidoBeforeCalculationsDTO);
-        output.setDescontosAplicados(descontos);
-
+        AfterAppliedChain after = this.discountCalculator.processChainForCurrentEpochAndDiscountable(pedidoBeforeCalculationsDTO);
+        output.setDescontosAplicados(after.getDescontos());
+        output.setValor(after.getValorFinal());
         return output;
 
     }
@@ -128,7 +137,7 @@ public class PedidoService {
 
     private Pedido dtoToEntity(PedidoAfterCalculationsDTO pedidoDTO){
         Pedido pedido = new Pedido();
-        if(pedidoDTO.getSystemId()!=null){
+        if(pedidoDTO.getSystemId()!=null && !pedidoDTO.getSystemId().isBlank()){
             Optional<Pedido> pedidoOptional = this.pedidoRepository.findById(pedidoDTO.getSystemId());
             if(pedidoOptional.isPresent()){
                 pedido = pedidoOptional.get();
@@ -158,6 +167,9 @@ public class PedidoService {
         pedido.setProdutos(new HashSet<>(variations));
         if(pedido.getDescontosAplicados().isEmpty()){
             for(DescontoAplicadoDTO desconto:pedidoDTO.getDescontosAplicados()){
+                if(desconto.getSystemId()!=null && !desconto.getSystemId().isBlank()){
+
+                }
                 Optional<Desconto> desconto1 = this.descontoRepository.findById(desconto.getSystemId());
                 if(desconto1.isPresent()){
                     Desconto descontoEnt = desconto1.get();
@@ -166,6 +178,8 @@ public class PedidoService {
                     descontosAplicados.setDesconto(descontoEnt);
                     pedido.addDescontoAplicado(descontosAplicados);
                 }
+
+
             }
         }
         return pedido;
