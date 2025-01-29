@@ -1,7 +1,7 @@
 <div (click)="this.open=true" class="cursor-pointer flex items-center justify-center gap-3 text-white bg-black py-2.5 px-2 rounded-md">
-    <div class="pi pi-eye  flex items-center justify-center !text-sm">
+    <div class="pi pi-book  flex items-center justify-center !text-sm">
     </div>
-    <div class="text-xs text-nowrap">Ver pedido</div>
+    <div class="text-xs text-nowrap">Detalhes</div>
 </div>
 <p-dialog  [dismissableMask]="true" header="Pedido" appendTo="body" [modal]="true"  [(visible)]="this.open" styleClass="!min-w-[600px] ">
     <div class="text-sm mb-5">
