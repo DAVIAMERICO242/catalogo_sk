@@ -6,6 +6,30 @@
         {{this.getTotalDescontos(descontosAplicados) | currency:"BRL"}}
     </div>
 </div>
-<p-dialog  [modal]="true" [dismissableMask]="true" [(visible)]="open" header="Descontos aplicados" styleClass="!min-w-[600px]">
-
+<p-dialog   [modal]="true" [dismissableMask]="true" [(visible)]="open" header="Descontos aplicados" styleClass="!min-w-[600px]">
+    <p-table [showGridlines]="true" [stripedRows]="true" [value]="this.descontosAplicados">
+        <ng-template #header>
+            <tr>
+                <th>
+                    Desconto
+                </th>
+                <th>
+                    Valor aplicado
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-row>
+            <tr>
+                <td>
+                    {{this.forceType(row).nome}}
+                </td>
+                <td>
+                    {{this.forceType(row).valorAplicado | currency:"BRL"}}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <div class="text-xs">Nenhum desconto</div>
+        </ng-template>
+    </p-table>
 </p-dialog>
