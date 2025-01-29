@@ -4,6 +4,7 @@ package com.skyler.catalogo.domain.pedidos;
 import com.skyler.catalogo.domain.descontos.DTOs.AfterAppliedChain;
 import com.skyler.catalogo.domain.descontos.DTOs.DescontoAplicadoDTO;
 import com.skyler.catalogo.domain.descontos.entities.Desconto;
+import com.skyler.catalogo.domain.descontos.entities.DescontoProgressivoIntervalos;
 import com.skyler.catalogo.domain.descontos.repositories.DescontoRepository;
 import com.skyler.catalogo.domain.descontos.services.DescontoService;
 import com.skyler.catalogo.domain.descontos.services.DiscountCalculator;
@@ -41,7 +42,7 @@ public class PedidoService {
         for(Pedido pedido:pedidos){
             output.add(this.entityToDto(pedido));
         }
-        return output;
+        return output.stream().sorted(Comparator.comparing(PedidoAfterCalculationsDTO::getMoment).reversed()).toList();
     }
 
     public void novoPedido(PedidoBeforeCalculationsDTO pedidoSemValores){

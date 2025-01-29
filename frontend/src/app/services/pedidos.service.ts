@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Desconto } from './descontos.service';
+import { env } from '../../env';
+import { map } from 'rxjs';
 
 
 export namespace Pedidos{
@@ -17,6 +19,7 @@ export namespace Pedidos{
   }
   export interface Pedido extends PedidoCustomerDetails{
     systemId:string,
+    moment:Date,
     loja:LojaPedido,
     pago:boolean,
     valorFrete:number
@@ -75,6 +78,19 @@ export namespace Pedidos{
 export class PedidosService {
 
   constructor(private http:HttpClient) {}
+
+  getPedidos(lojaId:string){
+    return this.http.get<Pedidos.Pedido[]>(env.BACKEND_URL+"/pedidos?lojaId="+lojaId).pipe(
+      map((data)=>{
+        return data.map((e)=>{
+          return{
+            ...e,
+            moment: new Date(e.moment)
+          }
+        })
+      })
+    )
+  }
 
 
 }
