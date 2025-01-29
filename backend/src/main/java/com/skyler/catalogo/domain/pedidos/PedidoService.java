@@ -2,12 +2,17 @@ package com.skyler.catalogo.domain.pedidos;
 
 
 import com.skyler.catalogo.domain.descontos.DTOs.DescontoAplicadoDTO;
-import com.skyler.catalogo.domain.descontos.DTOs.descontavel.LojaDescontavel;
 import com.skyler.catalogo.domain.descontos.DTOs.descontavel.ProdutoDescontavel;
 import com.skyler.catalogo.domain.descontos.entities.Desconto;
 import com.skyler.catalogo.domain.descontos.repositories.DescontoRepository;
+import com.skyler.catalogo.domain.descontos.services.DescontoService;
+import com.skyler.catalogo.domain.descontos.services.DiscountCalculator;
 import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
+import com.skyler.catalogo.domain.pedidos.DTOs.LojaPedidoDTO;
+import com.skyler.catalogo.domain.pedidos.DTOs.PedidoAfterCalculationsDTO;
+import com.skyler.catalogo.domain.pedidos.DTOs.PedidoBeforeCalculationsDTO;
+import com.skyler.catalogo.domain.pedidos.DTOs.ProdutoPedidoDTO;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoVariacaoRepository;
@@ -23,25 +28,71 @@ public class PedidoService {
     private final ProdutoVariacaoRepository produtoVariacaoRepository;
     private final DescontoRepository descontoRepository;
     private final LojaRepository lojaRepository;
+    private final DiscountCalculator discountCalculator;
 
-    public PedidoService(PedidoRepository pedidoRepository, ProdutoVariacaoRepository produtoVariacaoRepository, DescontoRepository descontoRepository, LojaRepository lojaRepository) {
+    public PedidoService(PedidoRepository pedidoRepository, ProdutoVariacaoRepository produtoVariacaoRepository, DescontoRepository descontoRepository, LojaRepository lojaRepository, DiscountCalculator discountCalculator) {
         this.pedidoRepository = pedidoRepository;
         this.produtoVariacaoRepository = produtoVariacaoRepository;
         this.descontoRepository = descontoRepository;
         this.lojaRepository = lojaRepository;
+        this.discountCalculator = discountCalculator;
     }
 
 
-    public void novoPedido(PedidoDTO pedidoDTO){
-//        this.validarPedido(pedidoDTO);
-        this.pedidoRepository.save(this.dtoToEntity(pedidoDTO));
+    public void novoPedido(PedidoBeforeCalculationsDTO pedidoSemValores){
+        this.pedidoRepository.save(this.dtoToEntity(this.getPedidoMature(pedidoSemValores)));
     }
 
 
-    private PedidoDTO entityToDto(Pedido pedido){//usar join fetch
-        PedidoDTO dto = new PedidoDTO();
+    private PedidoAfterCalculationsDTO getPedidoMature(PedidoBeforeCalculationsDTO pedidoBeforeCalculationsDTO){
+        PedidoAfterCalculationsDTO output = new PedidoAfterCalculationsDTO();
+        LojaPedidoDTO lojaPedidoDTO = new LojaPedidoDTO();
+        lojaPedidoDTO.setNome(pedidoBeforeCalculationsDTO.getLoja().getNome());
+        lojaPedidoDTO.setSystemId(pedidoBeforeCalculationsDTO.getLoja().getSystemId());
+        lojaPedidoDTO.setSlug(pedidoBeforeCalculationsDTO.getLoja().getSlug());
+        output.setLoja(lojaPedidoDTO);
+        output.setMoment(pedidoBeforeCalculationsDTO.getMoment());
+        output.setDocumento(pedidoBeforeCalculationsDTO.getDocumento());
+        output.setNome(pedidoBeforeCalculationsDTO.getNome());
+        output.setNumero(pedidoBeforeCalculationsDTO.getNumero());
+        output.setRua(pedidoBeforeCalculationsDTO.getRua());
+        output.setBairro(pedidoBeforeCalculationsDTO.getBairro());
+        output.setCidade(pedidoBeforeCalculationsDTO.getCidade());
+        output.setEstado(pedidoBeforeCalculationsDTO.getEstado());
+        output.setCep(pedidoBeforeCalculationsDTO.getCep());
+        output.setTelefone(pedidoBeforeCalculationsDTO.getTelefone());
+        output.setValorFrete(pedidoBeforeCalculationsDTO.getValorFrete());
+        output.setPago(false);
+        for(ProdutoDescontavel produtoDescontavel:pedidoBeforeCalculationsDTO.getProdutos()){
+            ProdutoPedidoDTO produtoPedidoDTO = new ProdutoPedidoDTO();
+            produtoPedidoDTO.setNome(produtoDescontavel.getNome());
+            produtoPedidoDTO.setSystemId(produtoDescontavel.getSystemId());
+            produtoPedidoDTO.setValorBase(produtoDescontavel.getValorBase());
+            produtoPedidoDTO.setSku(produtoDescontavel.getSku());
+            for(ProdutoDescontavel.ProdutoVariacao produtoVariacaoDescontavel:produtoDescontavel.getVariacoesCompradas()){
+                ProdutoPedidoDTO.ProdutoVariacao produtoVariacao = new ProdutoPedidoDTO.ProdutoVariacao();
+                produtoVariacao.setSystemId(produtoVariacaoDescontavel.getSystemId());
+                produtoVariacao.setSku(produtoVariacaoDescontavel.getSku());
+                produtoVariacao.setCor(produtoVariacaoDescontavel.getCor());
+                produtoVariacao.setTamanho(produtoVariacaoDescontavel.getTamanho());
+                produtoVariacao.setValorBase(produtoVariacaoDescontavel.getValorBase());
+                produtoVariacao.setFotoUrl(produtoVariacaoDescontavel.getFotoUrl());
+                produtoPedidoDTO.addVariacao(produtoVariacao);
+            }
+            output.addProdutoComprado(produtoPedidoDTO);
+        }
+        List<DescontoAplicadoDTO> descontos = this.discountCalculator.getDiscountChainForCurrentEpochAndDiscountable(pedidoBeforeCalculationsDTO);
+        output.setDescontosAplicados(descontos);
+
+        return output;
+
+    }
+
+
+    private PedidoAfterCalculationsDTO entityToDto(Pedido pedido){//usar join fetch
+        PedidoAfterCalculationsDTO dto = new PedidoAfterCalculationsDTO();
         dto.setSystemId(pedido.getSystemId());
-        LojaDescontavel loja = new LojaDescontavel();
+        LojaPedidoDTO loja = new LojaPedidoDTO();
         loja.setSystemId(pedido.getLoja().getSystemId());
         loja.setNome(pedido.getLoja().getNome());
         loja.setSlug(pedido.getLoja().getSlug());
@@ -61,14 +112,14 @@ public class PedidoService {
         dto.setPago(pedido.getPago());
         List<Produto> produtosBase = new HashSet<>(pedido.getProdutos().stream().map(o->o.getProduto()).toList()).stream().toList();
         for(Produto produtoBase:produtosBase){
-            ProdutoDescontavel produtoComprado = new ProdutoDescontavel();
+            ProdutoPedidoDTO produtoComprado = new ProdutoPedidoDTO();
             produtoComprado.setSystemId(produtoBase.getSystemId());
             produtoComprado.setNome(produtoBase.getDescricao());
             produtoComprado.setSku(produtoBase.getSku());
             produtoComprado.setValorBase(produtoBase.getPreco());
             for(ProdutoVariacao produtoVariacao:produtoBase.getVariacoes()){
                 if(pedido.getProdutos().stream().anyMatch(o->o.getSystemId().equals(produtoVariacao.getSystemId()))){//esses produtos sao as variacoes
-                    ProdutoDescontavel.ProdutoVariacao produtoVariacaoDTO = new ProdutoDescontavel.ProdutoVariacao();
+                    ProdutoPedidoDTO.ProdutoVariacao produtoVariacaoDTO = new ProdutoPedidoDTO.ProdutoVariacao();
                     produtoVariacaoDTO.setSystemId(produtoVariacao.getSystemId());
                     produtoVariacaoDTO.setSku(produtoVariacao.getSkuPonto());
                     produtoVariacaoDTO.setCor(produtoVariacao.getCor());
@@ -93,7 +144,7 @@ public class PedidoService {
     }
 
 
-    private Pedido dtoToEntity(PedidoDTO pedidoDTO){
+    private Pedido dtoToEntity(PedidoAfterCalculationsDTO pedidoDTO){
         Pedido pedido = new Pedido();
         if(pedidoDTO.getSystemId()!=null){
             Optional<Pedido> pedidoOptional = this.pedidoRepository.findById(pedidoDTO.getSystemId());

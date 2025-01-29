@@ -1,8 +1,6 @@
 package com.skyler.catalogo.domain.descontos.services;
 
 import com.skyler.catalogo.domain.descontos.DTOs.*;
-import com.skyler.catalogo.domain.descontos.carrinho.DTOs.*;
-import com.skyler.catalogo.domain.descontos.carrinho.entities.*;
 import com.skyler.catalogo.domain.descontos.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.enums.TermoTipo;
 import com.skyler.catalogo.domain.descontos.interfaces.DelimitedExcludedInterface;
