@@ -1,6 +1,7 @@
 package com.skyler.catalogo.domain.pedidos.DTOs;
 
 import com.skyler.catalogo.domain.descontos.DTOs.DescontoAplicadoDTO;
+import com.skyler.catalogo.domain.pedidos.BasicOrder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PedidoAfterCalculationsDTO {
+public class PedidoAfterCalculationsDTO implements BasicOrder {
     private String systemId;
     private LojaPedidoDTO loja;
     private LocalDateTime moment;
