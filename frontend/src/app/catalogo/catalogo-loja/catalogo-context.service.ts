@@ -9,7 +9,9 @@ import { Loja } from '../../services/loja.service';
 export class CatalogoContextService {
 
   lojaSub = new BehaviorSubject<Loja.Loja | undefined>(undefined);
+  loja$ = this.lojaSub.asObservable();
   produtosSub = new BehaviorSubject<Catalogo.Produto[]|undefined>(undefined);
+  produtos$ = this.produtosSub.asObservable();
   constructor(private http:HttpClient,private catalogoService:CatalogoService){}
 
   setCatalogo(slug:string){
@@ -21,7 +23,7 @@ export class CatalogoContextService {
   }
 
   setLoja(slug:string){
-    this.http.get<Loja.Loja>(env.BACKEND_URL + "/loja/by-slug").subscribe((loja)=>{
+    this.http.get<Loja.Loja>(env.BACKEND_URL + "/lojas/by-slug?slug="+slug).subscribe((loja)=>{
       this.lojaSub.next(loja);
     })
   }

@@ -1,5 +1,13 @@
 <div  class="z-[99] h-[75px] w-full bg-black fixed top-0 flex items-center justify-between p-3 ">
-    <div>
+    <div class="flex items-center gap-2">
         <img class="h-[60px] w-[60px]" src="skyler-preto.jpg"/>
+        <div [ngClass]="{
+            'opacity-1': loja, 
+            'opacity-0': !loja, 
+            'transform translate-y-0': loja, 
+            'transform translate-y-[10px]': !loja
+        }" class="text-white transition-all ease-linear">
+            {{loja}}
+        </div>
     </div>
 </div>

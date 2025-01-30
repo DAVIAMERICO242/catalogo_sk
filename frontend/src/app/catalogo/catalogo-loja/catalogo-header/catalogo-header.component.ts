@@ -1,15 +1,23 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CatalogoContextService } from '../catalogo-context.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-catalogo-header',
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './catalogo-header.component.html'
 })
-export class CatalogoHeaderComponent {
+export class CatalogoHeaderComponent implements OnInit {
   loja = "";
   constructor(private catalogContext:CatalogoContextService) {
     
   }
+  ngOnInit(): void {
+    this.catalogContext.loja$.subscribe((d)=>{
+        this.loja = d?.loja || "";
+    });
+  }
+
+
   
 }
