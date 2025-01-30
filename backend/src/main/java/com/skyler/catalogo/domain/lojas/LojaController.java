@@ -24,4 +24,22 @@ public class LojaController {
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
     }
+
+    @GetMapping("/matriz")
+    public ResponseEntity getLojasMatriz(){
+        try{
+            return ResponseEntity.ok().body(this.lojaService.getLojasMatriz());
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
+    @GetMapping("/franquia")
+    public ResponseEntity getFranquias(){
+        try{
+            return ResponseEntity.ok().body(this.lojaService.getLojasFranquia());
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
 }

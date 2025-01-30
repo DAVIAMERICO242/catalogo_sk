@@ -1,1 +1,24 @@
-<p class="p-12">catalogo works!</p>
+<div class="">
+    <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] h-[500px] overflow-auto flex flex-wrap justify-center gap-5">
+        <div *ngFor="let item of this.lojas">
+            <div class="p-5 bg-white w-[280px] h-[200px] rounded-lg flex justify-center shadow-md ">
+                <div class="relative">
+                    <div class="flex justify-center">
+                        <img src="skyler-preto.jpg" class="w-[40px] h-[40px] rounded-full"/>
+                    </div>
+                    <div class="text-sm font-bold text-center">
+                        {{item.loja}}
+                    </div>
+                    <div class="text-center text-sm text-gray-600">{{item.endereco}}</div>
+                    <button (click)="this.goToCatalogo(item.slug)" class="flex items-center gap-2 text-xs h-[40px] bg-black text-white border-[1px] px-2 py-1 rounded-lg cursor-pointer shadow-sm absolute bottom-1 left-1/2 transform -translate-x-1/2">
+                        <div class="text-nowrap">
+                            Ver catálogo
+                        </div>
+                        <div class="pi pi-arrow-up-right !text-xs"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<img src="5594016.jpg" class="fixed z-[-1] top-0 w-full h-screen"/>

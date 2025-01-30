@@ -20,6 +20,7 @@ public class Loja {
     private Integer erpId;
     private String nome;
     private String slug;
+    private String endereco;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="franquia_system_id")
     @JsonBackReference

@@ -10,7 +10,20 @@ import { CatalogoComponent } from './catalogo/catalogo.component';
 export const routes: Routes = [
     {
         path:"",
-        loadComponent:()=>import("./catalogo/catalogo.component").then((m)=>m.CatalogoComponent)
+        redirectTo:"matriz",
+        pathMatch:"full",
+    },
+    {
+        path:"franquia",
+        loadComponent:()=>import("./catalogo/catalogo.component").then((m)=>m.CatalogoComponent),
+    },
+    {
+        path:"matriz",
+        loadComponent:()=>import("./catalogo/catalogo.component").then((m)=>m.CatalogoComponent),
+    },
+    {
+        path: ":slug",
+        loadComponent: () => import("./catalogo/catalogo-loja/catalogo-loja.component").then(m => m.CatalogoLojaComponent)
     },
     {
         path:"login",
@@ -32,7 +45,7 @@ export const routes: Routes = [
             },
             {
                 path:"catalogo",
-                loadComponent:()=>import("./admin/catalogo/catalogo.component").then(m=>m.CatalogoComponent)
+                loadComponent:()=>import("./admin/catalogo/catalogo.component").then(m=>m.CatalogoComponent),
             },{
                 path:"pedidos",
                 loadComponent:()=>import("./admin/pedidos/pedidos.component").then(m=>m.PedidosComponent)

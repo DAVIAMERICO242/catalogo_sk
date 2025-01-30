@@ -11,9 +11,25 @@ public interface LojaRepository extends JpaRepository<Loja,String> {
     @Override
     @Query("SELECT l FROM Loja l " +
             "JOIN FETCH l.franquia " +
-            "WHERE (NOT l.nome LIKE '%CD%' AND NOT l.nome LIKE '%DASLEN%' AND NOT l.nome LIKE '%SITE%' AND NOT l.nome LIKE '%DIGITAL%' ) " +
+            "WHERE (NOT  l.nome LIKE '%CD%' AND NOT l.nome LIKE '%MULTIMARCAS' AND NOT l.nome LIKE '%SKYLER FRANCHISING%' AND NOT l.nome LIKE '%Empreendimentos%' AND NOT l.nome LIKE '%Fran' AND NOT l.nome LIKE '%DASLEN%' AND NOT l.nome LIKE '%SITE%' AND NOT l.nome LIKE '%DIGITAL%' ) " +
             "ORDER BY l.nome ASC ")
     List<Loja> findAll();
+
+
+    @Query("SELECT l FROM Loja l " +
+            "JOIN FETCH l.franquia " +
+            "WHERE (NOT  l.nome LIKE '%CD%' AND NOT l.nome LIKE '%MULTIMARCAS' AND NOT l.nome LIKE '%SKYLER FRANCHISING%' AND NOT l.nome LIKE '%Empreendimentos%' AND NOT l.nome LIKE '%Fran' AND NOT l.nome LIKE '%DASLEN%' AND NOT l.nome LIKE '%SITE%' AND NOT l.nome LIKE '%DIGITAL%' ) " +
+            "AND l.franquia.isMatriz = true " +
+            "ORDER BY l.nome ASC ")
+    List<Loja> findAllMatriz();
+
+    @Query("SELECT l FROM Loja l " +
+            "JOIN FETCH l.franquia " +
+            "WHERE (NOT  l.nome LIKE '%CD%' AND NOT l.nome LIKE '%MULTIMARCAS' AND NOT l.nome LIKE '%SKYLER FRANCHISING%' AND NOT l.nome LIKE '%Empreendimentos%' AND NOT l.nome LIKE '%Fran' AND NOT l.nome LIKE '%DASLEN%' AND NOT l.nome LIKE '%SITE%' AND NOT l.nome LIKE '%DIGITAL%' ) " +
+            "AND l.franquia.isMatriz = false " +
+            "ORDER BY l.nome ASC ")
+    List<Loja> findAllFranquia();
+
 
     @Query("SELECT l FROM Loja l " +
             "JOIN FETCH l.franquia " +
