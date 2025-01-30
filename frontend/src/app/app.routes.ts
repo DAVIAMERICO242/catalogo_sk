@@ -22,12 +22,12 @@ export const routes: Routes = [
         loadComponent:()=>import("./catalogo/catalogo.component").then((m)=>m.CatalogoComponent),
     },
     {
-        path: ":slug",
-        loadComponent: () => import("./catalogo/catalogo-loja/catalogo-loja.component").then(m => m.CatalogoLojaComponent)
-    },
-    {
         path:"login",
         loadComponent:()=>import("./login/login.component").then(m=>m.LoginComponent)
+    },
+    {
+        path: ":slug",
+        loadComponent: () => import("./catalogo/catalogo-loja/catalogo-loja.component").then(m => m.CatalogoLojaComponent)
     },
     {
         path:"admin",

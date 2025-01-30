@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LojaService {
@@ -12,6 +13,24 @@ public class LojaService {
 
     public LojaService(LojaRepository lojaRepository) {
         this.lojaRepository = lojaRepository;
+    }
+
+    public LojaDTO getBySlug(String slug){
+        Optional<Loja> lojaOptional = this.lojaRepository.findByLojaSlug(slug);
+        if(lojaOptional.isEmpty()){
+            throw new RuntimeException("Loja não encontrada");
+        }
+        Loja lojaEnt = lojaOptional.get();
+        LojaDTO loja = new LojaDTO();
+        LojaDTO.Franquia franquia = new LojaDTO.Franquia();
+        loja.setLoja(lojaEnt.getNome());
+        loja.setSystemId(lojaEnt.getSystemId());
+        loja.setSlug(lojaEnt.getSlug());
+        loja.setEndereco(lojaEnt.getEndereco());
+        franquia.setFranquia(lojaEnt.getFranquia().getNome());
+        franquia.setSystemId(lojaEnt.getFranquia().getSystemId());
+        loja.setFranquia(franquia);
+        return loja;
     }
 
     public List<LojaDTO> getLojas(){

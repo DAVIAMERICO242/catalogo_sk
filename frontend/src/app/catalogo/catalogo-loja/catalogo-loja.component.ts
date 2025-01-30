@@ -1,21 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CatalogoService } from '../../services/catalogo.service';
+import { CatalogoHeaderComponent } from "./catalogo-header/catalogo-header.component";
+import { CatalogoContextService } from './catalogo-context.service';
 
 @Component({
   selector: 'app-catalogo-loja',
-  imports: [],
-  templateUrl: './catalogo-loja.component.html'
+  imports: [CatalogoHeaderComponent],
+  templateUrl: './catalogo-loja.component.html',
+  providers:[CatalogoContextService]
 })
 export class CatalogoLojaComponent implements OnInit {
+  slug = "";
 
-  constructor(private route:ActivatedRoute,private catalogService:CatalogoService){
+  constructor(private route:ActivatedRoute,private catalogContext:CatalogoContextService){
 
   }
   ngOnInit(): void {
-    const routeSlug = this.route.snapshot.paramMap.get("slug")
-    console.log(routeSlug)
-    this.catalogService.getCatalogo(routeSlug as string).subscribe();
+    this.slug = this.route.snapshot.paramMap.get("slug") || ""
+    console.log(this.slug)
+    this.loadContext();
+  }
+
+  loadContext(){
+    this.catalogContext.setLoja(this.slug)
+    this.catalogContext.setCatalogo(this.slug)
   }
 
 }

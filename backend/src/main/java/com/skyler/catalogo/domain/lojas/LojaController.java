@@ -25,6 +25,16 @@ public class LojaController {
         }
     }
 
+    @GetMapping("/by-slug")
+    public ResponseEntity getBySlug(String slug){
+        try{
+            return ResponseEntity.ok().body(this.lojaService.getBySlug(slug));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
+
     @GetMapping("/matriz")
     public ResponseEntity getLojasMatriz(){
         try{
