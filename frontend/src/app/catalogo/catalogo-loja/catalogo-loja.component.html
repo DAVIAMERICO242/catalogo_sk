@@ -1,1 +1,45 @@
 <app-catalogo-header/>
+<app-catalogo-loja-wrapper>
+    <div *ngIf="(this.produtos$ | async) as produtos; else loading">
+            <div class="w-full max-w-[90%]">
+                <div class="flex flex-col justify-center  ">
+                    <div class="mb-4 flex items-center gap-1">
+                        <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
+                        <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
+                        <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
+                        <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
+                    </div>
+                    <div class="flex justify-center w-full">
+                        <div class="flex flex-wrap  gap-4">
+                                <div *ngFor="let item of produtos">
+                                    <div class="w-[300px] h-[300px] border-[1px] border-solid border-slate-200 shadow-sm rounded-lg">
+                                        <img class="w-[280px] h-[200px]" [src]="item.produtoBase.photoUrl"/>        
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <ng-template #loading>
+        <div class="w-full max-w-[90%]">
+            <div class="flex flex-col justify-center  ">
+                <div class="mb-4 flex items-center gap-1">
+                    <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
+                    <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
+                    <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
+                    <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
+                </div>
+                <div class="flex justify-center w-full">
+                    <div class="flex flex-wrap  gap-4">
+                        <div *ngFor="let _ of [].constructor(50); let i = index" class="mb-4">
+                            <p-skeleton styleClass="!w-[300px]" height="280px" />
+                            <p-skeleton styleClass="!w-[100px] !mt-3" height="10px" />
+                            <p-skeleton styleClass="!w-full !mt-3" height="30px" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</app-catalogo-loja-wrapper>
