@@ -54,7 +54,7 @@ export class AdminNavComponent implements OnInit {
   }
 
   navigateToLoja(){
-    window.open("/","_blank")
+    window.open("/" + (this.auth.getContext()?.loja.slug),"_blank")
   }
 
 }

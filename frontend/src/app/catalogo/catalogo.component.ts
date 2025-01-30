@@ -22,22 +22,26 @@ export class CatalogoComponent implements OnInit {
   }
 
   loadLojas(){
+    this.loadingLojas = true
     if(!this.isFranquia){
       this.lojaService.getLojasMatriz().subscribe({
         next:(data)=>{
           this.lojas = data;
+          this.loadingLojas = false
         }
       })
     }else{
       this.lojaService.getLojasFranquia().subscribe({
         next:(data)=>{
           this.lojas = data;
+          this.loadingLojas = false
         }
       })
     }
   }
 
-  goToCatalogo(slug:string){
-    this.router.navigate(["/" + slug])
+  goToCatalogo(slug: string): void {
+    const url = '/' + slug;  // Construct the URL from the slug
+    window.open(url, '_blank');  // Open the URL in a new tab
   }
 }
