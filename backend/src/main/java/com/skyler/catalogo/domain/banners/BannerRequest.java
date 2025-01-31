@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class BannerRequest {
 
+    String systemId;
     List<LojaInfo> lojaInfo;
     List<Media> media = new ArrayList<>();//tamanho 2
 

@@ -25,7 +25,7 @@ public class BannerService {
     }
 
     @Transactional
-    public void postBanner(BannerRequest bannerRequest) throws Exception {
+    public void postOrReindexBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
         BannerEnt bannerEnt = new BannerEnt();
         String desktopExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.DESKTOP)).map(o->o.getBannerExtension()).findFirst().get();
         String mobileExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.MOBILE)).map(o->o.getBannerExtension()).findFirst().get();
@@ -45,6 +45,7 @@ public class BannerService {
                         "/banners/" + media.getWindow());
             }
         }
+        bannerEnt.getBannerLojas().clear();
         for(BannerRequest.LojaInfo lojaInfo:bannerRequest.getLojaInfo()){
             BannerLojas bannerLoja = new BannerLojas();
             bannerLoja.setIndexOnStore(lojaInfo.getIndex());
