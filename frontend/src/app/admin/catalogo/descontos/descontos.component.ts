@@ -7,6 +7,7 @@ import { DatetimeBrazilPipe } from "../../../pipes/datetime-brazil.pipe";
 import { DateBrazilPipe } from '../../../pipes/date-brazil.pipe';
 import { CriarAtualizarDescontoComponent } from './criar-atualizar-desconto/criar-atualizar-desconto.component';
 import { DeletarDescontoComponent } from "./deletar-desconto/deletar-desconto.component";
+import { Loja } from '../../../services/loja.service';
 
 export interface DescontosBeautyNomes{
   pure_name:Desconto.DescontoTipo,
@@ -63,11 +64,12 @@ export class DescontosComponent implements OnInit {
     this.getAll();
   }
 
-  getAll(){
-    const lojaId = this.auth.getContext()?.loja.systemId;
-    if(lojaId){
+  getAll(){//isso abriga o caso do admin em lojaId undefined
+    const lojaId = this.auth.getContext()?.loja?.systemId;
+    const franquiaId = this.auth.getContext()?.franquia.systemId;
+    if(franquiaId){
       this.loadingDescontos = true;
-      this.descontoService.getDescontos(lojaId).subscribe({
+      this.descontoService.getDescontos(franquiaId,lojaId).subscribe({
         next:(data)=>{
           this.descontos = data;
           this.loadingDescontos = false;
@@ -77,6 +79,10 @@ export class DescontosComponent implements OnInit {
         }
       })
     }
+  
+  }
+  getLojasJointed(lojas:Desconto.LojaModel[]){
+    return lojas.join(",");
   }
 
   forceType(val:any){

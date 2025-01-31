@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
 import { Desconto, DescontosService } from '../../../../services/descontos.service';
 import { DescontosBeautyNomes } from '../descontos.component';
-import { UserService } from '../../../../services/user.service';
+import { User, UserService } from '../../../../services/user.service';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DescontoFreteFormComponent } from "../desconto-frete-form/desconto-frete-form.component";
@@ -30,11 +30,8 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   update = false;
   focusedTipo!:DescontosBeautyNomes;
   loadingSave = false;
-
   nowAfter = new Date();
-
   DescontoTipoEnum = Desconto.DescontoTipo;
-
 
 
   constructor(private auth:UserService,private message:MessageService,private descontoService:DescontosService) {
@@ -54,20 +51,36 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   }
 
   definePayLoadModel(){
-    const contextualLoja = this.auth.getContext()?.loja;
-    if(contextualLoja){
-      this.payload = {
-        ...this.payload,
-        tipo:this.focusedTipo.pure_name,
-        systemId: this.payload?.systemId || "",
-        loja: {
-          nome:contextualLoja?.nome,
-          slug:contextualLoja?.slug,
-          systemId:contextualLoja?.systemId
-        },
-        isActive: true
-      };
+    this.payload = {
+      ...this.payload,
+      tipo:this.focusedTipo.pure_name,
+      systemId: this.payload?.systemId || "",
+      lojas: [],
+      isActive: true
+    };
+
+    if(this.auth.getContext()?.role === User.Role.ADMIN){
+      const lojas = this.auth.getContext()?.lojasFranquia;
+      lojas?.forEach((e)=>{
+        this.payload.lojas.push({
+          nome:e.nome,
+          slug:e.slug,
+          systemId:e.systemId
+        })
+      })
+    }else{
+      const loja = this.auth.getContext()?.loja;
+      if(loja){
+        this.payload.lojas.push({
+          nome:loja.nome,
+          slug:loja.slug,
+          systemId:loja.systemId
+        })
+      }
     }
+
+
+    
   }
 
   manageTipoChange(){
@@ -94,7 +107,7 @@ export class CriarAtualizarDescontoComponent implements OnInit {
       })
       return;
     }
-    if(!this.payload.loja){
+    if(!this.payload.lojas.length){
       this.message.add({
         severity:"error",
         summary:"Loja inválida"

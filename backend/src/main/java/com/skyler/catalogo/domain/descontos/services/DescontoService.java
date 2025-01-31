@@ -39,9 +39,14 @@ public class DescontoService {
         this.descontoRepository.deleteById(id);
     }
 
-    public List<DescontoDTO> getDescontosForLoja(String lojaSystemId){
+    public List<DescontoDTO> getDescontosForLoja(String lojaSystemId, String franquiaSystemId){
         List<DescontoDTO> descontoDTOList = new ArrayList<>();
-        List<Desconto> descontos = this.descontoRepository.findAllByLojaId(lojaSystemId);
+        List<Desconto> descontos = new ArrayList<>();
+        if(lojaSystemId==null || lojaSystemId.isBlank()){
+            descontos = this.descontoRepository.findAllByLojaId(lojaSystemId);
+        }else{
+            descontos = this.descontoRepository.findAllByFranquiaId(franquiaSystemId);
+        }
         for(Desconto desconto:descontos){
             descontoDTOList.add(this.descontoMapper.entityToDTO(desconto));
         }
@@ -320,15 +325,14 @@ public class DescontoService {
     }
 
     private void arrumarEssencial(Desconto entity,DescontoDTO descontoDTO){
-        Optional<Loja> lojaOptional = this.lojaRepository.findById(descontoDTO.getLoja().getSystemId());
-        if(lojaOptional.isEmpty()){
-            throw new RuntimeException("Loja não encontrada");
-        }
+        List<Loja> lojas = this.lojaRepository.findAllById(descontoDTO.getLojas().stream().map(o->o.getSystemId()).toList());
         entity.setDescontoTipo(descontoDTO.getTipo());
         entity.setDiscountName(descontoDTO.getNome());
         entity.setIsActive(descontoDTO.getIsActive());
         entity.setExpiresAt(descontoDTO.getExpiresAt());
-        entity.setLoja(lojaOptional.get());
+        for(Loja loja:lojas){
+            entity.addLoja(loja);
+        }
     }
 
 

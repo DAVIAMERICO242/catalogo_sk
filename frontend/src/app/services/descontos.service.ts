@@ -12,7 +12,7 @@ export namespace Desconto{
     tipo:DescontoTipo,
     expiresAt:Date,
     isActive:boolean,
-    loja:LojaModel,
+    lojas:LojaModel[],
     createdAt:Date | undefined ,
     descontoFrete?:DescontoFreteModel,
     descontoGenericoCarrinho?:DescontoGenericoCarrinhoModel;
@@ -74,7 +74,7 @@ export namespace Desconto{
     excludedGrupos:string[]
   }
 
-  interface LojaModel{
+  export interface LojaModel{
     systemId:string,
     nome:string,
     slug:string
@@ -116,8 +116,12 @@ export class DescontosService {
     );
   }
 
-  getDescontos(lojaId:string){
-    return this.http.get<Desconto.DescontoModel[]>(env.BACKEND_URL+"/descontos?lojaId="+lojaId).pipe(
+  getDescontos(franquiaId:string,lojaId?:string){
+    let url = env.BACKEND_URL + "/descontos?franquiaId="+franquiaId;
+    if(lojaId){
+      url = url + "&lojaId="+lojaId
+    }
+    return this.http.get<Desconto.DescontoModel[]>(url).pipe(
       map((raw)=>{
         const buffer = raw.map((e)=>{
           return{

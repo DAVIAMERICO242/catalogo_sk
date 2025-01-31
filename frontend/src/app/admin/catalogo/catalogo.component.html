@@ -1,5 +1,6 @@
 <app-admin-page-title  iconClass="pi pi-objects-column" title="Catálogo"/>
 <div class="p-5" *ngIf="!this.loadingCatalogo;else fallback">
+    <p-select [filter]="true" styleClass="!w-[200px] !text-xs !h-[30px] !flex !items-center" [(ngModel)]="this.selectedLoja" (ngModelChange)="this.loadCatalogo()" [options]="this.auth.getContext()?.lojasFranquia || []" optionLabel="nome" />
     <div class="mb-5">
         <app-descontos/>
     </div>

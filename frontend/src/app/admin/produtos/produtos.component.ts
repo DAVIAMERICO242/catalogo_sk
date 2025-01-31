@@ -35,7 +35,7 @@ export class ProdutosComponent implements OnInit,OnDestroy{
       this.selectedLoja = this.userService.getContext()?.loja as User.Loja;
     }
     this.loadProdutos();
-    
+  
   }
 
 

@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class DescontoDTO {
@@ -21,5 +23,9 @@ public class DescontoDTO {
     DescontoMaiorValorDTO descontoMaiorValor;
     DescontoMenorValorDTO descontoMenorValor;
     DescontoProgressivoDTO descontoProgressivo;
-    LojaDescontoDTO loja;
+    List<LojaDescontoDTO> lojas = new ArrayList<>();
+
+    public void addLojaDesconto(LojaDescontoDTO loja){
+        this.lojas.add(loja);
+    }
 }

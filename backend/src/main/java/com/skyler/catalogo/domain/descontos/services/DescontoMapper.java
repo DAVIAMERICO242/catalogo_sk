@@ -5,6 +5,7 @@ import com.skyler.catalogo.domain.descontos.enums.DescontoTipo;
 import com.skyler.catalogo.domain.descontos.enums.TermoTipo;
 import com.skyler.catalogo.domain.descontos.interfaces.DelimitedExcludedInterface;
 import com.skyler.catalogo.domain.descontos.entities.*;
+import com.skyler.catalogo.domain.lojas.Loja;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -150,17 +151,19 @@ public class DescontoMapper {
 
     private DescontoDTO arrumarEssencial(Desconto entity){
         DescontoDTO output = new DescontoDTO();
-        LojaDescontoDTO lojaDescontoDTO = new LojaDescontoDTO();
         output.setSystemId(entity.getSystemId());
         output.setNome(entity.getDiscountName());
         output.setIsActive(entity.getIsActive());
         output.setExpiresAt(entity.getExpiresAt());
         output.setTipo(entity.getDescontoTipo());
         output.setCreatedAt(entity.getCreatedAt());
-        lojaDescontoDTO.setSystemId(entity.getLoja().getSystemId());
-        lojaDescontoDTO.setNome(entity.getLoja().getNome());
-        lojaDescontoDTO.setSlug(entity.getLoja().getSlug());
-        output.setLoja(lojaDescontoDTO);
+        for(Loja loja:entity.getLojas()){
+            LojaDescontoDTO lojaDescontoDTO = new LojaDescontoDTO();
+            lojaDescontoDTO.setSystemId(loja.getSystemId());
+            lojaDescontoDTO.setNome(loja.getNome());
+            lojaDescontoDTO.setSlug(loja.getSlug());
+            output.addLojaDesconto(lojaDescontoDTO);
+        }
         return output;
     }
 

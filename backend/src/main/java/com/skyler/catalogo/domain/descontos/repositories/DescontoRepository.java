@@ -16,7 +16,7 @@ public interface DescontoRepository extends JpaRepository<Desconto,String> {
     int numeroAplicacoes(String id);
 
     @Query("SELECT d FROM Desconto d " +
-            "LEFT JOIN FETCH d.loja l " +
+            "LEFT JOIN FETCH d.lojas l " +
             "LEFT JOIN FETCH d.descontoFrete df " +
             "LEFT JOIN FETCH d.descontoGenericoCarrinho dgc " +
             "LEFT JOIN FETCH d.descontoMaiorValor dmav " +
@@ -29,11 +29,11 @@ public interface DescontoRepository extends JpaRepository<Desconto,String> {
             "LEFT JOIN FETCH d.descontoSimplesTermo dst " +
             "LEFT JOIN FETCH d.delimitedTermos dt " +
             "LEFT JOIN FETCH d.excludedTermos et " +
-            "WHERE d.loja.systemId = :lojaId  ")
+            "WHERE l.systemId = :lojaId  ")
     List<Desconto> findAllByLojaId(String lojaId);
 
     @Query("SELECT d FROM Desconto d " +
-            "LEFT JOIN FETCH d.loja l " +
+            "LEFT JOIN FETCH d.lojas l " +
             "LEFT JOIN FETCH d.descontoFrete df " +
             "LEFT JOIN FETCH d.descontoGenericoCarrinho dgc " +
             "LEFT JOIN FETCH d.descontoMaiorValor dmav " +
@@ -46,12 +46,29 @@ public interface DescontoRepository extends JpaRepository<Desconto,String> {
             "LEFT JOIN FETCH d.descontoSimplesTermo dst " +
             "LEFT JOIN FETCH d.delimitedTermos dt " +
             "LEFT JOIN FETCH d.excludedTermos et " +
-            "WHERE d.loja.systemId = :lojaId AND d.isActive = true AND d.expiresAt >= :today  ")
+            "WHERE l.franquia.systemId = :franquiaId  ")
+    List<Desconto> findAllByFranquiaId(String franquiaId);
+
+    @Query("SELECT d FROM Desconto d " +
+            "LEFT JOIN FETCH d.lojas l " +
+            "LEFT JOIN FETCH d.descontoFrete df " +
+            "LEFT JOIN FETCH d.descontoGenericoCarrinho dgc " +
+            "LEFT JOIN FETCH d.descontoMaiorValor dmav " +
+            "LEFT JOIN FETCH d.descontoMenorValor dmev " +
+            "LEFT JOIN FETCH d.descontoProgressivo dp " +
+            "LEFT JOIN FETCH dp.intervalos " +
+            "LEFT JOIN FETCH d.descontoSimplesProduto dsp " +
+            "LEFT JOIN FETCH dsp.produtoCatalogo pc " +
+            "LEFT JOIN FETCH pc.produtoBaseFranquia pbf " +
+            "LEFT JOIN FETCH d.descontoSimplesTermo dst " +
+            "LEFT JOIN FETCH d.delimitedTermos dt " +
+            "LEFT JOIN FETCH d.excludedTermos et " +
+            "WHERE l.systemId = :lojaId AND d.isActive = true AND d.expiresAt >= :today  ")
     List<Desconto> findAllActiveAndNotExpiredByLojaId(LocalDate today,String lojaId);
 
     @Override
     @Query("SELECT d FROM Desconto d " +
-            "LEFT JOIN FETCH d.loja l " +
+            "LEFT JOIN FETCH d.lojas l " +
             "LEFT JOIN FETCH d.descontoFrete df " +
             "LEFT JOIN FETCH d.descontoGenericoCarrinho dgc " +
             "LEFT JOIN FETCH d.descontoMaiorValor dmav " +
@@ -64,7 +81,7 @@ public interface DescontoRepository extends JpaRepository<Desconto,String> {
             "LEFT JOIN FETCH d.descontoSimplesTermo dst " +
             "LEFT JOIN FETCH d.delimitedTermos dt " +
             "LEFT JOIN FETCH d.excludedTermos et " +
-            "WHERE d.loja.systemId = :lojaId  ")
+            "WHERE l.systemId = :lojaId  ")
     List<Desconto> findAll();
 
     @Transactional

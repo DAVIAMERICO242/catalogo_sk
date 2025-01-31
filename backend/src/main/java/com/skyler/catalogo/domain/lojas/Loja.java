@@ -14,6 +14,7 @@ import java.util.UUID;
 @Table(name="lojas")
 public class Loja {
     @Id
+    @Column(name="system_id")
     private String systemId = UUID.randomUUID().toString();
     @Column(name="loja_integrador_id")
     private String integradorId;

@@ -17,9 +17,12 @@ public class DescontoController {
 
 
     @GetMapping
-    public ResponseEntity getDescontos(@RequestParam String lojaId){
+    public ResponseEntity getDescontos(
+            @RequestParam(required = false) String lojaId,
+            @RequestParam(required = true) String franquiaId
+            ){
         try{
-            return ResponseEntity.ok().body(this.descontoService.getDescontosForLoja(lojaId));
+            return ResponseEntity.ok().body(this.descontoService.getDescontosForLoja(lojaId,franquiaId));
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

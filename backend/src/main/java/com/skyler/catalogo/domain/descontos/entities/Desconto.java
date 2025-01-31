@@ -24,10 +24,14 @@ public class Desconto{
     @Id
     @Column(name="system_id")
     private String systemId = UUID.randomUUID().toString();
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="loja_system_id")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "discounts_lojas",
+            joinColumns = @JoinColumn(name="desconto_id",referencedColumnName = "system_id"),
+            inverseJoinColumns = @JoinColumn(name="loja_id",referencedColumnName = "system_id")
+    )
     @JsonBackReference
-    private Loja loja;
+    private Set<Loja> lojas = new HashSet<>();
     @Enumerated(EnumType.STRING)
     private DescontoTipo descontoTipo;
     private String discountName;
@@ -61,6 +65,10 @@ public class Desconto{
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "desconto")
     @JsonManagedReference
     private Set<ExcludedTermos> excludedTermos = new HashSet<>();
+
+    public void addLoja(Loja loja){
+        this.lojas.add(loja);
+    }
 
     public void addDelimitedTermo(DelimitedTermos termo){
         termo.setDesconto(this);
