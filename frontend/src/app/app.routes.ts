@@ -46,6 +46,10 @@ export const routes: Routes = [
                 path:"pedidos",
                 loadComponent:()=>import("./admin/pedidos/pedidos.component").then(m=>m.PedidosComponent)
             }
+            ,{
+                path:"banners",
+                loadComponent:()=>import("./admin/banners/banners.component").then(m=>m.BannersComponent)
+            }
         ]
     },
     {
