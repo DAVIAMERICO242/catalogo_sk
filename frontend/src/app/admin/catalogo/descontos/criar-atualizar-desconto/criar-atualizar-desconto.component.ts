@@ -34,7 +34,7 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   DescontoTipoEnum = Desconto.DescontoTipo;
 
 
-  constructor(private auth:UserService,private message:MessageService,private descontoService:DescontosService) {
+  constructor(protected auth:UserService,private message:MessageService,private descontoService:DescontosService) {
     
   }
   

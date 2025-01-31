@@ -82,7 +82,9 @@ export class DescontosComponent implements OnInit {
   
   }
   getLojasJointed(lojas:Desconto.LojaModel[]){
-    return lojas.join(",");
+
+    const join = lojas.map(e=>e.nome).join(", ");
+    return "(" + lojas.length +") " + join
   }
 
   forceType(val:any){

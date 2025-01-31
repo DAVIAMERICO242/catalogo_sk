@@ -22,7 +22,7 @@ public class DescontoController {
             @RequestParam(required = true) String franquiaId
             ){
         try{
-            return ResponseEntity.ok().body(this.descontoService.getDescontosForLoja(lojaId,franquiaId));
+            return ResponseEntity.ok().body(this.descontoService.getDescontos(lojaId,franquiaId));
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

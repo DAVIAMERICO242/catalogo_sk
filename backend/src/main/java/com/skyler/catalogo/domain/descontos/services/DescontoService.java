@@ -39,10 +39,10 @@ public class DescontoService {
         this.descontoRepository.deleteById(id);
     }
 
-    public List<DescontoDTO> getDescontosForLoja(String lojaSystemId, String franquiaSystemId){
+    public List<DescontoDTO> getDescontos(String lojaSystemId, String franquiaSystemId){
         List<DescontoDTO> descontoDTOList = new ArrayList<>();
         List<Desconto> descontos = new ArrayList<>();
-        if(lojaSystemId==null || lojaSystemId.isBlank()){
+        if(lojaSystemId!=null && !lojaSystemId.isBlank()){
             descontos = this.descontoRepository.findAllByLojaId(lojaSystemId);
         }else{
             descontos = this.descontoRepository.findAllByFranquiaId(franquiaSystemId);

@@ -35,8 +35,12 @@
         </ng-template>
         <ng-template #body let-row>
             <tr class="text-sm">
-                <td>
-                    {{this.getLojasJointed(this.forceType(row).lojas)}}
+                <td >
+                    <div [pTooltip]="this.getLojasJointed(this.forceType(row).lojas)">
+                        <div class="!text-nowrap !overflow-hidden !text-ellipsis !w-[200px]">
+                            {{this.getLojasJointed(this.forceType(row).lojas)}}
+                        </div>
+                    </div>
                 </td>
                 <td>
                     {{this.forceType(row).nome}}

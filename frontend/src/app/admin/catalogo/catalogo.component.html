@@ -1,8 +1,10 @@
 <app-admin-page-title  iconClass="pi pi-objects-column" title="Catálogo"/>
 <div class="p-5" *ngIf="!this.loadingCatalogo;else fallback">
-    <p-select [filter]="true" styleClass="!w-[200px] !text-xs !h-[30px] !flex !items-center" [(ngModel)]="this.selectedLoja" (ngModelChange)="this.loadCatalogo()" [options]="this.auth.getContext()?.lojasFranquia || []" optionLabel="nome" />
-    <div class="mb-5">
-        <app-descontos/>
+    <div class="flex items-center justify-between">
+        <p-select [filter]="true" styleClass="!w-[180px] mb-3 !text-xs !h-[40px] !flex !items-center" [(ngModel)]="this.selectedLoja" (ngModelChange)="this.loadCatalogo()" [options]="this.auth.getContext()?.lojasFranquia || []" optionLabel="nome" />
+        <div class="mb-5">
+            <app-descontos/>
+        </div>
     </div>
     <div class="flex flex-wrap gap-10  " *ngIf="this.catalogo.length;else empty">
         <div *ngFor="let item of this.catalogo" class="p-3 border-[1px] border-solid border-slate-100 shadow-sm rounded-sm ">
