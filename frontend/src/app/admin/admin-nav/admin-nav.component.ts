@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 enum Page{
   PRODUTOS="PRODUTOS",
   PEDIDOS="PEDIDOS",
-  CATALOGO="CATALOGO"
+  CATALOGO="CATALOGO",
+  BANNERS="BANNERS"
 }
 @Component({
   selector: 'app-admin-nav',
@@ -36,6 +37,9 @@ export class AdminNavComponent implements OnInit {
     }
     if(endPath.endsWith("/catalogo")){
       this.focused = Page.CATALOGO
+    }
+    if(endPath.endsWith("/banners")){
+      this.focused = Page.BANNERS
     }
   }
 

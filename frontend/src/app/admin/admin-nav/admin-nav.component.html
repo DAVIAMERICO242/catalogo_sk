@@ -12,6 +12,9 @@
             <li pTooltip="Pedidos" severity="secondary" tooltipPosition="bottom" (click)="changePage(PageEnum.PEDIDOS,'/pedidos')" class="cursor-pointer">
                 <div [ngClass]="{'font-bold':focused==='PEDIDOS'}" class="pi pi-shopping-bag"></div>
             </li>
+                <li pTooltip="Banners" (click)="changePage(PageEnum.BANNERS,'/banners')" class="cursor-pointer">
+                    <div [ngClass]="{'font-bold':focused==='BANNERS'}" class="pi pi-images"></div>
+                </li>
             <li pTooltip="Catálogo" severity="secondary" tooltipPosition="bottom" (click)="changePage(PageEnum.CATALOGO,'/catalogo')" class="cursor-pointer">
                 <div [ngClass]="{'font-bold':focused==='CATALOGO'}" class="pi pi-objects-column"></div>
             </li>
@@ -33,6 +36,12 @@
                     <div class="pi pi-shopping-bag"></div>
                     <div  [ngClass]="{'font-bold':focused==='PEDIDOS'}">
                         Pedidos
+                    </div>
+                </li>
+                <li (click)="changePage(PageEnum.PRODUTOS,'/banners')" class="text-[14px] cursor-pointer flex items-center gap-3">
+                    <div class="pi pi-images"></div>
+                    <div [ngClass]="{'font-bold':focused==='BANNERS'}">
+                        Banners
                     </div>
                 </li>
                 <li (click)="changePage(PageEnum.CATALOGO,'/catalogo')" class="text-[14px] cursor-pointer flex items-center gap-3">
