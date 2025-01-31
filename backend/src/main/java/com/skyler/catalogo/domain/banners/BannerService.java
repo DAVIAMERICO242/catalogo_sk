@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,10 @@ public class BannerService {
     @Transactional
     public void postOrReindexBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
         BannerEnt bannerEnt = new BannerEnt();
+        Optional<BannerEnt> bannerEntOptional = this.bannerRepository.findById(bannerRequest.getSystemId());
+        if(!bannerEntOptional.isEmpty()){
+            bannerEnt = bannerEntOptional.get();
+        }
         String desktopExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.DESKTOP)).map(o->o.getBannerExtension()).findFirst().get();
         String mobileExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.MOBILE)).map(o->o.getBannerExtension()).findFirst().get();
         bannerEnt.setUrlDesktop("https://s3.skyler.com.br/catalogosk/banners/DESKTOP/" + bannerEnt.getSystemId() + desktopExtension);
