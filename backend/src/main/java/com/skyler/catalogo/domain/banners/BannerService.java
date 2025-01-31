@@ -1,5 +1,6 @@
 package com.skyler.catalogo.domain.banners;
 
+import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.infra.storage.BannerGet;
 import com.skyler.catalogo.infra.storage.MinioService;
 import jakarta.transaction.Transactional;
@@ -8,16 +9,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BannerService {
 
     private final MinioService minioService;
     private final BannerRepository bannerRepository;
+    private final LojaRepository lojaRepository;
 
-    public BannerService(MinioService minioService, BannerRepository bannerRepository) {
+    public BannerService(MinioService minioService, BannerRepository bannerRepository, LojaRepository lojaRepository) {
         this.minioService = minioService;
         this.bannerRepository = bannerRepository;
+        this.lojaRepository = lojaRepository;
     }
 
     @Transactional
@@ -41,7 +45,27 @@ public class BannerService {
                         "/banners/" + media.getWindow());
             }
         }
+        for(BannerRequest.LojaInfo lojaInfo:bannerRequest.getLojaInfo()){
+            BannerLojas bannerLoja = new BannerLojas();
+            bannerLoja.setIndexOnStore(lojaInfo.getIndex());
+            bannerLoja.setLoja(this.lojaRepository.findById(lojaInfo.getSystemId()).get());
+            bannerEnt.addRelacaoLoja(bannerLoja);
+        }
         this.bannerRepository.save(bannerEnt);
+    }
+
+    @Transactional
+    public void deletarBannerDaLoja(String bannerId, String lojaId){//se deletar de uma loja deleta de todas foda,
+        BannerEnt bannerEnt = this.bannerRepository.findById(bannerId).get();
+        bannerEnt.setBannerLojas(bannerEnt.getBannerLojas().stream().filter(o->!o.getLoja().getSystemId().equals(lojaId)).collect(Collectors.toSet()));
+        this.bannerRepository.save(bannerEnt);
+        if(bannerEnt.getBannerLojas().isEmpty()){//e é o ultimo banner da loja
+            String objectDesktop = bannerEnt.getUrlDesktop().split("catalogosk/")[1];
+            String objectMobile = bannerEnt.getUrlMobile().split("catalogosk/")[1];
+            this.minioService.removeDirectory(objectDesktop);
+            this.minioService.removeDirectory(objectMobile);
+            this.bannerRepository.deleteById(bannerId);
+        }
     }
 
     public List<BannerGet> getBanners(String lojaId) throws Exception {

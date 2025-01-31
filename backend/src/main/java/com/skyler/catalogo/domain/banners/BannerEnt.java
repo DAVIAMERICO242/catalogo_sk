@@ -24,4 +24,10 @@ public class BannerEnt {
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "banner")
     @JsonManagedReference
     private Set<BannerLojas> bannerLojas = new HashSet<>();
+
+    public void addRelacaoLoja(BannerLojas bannerLoja){
+        bannerLoja.setBanner(this);
+        this.bannerLojas.add(bannerLoja);
+    }
+
 }
