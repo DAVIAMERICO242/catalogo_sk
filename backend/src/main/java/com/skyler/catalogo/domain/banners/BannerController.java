@@ -1,10 +1,7 @@
 package com.skyler.catalogo.domain.banners;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/media/banner")
@@ -21,6 +18,15 @@ public class BannerController {
         try{
             this.bannerService.postOrReindexBanner(bannerRequest);
             return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity getBanners(@RequestParam(required = false) String lojaId, @RequestParam(required = true) String franquiaId){
+        try{
+            return ResponseEntity.ok().body(this.bannerService.getBanners(lojaId,franquiaId));
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

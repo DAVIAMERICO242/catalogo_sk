@@ -1,5 +1,6 @@
 package com.skyler.catalogo.domain.banners;
 
+import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.infra.storage.MinioService;
 import jakarta.transaction.Transactional;
@@ -49,10 +50,13 @@ public class BannerService {
             }
         }
         bannerEnt.getBannerLojas().clear();
+        List<String> lojasIds = bannerRequest.getLojaInfo().stream().map(o->o.getSystemId()).toList();
+        List<Loja> lojas = this.lojaRepository.findAllById(lojasIds);
         for(BannerRequest.LojaInfo lojaInfo:bannerRequest.getLojaInfo()){
+            Loja loja = lojas.stream().filter(o->o.getSystemId().equals(lojaInfo.getSystemId())).findFirst().get();
             BannerLojas bannerLoja = new BannerLojas();
             bannerLoja.setIndexOnStore(lojaInfo.getIndex());
-            bannerLoja.setLoja(this.lojaRepository.findById(lojaInfo.getSystemId()).get());
+            bannerLoja.setLoja(loja);
             bannerEnt.addRelacaoLoja(bannerLoja);
         }
         this.bannerRepository.save(bannerEnt);
