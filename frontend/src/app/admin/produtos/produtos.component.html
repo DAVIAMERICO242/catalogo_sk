@@ -3,6 +3,10 @@
 class="space-y-2 p-4  shadow-sm  relative" *ngIf="(produtoService.produtosSub | async) as produtos;else fallback ">
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-5">
+            <div *ngIf="this.userService.getContext()?.role==='ADMIN'" class="flex items-center gap-1">
+                <div class="text-xs">Loja:</div>
+                <p-select [filter]="true" styleClass="!text-xs !h-[30px] !flex !items-center" [(ngModel)]="this.selectedLoja" (ngModelChange)="this.loadProdutos()" [options]="this.userService.getContext()?.lojasFranquia || []" optionLabel="nome" />
+            </div>        
             <div class="flex items-center gap-1">
                 <div class="text-xs">Sku:</div>
                 <input [(ngModel)]="this.skuFilter" placeholder="Referência" class="!text-xs w-[130px] h-[30px]" pInputText/>
@@ -35,8 +39,8 @@ class="space-y-2 p-4  shadow-sm  relative" *ngIf="(produtoService.produtosSub | 
                         </div>
                     </div>
                     <div class="flex flex-col gap-3">
-                        <app-adicionar-loaded-produto-ao-catalogo [alreadyOnCatalogo]="item.onCatalogo" [productId]="item.systemId"/>
-                        <app-product-variation-view [skuBase]="item.sku" [productId]="item.systemId"/>
+                        <app-adicionar-loaded-produto-ao-catalogo [lojaSlug]="this.selectedLoja.slug" [alreadyOnCatalogo]="item.onCatalogo" [productId]="item.systemId"/>
+                        <app-product-variation-view [lojaSlug]="this.selectedLoja.slug" [skuBase]="item.sku" [productId]="item.systemId"/>
                     </div>
                 </div>
           </div>

@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProdutosService } from '../../services/produtos.service';
 import { Subscription } from 'rxjs';
-import { UserService } from '../../services/user.service';
+import { User, UserService } from '../../services/user.service';
 import { SharedModule } from '../../shared/shared.module';
 import { AdminPageTitleComponent } from "../admin-page-title/admin-page-title.component";
 import { ProductVariationViewComponent } from "./product-variation-view/product-variation-view.component";
 import { PaginatorComponent } from "../../pure-ui-components/paginator/paginator.component";
 import { AdicionarLoadedProdutoAoCatalogoComponent } from "./adicionar-loaded-produto-ao-catalogo/adicionar-loaded-produto-ao-catalogo.component";
+import { Loja } from '../../services/loja.service';
 
 @Component({
   selector: 'app-produtos',
@@ -18,21 +19,29 @@ export class ProdutosComponent implements OnInit,OnDestroy{
   subscriptions = new Subscription();
   nomeFilter = "";
   skuFilter = "";
+  selectedLoja!:User.Loja;
 
-  constructor(protected produtoService:ProdutosService,private userService:UserService){}
+  constructor(protected produtoService:ProdutosService,protected userService:UserService){}
   
   ngOnInit(): void {
     this.nomeFilter = this.produtoService.filterSub.value.nome || "";
     this.skuFilter = this.produtoService.filterSub.value.sku || "";
+    if(this.userService.getContext()?.role===User.Role.ADMIN){
+      const lojasFranquia = this.userService.getContext()?.lojasFranquia
+      if(lojasFranquia){
+        this.selectedLoja = lojasFranquia[0];
+      }
+    }else{
+      this.selectedLoja = this.userService.getContext()?.loja as User.Loja;
+    }
     this.loadProdutos();
     
   }
 
 
   loadProdutos(){
-    const slug = this.userService.getContext()?.loja.slug;
-    if(slug){
-      this.produtoService.setProdutosPaged(slug,this.nomeFilter,this.skuFilter);
+    if(this.selectedLoja){
+      this.produtoService.setProdutosPaged(this.selectedLoja.slug,this.nomeFilter,this.skuFilter);
     }
   }
   

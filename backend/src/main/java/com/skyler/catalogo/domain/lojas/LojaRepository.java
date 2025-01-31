@@ -15,6 +15,12 @@ public interface LojaRepository extends JpaRepository<Loja,String> {
             "ORDER BY l.nome ASC ")
     List<Loja> findAll();
 
+    @Query("SELECT l FROM Loja l " +
+            "JOIN FETCH l.franquia " +
+            "WHERE l.franquia.systemId = :franquiaId AND (NOT  l.nome LIKE '%CD%' AND NOT l.nome LIKE '%MULTIMARCAS' AND NOT l.nome LIKE '%SKYLER FRANCHISING%' AND NOT l.nome LIKE '%Empreendimentos%' AND NOT l.nome LIKE '%Fran' AND NOT l.nome LIKE '%DASLEN%' AND NOT l.nome LIKE '%SITE%' AND NOT l.nome LIKE '%DIGITAL%' ) " +
+            "ORDER BY l.nome ASC ")
+    List<Loja> findAllByFranquiaId(String franquiaId);
+
 
     @Query("SELECT l FROM Loja l " +
             "JOIN FETCH l.franquia " +

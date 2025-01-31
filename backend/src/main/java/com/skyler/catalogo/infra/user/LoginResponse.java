@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +19,13 @@ public class LoginResponse
     Boolean shouldChangeFirstPass;
     Loja loja;
     Franquia franquia;
+    List<Loja> lojasFranquia = new ArrayList<>();
+    Role role;
+
+    public void addLojaFranquia(Loja loja){
+        this.lojasFranquia.add(loja);
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

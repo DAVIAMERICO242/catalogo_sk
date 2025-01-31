@@ -5,6 +5,10 @@ import { Router } from '@angular/router';
 
 
 export namespace User{
+  export enum Role{
+    ADMIN="ADMIN",
+    OPERACIONAL="OPERACIONAL"
+  }
   export interface LoginRequest{
     username:string,
     password:string
@@ -17,10 +21,12 @@ export namespace User{
     beautyName:string,
     username:string,
     password:string,
+    role:Role
     token:string,
     shouldChangeFirstPass:boolean,
     loja:Loja,
-    franquia:Franquia
+    franquia:Franquia,
+    lojasFranquia?:Loja[]//nao carregado para o não admin
   }
   export interface Loja{
     systemId:string

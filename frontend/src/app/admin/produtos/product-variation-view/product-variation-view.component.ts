@@ -11,6 +11,8 @@ import { UserService } from '../../../services/user.service';
   templateUrl: './product-variation-view.component.html'
 })
 export class ProductVariationViewComponent {
+  @Input({required:true})
+  lojaSlug = "";
   variacoes!:Produto.ProdutoVariacao[];
   @Input({required:true})
   skuBase!:string;
@@ -48,8 +50,7 @@ export class ProductVariationViewComponent {
     }
     this.loading = true;
     const sku = [this.skuBase];
-    const slug = this.auth.getContext()?.loja.slug || ""
-    this.produtoService.getStock(sku,slug).subscribe({
+    this.produtoService.getStock(sku,this.lojaSlug).subscribe({
        next:(data)=>{
         this.estoque = data[0];
         this.loading = false;

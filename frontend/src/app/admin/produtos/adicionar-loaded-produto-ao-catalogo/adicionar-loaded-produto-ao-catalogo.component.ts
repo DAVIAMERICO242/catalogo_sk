@@ -11,6 +11,9 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './adicionar-loaded-produto-ao-catalogo.component.html'
 })
 export class AdicionarLoadedProdutoAoCatalogoComponent implements OnInit {
+  
+  @Input({required:true})
+  lojaSlug = "";
 
   @Input({required:true})
   productId!:string;
@@ -26,12 +29,12 @@ export class AdicionarLoadedProdutoAoCatalogoComponent implements OnInit {
   ngOnInit(): void {
     this.payloadCadastro = {
       systemId:this.productId,
-      lojaSlug:this.auth.getContext()?.loja.slug || ""
+      lojaSlug:this.lojaSlug || ""
     }
 
     this.payloadDelecao = {
       systemId:this.productId,
-      lojaSlug:this.auth.getContext()?.loja.slug || ""
+      lojaSlug:this.lojaSlug || ""
     }
   }
 

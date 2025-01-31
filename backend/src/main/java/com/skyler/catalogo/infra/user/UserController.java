@@ -1,5 +1,7 @@
 package com.skyler.catalogo.infra.user;
 
+import com.skyler.catalogo.domain.lojas.Loja;
+import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.infra.auth.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,12 +18,14 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final LojaRepository lojaRepository;
     @Value("${app.base-pass}")
     private String basePass;
 
-    public UserController(UserRepository userRepository, JwtService jwtService) {
+    public UserController(UserRepository userRepository, JwtService jwtService, LojaRepository lojaRepository) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
+        this.lojaRepository = lojaRepository;
     }
 
     @GetMapping("/private-route")
@@ -55,6 +60,15 @@ public class UserController {
             franquia.setNome(user.getFranquia().getNome());
             franquia.setSystemId(user.getFranquia().getSystemId());
             output.setFranquia(franquia);
+            List<Loja> lojasFranquia = this.lojaRepository.findAllByFranquiaId(franquia.getSystemId());
+            for(Loja lojaFranquia:lojasFranquia){
+                loja = new LoginResponse.Loja();
+                loja.setNome(lojaFranquia.getNome());
+                loja.setSlug(lojaFranquia.getSlug());
+                loja.setSystemId(lojaFranquia.getSystemId());
+                output.addLojaFranquia(loja);
+            }
+            output.setRole(user.getRole());
             return ResponseEntity.ok().body(output);
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
@@ -88,6 +102,7 @@ public class UserController {
             franquia.setNome(user.getFranquia().getNome());
             franquia.setSystemId(user.getFranquia().getSystemId());
             output.setFranquia(franquia);
+            output.setRole(user.getRole());
             return ResponseEntity.ok().body(output);
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
