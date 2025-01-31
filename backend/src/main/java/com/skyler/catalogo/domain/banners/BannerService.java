@@ -1,10 +1,8 @@
 package com.skyler.catalogo.domain.banners;
 
 import com.skyler.catalogo.domain.lojas.LojaRepository;
-import com.skyler.catalogo.infra.storage.BannerGet;
 import com.skyler.catalogo.infra.storage.MinioService;
 import jakarta.transaction.Transactional;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class BannerService {
     public void postOrReindexBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
         BannerEnt bannerEnt = new BannerEnt();
         Optional<BannerEnt> bannerEntOptional = this.bannerRepository.findById(bannerRequest.getSystemId());
-        if(!bannerEntOptional.isEmpty()){
+        if(bannerEntOptional.isPresent()){
             bannerEnt = bannerEntOptional.get();
         }
         String desktopExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.DESKTOP)).map(o->o.getBannerExtension()).findFirst().get();
@@ -74,27 +72,32 @@ public class BannerService {
         }
     }
 
-    public List<BannerGet> getBanners(String lojaId) throws Exception {
-        List<BannerGet> output = new ArrayList<>();
-        for(int i=0;i<5;i++){
-            BannerGet row = new BannerGet();
-            List<String> urlsMobile = this.minioService.getFileUrlsFromPath(
-                    "lojas/" + lojaId + "/banners/" + i + "/" + Window.MOBILE
-            );
-            List<String> urlsDesktop = this.minioService.getFileUrlsFromPath(
-                    "lojas/" + lojaId + "/banners/" + i + "/" + Window.DESKTOP
-            );
-            if(!urlsMobile.isEmpty()){
-                row.setLojaId(lojaId);
-                row.setIndex(i);
-                row.setBannerMobile(urlsMobile.get(0));
+    public List<BannerRequest> getBanners(String lojaId,String franquiaId) throws Exception {
+        List<BannerRequest> output = new ArrayList<>();
+        List<BannerEnt> bannersEnt = null;
+        if(lojaId!=null && !lojaId.isBlank()){
+            bannersEnt = this.bannerRepository.findAllByLojaId(lojaId);
+        }else{
+            bannersEnt = this.bannerRepository.findAllByFranquiaId(franquiaId);
+        }
+        for(BannerEnt bannerEnt:bannersEnt){
+            BannerRequest bannerRequest = new BannerRequest();
+            bannerRequest.setSystemId(bannerEnt.getSystemId());
+            BannerRequest.Media desktop = new BannerRequest.Media();
+            desktop.setWindow(Window.DESKTOP);
+            desktop.setBannerUrl(bannerEnt.getUrlDesktop());
+            bannerRequest.addMediaInfo(desktop);
+            BannerRequest.Media mobile = new BannerRequest.Media();
+            mobile.setWindow(Window.MOBILE);
+            mobile.setBannerUrl(bannerEnt.getUrlMobile());
+            bannerRequest.addMediaInfo(mobile);
+            for(BannerLojas bannerLojas:bannerEnt.getBannerLojas()){
+                BannerRequest.LojaInfo lojaInfo = new BannerRequest.LojaInfo();
+                lojaInfo.setSystemId(bannerLojas.getLoja().getSystemId());
+                lojaInfo.setIndex(bannerLojas.getIndexOnStore());
+                bannerRequest.addLojaInfo(lojaInfo);
             }
-            if(!urlsDesktop.isEmpty()){
-                row.setLojaId(lojaId);
-                row.setIndex(i);
-                row.setBannerDesktop(urlsDesktop.get(0));
-            }
-            output.add(row);
+            output.add(bannerRequest);
         }
         return output;
     }

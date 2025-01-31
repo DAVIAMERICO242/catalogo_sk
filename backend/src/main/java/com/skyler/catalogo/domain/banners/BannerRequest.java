@@ -9,7 +9,7 @@ import java.util.List;
 public class BannerRequest {
 
     String systemId;
-    List<LojaInfo> lojaInfo;
+    List<LojaInfo> lojaInfo = new ArrayList<>();
     List<Media> media = new ArrayList<>();//tamanho 2
 
     @Data
@@ -23,5 +23,14 @@ public class BannerRequest {
         String bannerExtension;
         Window window;
         String base64;
+        String bannerUrl;//nulo no cadastro/update, util so pro get
+    }
+
+    public void addMediaInfo(Media mediaInfo){
+        this.media.add(mediaInfo);
+    }
+
+    public void addLojaInfo(LojaInfo lojaInfo){
+        this.lojaInfo.add(lojaInfo);
     }
 }

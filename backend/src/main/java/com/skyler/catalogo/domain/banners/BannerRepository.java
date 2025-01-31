@@ -14,8 +14,22 @@ public interface BannerRepository extends JpaRepository<BannerEnt,String> {
             "WHERE b.systemId = :id")
     Optional<BannerEnt> findById(String id);
 
+
+
     @Query("SELECT b From BannerEnt b " +
             "JOIN FETCH b.bannerLojas bl " +
             "JOIN FETCH bl.loja l  ")
     List<BannerEnt> findAll();
+
+    @Query("SELECT b From BannerEnt b " +
+            "JOIN FETCH b.bannerLojas bl " +
+            "JOIN FETCH bl.loja l " +
+            "WHERE l.franquia.systemId = :id  ")
+    List<BannerEnt> findAllByFranquiaId(String id);
+
+    @Query("SELECT b From BannerEnt b " +
+            "JOIN FETCH b.bannerLojas bl " +
+            "JOIN FETCH bl.loja l " +
+            "WHERE l.systemId = :id  ")
+    List<BannerEnt> findAllByLojaId(String id);
 }
