@@ -59,6 +59,7 @@ public class UserController {
             LoginResponse.Franquia franquia = new LoginResponse.Franquia();
             franquia.setNome(user.getFranquia().getNome());
             franquia.setSystemId(user.getFranquia().getSystemId());
+            franquia.setIsMatriz(user.getFranquia().getIsMatriz());
             output.setFranquia(franquia);
             List<Loja> lojasFranquia = this.lojaRepository.findAllByFranquiaId(franquia.getSystemId());
             for(Loja lojaFranquia:lojasFranquia){
@@ -101,6 +102,7 @@ public class UserController {
             LoginResponse.Franquia franquia = new LoginResponse.Franquia();
             franquia.setNome(user.getFranquia().getNome());
             franquia.setSystemId(user.getFranquia().getSystemId());
+            franquia.setIsMatriz(user.getFranquia().getIsMatriz());
             output.setFranquia(franquia);
             output.setRole(user.getRole());
             return ResponseEntity.ok().body(output);

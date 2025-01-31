@@ -26,7 +26,7 @@ export class DescontosComponent implements OnInit {
   loadingDescontos = false;
   open = false;
   
-  constructor(private descontoService:DescontosService,private auth:UserService){
+  constructor(private descontoService:DescontosService,protected auth:UserService){
   }
 
   ngOnInit(): void {

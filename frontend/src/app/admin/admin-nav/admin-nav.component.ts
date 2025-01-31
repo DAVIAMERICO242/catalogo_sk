@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { UserService } from '../../services/user.service';
+import { User, UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 enum Page{
   PRODUTOS="PRODUTOS",
@@ -54,7 +54,15 @@ export class AdminNavComponent implements OnInit {
   }
 
   navigateToLoja(){
-    window.open("/" + (this.auth.getContext()?.loja.slug),"_blank")
+    if(this.auth.getContext()?.role === User.Role.OPERACIONAL){
+      window.open("/" + (this.auth.getContext()?.loja.slug),"_blank")
+    }else{
+      if(this.auth.getContext()?.franquia.isMatriz){
+        window.open("/matriz","_blank")
+      }else{
+        window.open("/franquia","_blank")
+      }
+    }
   }
 
 }

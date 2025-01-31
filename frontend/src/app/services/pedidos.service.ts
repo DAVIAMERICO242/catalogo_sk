@@ -91,8 +91,12 @@ export class PedidosService {
 
   constructor(private http:HttpClient) {}
 
-  getPedidos(lojaId:string){
-    return this.http.get<Pedidos.Pedido[]>(env.BACKEND_URL+"/pedidos?lojaId="+lojaId).pipe(
+  getPedidos(franquiaId:string,lojaId?:string){
+    let url = env.BACKEND_URL+"/pedidos?franquiaId="+franquiaId
+    if(lojaId){
+      url = url + "&lojaId="+lojaId
+    }
+    return this.http.get<Pedidos.Pedido[]>(url).pipe(
       map((data)=>{
         return data.map((e)=>{
           return{

@@ -57,7 +57,7 @@
                 <td>
                     {{this.forceType(row).expiresAt | dateBrazil}}
                 </td>
-                <td>
+                <td *ngIf="this.auth.getContext()?.role==='ADMIN'">
                     <app-criar-atualizar-desconto (onSave)="onDescontoUpdate($event)" [payload]="this.forceType(row)" [update]="true" [descontoTipos]="this.descontosTipos"/>
                     / <app-deletar-desconto (onDelete)="this.onDescontoDelete($event)" [id]="this.forceType(row).systemId"></app-deletar-desconto>
                 </td>

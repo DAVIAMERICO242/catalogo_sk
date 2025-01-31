@@ -32,10 +32,11 @@ export class PedidosComponent implements OnInit{
   }
 
   loadPedidos(){
-    const lojaId = this.auth.getContext()?.loja.systemId;
-    if(lojaId){
+    const franquiaId = this.auth.getContext()?.franquia.systemId;
+    if(franquiaId){
+      const lojaId = this.auth.getContext()?.loja?.systemId;//se for gestor e nulo e retornara todas lojas da franquia
       this.loading = true;
-      this.pedidoService.getPedidos(lojaId).subscribe({
+      this.pedidoService.getPedidos(franquiaId,lojaId).subscribe({
         next:(data)=>{
           this.pedidos = data;
           this.loading = false
@@ -49,6 +50,7 @@ export class PedidosComponent implements OnInit{
         }
       })
     }
+    
   }
 
   forceType(val:any){

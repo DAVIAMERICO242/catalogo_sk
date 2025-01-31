@@ -1,6 +1,7 @@
 package com.skyler.catalogo.domain.descontos.repositories;
 
 import com.skyler.catalogo.domain.descontos.entities.Desconto;
+import com.skyler.catalogo.domain.lojas.Loja;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,8 +30,8 @@ public interface DescontoRepository extends JpaRepository<Desconto,String> {
             "LEFT JOIN FETCH d.descontoSimplesTermo dst " +
             "LEFT JOIN FETCH d.delimitedTermos dt " +
             "LEFT JOIN FETCH d.excludedTermos et " +
-            "WHERE l.systemId = :lojaId  ")
-    List<Desconto> findAllByLojaId(String lojaId);
+            "WHERE :lojaEnt MEMBER OF d.lojas ")
+    List<Desconto> findAllByLojaIn(Loja lojaEnt);
 
     @Query("SELECT d FROM Desconto d " +
             "LEFT JOIN FETCH d.lojas l " +

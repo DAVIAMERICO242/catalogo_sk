@@ -43,7 +43,7 @@ public class DescontoService {
         List<DescontoDTO> descontoDTOList = new ArrayList<>();
         List<Desconto> descontos = new ArrayList<>();
         if(lojaSystemId!=null && !lojaSystemId.isBlank()){
-            descontos = this.descontoRepository.findAllByLojaId(lojaSystemId);
+            descontos = this.descontoRepository.findAllByLojaIn(this.lojaRepository.findById(lojaSystemId).get());
         }else{
             descontos = this.descontoRepository.findAllByFranquiaId(franquiaSystemId);
         }

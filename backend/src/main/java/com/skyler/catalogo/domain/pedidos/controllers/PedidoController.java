@@ -17,9 +17,9 @@ public class PedidoController {
     }
 
     @GetMapping
-    public ResponseEntity getPedidos(String lojaId){
+    public ResponseEntity getPedidos(@RequestParam(required = false) String lojaId, @RequestParam(required = true) String franquiaId){
         try{
-            return ResponseEntity.ok().body(this.pedidoService.getPedidos(lojaId));
+            return ResponseEntity.ok().body(this.pedidoService.getPedidos(lojaId,franquiaId));
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

@@ -35,7 +35,8 @@ export namespace User{
   }
   export interface Franquia{
     systemId:string,
-    nome:string
+    nome:string,
+    isMatriz:boolean
   }
 }
 

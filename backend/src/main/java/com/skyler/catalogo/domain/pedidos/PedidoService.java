@@ -36,9 +36,14 @@ public class PedidoService {
         this.discountCalculator = discountCalculator;
     }
 
-    public List<PedidoAfterCalculationsDTO> getPedidos(String lojaSystemId){
+    public List<PedidoAfterCalculationsDTO> getPedidos(String lojaSystemId, String franquiaSystemId){
         List<PedidoAfterCalculationsDTO> output = new ArrayList<>();
-        List<Pedido> pedidos = this.pedidoRepository.findAllByLojaId(lojaSystemId);
+        List<Pedido> pedidos = null;
+        if(lojaSystemId!=null){
+            pedidos = this.pedidoRepository.findAllByLojaId(lojaSystemId);
+        }else{
+            pedidos = this.pedidoRepository.findAllByFranquiaId(franquiaSystemId);
+        }
         for(Pedido pedido:pedidos){
             output.add(this.entityToDto(pedido));
         }

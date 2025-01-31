@@ -41,5 +41,6 @@ public class LoginResponse
      public static class Franquia{
          String nome;
          String systemId;
+         Boolean isMatriz;
      }
 }
