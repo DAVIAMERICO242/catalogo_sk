@@ -1,4 +1,4 @@
-package com.skyler.catalogo.domain.media.banners;
+package com.skyler.catalogo.domain.banners;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
