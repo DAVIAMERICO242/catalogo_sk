@@ -1,35 +1,43 @@
 <app-catalogo-header/>
 <app-catalogo-loja-wrapper>
-    <div *ngIf="(this.produtos$ | async) as produtos; else loading">
-            <div class="w-full max-w-[90%]">
-                <div class="flex flex-col justify-center  ">
-                    <div class="mb-4 flex items-center gap-1">
-                        <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
-                        <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
-                        <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
-                        <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
+    <ng-container *ngIf="produtosFiltrados; else loading">
+        <div class="w-[90%] mt-10 max-sm:mt-1">
+                <div class="flex justify-start w-full ml-10 mb-5">
+                    <div>
+                        <input [(ngModel)]="filter" (ngModelChange)="this.filtrar()" class="w-[300px] p-1 outline-none border-b-black border-solid border-b-[1px]" placeholder="Busca algo específico?"/>
                     </div>
-                    <div class="flex justify-center w-full">
-                        <div class="flex flex-wrap  gap-4">
-                                <div *ngFor="let item of produtos">
-                                    <div class="w-[300px] h-[300px] border-[1px] border-solid border-slate-200 shadow-sm rounded-lg">
-                                        <img class="w-[280px] h-[200px]" [src]="item.produtoBase.photoUrl"/>        
-                                    </div>
+                </div>
+                <div *ngIf="this.produtosFiltrados.length;else empty" class="flex flex-wrap gap-10 justify-center">
+                    <div class="w-[300px] h-[300px] mb-[100px] " *ngFor="let item of produtosFiltrados">
+                        <div class="p-2">
+                            <img *ngIf="item.produtoBase.photoUrl" class="w-full h-[280px] " [src]="item.produtoBase.photoUrl" />
+                            <div *ngIf="!item.produtoBase.photoUrl" class=" pi pi-image !text-[280px] text-gray-300" ></div>
+                            <div class="mt-1">
+                                <div class="text-gray-400 text-xs">Sku: {{item.produtoBase.sku}}</div>
+                                <div class=" text-xs mt-3 text-nowrap overflow-hidden text-ellipsis ">
+                                    {{ item.produtoBase.descricao }}
                                 </div>
+                                <button class="flex items-center justify-center gap-3 mt-5  w-full text-white bg-black rounded-sm py-2 px-1 text-xs cursor-pointer">
+                                    <div  class="pi pi-shopping-bag !font-thin"></div>
+                                    <div>
+                                        Adicionar a sacola
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-    </div>
+                <ng-template #empty>
+                    <div class="ml-10 text-gray-400">
+                       Nenhum produto encontrado
+                    </div>
+                </ng-template>
+
+        </div>
+    </ng-container>
     <ng-template #loading>
         <div class="w-full max-w-[90%]">
             <div class="flex flex-col justify-center  ">
-                <div class="mb-4 flex items-center gap-1">
-                    <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
-                    <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
-                    <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
-                    <p-skeleton styleClass="!w-[30px] !h-[30px] "/>
-                </div>
                 <div class="flex justify-center w-full">
                     <div class="flex flex-wrap  gap-4">
                         <div *ngFor="let _ of [].constructor(50); let i = index" class="mb-4">

@@ -15,7 +15,9 @@ import { CatalogoLojaWrapperComponent } from "./catalogo-loja-wrapper/catalogo-l
 })
 export class CatalogoLojaComponent implements OnInit {
   slug = "";
-  produtos$!:Observable<Catalogo.Produto[] | undefined>;
+  produtos!:Catalogo.Produto[] | undefined;
+  produtosFiltrados!:Catalogo.Produto[] | undefined; 
+  filter = "";
 
 
   constructor(private route:ActivatedRoute,private catalogContext:CatalogoContextService){
@@ -24,12 +26,19 @@ export class CatalogoLojaComponent implements OnInit {
     this.slug = this.route.snapshot.paramMap.get("slug") || ""
     console.log(this.slug)
     this.loadContext();
-    this.produtos$ = this.catalogContext.produtos$;
+    this.catalogContext.produtos$.subscribe((data)=>{
+      this.produtos = data;
+      this.produtosFiltrados = [...this.produtos as Catalogo.Produto[]]
+    })
   }
 
   loadContext(){
     this.catalogContext.setLoja(this.slug)
     this.catalogContext.setCatalogo(this.slug)
+  }
+
+  filtrar(){
+    this.produtosFiltrados = this.produtos?.filter((e)=>e.produtoBase.descricao.toLowerCase().includes(this.filter.toLowerCase()))
   }
 
 }
