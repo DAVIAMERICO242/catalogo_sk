@@ -3,8 +3,14 @@
     <ng-container *ngIf="produtosFiltrados; else loading">
         <div class="w-[90%] mt-10 max-sm:mt-1">
                 <div class="flex justify-start w-full ml-10 mb-5">
-                    <div>
-                        <input [(ngModel)]="filter" (ngModelChange)="this.filtrar()" class="w-[300px] p-1 outline-none border-b-black border-solid border-b-[1px]" placeholder="Busca algo específico?"/>
+                    <div class="relative w-[300px]">
+                        <div class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            <i class="pi pi-search"></i> <!-- Ícone de lupa -->
+                        </div>
+                        <input [(ngModel)]="filter" 
+                               (ngModelChange)="this.filtrar()" 
+                               class="w-full p-1 pl-8 outline-none border-b-black border-solid border-b-[1px]" 
+                               placeholder="Busca algo específico?"/>
                     </div>
                 </div>
                 <div [@fadeIn] *ngIf="this.produtosFiltrados.length;else empty" class="flex flex-wrap gap-10 justify-center">
