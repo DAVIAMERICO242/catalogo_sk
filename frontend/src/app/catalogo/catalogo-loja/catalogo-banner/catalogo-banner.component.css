@@ -1,0 +1,25 @@
+.container {
+    width: 100vw; /* Garante que ocupe toda a largura da tela */
+    max-width: 100%;
+    overflow: hidden; /* Evita rolagem horizontal indesejada */
+}
+
+.slider-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden; /* Para esconder partes do slider fora da view */
+}
+
+.slider {
+    display: flex;
+    width: 100%; /* Ocupa a largura total do pai */
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overflow-x: auto; /* Permite rolagem horizontal */
+}
+
+
+.slider img{
+    flex: 1 0 100%;
+    scroll-snap-align:start;
+}

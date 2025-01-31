@@ -20,11 +20,13 @@ import { DrawerModule } from 'primeng/drawer';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { Carousel } from 'primeng/carousel';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    Carousel,
     FormsModule,
     DrawerModule,
     TooltipModule,
@@ -48,6 +50,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
   ],
   exports:[
     CommonModule,
+    Carousel,
     ProgressBarModule,
     FormsModule,
     DrawerModule,
