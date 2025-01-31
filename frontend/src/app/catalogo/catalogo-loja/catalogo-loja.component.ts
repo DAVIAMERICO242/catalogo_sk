@@ -6,12 +6,14 @@ import { CatalogoContextService } from './catalogo-context.service';
 import { Observable } from 'rxjs';
 import { SharedModule } from '../../shared/shared.module';
 import { CatalogoLojaWrapperComponent } from "./catalogo-loja-wrapper/catalogo-loja-wrapper.component";
+import { fadeIn } from '../../animations/fadeIn';
 
 @Component({
   selector: 'app-catalogo-loja',
   imports: [CatalogoHeaderComponent, SharedModule, CatalogoLojaWrapperComponent],
   templateUrl: './catalogo-loja.component.html',
-  providers:[CatalogoContextService]
+  providers:[CatalogoContextService],
+  animations:[fadeIn]
 })
 export class CatalogoLojaComponent implements OnInit {
   slug = "";
