@@ -330,6 +330,7 @@ public class DescontoService {
         entity.setDiscountName(descontoDTO.getNome());
         entity.setIsActive(descontoDTO.getIsActive());
         entity.setExpiresAt(descontoDTO.getExpiresAt());
+        entity.getLojas().clear();
         for(Loja loja:lojas){
             entity.addLoja(loja);
         }

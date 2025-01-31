@@ -1,8 +1,11 @@
 <app-admin-page-title  iconClass="pi pi-objects-column" title="Catálogo"/>
 <div class="p-5" *ngIf="!this.loadingCatalogo;else fallback">
-    <div class="flex items-center justify-between">
-        <p-select [filter]="true" styleClass="!w-[180px] mb-3 !text-xs !h-[40px] !flex !items-center" [(ngModel)]="this.selectedLoja" (ngModelChange)="this.loadCatalogo()" [options]="this.auth.getContext()?.lojasFranquia || []" optionLabel="nome" />
-        <div class="mb-5">
+    <div class="mb-3">
+        <div *ngIf="this.auth.getContext()?.role==='ADMIN'" class="p-3  bg-slate-100 shadow-sm rounded-lg w-[180px] mb-10" >
+            <div class="font-bold text-[14px] mb-1">Loja do catálogo:</div>
+            <p-select [filter]="true" styleClass=" !w-[160px] !text-xs !h-[40px] !flex !items-center" [(ngModel)]="this.selectedLoja" (ngModelChange)="this.loadCatalogo()" [options]="this.auth.getContext()?.lojasFranquia || []" optionLabel="nome" />
+        </div>
+        <div>
             <app-descontos/>
         </div>
     </div>
@@ -23,7 +26,7 @@
         </div>
     </div>
     <ng-template #empty>
-        <div class="text-lg text-slate-500">Nenhum item adicionado ao cátalogo</div>
+        <div class="text-lg text-slate-500 mt-5">Nenhum item adicionado ao cátalogo</div>
     </ng-template>
 </div>
 <ng-template #fallback >
