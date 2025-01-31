@@ -26,10 +26,6 @@ export const routes: Routes = [
         loadComponent:()=>import("./login/login.component").then(m=>m.LoginComponent)
     },
     {
-        path: ":slug",
-        loadComponent: () => import("./catalogo/catalogo-loja/catalogo-loja.component").then(m => m.CatalogoLojaComponent)
-    },
-    {
         path:"admin",
         loadComponent:()=>import("./admin/admin.component").then(m=>m.AdminComponent),
         canActivate:[AuthGuard],
@@ -51,5 +47,9 @@ export const routes: Routes = [
                 loadComponent:()=>import("./admin/pedidos/pedidos.component").then(m=>m.PedidosComponent)
             }
         ]
-    }
+    },
+    {
+        path: ":slug",
+        loadComponent: () => import("./catalogo/catalogo-loja/catalogo-loja.component").then(m => m.CatalogoLojaComponent)
+    },
 ];

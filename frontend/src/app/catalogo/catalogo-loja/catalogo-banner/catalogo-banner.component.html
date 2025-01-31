@@ -1,16 +1,7 @@
-<div class="w-full">
-    <div class="container">
-        <div class="slider-wrapper z-[1]">
-            <div class="slider">
-                <img id="slide1" src="https://skyler.com.br/wp-content/uploads/2023/09/banner_1920-tyt-desconto-jpg.webp"/>
-                <img id="slide2" src="https://skyler.com.br/wp-content/uploads/2023/09/banner_1920-tyt-desconto-jpg.webp"/>
-                <img id="slide3" src="https://skyler.com.br/wp-content/uploads/2023/09/banner_1920-tyt-desconto-jpg.webp"/>
-            </div>
-        </div>
-        <div class="slider-nav flex items-center gap-3 justify-center">
-            <a (click)="$event.preventDefault()" class="relative -top-12 block rounded-full h-[15px] w-[15px] bg-slate-200 z-[999]" href="#slide1"></a>
-            <a (click)="$event.preventDefault()" class="relative -top-12 block rounded-full h-[15px] w-[15px] bg-slate-200 z-[999]" href="#slide2"></a>
-            <a (click)="$event.preventDefault()" class="relative -top-12 block rounded-full h-[15px] w-[15px] bg-slate-200 z-[999]" href="#slide3"></a>
-        </div>
-    </div>
-</div>
+
+
+<p-carousel [draggable]="true" [showNavigators]="false" [value]="banners" [numVisible]="1" [circular]="true" [autoplayInterval]="3000">
+    <ng-template let-banner #item>
+        <img [src]="banner">
+    </ng-template>
+</p-carousel>
