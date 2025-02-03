@@ -35,16 +35,15 @@ public class BannerService {
         }
         String desktopExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.DESKTOP)).map(o->o.getBannerExtension()).findFirst().orElse(null);
         String mobileExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.MOBILE)).map(o->o.getBannerExtension()).findFirst().orElse(null);
-        bannerEnt.setUrlMobile("https://s3.skyler.com.br/catalogosk/banners/MOBILE/" + bannerEnt.getSystemId() + "." + mobileExtension);
         for(BannerRequest.Media media:bannerRequest.getMedia()){
-            if(media.getWindow().equals(Window.MOBILE)){
+            if(media.getWindow().equals(Window.MOBILE) && media.getBase64()!=null && !media.getBase64().isBlank()  && mobileExtension!=null && !mobileExtension.isBlank()){
                 bannerEnt.setUrlMobile("https://s3.skyler.com.br/catalogosk/banners/MOBILE/" + bannerEnt.getSystemId() + "." + mobileExtension);
                 this.minioService.postBase64(
                         media.getBase64().split(",")[1],
                         bannerEnt.getSystemId() + "." + mobileExtension,
                         "/banners/" + media.getWindow() + "/");
             }
-            if(media.getWindow().equals(Window.DESKTOP)){
+            if(media.getWindow().equals(Window.DESKTOP)  && media.getBase64()!=null && !media.getBase64().isBlank() && desktopExtension!=null && !desktopExtension.isBlank()){
                 bannerEnt.setUrlDesktop("https://s3.skyler.com.br/catalogosk/banners/DESKTOP/" + bannerEnt.getSystemId() + "." + desktopExtension);
                 this.minioService.postBase64(
                         media.getBase64().split(",")[1],
@@ -91,12 +90,16 @@ public class BannerService {
             BannerRequest bannerRequest = new BannerRequest();
             bannerRequest.setSystemId(bannerEnt.getSystemId());
             BannerRequest.Media desktop = new BannerRequest.Media();
-            desktop.setWindow(Window.DESKTOP);
-            desktop.setBannerUrl(bannerEnt.getUrlDesktop());
+            if(bannerEnt.getUrlDesktop()!=null){
+                desktop.setWindow(Window.DESKTOP);
+                desktop.setBannerUrl(bannerEnt.getUrlDesktop());
+            }
             bannerRequest.addMediaInfo(desktop);
             BannerRequest.Media mobile = new BannerRequest.Media();
-            mobile.setWindow(Window.MOBILE);
-            mobile.setBannerUrl(bannerEnt.getUrlMobile());
+            if(bannerEnt.getUrlMobile()!=null){
+                mobile.setWindow(Window.MOBILE);
+                mobile.setBannerUrl(bannerEnt.getUrlMobile());
+            }
             bannerRequest.addMediaInfo(mobile);
             for(BannerLojas bannerLojas:bannerEnt.getBannerLojas()){
                 BannerRequest.LojaInfo lojaInfo = new BannerRequest.LojaInfo();
