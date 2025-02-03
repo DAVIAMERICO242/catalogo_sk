@@ -5,18 +5,20 @@ import { SharedModule } from '../../shared/shared.module';
 import { MessageService } from 'primeng/api';
 import { BannerModel, BannerService } from '../../services/banner.service';
 import { DeletarBannerComponent, DeleteNotification } from "./deletar-banner/deletar-banner.component";
+import { BulkBannerReplicationComponent } from "./bulk-banner-replication/bulk-banner-replication.component";
 
 
 @Component({
   selector: 'app-banners',
-  imports: [AdminPageTitleComponent, SharedModule, DeletarBannerComponent],
+  imports: [AdminPageTitleComponent, SharedModule, DeletarBannerComponent, BulkBannerReplicationComponent],
   templateUrl: './banners.component.html'
 })
 export class BannersComponent implements OnInit {
   lojas!:User.Loja[];
   banners:BannerModel.Banner[] = [];
+  loadingBanners = false;
   loadingBannerForIndex:boolean[] = [];
-  constructor(private bannerService:BannerService,private auth:UserService,private message:MessageService){}
+  constructor(private bannerService:BannerService,protected auth:UserService,private message:MessageService){}
   ngOnInit(): void {
     if(this.auth.getContext()?.role===User.Role.ADMIN){
       const lojas = this.auth.getContext()?.lojasFranquia
@@ -33,10 +35,12 @@ export class BannersComponent implements OnInit {
   }
 
   loadBanners(){
+    this.loadingBanners = true;
     const franquiaId = this.auth.getContext()?.franquia.systemId;
     if(this.auth.getContext()?.role===User.Role.ADMIN){
       if(franquiaId){
         this.bannerService.getBanners(franquiaId).subscribe((data)=>{
+          this.loadingBanners = false;
           this.banners = data;
         });
       }
@@ -44,6 +48,7 @@ export class BannersComponent implements OnInit {
       const lojaId = this.auth.getContext()?.loja.systemId;
       if(lojaId && franquiaId){
         this.bannerService.getBanners(franquiaId,lojaId).subscribe((data)=>{
+          this.loadingBanners = false;
           this.banners = data;
         });
       }
@@ -174,26 +179,8 @@ export class BannersComponent implements OnInit {
     console.log(this.banners)
     this.loadingBannerForIndex[index] = true;
     this.bannerService.postBanner(banner).subscribe((id)=>{
-      const existing = this.banners.find((e)=>e.systemId===id.id);
-      if(!existing){
-        this.banners.push({
-          ...banner,
-          systemId:id.id
-        })
-        this.loadingBannerForIndex[index] = false;
-      }else{
-        this.banners = this.banners.map((e)=>{
-          if(e.systemId===id.id){
-            return {
-              ...banner,
-              systemId:id.id
-            };
-          }else{
-            return e;
-          }
-        })
-        this.loadingBannerForIndex[index] = false;
-      }
+      this.loadingBannerForIndex[index] = false;
+      this.loadBanners();
     });
     console.log(this.banners)
   }

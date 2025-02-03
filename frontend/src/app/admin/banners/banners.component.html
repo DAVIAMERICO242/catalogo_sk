@@ -1,6 +1,7 @@
 <app-admin-page-title iconClass="pi pi-images" title="Banners"/>
-<div class="p-5 relative">
-    <div class="mb-10" *ngFor="let loja of lojas;">
+<div [ngClass]="{'opacity-35 pointer-events-none':this.loadingBanners}" class="p-5 relative">
+    <div *ngIf="this.loadingBanners" class="pi pi-spin pi-spinner absolute left-1/2 top-[200px] z-[9] transform -translate-x-1/2 -translate-y-1/2 !text-[40px]"></div>
+    <div  class="mb-10 relative" *ngFor="let loja of lojas;">
                 <div class="font-bold text-[20px] mb-2">{{loja.nome}}</div>
                 <div class="flex items-center gap-5 w-full overflow-auto">
                     <div *ngFor="let _ of [].constructor(5); let i = index" class="text-sm bg-slate-50 p-3 rounded-sm">
@@ -43,6 +44,9 @@
                                 <img class="w-[240px] h-[200px]" [src]="banner"/>
                                 <app-deletar-banner (onDisassociation)="this.onDelete($event)" [lojaId]="loja.systemId" [bannerId]="this.getBannerIdByLojaIdAndBannerIndex(loja.systemId,i,true)" [isMobile]="true"/>
                             </div>  
+                        </div>
+                        <div *ngIf="this.auth.getContext()?.role==='ADMIN';" class="mt-5">
+                            <app-bulk-banner-replication [stringOrBase64Desktop]="this.getBannerByLojaIdAndIndex(loja.systemId,i,false)" [stringOrBase64Mobile]="this.getBannerByLojaIdAndIndex(loja.systemId,i,true)"/>
                         </div>
                     </div>
                 </div>
