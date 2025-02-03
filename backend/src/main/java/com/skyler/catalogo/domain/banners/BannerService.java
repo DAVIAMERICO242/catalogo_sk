@@ -27,26 +27,29 @@ public class BannerService {
     @Transactional
     public void postOrReindexBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
         BannerEnt bannerEnt = new BannerEnt();
-        Optional<BannerEnt> bannerEntOptional = this.bannerRepository.findById(bannerRequest.getSystemId());
-        if(bannerEntOptional.isPresent()){
-            bannerEnt = bannerEntOptional.get();
+        if(bannerRequest.getSystemId()!=null && !bannerRequest.getSystemId().isBlank()){
+            Optional<BannerEnt> bannerEntOptional = this.bannerRepository.findById(bannerRequest.getSystemId());
+            if(bannerEntOptional.isPresent()){
+                bannerEnt = bannerEntOptional.get();
+            }
         }
-        String desktopExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.DESKTOP)).map(o->o.getBannerExtension()).findFirst().get();
-        String mobileExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.MOBILE)).map(o->o.getBannerExtension()).findFirst().get();
-        bannerEnt.setUrlDesktop("https://s3.skyler.com.br/catalogosk/banners/DESKTOP/" + bannerEnt.getSystemId() + desktopExtension);
-        bannerEnt.setUrlMobile("https://s3.skyler.com.br/catalogosk/banners/MOBILE/" + bannerEnt.getSystemId() + mobileExtension);
+        String desktopExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.DESKTOP)).map(o->o.getBannerExtension()).findFirst().orElse(null);
+        String mobileExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.MOBILE)).map(o->o.getBannerExtension()).findFirst().orElse(null);
+        bannerEnt.setUrlMobile("https://s3.skyler.com.br/catalogosk/banners/MOBILE/" + bannerEnt.getSystemId() + "." + mobileExtension);
         for(BannerRequest.Media media:bannerRequest.getMedia()){
             if(media.getWindow().equals(Window.MOBILE)){
+                bannerEnt.setUrlMobile("https://s3.skyler.com.br/catalogosk/banners/MOBILE/" + bannerEnt.getSystemId() + "." + mobileExtension);
                 this.minioService.postBase64(
-                        media.getBase64(),
-                        bannerEnt.getSystemId() + mobileExtension,
-                        "/banners/" + media.getWindow());
+                        media.getBase64().split(",")[1],
+                        bannerEnt.getSystemId() + "." + mobileExtension,
+                        "/banners/" + media.getWindow() + "/");
             }
             if(media.getWindow().equals(Window.DESKTOP)){
+                bannerEnt.setUrlDesktop("https://s3.skyler.com.br/catalogosk/banners/DESKTOP/" + bannerEnt.getSystemId() + "." + desktopExtension);
                 this.minioService.postBase64(
-                        media.getBase64(),
-                        bannerEnt.getSystemId() + desktopExtension,
-                        "/banners/" + media.getWindow());
+                        media.getBase64().split(",")[1],
+                        bannerEnt.getSystemId() + "." + desktopExtension,
+                        "/banners/" + media.getWindow() + "/");
             }
         }
         bannerEnt.getBannerLojas().clear();

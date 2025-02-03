@@ -3,7 +3,7 @@ import { AdminPageTitleComponent } from "../admin-page-title/admin-page-title.co
 import { User, UserService } from '../../services/user.service';
 import { SharedModule } from '../../shared/shared.module';
 import { MessageService } from 'primeng/api';
-import { BannerModel } from '../../services/banner.service';
+import { BannerModel, BannerService } from '../../services/banner.service';
 
 @Component({
   selector: 'app-banners',
@@ -13,7 +13,7 @@ import { BannerModel } from '../../services/banner.service';
 export class BannersComponent implements OnInit {
   lojas!:User.Loja[];
   banners:BannerModel.Banner[] = [];
-  constructor(private auth:UserService,private message:MessageService){}
+  constructor(private bannerService:BannerService,private auth:UserService,private message:MessageService){}
   ngOnInit(): void {
     if(this.auth.getContext()?.role===User.Role.ADMIN){
       const lojas = this.auth.getContext()?.lojasFranquia
@@ -30,6 +30,22 @@ export class BannersComponent implements OnInit {
   }
 
   loadBanners(){
+    const franquiaId = this.auth.getContext()?.franquia.systemId;
+    if(this.auth.getContext()?.role===User.Role.ADMIN){
+      if(franquiaId){
+        this.bannerService.getBanners(franquiaId).subscribe((data)=>{
+          this.banners = data;
+        });
+      }
+    }else{
+      const lojaId = this.auth.getContext()?.loja.systemId;
+      if(lojaId && franquiaId){
+        this.bannerService.getBanners(franquiaId,lojaId).subscribe((data)=>{
+          this.banners = data;
+        });
+      }
+    }
+
     this.banners.push({
       lojaInfo:[],
       media:[],
@@ -137,11 +153,13 @@ export class BannersComponent implements OnInit {
          }
       })
     }else{
-      this.banners.push({
+      const banner = {
         systemId:"",
         media:[{base64:base64,window:isMobile?BannerModel.WindowContext.MOBILE:BannerModel.WindowContext.DESKTOP,bannerUrl:"",bannerExtension:extension}],
         lojaInfo:[{index:index,systemId:lojaId}]
-      })
+      }
+      this.banners.push(banner)
+      this.bannerService.postBanner(banner).subscribe();
     }
   }
 

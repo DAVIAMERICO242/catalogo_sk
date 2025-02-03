@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { env } from '../../env';
 
 export namespace BannerModel{
   export interface Banner{
@@ -33,5 +35,17 @@ export namespace BannerModel{
 })
 export class BannerService {
 
-  constructor() { }
+  constructor(private http:HttpClient){}
+
+  getBanners(franquiaId:string,lojaId?:string){
+    let url = env.BACKEND_URL+"/media/banner?franquiaId="+franquiaId;
+    if(lojaId){
+      url = url + "&lojaId="+lojaId;
+    }
+    return this.http.get<BannerModel.Banner[]>(url)
+  }
+
+  postBanner(banners:BannerModel.Banner){
+    return this.http.post<void>(env.BACKEND_URL+"/media/banner",banners);
+  }
 }

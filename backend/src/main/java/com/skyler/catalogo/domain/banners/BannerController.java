@@ -14,7 +14,7 @@ public class BannerController {
     }
 
     @PostMapping
-    public ResponseEntity banner(@RequestBody BannerRequest bannerRequest){
+    public ResponseEntity banner(@RequestBody  BannerRequest bannerRequest){
         try{
             this.bannerService.postOrReindexBanner(bannerRequest);
             return ResponseEntity.ok().build();
