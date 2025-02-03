@@ -3,14 +3,18 @@ package com.skyler.catalogo.domain.banners;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/media/banner")
 public class BannerController {
 
     private final BannerService bannerService;
+    private final BulkBannerService bulkBannerService;
 
-    public BannerController(BannerService bannerService) {
+    public BannerController(BannerService bannerService, BulkBannerService bulkBannerService) {
         this.bannerService = bannerService;
+        this.bulkBannerService = bulkBannerService;
     }
 
     @PostMapping
@@ -18,6 +22,16 @@ public class BannerController {
         try{
             IdResponse id = this.bannerService.postOrReindexBanner(bannerRequest);
             return ResponseEntity.ok().body(id);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
+    @PostMapping("/bulk")
+    public ResponseEntity bannerBulk(@RequestBody List<BannerRequest> banners){
+        try{
+            this.bulkBannerService.bulkdBanners(banners);
+            return ResponseEntity.ok().build();
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

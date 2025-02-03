@@ -185,19 +185,8 @@ export class BannersComponent implements OnInit {
     console.log(this.banners)
   }
 
-  getBannerByLojaIdAndIndex(lojaId:string,index:number,isMobile:boolean):string|undefined{
-    const regarding = this.banners.find((e)=>{
-      if(e.lojaInfo.map((e)=>e.systemId).includes(lojaId)){
-         const r0 =  e.lojaInfo.find((e)=>e.systemId===lojaId && e.index===index);
-         if(r0){
-           return true;
-         }else{
-           return false;
-         }
-      }else{
-       return false;
-      }
-   });
+  getBannerSourceByLojaIdAndIndex(lojaId:string,index:number,isMobile:boolean):string|undefined{
+   const regarding = this.getBannerByLojaIdAndIndex(lojaId,index);
    if(isMobile){
      const mobileInfo = regarding?.media.find(e=>e.window===BannerModel.WindowContext.MOBILE);
      if(mobileInfo){
@@ -213,28 +202,24 @@ export class BannersComponent implements OnInit {
    }
   }
 
-  onDelete(val:DeleteNotification){//tirar a window, a loja e o banner
-    const targetBanner = this.banners.find((e)=>e.systemId===val.bannerId);
-    if(targetBanner?.media.length===1){
-       this.banners = this.banners.filter((e)=>e.systemId!==val.bannerId)
-    }else{
-      this.banners = this.banners.map((e)=>{
-        if(e.systemId===val.bannerId){
-          return{
-            ...e,
-            media:e.media.filter((e)=>{
-              if(val.isMobile){
-                return e.window !== BannerModel.WindowContext.MOBILE;
-              }
-              return e.window !== BannerModel.WindowContext.DESKTOP;
-            })
-          }
-        }else{
-          return e;
-        }
-      })
-    }
+  getBannerByLojaIdAndIndex(lojaId:string,index:number):BannerModel.Banner|undefined{
+    return this.banners.find((e)=>{
+      if(e.lojaInfo.map((e)=>e.systemId).includes(lojaId)){
+         const r0 =  e.lojaInfo.find((e)=>e.systemId===lojaId && e.index===index);
+         if(r0){
+           return true;
+         }else{
+           return false;
+         }
+      }else{
+       return false;
+      }
+   });
+  }
 
+
+  onDelete(val:DeleteNotification){//tirar a window, a loja e o banner
+    this.loadBanners();
   }
 
   getBannerIdByLojaIdAndBannerIndex(lojaId:string,index:number,isMobile:boolean){
@@ -299,5 +284,7 @@ export class BannersComponent implements OnInit {
             reject(error);
         };
     });
-}
+  }
+
+
 }

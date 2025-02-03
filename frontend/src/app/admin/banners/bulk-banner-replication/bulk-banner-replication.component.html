@@ -1,3 +1,4 @@
-<button *ngIf="this.stringOrBase64Desktop || this.stringOrBase64Mobile" pButton class="!w-full !bg-black !rounded-sm !text-xs">
+<button (click)="open=true" *ngIf="this.stringOrBase64Desktop || this.stringOrBase64Mobile" pButton class="!w-full !bg-black !rounded-sm !text-xs">
     Replicar em massa
 </button>
+<app-confirmation-dialog (onConfirmation)="this.postBanners()" [(open)]="open" [loading]="loadingBulk" [confirmationTitle]="'Tem certeza? isso irá sobreescrever todos os banners na posição atual para todas as lojas'"/>

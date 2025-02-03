@@ -45,8 +45,12 @@ export class BannerService {
     return this.http.get<BannerModel.Banner[]>(url)
   }
 
-  postBanner(banners:BannerModel.Banner){
-    return this.http.post<{id:string}>(env.BACKEND_URL+"/media/banner",banners);
+  postBanner(banner:BannerModel.Banner){
+    return this.http.post<{id:string}>(env.BACKEND_URL+"/media/banner",banner);
+  }
+
+  bulkBanner(banners:BannerModel.Banner[]){
+    return this.http.post<void>(env.BACKEND_URL+"/media/banner/bulk",banners);
   }
 
   desassociarBannerLoja(bannerId:string,lojaId:string,isMobile:boolean){

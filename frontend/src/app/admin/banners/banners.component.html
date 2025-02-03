@@ -13,7 +13,7 @@
                                     Computador:
                                 </div> 
                             </div>
-                            <div *ngIf="!this.getBannerByLojaIdAndIndex(loja.systemId,i,false)">
+                            <div *ngIf="!this.getBannerSourceByLojaIdAndIndex(loja.systemId,i,false)">
                                 <label class="block w-fit cursor-pointer" [for]="i + 'desktop'+loja.systemId">
                                     <div class="mb-4 flex items-center justify-center w-[384px] h-[100px] border-[1px] border-dashed border-slate-300">
                                         <div class="pi pi-plus !text-gray-300"></div>
@@ -21,7 +21,7 @@
                                 </label>
                                 <input (change)="this.onBannerChange($event,loja.systemId,i,false)" type="file" [id]="i + 'desktop'+loja.systemId" hidden />
                             </div>
-                            <div class="cursor-pointer mb-4 w-[430px] h-[100px] flex items-center gap-4" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,false) as banner">
+                            <div class="cursor-pointer mb-4 w-[430px] h-[100px] flex items-center gap-4" *ngIf="this.getBannerSourceByLojaIdAndIndex(loja.systemId,i,false) as banner">
                                 <img class="w-[384px] h-[100px]" [src]="banner"/>
                                 <app-deletar-banner (onDisassociation)="this.onDelete($event)" [lojaId]="loja.systemId" [bannerId]="this.getBannerIdByLojaIdAndBannerIndex(loja.systemId,i,false)" [isMobile]="false"/>
                             </div>
@@ -31,7 +31,7 @@
                                     Celular:
                                 </div> 
                             </div>
-                            <div *ngIf="!this.getBannerByLojaIdAndIndex(loja.systemId,i,true)">
+                            <div *ngIf="!this.getBannerSourceByLojaIdAndIndex(loja.systemId,i,true)">
                                 <label class="block w-fit cursor-pointer" [for]="i + 'mobile'+loja.systemId">
                                     <div class="flex items-center justify-center w-[240px] h-[200px] border-[1px] border-dashed border-slate-300">
                                         <div class="pi pi-plus !text-gray-300"></div>
@@ -40,13 +40,13 @@
                                 <!-- Altere para type="file" -->
                                 <input (change)="this.onBannerChange($event,loja.systemId,i,true)" type="file" [id]="i + 'mobile'+loja.systemId" hidden />
                             </div>  
-                            <div class="mb-4 w-[240px] h-[200px] flex items-center gap-4 cursor-pointer" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,true) as banner">
+                            <div class="mb-4 w-[240px] h-[200px] flex items-center gap-4 cursor-pointer" *ngIf="this.getBannerSourceByLojaIdAndIndex(loja.systemId,i,true) as banner">
                                 <img class="w-[240px] h-[200px]" [src]="banner"/>
                                 <app-deletar-banner (onDisassociation)="this.onDelete($event)" [lojaId]="loja.systemId" [bannerId]="this.getBannerIdByLojaIdAndBannerIndex(loja.systemId,i,true)" [isMobile]="true"/>
                             </div>  
                         </div>
                         <div *ngIf="this.auth.getContext()?.role==='ADMIN';" class="mt-5">
-                            <app-bulk-banner-replication [stringOrBase64Desktop]="this.getBannerByLojaIdAndIndex(loja.systemId,i,false)" [stringOrBase64Mobile]="this.getBannerByLojaIdAndIndex(loja.systemId,i,true)"/>
+                            <app-bulk-banner-replication (onBulk)="this.loadBanners()" [desiredIndex]="i" [lojas]="this.lojas" [stringOrBase64Desktop]="this.getBannerSourceByLojaIdAndIndex(loja.systemId,i,false)" [stringOrBase64Mobile]="this.getBannerSourceByLojaIdAndIndex(loja.systemId,i,true)"/>
                         </div>
                     </div>
                 </div>
