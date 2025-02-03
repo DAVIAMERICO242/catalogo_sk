@@ -15,7 +15,7 @@ export namespace BannerModel{
   export interface Media{
     bannerExtension:string,
     window:WindowContext,
-    base64:string,
+    base64?:string,//só é nao nulo no post
     bannerUrl:string
   }
 
