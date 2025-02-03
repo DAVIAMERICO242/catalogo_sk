@@ -16,8 +16,8 @@ public class BannerController {
     @PostMapping
     public ResponseEntity banner(@RequestBody  BannerRequest bannerRequest){
         try{
-            this.bannerService.postOrReindexBanner(bannerRequest);
-            return ResponseEntity.ok().build();
+            IdResponse id = this.bannerService.postOrReindexBanner(bannerRequest);
+            return ResponseEntity.ok().body(id);
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

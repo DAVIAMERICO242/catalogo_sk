@@ -4,41 +4,44 @@
                 <div class="font-bold text-[20px] mb-2">{{loja.nome}}</div>
                 <div class="flex items-center gap-5 w-full overflow-auto">
                     <div *ngFor="let _ of [].constructor(5); let i = index" class="text-sm bg-slate-50 p-3 rounded-sm">
-                        <div class="flex items-center gap-2 mb-1">
-                            <div class="pi pi-desktop !text-xs"></div>
-                            <div>
-                                Computador:
-                            </div> 
+                        <div class="relative" [ngClass]="{'opacity-35 pointer-events-none':this.loadingBannerForIndex[i]}">
+                            <div *ngIf="this.loadingBannerForIndex[i]" class="pi pi-spin pi-spinner absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="pi pi-desktop !text-xs"></div>
+                                <div>
+                                    Computador:
+                                </div> 
+                            </div>
+                            <div *ngIf="!this.getBannerByLojaIdAndIndex(loja.systemId,i,false)">
+                                <label class="block w-fit cursor-pointer" [for]="i + 'desktop'+loja.systemId">
+                                    <div class="mb-4 flex items-center justify-center w-[384px] h-[100px] border-[1px] border-dashed border-slate-300">
+                                        <div class="pi pi-plus !text-gray-300"></div>
+                                    </div>
+                                </label>
+                                <input (change)="this.onBannerChange($event,loja.systemId,i,false)" type="file" [id]="i + 'desktop'+loja.systemId" hidden />
+                            </div>
+                            <div class="mb-4 w-[384px] h-[100px]" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,false)">
+                                <img class="w-[384px] h-[100px]" [src]="this.getBannerByLojaIdAndIndex(loja.systemId,i,false)"/>
+                            </div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="pi pi-mobile !text-xs"></div>
+                                <div>
+                                    Celular:
+                                </div> 
+                            </div>
+                            <div *ngIf="!this.getBannerByLojaIdAndIndex(loja.systemId,i,true)">
+                                <label class="block w-fit cursor-pointer" [for]="i + 'mobile'+loja.systemId">
+                                    <div class="flex items-center justify-center w-[240px] h-[200px] border-[1px] border-dashed border-slate-300">
+                                        <div class="pi pi-plus !text-gray-300"></div>
+                                    </div>
+                                </label>     
+                                <!-- Altere para type="file" -->
+                                <input (change)="this.onBannerChange($event,loja.systemId,i,true)" type="file" [id]="i + 'mobile'+loja.systemId" hidden />
+                            </div>  
+                            <div class="mb-4 w-[240px] h-[200px]" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,true)">
+                                <img class="w-[240px] h-[200px]" [src]="this.getBannerByLojaIdAndIndex(loja.systemId,i,true)"/>
+                            </div>  
                         </div>
-                        <div *ngIf="!this.getBannerByLojaIdAndIndex(loja.systemId,i,false)">
-                            <label class="block w-fit cursor-pointer" [for]="i + 'desktop'+loja.systemId">
-                                <div class="mb-4 flex items-center justify-center w-[384px] h-[100px] border-[1px] border-dashed border-slate-300">
-                                    <div class="pi pi-plus !text-gray-300"></div>
-                                </div>
-                            </label>
-                            <input (change)="this.onBannerChange($event,loja.systemId,i,false)" type="file" [id]="i + 'desktop'+loja.systemId" hidden />
-                        </div>
-                        <div class="mb-4 w-[384px] h-[100px]" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,false)">
-                            <img class="w-[384px] h-[100px]" [src]="this.getBannerByLojaIdAndIndex(loja.systemId,i,false)"/>
-                        </div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <div class="pi pi-mobile !text-xs"></div>
-                            <div>
-                                Celular:
-                            </div> 
-                        </div>
-                        <div *ngIf="!this.getBannerByLojaIdAndIndex(loja.systemId,i,true)">
-                            <label class="block w-fit cursor-pointer" [for]="i + 'mobile'+loja.systemId">
-                                <div class="flex items-center justify-center w-[240px] h-[200px] border-[1px] border-dashed border-slate-300">
-                                    <div class="pi pi-plus !text-gray-300"></div>
-                                </div>
-                            </label>     
-                            <!-- Altere para type="file" -->
-                            <input (change)="this.onBannerChange($event,loja.systemId,i,true)" type="file" [id]="i + 'mobile'+loja.systemId" hidden />
-                        </div>  
-                        <div class="mb-4 w-[240px] h-[200px]" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,true)">
-                            <img class="w-[240px] h-[200px]" [src]="this.getBannerByLojaIdAndIndex(loja.systemId,i,true)"/>
-                        </div>  
                     </div>
                 </div>
     </div>

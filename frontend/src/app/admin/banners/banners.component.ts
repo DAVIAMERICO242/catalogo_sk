@@ -5,6 +5,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { MessageService } from 'primeng/api';
 import { BannerModel, BannerService } from '../../services/banner.service';
 
+
 @Component({
   selector: 'app-banners',
   imports: [AdminPageTitleComponent,SharedModule],
@@ -13,6 +14,7 @@ import { BannerModel, BannerService } from '../../services/banner.service';
 export class BannersComponent implements OnInit {
   lojas!:User.Loja[];
   banners:BannerModel.Banner[] = [];
+  loadingBannerForIndex:boolean[] = [];
   constructor(private bannerService:BannerService,private auth:UserService,private message:MessageService){}
   ngOnInit(): void {
     if(this.auth.getContext()?.role===User.Role.ADMIN){
@@ -98,12 +100,13 @@ export class BannersComponent implements OnInit {
         return false;
        }
     });
+    let banner!:BannerModel.Banner;
     if(regarding){
      this.banners.forEach((e)=>{
+        const mediaClone = [...e.media];
          if(e.lojaInfo.map((e)=>e.systemId).includes(lojaId)){
                 const r0 =  e.lojaInfo.find((e)=>e.systemId===lojaId && e.index===index);
                 if(r0){
-                  const mediaClone = [...e.media];
                   if(!e.media.map((e)=>e.window).includes(BannerModel.WindowContext.MOBILE) && isMobile){
                     mediaClone.push({
                       bannerExtension:extension,
@@ -111,88 +114,87 @@ export class BannersComponent implements OnInit {
                       window:BannerModel.WindowContext.MOBILE,
                       base64:base64
                     })
-                    const banner:BannerModel.Banner = {
+                    banner = {
                       ...e,
                       media:mediaClone
                     }
-                    this.bannerService.postBanner(banner).subscribe((id)=>{
-                      this.banners.push({
-                        ...banner,
-                        systemId:id
-                      })
-                    });
                   }
-                  if(!e.media.map((e)=>e.window).includes(BannerModel.WindowContext.DESKTOP) && !isMobile){
+                  else if(!e.media.map((e)=>e.window).includes(BannerModel.WindowContext.DESKTOP) && !isMobile){
                     mediaClone.push({
                       bannerExtension:extension,
                       bannerUrl:"",
                       window:BannerModel.WindowContext.DESKTOP,
                       base64:base64
                     })
-                    const banner:BannerModel.Banner = {
+                     banner = {
                       ...e,
                       media:mediaClone
                     }
-                    this.bannerService.postBanner(banner).subscribe((id)=>{
-                      this.banners.push({
-                        ...banner,
-                        systemId:id
+                    console.log(banner)
+                  }
+                  else{
+                    banner = {
+                      ...e,
+                      media:mediaClone.map((e1)=>{
+                        if(isMobile){
+                          if(e1.bannerExtension===BannerModel.WindowContext.MOBILE){//mobile que ja existe
+                            const media:BannerModel.Media = {
+                              ...e1,
+                              base64:base64
+                            }
+                            return media;
+                          }else{
+                            return e1;
+                          }
+                        }else{
+                          if(e1.bannerExtension===BannerModel.WindowContext.DESKTOP){//desktop que ja existe
+                            const media:BannerModel.Media = {
+                              ...e1,
+                              base64:base64
+                            }
+                            return media;
+                          }else{
+                            return e1;
+                          }
+                        }
                       })
-                    });
+                    }
                   }
-                  const banner:BannerModel.Banner = {
-                    ...e,
-                    media:mediaClone.map((e1)=>{
-                      if(isMobile){
-                        if(e1.bannerExtension===BannerModel.WindowContext.MOBILE){//mobile que ja existe
-                          const media:BannerModel.Media = {
-                            ...e1,
-                            base64:base64
-                          }
-                          return media;
-                        }else{
-                          return e1;
-                        }
-                      }else{
-                        if(e1.bannerExtension===BannerModel.WindowContext.DESKTOP){//desktop que ja existe
-                          const media:BannerModel.Media = {
-                            ...e1,
-                            base64:base64
-                          }
-                          return media;
-                        }else{
-                          return e1;
-                        }
-                      }
-                    })
-                  }
-                  this.bannerService.postBanner(banner).subscribe((id)=>{
-                    this.banners.push({
-                      ...banner,
-                      systemId:id
-                    })
-                  });
-                  return banner;
-                }else{
-                  return e;
                 }
-         }else{
-            return e;
          }
       })
     }else{
-      const banner = {
+      banner = {
         systemId:"",
         media:[{base64:base64,window:isMobile?BannerModel.WindowContext.MOBILE:BannerModel.WindowContext.DESKTOP,bannerUrl:"",bannerExtension:extension}],
         lojaInfo:[{index:index,systemId:lojaId}]
       }
-      this.bannerService.postBanner(banner).subscribe((id)=>{
+    }
+    console.log(this.banners)
+    this.loadingBannerForIndex[index] = true;
+    this.bannerService.postBanner(banner).subscribe((id)=>{
+      const existing = this.banners.find((e)=>e.systemId===id.id);
+      if(!existing){
         this.banners.push({
           ...banner,
-          systemId:id
+          systemId:id.id
         })
-      });
-    }
+        this.loadingBannerForIndex[index] = false;
+      }else{
+        this.banners = this.banners.map((e)=>{
+          if(e.systemId===id.id){
+            return {
+              ...banner,
+              systemId:id.id
+            };
+          }else{
+            return e;
+          }
+        })
+        this.loadingBannerForIndex[index] = false;
+      }
+    });
+    console.log(this.banners)
   }
 
   getBannerByLojaIdAndIndex(lojaId:string,index:number,isMobile:boolean):string|undefined{

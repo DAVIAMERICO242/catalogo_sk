@@ -25,7 +25,7 @@ public class BannerService {
     }
 
     @Transactional
-    public String postOrReindexBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
+    public IdResponse postOrReindexBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
         BannerEnt bannerEnt = new BannerEnt();
         if(bannerRequest.getSystemId()!=null && !bannerRequest.getSystemId().isBlank()){
             Optional<BannerEnt> bannerEntOptional = this.bannerRepository.findById(bannerRequest.getSystemId());
@@ -65,7 +65,7 @@ public class BannerService {
             bannerEnt.addRelacaoLoja(bannerLoja);
         }
         this.bannerRepository.save(bannerEnt);
-        return bannerEnt.getSystemId();
+        return new IdResponse(bannerEnt.getSystemId());
     }
 
     @Transactional
