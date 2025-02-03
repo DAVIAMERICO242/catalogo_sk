@@ -25,7 +25,7 @@ public class BannerService {
     }
 
     @Transactional
-    public void postOrReindexBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
+    public String postOrReindexBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
         BannerEnt bannerEnt = new BannerEnt();
         if(bannerRequest.getSystemId()!=null && !bannerRequest.getSystemId().isBlank()){
             Optional<BannerEnt> bannerEntOptional = this.bannerRepository.findById(bannerRequest.getSystemId());
@@ -33,9 +33,12 @@ public class BannerService {
                 bannerEnt = bannerEntOptional.get();
             }
         }
-        String desktopExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.DESKTOP)).map(o->o.getBannerExtension()).findFirst().orElse(null);
-        String mobileExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow().equals(Window.MOBILE)).map(o->o.getBannerExtension()).findFirst().orElse(null);
+        String desktopExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow()!=null && o.getBannerExtension()!=null && o.getWindow().equals(Window.DESKTOP)).map(o->o.getBannerExtension()).findFirst().orElse(null);
+        String mobileExtension = bannerRequest.getMedia().stream().filter(o->o.getWindow()!=null &&  o.getBannerExtension()!=null &&  o.getWindow().equals(Window.MOBILE)).map(o-> o.getBannerExtension()).findFirst().orElse(null);
         for(BannerRequest.Media media:bannerRequest.getMedia()){
+            if(media==null || media.getWindow()==null){
+                continue;
+            }
             if(media.getWindow().equals(Window.MOBILE) && media.getBase64()!=null && !media.getBase64().isBlank()  && mobileExtension!=null && !mobileExtension.isBlank()){
                 bannerEnt.setUrlMobile("https://s3.skyler.com.br/catalogosk/banners/MOBILE/" + bannerEnt.getSystemId() + "." + mobileExtension);
                 this.minioService.postBase64(
@@ -62,6 +65,7 @@ public class BannerService {
             bannerEnt.addRelacaoLoja(bannerLoja);
         }
         this.bannerRepository.save(bannerEnt);
+        return bannerEnt.getSystemId();
     }
 
     @Transactional

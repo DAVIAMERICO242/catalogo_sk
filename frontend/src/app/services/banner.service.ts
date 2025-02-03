@@ -46,6 +46,6 @@ export class BannerService {
   }
 
   postBanner(banners:BannerModel.Banner){
-    return this.http.post<void>(env.BACKEND_URL+"/media/banner",banners);
+    return this.http.post<string>(env.BACKEND_URL+"/media/banner",banners);
   }
 }

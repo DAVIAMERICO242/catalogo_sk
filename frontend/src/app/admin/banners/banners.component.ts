@@ -99,57 +99,85 @@ export class BannersComponent implements OnInit {
        }
     });
     if(regarding){
-      this.banners = this.banners.map((e)=>{
+     this.banners.forEach((e)=>{
          if(e.lojaInfo.map((e)=>e.systemId).includes(lojaId)){
-          const r0 =  e.lojaInfo.find((e)=>e.systemId===lojaId && e.index===index);
-          if(r0){
-            const mediaClone = [...e.media];
-            if(!e.media.map((e)=>e.window).includes(BannerModel.WindowContext.MOBILE) && isMobile){
-              mediaClone.push({
-                bannerExtension:extension,
-                bannerUrl:"",
-                window:BannerModel.WindowContext.MOBILE,
-                base64:base64
-              })
-            }
-            if(!e.media.map((e)=>e.window).includes(BannerModel.WindowContext.DESKTOP) && !isMobile){
-              mediaClone.push({
-                bannerExtension:extension,
-                bannerUrl:"",
-                window:BannerModel.WindowContext.DESKTOP,
-                base64:base64
-              })
-            }
-            return{
-              ...e,
-              media:mediaClone.map((e1)=>{
-
-                if(isMobile){
-                  if(e1.bannerExtension===BannerModel.WindowContext.MOBILE){//mobile que ja existe
-                    return{
-                      ...e1,
+                const r0 =  e.lojaInfo.find((e)=>e.systemId===lojaId && e.index===index);
+                if(r0){
+                  const mediaClone = [...e.media];
+                  if(!e.media.map((e)=>e.window).includes(BannerModel.WindowContext.MOBILE) && isMobile){
+                    mediaClone.push({
+                      bannerExtension:extension,
+                      bannerUrl:"",
+                      window:BannerModel.WindowContext.MOBILE,
                       base64:base64
+                    })
+                    const banner:BannerModel.Banner = {
+                      ...e,
+                      media:mediaClone
                     }
-                  }else{
-                    return e1;
+                    this.bannerService.postBanner(banner).subscribe((id)=>{
+                      this.banners.push({
+                        ...banner,
+                        systemId:id
+                      })
+                    });
                   }
+                  if(!e.media.map((e)=>e.window).includes(BannerModel.WindowContext.DESKTOP) && !isMobile){
+                    mediaClone.push({
+                      bannerExtension:extension,
+                      bannerUrl:"",
+                      window:BannerModel.WindowContext.DESKTOP,
+                      base64:base64
+                    })
+                    const banner:BannerModel.Banner = {
+                      ...e,
+                      media:mediaClone
+                    }
+                    this.bannerService.postBanner(banner).subscribe((id)=>{
+                      this.banners.push({
+                        ...banner,
+                        systemId:id
+                      })
+                    });
+                  }
+                  const banner:BannerModel.Banner = {
+                    ...e,
+                    media:mediaClone.map((e1)=>{
+                      if(isMobile){
+                        if(e1.bannerExtension===BannerModel.WindowContext.MOBILE){//mobile que ja existe
+                          const media:BannerModel.Media = {
+                            ...e1,
+                            base64:base64
+                          }
+                          return media;
+                        }else{
+                          return e1;
+                        }
+                      }else{
+                        if(e1.bannerExtension===BannerModel.WindowContext.DESKTOP){//desktop que ja existe
+                          const media:BannerModel.Media = {
+                            ...e1,
+                            base64:base64
+                          }
+                          return media;
+                        }else{
+                          return e1;
+                        }
+                      }
+                    })
+                  }
+                  this.bannerService.postBanner(banner).subscribe((id)=>{
+                    this.banners.push({
+                      ...banner,
+                      systemId:id
+                    })
+                  });
+                  return banner;
                 }else{
-                  if(e1.bannerExtension===BannerModel.WindowContext.DESKTOP){//desktop que ja existe
-                    return{
-                      ...e1,
-                      base64:base64
-                    }
-                  }else{
-                    return e1;
-                  }
+                  return e;
                 }
-              })
-            }
-          }else{
-            return e;
-          }
          }else{
-          return e;
+            return e;
          }
       })
     }else{
@@ -158,8 +186,12 @@ export class BannersComponent implements OnInit {
         media:[{base64:base64,window:isMobile?BannerModel.WindowContext.MOBILE:BannerModel.WindowContext.DESKTOP,bannerUrl:"",bannerExtension:extension}],
         lojaInfo:[{index:index,systemId:lojaId}]
       }
-      this.banners.push(banner)
-      this.bannerService.postBanner(banner).subscribe();
+      this.bannerService.postBanner(banner).subscribe((id)=>{
+        this.banners.push({
+          ...banner,
+          systemId:id
+        })
+      });
     }
   }
 
