@@ -69,15 +69,38 @@ public class BannerService {
     }
 
     @Transactional
-    public void deletarBannerDaLoja(String bannerId, String lojaId){//se deletar de uma loja deleta de todas foda,
+    public void deletarBannerDaLoja(String bannerId, String lojaId, Boolean isMobile){//se deletar de uma loja deleta de todas foda,
         BannerEnt bannerEnt = this.bannerRepository.findById(bannerId).get();
-        bannerEnt.setBannerLojas(bannerEnt.getBannerLojas().stream().filter(o->!o.getLoja().getSystemId().equals(lojaId)).collect(Collectors.toSet()));
+        String backupDesktopUrl = bannerEnt.getUrlDesktop();
+        String backupMobileUrl = bannerEnt.getUrlMobile();
+        bannerEnt.getBannerLojas().forEach(o->{
+            if(o.getLoja().getSystemId().equals(lojaId)){
+                if(isMobile){
+                    o.getBanner().setUrlMobile(null);
+                }else{
+                    o.getBanner().setUrlDesktop(null);
+                }
+            }
+        });
+        Boolean shouldCompletlyDisassociate = bannerEnt.getBannerLojas().stream().anyMatch(
+                        o->o.getLoja().getSystemId().equals(lojaId)
+                        && o.getBanner().getUrlMobile()==null
+                        && o.getBanner().getUrlDesktop()==null
+
+        );
+        if(shouldCompletlyDisassociate){
+            bannerEnt.setBannerLojas(bannerEnt.getBannerLojas().stream().filter(o->!o.getLoja().getSystemId().equals(lojaId)).collect(Collectors.toSet()));
+        }
         this.bannerRepository.save(bannerEnt);
         if(bannerEnt.getBannerLojas().isEmpty()){//e é o ultimo banner da loja
-            String objectDesktop = bannerEnt.getUrlDesktop().split("catalogosk/")[1];
-            String objectMobile = bannerEnt.getUrlMobile().split("catalogosk/")[1];
-            this.minioService.removeDirectory(objectDesktop);
-            this.minioService.removeDirectory(objectMobile);
+            if(backupDesktopUrl!=null){
+                String objectDesktop = backupDesktopUrl.split("catalogosk/")[1];
+                this.minioService.removeDirectory(objectDesktop);
+            }
+            if(backupMobileUrl!=null){
+                String objectMobile = backupMobileUrl.split("catalogosk/")[1];
+                this.minioService.removeDirectory(objectMobile);
+            }
             this.bannerRepository.deleteById(bannerId);
         }
     }

@@ -4,11 +4,12 @@ import { User, UserService } from '../../services/user.service';
 import { SharedModule } from '../../shared/shared.module';
 import { MessageService } from 'primeng/api';
 import { BannerModel, BannerService } from '../../services/banner.service';
+import { DeletarBannerComponent, DeleteNotification } from "./deletar-banner/deletar-banner.component";
 
 
 @Component({
   selector: 'app-banners',
-  imports: [AdminPageTitleComponent,SharedModule],
+  imports: [AdminPageTitleComponent, SharedModule, DeletarBannerComponent],
   templateUrl: './banners.component.html'
 })
 export class BannersComponent implements OnInit {
@@ -223,6 +224,34 @@ export class BannersComponent implements OnInit {
     }
     return undefined;
    }
+  }
+
+  onDelete(val:DeleteNotification){//tirar a window, a loja e o banner
+    const targetBanner = this.banners.find((e)=>e.systemId===val.bannerId);
+    if(targetBanner?.media.length===1){
+       this.banners = this.banners.filter((e)=>e.systemId!==val.bannerId)
+    }else{
+      this.banners = this.banners.map((e)=>{
+        if(e.systemId===val.bannerId){
+          return{
+            ...e,
+            media:e.media.filter((e)=>{
+              if(val.isMobile){
+                return e.window !== BannerModel.WindowContext.MOBILE;
+              }
+              return e.window !== BannerModel.WindowContext.DESKTOP;
+            })
+          }
+        }else{
+          return e;
+        }
+      })
+    }
+
+  }
+
+  getBannerIdByLojaIdAndBannerIndex(lojaId:string,index:number,isMobile:boolean){
+    return this.banners.find((e)=>e.lojaInfo.filter(e1=>e1.index===index).map(e1=>e1.systemId).includes(lojaId))?.systemId as string;
   }
 
   checkImageRatio(file: File, expectedRatio: number): Promise<boolean> {

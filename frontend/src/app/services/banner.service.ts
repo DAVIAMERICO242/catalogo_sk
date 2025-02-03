@@ -48,4 +48,8 @@ export class BannerService {
   postBanner(banners:BannerModel.Banner){
     return this.http.post<{id:string}>(env.BACKEND_URL+"/media/banner",banners);
   }
+
+  desassociarBannerLoja(bannerId:string,lojaId:string,isMobile:boolean){
+    return this.http.delete<void>(env.BACKEND_URL+"/media/banner?bannerId="+bannerId+"&lojaId="+lojaId+"&isMobile=" + isMobile)
+  }
 }

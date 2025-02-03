@@ -31,4 +31,14 @@ public class BannerController {
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
     }
+
+    @DeleteMapping
+    public ResponseEntity desassociarBanner(String bannerId,String lojaId, Boolean isMobile){
+        try{
+            this.bannerService.deletarBannerDaLoja(bannerId,lojaId,isMobile);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
 }

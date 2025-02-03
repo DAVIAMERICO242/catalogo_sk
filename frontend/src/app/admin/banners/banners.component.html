@@ -20,8 +20,9 @@
                                 </label>
                                 <input (change)="this.onBannerChange($event,loja.systemId,i,false)" type="file" [id]="i + 'desktop'+loja.systemId" hidden />
                             </div>
-                            <div class="mb-4 w-[384px] h-[100px]" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,false)">
-                                <img class="w-[384px] h-[100px]" [src]="this.getBannerByLojaIdAndIndex(loja.systemId,i,false)"/>
+                            <div class="cursor-pointer mb-4 w-[430px] h-[100px] flex items-center gap-4" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,false) as banner">
+                                <img class="w-[384px] h-[100px]" [src]="banner"/>
+                                <app-deletar-banner (onDisassociation)="this.onDelete($event)" [lojaId]="loja.systemId" [bannerId]="this.getBannerIdByLojaIdAndBannerIndex(loja.systemId,i,false)" [isMobile]="false"/>
                             </div>
                             <div class="flex items-center gap-2 mb-1">
                                 <div class="pi pi-mobile !text-xs"></div>
@@ -38,8 +39,9 @@
                                 <!-- Altere para type="file" -->
                                 <input (change)="this.onBannerChange($event,loja.systemId,i,true)" type="file" [id]="i + 'mobile'+loja.systemId" hidden />
                             </div>  
-                            <div class="mb-4 w-[240px] h-[200px]" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,true)">
-                                <img class="w-[240px] h-[200px]" [src]="this.getBannerByLojaIdAndIndex(loja.systemId,i,true)"/>
+                            <div class="mb-4 w-[240px] h-[200px] flex items-center gap-4 cursor-pointer" *ngIf="this.getBannerByLojaIdAndIndex(loja.systemId,i,true) as banner">
+                                <img class="w-[240px] h-[200px]" [src]="banner"/>
+                                <app-deletar-banner (onDisassociation)="this.onDelete($event)" [lojaId]="loja.systemId" [bannerId]="this.getBannerIdByLojaIdAndBannerIndex(loja.systemId,i,true)" [isMobile]="true"/>
                             </div>  
                         </div>
                     </div>

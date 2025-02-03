@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Data
 @EqualsAndHashCode(of="systemId")
-public class BannerLojas {
+public class BannerLojas {//no modelo um banner pode ter varias lojas, mas isso nao funciona, nao mude o modelo pq pode quebrar
     @Id
     private String systemId = UUID.randomUUID().toString();
     private Integer indexOnStore;
