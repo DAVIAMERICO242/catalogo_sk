@@ -46,6 +46,16 @@ public class BannerController {
         }
     }
 
+    @DeleteMapping("/bulk")
+    public ResponseEntity bulkDelete(@RequestParam List<String> ids){
+        try{
+            this.bulkBannerService.bulkDelete(ids);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
     @DeleteMapping
     public ResponseEntity desassociarBanner(String bannerId, Boolean isMobile){
         try{

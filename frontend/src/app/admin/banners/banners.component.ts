@@ -8,11 +8,12 @@ import { DeletarBannerComponent, DeleteNotification } from "./deletar-banner/del
 import { BulkBannerReplicationComponent } from "./bulk-banner-replication/bulk-banner-replication.component";
 import { MediaService } from '../../services/media-service';
 import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, DragDropModule} from '@angular/cdk/drag-drop';
+import { BulkDeleteComponent } from "./bulk-delete/bulk-delete.component";
 
 
 @Component({
   selector: 'app-banners',
-  imports: [AdminPageTitleComponent, SharedModule, DeletarBannerComponent, BulkBannerReplicationComponent,DragDropModule],
+  imports: [AdminPageTitleComponent, SharedModule, DeletarBannerComponent, BulkBannerReplicationComponent, DragDropModule, BulkDeleteComponent],
   templateUrl: './banners.component.html'
 })
 export class BannersComponent implements OnInit {

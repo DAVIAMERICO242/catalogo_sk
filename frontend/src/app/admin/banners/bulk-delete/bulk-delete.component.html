@@ -1,0 +1,16 @@
+<button (click)="open=true" class="!text-xs !bg-black flex item-center gap-2" pButton>
+    <div class="pi pi-eraser"></div>
+    <div>
+        Limpeza em massa
+    </div>
+</button>
+<p-dialog header="Limpeza em massa" appendTo="body" [modal]="true" dismissableMask="true" [(visible)]="open" styleClass="!w-[600px]  !overflow-visible">
+    <div class="text-red-500 mb-5">Essa ação irá excluir TODAS os banners para as lojas selecionadas</div>
+    <div>
+        <div class="text-xs">Selecione as lojas:</div>
+        <p-multi-select [(ngModel)]="this.selectedLojas" styleClass="!w-full !text-sm !h-[40px] flex items-center " appendTo="body" [options]="this.lojas" optionLabel="nome"/>
+        <button [loading]="this.loading" (click)="this.bulkDelete()" pButton class="!w-full !bg-black !mt-4">
+            Deletar
+        </button>
+    </div>
+</p-dialog>

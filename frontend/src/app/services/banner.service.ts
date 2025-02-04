@@ -53,6 +53,10 @@ export class BannerService {
     return this.http.post<void>(env.BACKEND_URL+"/media/banner/bulk",banners);
   }
 
+  bulkDelete(ids:string[]){
+    return this.http.delete<void>(env.BACKEND_URL+"/media/banner/bulk?ids="+ids.join(","));
+  }
+
   desassociarBannerLoja(bannerId:string,isMobile:boolean){
     return this.http.delete<void>(env.BACKEND_URL+"/media/banner?bannerId="+bannerId+"&isMobile=" + isMobile)
   }
