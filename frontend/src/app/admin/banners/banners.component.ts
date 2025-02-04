@@ -9,6 +9,7 @@ import { BulkBannerReplicationComponent } from "./bulk-banner-replication/bulk-b
 import { MediaService } from '../../services/media-service';
 import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, DragDropModule} from '@angular/cdk/drag-drop';
 import { BulkDeleteComponent } from "./bulk-delete/bulk-delete.component";
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -49,58 +50,44 @@ export class BannersComponent implements OnInit {
   loadBanners(){
     this.loadingBanners = true;
     const franquiaId = this.auth.getContext()?.franquia.systemId;
+    let fetcher!:Observable<BannerModel.Banner[]>;
     if(this.auth.getContext()?.role===User.Role.ADMIN){
       if(franquiaId){
-        this.bannerService.getBanners(franquiaId,undefined).subscribe((data)=>{
-          this.firstLoading = false;
-          this.loadingBanners = false;
-          this.banners = data;
-          this.lojas.forEach((e)=>{
-            this.allowedIndexes.forEach((i)=>{
-              const hasBannerForIndex = this.banners.find((e1)=>e1.lojaInfo.systemId===e.systemId && e1.lojaInfo.index===i);
-              if(!hasBannerForIndex){
-                this.banners.push({
-                  systemId:"",
-                  media:[],
-                  lojaInfo:{
-                    index:i,
-                    systemId:e.systemId
-                  }
-                })
-              }
-            });
-          });
-          console.log("BANNERS STATE")
-          console.log(this.banners)
-        });
+        fetcher = this.bannerService.getBanners(franquiaId,undefined);
       }
     }else{
       const lojaId = this.auth.getContext()?.loja.systemId;
       if(lojaId && franquiaId){
-        this.bannerService.getBanners(undefined,lojaId).subscribe((data)=>{
-          this.firstLoading = false;
-          this.loadingBanners = false;
-          this.banners = data;
-          this.lojas.forEach((e)=>{
-            this.allowedIndexes.forEach((i)=>{
-              const hasBannerForIndex = this.banners.find((e1)=>e1.lojaInfo.systemId===e1.systemId && e1.lojaInfo.index===i);
-              if(!hasBannerForIndex){
-                this.banners.push({
-                  systemId:"",
-                  media:[],
-                  lojaInfo:{
-                    index:i,
-                    systemId:e.systemId
-                  }
-                })
-              }
-            });
-          });
-          console.log("BANNERS STATE")
-          console.log(this.banners)
-        });
+        fetcher = this.bannerService.getBanners(undefined,lojaId);
       }
     }
+    fetcher.subscribe((data)=>{
+      this.firstLoading = false;
+      this.loadingBanners = false;
+      this.banners = data;
+      this.fillBlankIndexes();
+      console.log("BANNERS STATE")
+      console.log(this.banners)
+    });
+
+  }
+
+  fillBlankIndexes(){
+    this.lojas.forEach((e)=>{
+      this.allowedIndexes.forEach((i)=>{
+        const hasBannerForIndex = this.banners.find((e1)=>e1.lojaInfo.systemId===e.systemId && e1.lojaInfo.index===i);
+        if(!hasBannerForIndex){
+          this.banners.push({
+            systemId:"",
+            media:[],
+            lojaInfo:{
+              index:i,
+              systemId:e.systemId
+            }
+          })
+        }
+      });
+    });
   }
 
   drop(event: CdkDragDrop<number[]>,lojaId:string) {
