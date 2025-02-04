@@ -10,14 +10,14 @@
                         </div>
                         <input [(ngModel)]="filter" 
                                (ngModelChange)="this.filtrar()" 
-                               class="w-full p-1 pl-8 outline-none border-b-black border-solid border-b-[1px]" 
+                               class="max-sm:w-[200px] max-sm:text-xs w-full p-1 pl-8 outline-none border-b-black border-solid border-b-[1px]" 
                                placeholder="Busca algo específico?"/>
                     </div>
                 </div>
-                <div [@fadeIn] *ngIf="this.produtosFiltrados.length;else empty" class="flex flex-wrap gap-10 justify-center">
-                    <div class="w-[300px] h-[300px] mb-[100px] " *ngFor="let item of produtosFiltrados">
+                <div [@fadeIn] *ngIf="this.produtosFiltrados.length;else empty" class="w-full flex flex-wrap gap-10 justify-center">
+                    <div class="max-sm:w-[200px] max-sm:h-[160px] w-[300px] h-[300px] mb-[100px] " *ngFor="let item of produtosFiltrados">
                         <div class="p-2">
-                            <img *ngIf="item.produtoBase.photoUrl" class="w-full h-[280px] " [src]="item.produtoBase.photoUrl" />
+                            <img *ngIf="item.produtoBase.photoUrl" class="w-full h-[280px] max-sm:h-[160px] " [src]="item.produtoBase.photoUrl" />
                             <div *ngIf="!item.produtoBase.photoUrl" class=" pi pi-image !text-[280px] text-gray-300" ></div>
                             <div class="mt-1">
                                 <div class="text-gray-400 text-xs">Sku: {{item.produtoBase.sku}}</div>

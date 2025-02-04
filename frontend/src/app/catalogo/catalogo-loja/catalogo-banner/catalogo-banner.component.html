@@ -1,11 +1,43 @@
 
-<p-carousel class="sm:[300px] max-sm:hidden" [draggable]="true" [showNavigators]="false" [value]="this.bannersUrlDesktop" [numVisible]="1" [circular]="this.bannersUrlDesktop.length>1" [autoplayInterval]="3000">
+<p-carousel [showNavigators]="true" 
+class="
+    [&_.p-carousel-content]:relative sm:[300px]  
+    max-sm:hidden 
+    [&_.p-carousel-prev-button]:bg-white 
+    [&_.p-carousel-prev-button]:flex
+    [&_.p-carousel-prev-button]:justify-center
+    [&_.p-carousel-prev-button]:w-[40px] 
+    [&_.p-carousel-prev-button]:h-[40px]
+    [&_.p-carousel-prev-button]:rounded-full 
+    [&_.p-carousel-prev-button]:ml-2 
+    [&_.p-carousel-prev-button]:absolute 
+    [&_.p-carousel-prev-button]:top-1/2 
+    [&_.p-carousel-prev-button]:transform 
+    [&_.p-carousel-prev-button]:-translate-y-1/2 
+    [&_.p-carousel-prev-button]:z-[99]
+    [&_.p-carousel-next-button]:absolute 
+    [&_.p-carousel-next-button]:right-0
+    [&_.p-carousel-next-button]:top-1/2 
+    [&_.p-carousel-next-button]:transform 
+    [&_.p-carousel-next-button]:-translate-y-1/2 
+    [&_.p-carousel-next-button]:z-[99]
+    [&_.p-carousel-next-button]:bg-white 
+    [&_.p-carousel-next-button]:flex
+    [&_.p-carousel-next-button]:justify-center
+    [&_.p-carousel-next-button]:w-[40px] 
+    [&_.p-carousel-next-button]:h-[40px]
+    [&_.p-carousel-next-button]:rounded-full 
+    [&_.p-carousel-next-button]:mr-2 
+" [draggable]="true"  [value]="this.bannersUrlDesktop" [numVisible]="1" [circular]="this.bannersUrlDesktop.length>1" [autoplayInterval]="3000">
     <ng-template let-banner #item>
-        <img [src]="banner">
+        <img class="w-full" [src]="banner">
     </ng-template>
 </p-carousel>
-<p-carousel class="sm:hidden" [draggable]="true" [showNavigators]="false" [value]="this.bannersUrlMobile" [numVisible]="1" [circular]="this.bannersUrlMobile.length>1" [autoplayInterval]="3000">
+<p-carousel 
+class="
+    sm:hidden
+" [draggable]="true" [showNavigators]="false" [value]="this.bannersUrlMobile" [numVisible]="1" [circular]="this.bannersUrlMobile.length>1" [autoplayInterval]="3000">
     <ng-template let-banner #item>
-        <img class="w-full h-[290px]" [src]="banner">
+        <img class="w-full" [src]="banner">
     </ng-template>
 </p-carousel>
