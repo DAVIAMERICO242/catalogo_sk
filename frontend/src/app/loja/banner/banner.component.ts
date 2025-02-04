@@ -1,22 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedModule } from '../../../shared/shared.module';
-import { BannerModel, BannerService } from '../../../services/banner.service';
-import { CatalogoContextService } from '../catalogo-context.service';
+import { BannerModel, BannerService } from '../../services/banner.service';
+import { SharedModule } from '../../shared/shared.module';
+import { LojaContextService } from '../loja-context.service';
 
 @Component({
-  selector: 'app-catalogo-banner',
+  selector: 'app-banner',
   imports: [SharedModule],
-  templateUrl: './catalogo-banner.component.html',
-  styleUrls:['./catalogo-banner.component.css']
+  templateUrl: './banner.component.html',
 })
-export class CatalogoBannerComponent implements OnInit {
+export class BannerComponent implements OnInit {
   banners:BannerModel.Banner[] = []
   bannersUrlDesktop:string[] = [];
   bannersUrlMobile:string[] = [];
 
-  constructor(private bannerService:BannerService,private catalogoContext:CatalogoContextService){}
+  constructor(private bannerService:BannerService,private lojaContext:LojaContextService){}
   ngOnInit(): void {
-    this.catalogoContext.loja$.subscribe((val)=>{
+    this.lojaContext.loja$.subscribe((val)=>{
       if(val?.systemId){
         this.bannerService.getBanners(undefined,val?.systemId).subscribe((banners)=>{
           this.banners = banners.sort((a,b)=>a.lojaInfo.index - b.lojaInfo.index);

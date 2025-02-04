@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Catalogo, CatalogoService } from '../../services/catalogo.service';
+import { Catalogo, CatalogoService } from '../services/catalogo.service';
 import { HttpClient } from '@angular/common/http';
-import { env } from '../../../env';
-import { Loja } from '../../services/loja.service';
+import { env } from '../../env';
+import { Loja } from '../services/loja.service';
 
 @Injectable()
-export class CatalogoContextService {
+export class LojaContextService {
 
   lojaSub = new BehaviorSubject<Loja.Loja | undefined>(undefined);
   loja$ = this.lojaSub.asObservable();

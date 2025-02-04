@@ -5,7 +5,7 @@ import { ProdutosComponent } from './admin/produtos/produtos.component';
 import { AuthGuard } from './auth.guard';
 import { PedidosComponent } from './admin/pedidos/pedidos.component';
 import { CatalogoComponent as CatalogoAdmin} from './admin/catalogo/catalogo.component';
-import { CatalogoComponent } from './catalogo/catalogo.component';
+import { CatalogoComponent } from './catalogo-choose/catalogo.component';
 
 export const routes: Routes = [
     {
@@ -15,11 +15,11 @@ export const routes: Routes = [
     },
     {
         path:"franquia",
-        loadComponent:()=>import("./catalogo/catalogo.component").then((m)=>m.CatalogoComponent),
+        loadComponent:()=>import("./catalogo-choose/catalogo.component").then((m)=>m.CatalogoComponent),
     },
     {
         path:"matriz",
-        loadComponent:()=>import("./catalogo/catalogo.component").then((m)=>m.CatalogoComponent),
+        loadComponent:()=>import("./catalogo-choose/catalogo.component").then((m)=>m.CatalogoComponent),
     },
     {
         path:"login",
@@ -54,11 +54,11 @@ export const routes: Routes = [
     },
     {
         path: ":slug",
-        loadComponent: () => import("./catalogo/catalogo-loja/catalogo-loja.component").then(m => m.CatalogoLojaComponent),
+        loadComponent: () => import("./loja/main/main.component").then(m => m.LojaComponent),
         children:[
             {
                 path:"",
-                loadComponent: () => import("./catalogo/catalogo-loja/product-grid/product-grid.component").then(m => m.ProductGridComponent),
+                loadComponent: () => import("./loja/product-grid/product-grid.component").then(m => m.ProductGridComponent),
             }
         ]
     },
