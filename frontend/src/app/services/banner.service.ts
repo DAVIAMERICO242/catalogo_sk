@@ -57,6 +57,10 @@ export class BannerService {
     return this.http.delete<void>(env.BACKEND_URL+"/media/banner/bulk?ids="+ids.join(","));
   }
 
+  saveReindex(reindexedForLoja:BannerModel.Banner[]){
+    return this.http.post<void>(env.BACKEND_URL+"/media/banner/save-reindex",reindexedForLoja);
+  }
+
   desassociarBannerLoja(bannerId:string,isMobile:boolean){
     return this.http.delete<void>(env.BACKEND_URL+"/media/banner?bannerId="+bannerId+"&isMobile=" + isMobile)
   }

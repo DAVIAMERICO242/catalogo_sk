@@ -37,6 +37,16 @@ public class BannerController {
         }
     }
 
+    @PostMapping("/save-reindex")
+    public ResponseEntity saveReindex(@RequestBody List<BannerRequest> bannersReindexedForLoja){
+        try{
+            this.bannerService.saveMadeReindex(bannersReindexedForLoja);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
     @GetMapping
     public ResponseEntity getBanners(@RequestParam(required = false) String lojaId, @RequestParam(required = true) String franquiaId){
         try{

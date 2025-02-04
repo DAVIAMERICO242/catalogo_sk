@@ -1,6 +1,6 @@
 <app-admin-page-title iconClass="pi pi-images" title="Banners"/>
 <div [ngClass]="{'opacity-35 pointer-events-none':this.loadingBanners}" class="p-5 relative">
-    <div class="mb-5">
+    <div *ngIf="!this.firstLoading" class="mb-5">
         <app-bulk-delete (onBulkDelete)="this.loadBanners()" [banners]="banners" [lojas]="lojas"/>
     </div>
     <div *ngIf="this.loadingBanners" class="pi pi-spin pi-spinner absolute left-1/2 top-[200px] z-[9] transform -translate-x-1/2 -translate-y-1/2 !text-[40px]"></div>

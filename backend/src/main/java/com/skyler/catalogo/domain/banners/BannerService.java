@@ -24,6 +24,8 @@ public class BannerService {
         this.lojaRepository = lojaRepository;
     }
 
+
+
     @Transactional
     public IdResponse postBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
         BannerEnt bannerEnt = new BannerEnt();
@@ -62,6 +64,18 @@ public class BannerService {
         }
         this.bannerRepository.save(bannerEnt);
         return new IdResponse(bannerEnt.getSystemId());
+    }
+
+    @Transactional
+    public synchronized void saveMadeReindex(List<BannerRequest> bannersReindexedForLoja){//ja foi reindexado no frontend
+        List<BannerEnt> bannersEnt = this.bannerRepository.findAllById(bannersReindexedForLoja.stream().map(o->o.getSystemId()).toList());
+        for(BannerEnt bannerEnt:bannersEnt){
+            Optional<BannerRequest> regardingDTO = bannersReindexedForLoja.stream().filter(o->o.getSystemId()!=null && o.getSystemId().equals(bannerEnt.getSystemId())).findFirst();
+            if(regardingDTO.isPresent()){
+                bannerEnt.setIndexOnStore(regardingDTO.get().getLojaInfo().getIndex());
+            }
+        }
+        this.bannerRepository.saveAll(bannersEnt);
     }
 
     @Transactional

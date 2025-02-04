@@ -119,6 +119,7 @@ export class BannersComponent implements OnInit {
         return e;
       }
     });
+    this.bannerService.saveReindex(backup).subscribe();
     console.log(this.banners);
   }
 
