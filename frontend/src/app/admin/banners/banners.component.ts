@@ -21,6 +21,7 @@ export class BannersComponent implements OnInit {
   loadingBanners = false;
   loadingBannerForIndex:boolean[] = [];
   allowedIndexes = [0,1,2,3,4];
+  firstLoading = false;
   constructor(
     private mediaService:MediaService,
     private bannerService:BannerService,
@@ -39,6 +40,7 @@ export class BannersComponent implements OnInit {
         this.lojas = [loja]
       }
     }
+    this.firstLoading = true;
     this.loadBanners();
   }
 
@@ -49,6 +51,7 @@ export class BannersComponent implements OnInit {
     if(this.auth.getContext()?.role===User.Role.ADMIN){
       if(franquiaId){
         this.bannerService.getBanners(franquiaId).subscribe((data)=>{
+          this.firstLoading = false;
           this.loadingBanners = false;
           this.banners = data;
           this.lojas.forEach((e)=>{
@@ -72,6 +75,7 @@ export class BannersComponent implements OnInit {
       const lojaId = this.auth.getContext()?.loja.systemId;
       if(lojaId && franquiaId){
         this.bannerService.getBanners(franquiaId,lojaId).subscribe((data)=>{
+          this.firstLoading = false;
           this.loadingBanners = false;
           this.banners = data;
           this.lojas.forEach((e)=>{
