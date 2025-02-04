@@ -7,11 +7,12 @@ import { BannerModel, BannerService } from '../../services/banner.service';
 import { DeletarBannerComponent, DeleteNotification } from "./deletar-banner/deletar-banner.component";
 import { BulkBannerReplicationComponent } from "./bulk-banner-replication/bulk-banner-replication.component";
 import { MediaService } from '../../services/media-service';
+import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @Component({
   selector: 'app-banners',
-  imports: [AdminPageTitleComponent, SharedModule, DeletarBannerComponent, BulkBannerReplicationComponent],
+  imports: [AdminPageTitleComponent, SharedModule, DeletarBannerComponent, BulkBannerReplicationComponent,DragDropModule],
   templateUrl: './banners.component.html'
 })
 export class BannersComponent implements OnInit {
@@ -19,6 +20,7 @@ export class BannersComponent implements OnInit {
   banners:BannerModel.Banner[] = [];
   loadingBanners = false;
   loadingBannerForIndex:boolean[] = [];
+  allowedIndexes = [0,1,2,3,4];
   constructor(
     private mediaService:MediaService,
     private bannerService:BannerService,
@@ -40,6 +42,7 @@ export class BannersComponent implements OnInit {
     this.loadBanners();
   }
 
+
   loadBanners(){
     this.loadingBanners = true;
     const franquiaId = this.auth.getContext()?.franquia.systemId;
@@ -48,6 +51,21 @@ export class BannersComponent implements OnInit {
         this.bannerService.getBanners(franquiaId).subscribe((data)=>{
           this.loadingBanners = false;
           this.banners = data;
+          this.lojas.forEach((e)=>{
+            this.allowedIndexes.forEach((i)=>{
+              const hasBannerForIndex = this.banners.find((e1)=>e1.lojaInfo.systemId===e.systemId && e1.lojaInfo.index===i);
+              if(!hasBannerForIndex){
+                this.banners.push({
+                  systemId:"",
+                  media:[],
+                  lojaInfo:{
+                    index:i,
+                    systemId:e.systemId
+                  }
+                })
+              }
+            });
+          });
         });
       }
     }else{
@@ -56,9 +74,51 @@ export class BannersComponent implements OnInit {
         this.bannerService.getBanners(franquiaId,lojaId).subscribe((data)=>{
           this.loadingBanners = false;
           this.banners = data;
+          this.lojas.forEach((e)=>{
+            this.allowedIndexes.forEach((i)=>{
+              const hasBannerForIndex = this.banners.find((e1)=>e1.lojaInfo.systemId===e1.systemId && e1.lojaInfo.index===i);
+              if(!hasBannerForIndex){
+                this.banners.push({
+                  systemId:"",
+                  media:[],
+                  lojaInfo:{
+                    index:i,
+                    systemId:e.systemId
+                  }
+                })
+              }
+            });
+          });
         });
       }
     }
+  }
+
+  drop(event: CdkDragDrop<number[]>,lojaId:string) {
+    let backup  = this.getBannersForLoja(lojaId);
+    moveItemInArray(backup, event.previousIndex, event.currentIndex);
+    backup = backup.map((e,i)=>{
+      return {
+        ...e,
+        lojaInfo:{
+          systemId:lojaId,
+          index:i
+        }
+      }
+    });
+    this.banners = this.banners.map((e)=>{
+      if(e.lojaInfo.systemId===lojaId){
+        const found = backup.find((e1)=>e1.lojaInfo.systemId===lojaId && e1.lojaInfo.index===e.lojaInfo.index);
+        return found as BannerModel.Banner;
+      }else{
+        return e;
+      }
+    });
+    console.log(this.banners);
+  }
+
+  getBannersForLoja(lojaId:string){
+    return this.banners.filter((e)=>e.lojaInfo.systemId===lojaId).sort((a,b)=>a.lojaInfo.index-b.lojaInfo.index);
   }
 
   onBannerChange(event:Event,lojaId:string,index:number,isMobile:boolean){
