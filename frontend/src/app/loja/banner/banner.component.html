@@ -1,5 +1,5 @@
 
-<p-carousel [showNavigators]="true" 
+<p-carousel *ngIf="this.bannersUrlDesktop.length" [showNavigators]="true" 
 class="
     [&_.p-carousel-content]:relative sm:[300px]  
     max-sm:hidden 
@@ -33,7 +33,7 @@ class="
         <img class="w-full" [src]="banner">
     </ng-template>
 </p-carousel>
-<p-carousel 
+<p-carousel  *ngIf="this.bannersUrlMobile.length"
 class="
     sm:hidden
 " [draggable]="true" [showNavigators]="false" [value]="this.bannersUrlMobile" [numVisible]="1" [circular]="this.bannersUrlMobile.length>1" [autoplayInterval]="3000">
