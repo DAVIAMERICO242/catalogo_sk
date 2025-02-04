@@ -2,23 +2,24 @@
 <app-catalogo-banner/>
 <app-catalogo-loja-wrapper>
     <ng-container *ngIf="produtosFiltrados; else loading">
-        <div class="w-[90%] max-sm:mt-1">
-                <div class="flex justify-start w-full ml-10 mb-5">
+        <div class="max-sm:mt-1">
+                <div class="flex w-full ml-1 mb-5">
                     <div class="relative w-[300px]">
                         <div class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400">
                             <i class="pi pi-search"></i> <!-- Ícone de lupa -->
                         </div>
                         <input [(ngModel)]="filter" 
-                               (ngModelChange)="this.filtrar()" 
-                               class="max-sm:w-[200px] max-sm:text-xs w-full p-1 pl-8 outline-none border-b-black border-solid border-b-[1px]" 
-                               placeholder="Busca algo específico?"/>
+                            (ngModelChange)="this.filtrar()" 
+                            class="max-sm:w-[200px] max-sm:text-xs  p-1 pl-8 outline-none border-b-slate-300 border-solid border-b-[1px]" 
+                            placeholder="Busca algo específico?"/>
                     </div>
                 </div>
-                <div [@fadeIn] *ngIf="this.produtosFiltrados.length;else empty" class="w-full flex flex-wrap gap-10 justify-center ">
-                    <div class="max-sm:w-[200px] max-sm:h-[160px] w-[300px] h-[300px] mb-[100px] " *ngFor="let item of produtosFiltrados">
+                <div [@fadeIn] *ngIf="this.produtosFiltrados.length; else empty" class="w-full grid gap-10 justify-center max-[640px]:grid-cols-2 grid-cols-4 max-[1200px]:grid-cols-3 max-[900px]:grid-cols-2">
+                    <div class="max-sm:w-[200px] max-sm:h-[160px] w-[300px] h-[300px] mb-[100px]" *ngFor="let item of produtosFiltrados">
                         <app-base-product-container [produto]="item"/>
                     </div>
                 </div>
+                
                 <ng-template #empty>
                     <div class="ml-10 text-gray-400">
                        Nenhum produto encontrado
