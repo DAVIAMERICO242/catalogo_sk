@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CatalogoContextService } from '../catalogo-context.service';
 import { SharedModule } from '../../../shared/shared.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-catalogo-header',
@@ -9,13 +10,21 @@ import { SharedModule } from '../../../shared/shared.module';
 })
 export class CatalogoHeaderComponent implements OnInit {
   loja = "";
-  constructor(private catalogContext:CatalogoContextService) {
+  slug = ""
+  constructor(private catalogContext:CatalogoContextService,private router:Router) {
     
   }
   ngOnInit(): void {
     this.catalogContext.loja$.subscribe((d)=>{
         this.loja = d?.loja || "";
+        this.slug = d?.slug || "";
     });
+  }
+
+  goToHome(){
+    if(this.slug){
+      this.router.navigate(["/" + this.slug])
+    }
   }
 
 

@@ -54,6 +54,12 @@ export const routes: Routes = [
     },
     {
         path: ":slug",
-        loadComponent: () => import("./catalogo/catalogo-loja/catalogo-loja.component").then(m => m.CatalogoLojaComponent)
+        loadComponent: () => import("./catalogo/catalogo-loja/catalogo-loja.component").then(m => m.CatalogoLojaComponent),
+        children:[
+            {
+                path:"",
+                loadComponent: () => import("./catalogo/catalogo-loja/product-grid/product-grid.component").then(m => m.ProductGridComponent),
+            }
+        ]
     },
 ];

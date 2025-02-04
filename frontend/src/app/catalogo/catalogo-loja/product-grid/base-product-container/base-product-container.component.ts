@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Produto } from '../../../services/produtos.service';
-import { Catalogo } from '../../../services/catalogo.service';
+import { Produto } from '../../../../services/produtos.service';
+import { Catalogo } from '../../../../services/catalogo.service';
 
 @Component({
   selector: 'app-base-product-container',
