@@ -1,4 +1,13 @@
-<button (click)="open=true" *ngIf="this.stringOrBase64Desktop || this.stringOrBase64Mobile" pButton class="!w-full !bg-black !rounded-sm !text-xs">
+<button (click)="openLojaSelector=true" *ngIf="this.stringOrBase64Desktop || this.stringOrBase64Mobile" pButton class="!w-full !bg-black !rounded-sm !text-xs">
     Replicar em massa
 </button>
-<app-confirmation-dialog (onConfirmation)="this.postBanners()" [(open)]="open" [loading]="loadingBulk" [confirmationTitle]="'Tem certeza? isso irá sobreescrever todos os banners na posição atual para todas as lojas'"/>
+<p-dialog header="Replicação em massa" appendTo="body" [modal]="true" dismissableMask="true" [(visible)]="openLojaSelector" styleClass="!w-[600px]  !overflow-visible">
+    <div>
+        <div>Selecione as lojas:</div>
+        <p-multi-select [(ngModel)]="this.selectedLojas" styleClass="!w-full !text-sm !h-[40px] flex items-center " appendTo="body" [options]="this.lojas" optionLabel="nome"/>
+        <button (click)="openConfirm=true" pButton class="!w-full !bg-black !mt-4">
+            Replicar
+        </button>
+    </div>
+</p-dialog>
+<app-confirmation-dialog (onConfirmation)="this.postBanners()" [(open)]="openConfirm" [loading]="loadingBulk" [confirmationTitle]="'Tem certeza? isso irá sobreescrever todos os banners na posição atual para todas as lojas'"/>

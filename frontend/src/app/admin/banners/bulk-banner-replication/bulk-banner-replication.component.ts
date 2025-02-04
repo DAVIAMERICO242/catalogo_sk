@@ -15,6 +15,7 @@ export class BulkBannerReplicationComponent implements OnInit {
   desiredIndex = 0;
   @Input({required:true})
   lojas!:User.Loja[];
+  selectedLojas:User.Loja[] = [];
   @Input({required:true})
   stringOrBase64Desktop:string|undefined = "";
   @Input({required:true})
@@ -25,7 +26,9 @@ export class BulkBannerReplicationComponent implements OnInit {
   @Output()
   onBulk = new EventEmitter<void>();
   loadingBulk = false;
-  open = false;
+  openLojaSelector = false;
+
+  openConfirm = false;
 
   constructor(private http:HttpClient,private bannerService:BannerService){}
   
@@ -47,7 +50,7 @@ export class BulkBannerReplicationComponent implements OnInit {
       promises.push(mp);
     }
     Promise.all(promises).then(()=>{
-      this.lojas.forEach((e)=>{
+      this.selectedLojas.forEach((e)=>{
         let bannerMobileExtension = this.stringOrBase64Mobile?.split('.').pop();
         let bannerDesktopExtension = this.stringOrBase64Desktop?.split('.').pop();
         if(!bannerDesktopExtension && !bannerMobileExtension){
@@ -83,7 +86,8 @@ export class BulkBannerReplicationComponent implements OnInit {
     this.bannerService.bulkBanner(this.payload).subscribe({
         next:()=>{
           this.loadingBulk = false;
-          this.open = false;
+          this.openLojaSelector = false;
+          this.openConfirm = false;
           this.onBulk.emit();
         }
       })
