@@ -1,0 +1,12 @@
+<div class="p-2  cursor-pointer">
+    <img *ngIf="produto.produtoBase.photoUrl" class="w-full h-[280px] max-sm:h-[160px] " [src]="produto.produtoBase.photoUrl" />
+    <div *ngIf="!produto.produtoBase.photoUrl" class=" pi pi-image !text-[280px] text-gray-300" ></div>
+    <div class="mt-1">
+        <div class="text-gray-400 text-xs">Sku: {{produto.produtoBase.sku}}</div>
+        <div class=" text-xs mt-3 text-nowrap overflow-hidden text-ellipsis mb-3 ">
+            {{ produto.produtoBase.descricao }}
+        </div>
+        <div class="text-[10px] rounded-sm bg-slate-100 w-fit  p-1">{{produto.produtoBase.linha}}</div>
+
+    </div>
+</div>

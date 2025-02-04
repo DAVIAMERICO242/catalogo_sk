@@ -8,10 +8,11 @@ import { SharedModule } from '../../shared/shared.module';
 import { CatalogoLojaWrapperComponent } from "./catalogo-loja-wrapper/catalogo-loja-wrapper.component";
 import { fadeIn } from '../../animations/fadeIn';
 import { CatalogoBannerComponent } from "./catalogo-banner/catalogo-banner.component";
+import { BaseProductContainerComponent } from "./base-product-container/base-product-container.component";
 
 @Component({
   selector: 'app-catalogo-loja',
-  imports: [CatalogoHeaderComponent, SharedModule, CatalogoLojaWrapperComponent, CatalogoBannerComponent],
+  imports: [CatalogoHeaderComponent, SharedModule, CatalogoLojaWrapperComponent, CatalogoBannerComponent, BaseProductContainerComponent],
   templateUrl: './catalogo-loja.component.html',
   providers:[CatalogoContextService],
   animations:[fadeIn]
