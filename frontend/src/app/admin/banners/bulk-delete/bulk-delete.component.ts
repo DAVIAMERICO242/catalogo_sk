@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { User } from '../../../services/user.service';
+import { User, UserService } from '../../../services/user.service';
 import { BannerModel, BannerService } from '../../../services/banner.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SharedModule } from '../../../shared/shared.module';
@@ -21,7 +21,7 @@ export class BulkDeleteComponent {
   onBulkDelete = new EventEmitter();
 
 
-  constructor(private bannerService:BannerService){}
+  constructor(private bannerService:BannerService,protected auth:UserService){}
 
   bulkDelete(){
     this.loading = true;

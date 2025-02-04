@@ -37,12 +37,14 @@ export class BannerService {
 
   constructor(private http:HttpClient){}
 
-  getBanners(franquiaId:string,lojaId?:string){
-    let url = env.BACKEND_URL+"/media/banner?franquiaId="+franquiaId;
-    if(lojaId){
-      url = url + "&lojaId="+lojaId;
-    }
-    return this.http.get<BannerModel.Banner[]>(url)
+  getBanners(franquiaId?: string, lojaId?: string) {
+    const url = new URL(env.BACKEND_URL + "/media/banner");
+  
+    const params = new URLSearchParams();
+    if (franquiaId) params.append("franquiaId", franquiaId);
+    if (lojaId) params.append("lojaId", lojaId);
+  
+    return this.http.get<BannerModel.Banner[]>(`${url.toString()}?${params.toString()}`);
   }
 
   postBanner(banner:BannerModel.Banner){

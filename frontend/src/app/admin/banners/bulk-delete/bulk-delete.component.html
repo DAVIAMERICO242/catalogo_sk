@@ -1,4 +1,4 @@
-<button (click)="open=true" class="!text-xs !bg-black flex item-center gap-2" pButton>
+<button *ngIf="this.auth.getContext()?.role==='ADMIN'" (click)="open=true" class="!text-xs !bg-black flex item-center gap-2" pButton>
     <div class="pi pi-eraser"></div>
     <div>
         Limpeza em massa

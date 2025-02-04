@@ -51,7 +51,7 @@ export class BannersComponent implements OnInit {
     const franquiaId = this.auth.getContext()?.franquia.systemId;
     if(this.auth.getContext()?.role===User.Role.ADMIN){
       if(franquiaId){
-        this.bannerService.getBanners(franquiaId).subscribe((data)=>{
+        this.bannerService.getBanners(franquiaId,undefined).subscribe((data)=>{
           this.firstLoading = false;
           this.loadingBanners = false;
           this.banners = data;
@@ -70,12 +70,14 @@ export class BannersComponent implements OnInit {
               }
             });
           });
+          console.log("BANNERS STATE")
+          console.log(this.banners)
         });
       }
     }else{
       const lojaId = this.auth.getContext()?.loja.systemId;
       if(lojaId && franquiaId){
-        this.bannerService.getBanners(franquiaId,lojaId).subscribe((data)=>{
+        this.bannerService.getBanners(undefined,lojaId).subscribe((data)=>{
           this.firstLoading = false;
           this.loadingBanners = false;
           this.banners = data;
@@ -94,6 +96,8 @@ export class BannersComponent implements OnInit {
               }
             });
           });
+          console.log("BANNERS STATE")
+          console.log(this.banners)
         });
       }
     }
@@ -223,14 +227,14 @@ export class BannersComponent implements OnInit {
     return this.banners.find((e)=>e.lojaInfo.systemId===lojaId && e.lojaInfo.index===index);
   }
 
+  getBannerIdByLojaIdAndBannerIndex(lojaId:string,index:number){
+    return this.banners.find((e)=>e.lojaInfo.systemId===lojaId && e.lojaInfo.index===index)?.systemId as string;
+  }
 
   onDelete(){//tirar a window, a loja e o banner
     this.loadBanners();
   }
 
-  getBannerIdByLojaIdAndBannerIndex(lojaId:string,index:number){
-    return this.banners.find((e)=>e.lojaInfo.systemId===lojaId && e.lojaInfo.index===index)?.systemId as string;
-  }
 
 
 

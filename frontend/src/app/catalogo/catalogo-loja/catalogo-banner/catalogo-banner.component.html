@@ -1,7 +1,11 @@
 
-
-<p-carousel [draggable]="true" [showNavigators]="false" [value]="banners" [numVisible]="1" [circular]="true" [autoplayInterval]="3000">
+<p-carousel class="sm:[300px] max-sm:hidden" [draggable]="true" [showNavigators]="false" [value]="this.bannersUrlDesktop" [numVisible]="1" [circular]="this.bannersUrlDesktop.length>1" [autoplayInterval]="3000">
     <ng-template let-banner #item>
         <img [src]="banner">
+    </ng-template>
+</p-carousel>
+<p-carousel class="sm:hidden" [draggable]="true" [showNavigators]="false" [value]="this.bannersUrlMobile" [numVisible]="1" [circular]="this.bannersUrlMobile.length>1" [autoplayInterval]="3000">
+    <ng-template let-banner #item>
+        <img class="w-full h-[290px]" [src]="banner">
     </ng-template>
 </p-carousel>

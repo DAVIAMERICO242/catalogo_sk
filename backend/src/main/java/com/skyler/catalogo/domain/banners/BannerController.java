@@ -48,7 +48,7 @@ public class BannerController {
     }
 
     @GetMapping
-    public ResponseEntity getBanners(@RequestParam(required = false) String lojaId, @RequestParam(required = true) String franquiaId){
+    public ResponseEntity getBanners(@RequestParam(required = false) String lojaId, @RequestParam(required = false) String franquiaId){
         try{
             return ResponseEntity.ok().body(this.bannerService.getBanners(lojaId,franquiaId));
         }catch (Exception e){
