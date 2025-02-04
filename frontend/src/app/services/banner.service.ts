@@ -5,7 +5,7 @@ import { env } from '../../env';
 export namespace BannerModel{
   export interface Banner{
     systemId:string;
-    lojaInfo:LojaIndexInfo[],
+    lojaInfo:LojaIndexInfo,
     media:Media[]
   }
 
@@ -53,7 +53,7 @@ export class BannerService {
     return this.http.post<void>(env.BACKEND_URL+"/media/banner/bulk",banners);
   }
 
-  desassociarBannerLoja(bannerId:string,lojaId:string,isMobile:boolean){
-    return this.http.delete<void>(env.BACKEND_URL+"/media/banner?bannerId="+bannerId+"&lojaId="+lojaId+"&isMobile=" + isMobile)
+  desassociarBannerLoja(bannerId:string,isMobile:boolean){
+    return this.http.delete<void>(env.BACKEND_URL+"/media/banner?bannerId="+bannerId+"&isMobile=" + isMobile)
   }
 }

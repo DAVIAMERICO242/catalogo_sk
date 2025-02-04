@@ -21,13 +21,9 @@ public class BannerEnt {
     private String systemId = UUID.randomUUID().toString();
     private String urlDesktop;
     private String urlMobile;
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "banner")
-    @JsonManagedReference
-    private Set<BannerLojas> bannerLojas = new HashSet<>();
-
-    public void addRelacaoLoja(BannerLojas bannerLoja){
-        bannerLoja.setBanner(this);
-        this.bannerLojas.add(bannerLoja);
-    }
-
+    private Integer indexOnStore;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="loja_id")
+    @JsonBackReference
+    private Loja loja;
 }

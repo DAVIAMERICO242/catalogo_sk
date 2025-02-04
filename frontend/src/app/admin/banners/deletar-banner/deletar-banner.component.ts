@@ -24,21 +24,17 @@ export class DeletarBannerComponent {
   open = false;
   loading = false;
   @Output()
-  onDisassociation = new EventEmitter<DeleteNotification>();
+  onDisassociation = new EventEmitter<void>();
 
   constructor(private bannerService:BannerService,private message:MessageService){}
 
   deletarBanner(){
     this.loading = true;
-    this.bannerService.desassociarBannerLoja(this.bannerId,this.lojaId,this.isMobile).subscribe({
+    this.bannerService.desassociarBannerLoja(this.bannerId,this.isMobile).subscribe({
       next:()=>{
         this.loading = false;
         this.open = false;
-        this.onDisassociation.emit({
-          bannerId:this.bannerId,
-          isMobile:this.isMobile,
-          lojaId:this.lojaId
-        });
+        this.onDisassociation.emit();
       },
       error:(err:HttpErrorResponse)=>{
         this.loading = false;

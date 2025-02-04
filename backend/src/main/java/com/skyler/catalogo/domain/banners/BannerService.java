@@ -25,7 +25,7 @@ public class BannerService {
     }
 
     @Transactional
-    public IdResponse postOrReindexBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
+    public IdResponse postBanner(BannerRequest bannerRequest) throws Exception {//cadastro e reindex, NÃO É POSSIVEL ATUALIZAR BANNER SEM DELETAR
         BannerEnt bannerEnt = new BannerEnt();
         if(bannerRequest.getSystemId()!=null && !bannerRequest.getSystemId().isBlank()){
             Optional<BannerEnt> bannerEntOptional = this.bannerRepository.findById(bannerRequest.getSystemId());
@@ -54,54 +54,35 @@ public class BannerService {
                         "/banners/" + media.getWindow() + "/");
             }
         }
-        bannerEnt.getBannerLojas().clear();
-        List<String> lojasIds = bannerRequest.getLojaInfo().stream().map(o->o.getSystemId()).toList();
-        List<Loja> lojas = this.lojaRepository.findAllById(lojasIds);
-        for(BannerRequest.LojaInfo lojaInfo:bannerRequest.getLojaInfo()){
-            Loja loja = lojas.stream().filter(o->o.getSystemId().equals(lojaInfo.getSystemId())).findFirst().get();
-            BannerLojas bannerLoja = new BannerLojas();
-            bannerLoja.setIndexOnStore(lojaInfo.getIndex());
-            bannerLoja.setLoja(loja);
-            bannerEnt.addRelacaoLoja(bannerLoja);
+        Optional<Loja> lojaOptional = this.lojaRepository.findById(bannerRequest.getLojaInfo().getSystemId());
+        if(lojaOptional.isPresent()){
+            Loja loja = lojaOptional.get();
+            bannerEnt.setLoja(loja);
+            bannerEnt.setIndexOnStore(bannerRequest.getLojaInfo().getIndex());
         }
         this.bannerRepository.save(bannerEnt);
         return new IdResponse(bannerEnt.getSystemId());
     }
 
     @Transactional
-    public void deletarBannerDaLoja(String bannerId, String lojaId, Boolean isMobile){//se deletar de uma loja deleta de todas foda,
+    public void deletarBannerDaLoja(String bannerId, Boolean isMobile){//se deletar de uma loja deleta de todas foda,
         BannerEnt bannerEnt = this.bannerRepository.findById(bannerId).get();
-        String backupDesktopUrl = bannerEnt.getUrlDesktop();
-        String backupMobileUrl = bannerEnt.getUrlMobile();
-        bannerEnt.getBannerLojas().forEach(o->{
-            if(o.getLoja().getSystemId().equals(lojaId)){
-                if(isMobile){
-                    o.getBanner().setUrlMobile(null);
-                }else{
-                    o.getBanner().setUrlDesktop(null);
-                }
+        if(isMobile){
+            String objectMobile = bannerEnt.getUrlMobile().split("catalogosk/")[1];
+            bannerEnt.setUrlMobile(null);
+            this.bannerRepository.save(bannerEnt);
+            if(bannerEnt.getUrlMobile()==null && bannerEnt.getUrlDesktop()==null){
+                this.bannerRepository.deleteById(bannerId);
             }
-        });
-        Boolean shouldCompletlyDisassociate = bannerEnt.getBannerLojas().stream().anyMatch(
-                        o->o.getLoja().getSystemId().equals(lojaId)
-                        && o.getBanner().getUrlMobile()==null
-                        && o.getBanner().getUrlDesktop()==null
-
-        );
-        if(shouldCompletlyDisassociate){
-            bannerEnt.setBannerLojas(bannerEnt.getBannerLojas().stream().filter(o->!o.getLoja().getSystemId().equals(lojaId)).collect(Collectors.toSet()));
-        }
-        this.bannerRepository.save(bannerEnt);
-        if(bannerEnt.getBannerLojas().isEmpty()){//e é o ultimo banner da loja
-            if(backupDesktopUrl!=null){
-                String objectDesktop = backupDesktopUrl.split("catalogosk/")[1];
-                this.minioService.removeDirectory(objectDesktop);
+            this.minioService.removeDirectory(objectMobile);
+        }else{
+            String objectDesktop = bannerEnt.getUrlDesktop().split("catalogosk/")[1];
+            bannerEnt.setUrlDesktop(null);
+            this.bannerRepository.save(bannerEnt);
+            if(bannerEnt.getUrlMobile()==null && bannerEnt.getUrlDesktop()==null){
+                this.bannerRepository.deleteById(bannerId);
             }
-            if(backupMobileUrl!=null){
-                String objectMobile = backupMobileUrl.split("catalogosk/")[1];
-                this.minioService.removeDirectory(objectMobile);
-            }
-            this.bannerRepository.deleteById(bannerId);
+            this.minioService.removeDirectory(objectDesktop);
         }
     }
 
@@ -128,12 +109,10 @@ public class BannerService {
                 mobile.setBannerUrl(bannerEnt.getUrlMobile());
             }
             bannerRequest.addMediaInfo(mobile);
-            for(BannerLojas bannerLojas:bannerEnt.getBannerLojas()){
-                BannerRequest.LojaInfo lojaInfo = new BannerRequest.LojaInfo();
-                lojaInfo.setSystemId(bannerLojas.getLoja().getSystemId());
-                lojaInfo.setIndex(bannerLojas.getIndexOnStore());
-                bannerRequest.addLojaInfo(lojaInfo);
-            }
+            BannerRequest.LojaInfo lojaInfo = new BannerRequest.LojaInfo();
+            lojaInfo.setSystemId(bannerEnt.getLoja().getSystemId());
+            lojaInfo.setIndex(bannerEnt.getIndexOnStore());
+            bannerRequest.setLojaInfo(lojaInfo);
             output.add(bannerRequest);
         }
         return output;

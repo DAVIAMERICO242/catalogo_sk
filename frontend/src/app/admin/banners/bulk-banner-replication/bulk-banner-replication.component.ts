@@ -72,10 +72,10 @@ export class BulkBannerReplicationComponent implements OnInit {
         }
         this.payload.push({
           systemId:"",
-          lojaInfo:[{
+          lojaInfo:{
             index:this.desiredIndex,
             systemId:e.systemId
-          }],
+          },
           media
         })
       });

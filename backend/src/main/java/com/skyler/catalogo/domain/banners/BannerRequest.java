@@ -9,7 +9,7 @@ import java.util.List;
 public class BannerRequest {
 
     String systemId;
-    List<LojaInfo> lojaInfo = new ArrayList<>();
+    LojaInfo lojaInfo;
     List<Media> media = new ArrayList<>();//tamanho 2
 
     @Data
@@ -28,9 +28,5 @@ public class BannerRequest {
 
     public void addMediaInfo(Media mediaInfo){
         this.media.add(mediaInfo);
-    }
-
-    public void addLojaInfo(LojaInfo lojaInfo){
-        this.lojaInfo.add(lojaInfo);
     }
 }

@@ -20,7 +20,7 @@ public class BannerController {
     @PostMapping
     public ResponseEntity banner(@RequestBody  BannerRequest bannerRequest){
         try{
-            IdResponse id = this.bannerService.postOrReindexBanner(bannerRequest);
+            IdResponse id = this.bannerService.postBanner(bannerRequest);
             return ResponseEntity.ok().body(id);
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
@@ -47,9 +47,9 @@ public class BannerController {
     }
 
     @DeleteMapping
-    public ResponseEntity desassociarBanner(String bannerId,String lojaId, Boolean isMobile){
+    public ResponseEntity desassociarBanner(String bannerId, Boolean isMobile){
         try{
-            this.bannerService.deletarBannerDaLoja(bannerId,lojaId,isMobile);
+            this.bannerService.deletarBannerDaLoja(bannerId,isMobile);
             return ResponseEntity.ok().build();
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());

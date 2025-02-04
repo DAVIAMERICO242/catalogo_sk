@@ -11,37 +11,30 @@ import java.util.Optional;
 
 public interface BannerRepository extends JpaRepository<BannerEnt,String> {
     @Query("SELECT b From BannerEnt b " +
-            "JOIN FETCH b.bannerLojas bl " +
-            "JOIN FETCH bl.loja l  " +
+            "JOIN FETCH b.loja l  " +
             "WHERE b.systemId = :id")
     Optional<BannerEnt> findById(String id);
 
 
     @Query("SELECT b From BannerEnt b " +
-            "JOIN FETCH b.bannerLojas bl " +
-            "JOIN FETCH bl.loja l  ")
+            "JOIN FETCH b.loja l  ")
     List<BannerEnt> findAll();
 
     @Query("SELECT b From BannerEnt b " +
-            "JOIN FETCH b.bannerLojas bl " +
-            "JOIN FETCH bl.loja l " +
+            "JOIN FETCH b.loja l " +
             "WHERE l.franquia.systemId = :id  ")
     List<BannerEnt> findAllByFranquiaId(String id);
 
     @Query("SELECT b From BannerEnt b " +
-            "JOIN FETCH b.bannerLojas bl " +
-            "JOIN FETCH bl.loja l " +
+            "JOIN FETCH b.loja l " +
             "WHERE l.systemId = :id  ")
     List<BannerEnt> findAllByLojaId(String id);
 
     @Transactional
     @Modifying
     @Query("DELETE FROM BannerEnt b " +
-            "WHERE EXISTS (" +
-            "  SELECT 1 FROM BannerLojas bl1 " +
-            "  WHERE bl1.banner = b " +
-            "  AND bl1.loja.systemId = :lojaId " +
-            "  AND bl1.indexOnStore = :index)"
+            "WHERE b.indexOnStore = :index AND b.loja IN " +
+            "(SELECT l FROM Loja l WHERE l.systemId = :lojaId) "
     )
     void deleteAllBannersForLojaIdAndIndex(String lojaId, Integer index);
 }

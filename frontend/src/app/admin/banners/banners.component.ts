@@ -53,12 +53,6 @@ export class BannersComponent implements OnInit {
         });
       }
     }
-
-    this.banners.push({
-      lojaInfo:[],
-      media:[],
-      systemId:""
-    })
   }
 
   onBannerChange(event:Event,lojaId:string,index:number,isMobile:boolean){
@@ -94,95 +88,38 @@ export class BannersComponent implements OnInit {
   }
 
   changeBanner(lojaId:string,index:number,isMobile:boolean,base64:string,extension:string){
-    const regarding = this.banners.find((e)=>{
-       if(e.lojaInfo.map((e)=>e.systemId).includes(lojaId)){
-          const r0 =  e.lojaInfo.find((e)=>e.systemId===lojaId && e.index===index);
-          if(r0){
-            return true;
-          }else{
-            return false;
-          }
-       }else{
-        return false;
-       }
-    });
+    const regarding = this.banners.find((e)=>e.lojaInfo.systemId===lojaId && e.lojaInfo.index===index);
     let banner!:BannerModel.Banner;
     if(regarding){
-     this.banners.forEach((e)=>{
-        const mediaClone = [...e.media];
-         if(e.lojaInfo.map((e)=>e.systemId).includes(lojaId)){
-                const r0 =  e.lojaInfo.find((e)=>e.systemId===lojaId && e.index===index);
-                if(r0){
-                  if(!e.media.map((e)=>e.window).includes(BannerModel.WindowContext.MOBILE) && isMobile){
-                    mediaClone.push({
-                      bannerExtension:extension,
-                      bannerUrl:"",
-                      window:BannerModel.WindowContext.MOBILE,
-                      base64:base64
-                    })
-                    banner = {
-                      ...e,
-                      media:mediaClone
-                    }
-                  }
-                  else if(!e.media.map((e)=>e.window).includes(BannerModel.WindowContext.DESKTOP) && !isMobile){
-                    mediaClone.push({
-                      bannerExtension:extension,
-                      bannerUrl:"",
-                      window:BannerModel.WindowContext.DESKTOP,
-                      base64:base64
-                    })
-                     banner = {
-                      ...e,
-                      media:mediaClone
-                    }
-                    console.log(banner)
-                  }
-                  else{
-                    banner = {
-                      ...e,
-                      media:mediaClone.map((e1)=>{
-                        if(isMobile){
-                          if(e1.bannerExtension===BannerModel.WindowContext.MOBILE){//mobile que ja existe
-                            const media:BannerModel.Media = {
-                              ...e1,
-                              base64:base64
-                            }
-                            return media;
-                          }else{
-                            return e1;
-                          }
-                        }else{
-                          if(e1.bannerExtension===BannerModel.WindowContext.DESKTOP){//desktop que ja existe
-                            const media:BannerModel.Media = {
-                              ...e1,
-                              base64:base64
-                            }
-                            return media;
-                          }else{
-                            return e1;
-                          }
-                        }
-                      })
-                    }
-                  }
-                }
-         }
+      banner = {...regarding};
+      let media:BannerModel.Media[] = banner.media.filter((e)=>{
+        if(isMobile && e.window===BannerModel.WindowContext.MOBILE){
+          return false;
+        }else if(!isMobile && e.window===BannerModel.WindowContext.DESKTOP){
+          return false;
+        }else{
+          return true;
+        }
       })
+      media.push({
+        bannerExtension:extension,
+        bannerUrl:"",
+        window:isMobile?BannerModel.WindowContext.MOBILE:BannerModel.WindowContext.DESKTOP,
+        base64:base64
+      })
+      banner.media = media;
     }else{
       banner = {
         systemId:"",
         media:[{base64:base64,window:isMobile?BannerModel.WindowContext.MOBILE:BannerModel.WindowContext.DESKTOP,bannerUrl:"",bannerExtension:extension}],
-        lojaInfo:[{index:index,systemId:lojaId}]
+        lojaInfo:{index:index,systemId:lojaId}
       }
     }
-    console.log(this.banners)
     this.loadingBannerForIndex[index] = true;
     this.bannerService.postBanner(banner).subscribe((id)=>{
       this.loadingBannerForIndex[index] = false;
       this.loadBanners();
     });
-    console.log(this.banners)
   }
 
   getBannerSourceByLojaIdAndIndex(lojaId:string,index:number,isMobile:boolean):string|undefined{
@@ -203,27 +140,16 @@ export class BannersComponent implements OnInit {
   }
 
   getBannerByLojaIdAndIndex(lojaId:string,index:number):BannerModel.Banner|undefined{
-    return this.banners.find((e)=>{
-      if(e.lojaInfo.map((e)=>e.systemId).includes(lojaId)){
-         const r0 =  e.lojaInfo.find((e)=>e.systemId===lojaId && e.index===index);
-         if(r0){
-           return true;
-         }else{
-           return false;
-         }
-      }else{
-       return false;
-      }
-   });
+    return this.banners.find((e)=>e.lojaInfo.systemId===lojaId && e.lojaInfo.index===index);
   }
 
 
-  onDelete(val:DeleteNotification){//tirar a window, a loja e o banner
+  onDelete(){//tirar a window, a loja e o banner
     this.loadBanners();
   }
 
-  getBannerIdByLojaIdAndBannerIndex(lojaId:string,index:number,isMobile:boolean){
-    return this.banners.find((e)=>e.lojaInfo.filter(e1=>e1.index===index).map(e1=>e1.systemId).includes(lojaId))?.systemId as string;
+  getBannerIdByLojaIdAndBannerIndex(lojaId:string,index:number){
+    return this.banners.find((e)=>e.lojaInfo.systemId===lojaId && e.lojaInfo.index===index)?.systemId as string;
   }
 
   checkImageRatio(file: File, expectedRatio: number): Promise<boolean> {
