@@ -1,5 +1,5 @@
 
-<p-carousel *ngIf="this.bannersUrlDesktop.length" [showNavigators]="true" 
+<p-carousel [page]="this.page" (onPage)="this.changePage($event)"  *ngIf="this.bannersUrlDesktop.length" [showNavigators]="true" 
 class="
     [&_.p-carousel-content]:relative sm:[300px]  
     max-sm:hidden 

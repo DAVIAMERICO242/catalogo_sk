@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Catalogo, CatalogoService } from '../../services/catalogo.service';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { SharedModule } from '../../shared/shared.module';
 import { fadeIn } from '../../animations/fadeIn';
 import { BaseProductContainerComponent } from "../product-grid/base-product-container/base-product-container.component";
@@ -20,9 +20,17 @@ import { LojaContextService } from '../loja-context.service';
 })
 export class LojaComponent {
   slug = "";
+  showBanner = false;
 
-  constructor(private route:ActivatedRoute,private lojaContext:LojaContextService){
+  constructor(private route:ActivatedRoute,private lojaContext:LojaContextService,private router:Router){//so mostra o banner na home
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const segments = event.urlAfterRedirects.split('/').filter(Boolean);
+      this.showBanner = segments.length === 1; // Apenas se houver um único segmento na URL
+    });
   }
+
   ngOnInit(): void {
     this.slug = this.route.snapshot.paramMap.get("slug") || ""
     this.loadContext();

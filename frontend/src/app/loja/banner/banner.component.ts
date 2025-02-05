@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { BannerModel, BannerService } from '../../services/banner.service';
 import { SharedModule } from '../../shared/shared.module';
 import { LojaContextService } from '../loja-context.service';
+import { CarouselPageEvent } from 'primeng/carousel';
 
 @Component({
   selector: 'app-banner',
@@ -12,6 +13,8 @@ export class BannerComponent implements OnInit {
   banners:BannerModel.Banner[] = []
   bannersUrlDesktop:string[] = [];
   bannersUrlMobile:string[] = [];
+
+  page = 0;
 
   constructor(private bannerService:BannerService,private lojaContext:LojaContextService){}
   ngOnInit(): void {
@@ -24,6 +27,11 @@ export class BannerComponent implements OnInit {
       }
     })
   }
+
+  changePage(val:CarouselPageEvent){
+    this.page = 0;
+  }
+  
 
   setBannersUrls(){
     this.bannersUrlMobile = this.banners.flatMap(banner => banner.media.filter(e=>e.window===BannerModel.WindowContext.MOBILE).map(media => media.bannerUrl));

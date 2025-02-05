@@ -59,6 +59,12 @@ export const routes: Routes = [
             {
                 path:"",
                 loadComponent: () => import("./loja/product-grid/product-grid.component").then(m => m.ProductGridComponent),
+            },{
+                path:"produto-catalogo",
+                children:[{
+                    path:":id",
+                    loadComponent:()=>import("./loja/product-page/product-page.component").then(m=>m.ProductPageComponent)
+                }]
             }
         ]
     },
