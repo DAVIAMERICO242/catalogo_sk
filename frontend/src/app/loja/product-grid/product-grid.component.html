@@ -1,5 +1,5 @@
 <ng-container *ngIf="produtosFiltrados; else loading">
-    <div class="max-sm:mt-1">
+    <app-grid-wrapper>
             <div class="flex w-full ml-1 mb-5">
                 <div class="relative w-[300px]">
                     <div class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -11,26 +11,25 @@
                         placeholder="Busca algo específico?"/>
                 </div>
             </div>
-            <div [@fadeIn] *ngIf="this.produtosFiltrados.length; else empty" class="w-full max-[400px]:!flex grid gap-10 justify-center max-[630px]:grid-cols-2 grid-cols-4 max-[1200px]:grid-cols-3 max-[900px]:grid-cols-2">
-                <div *ngFor="let item of produtosFiltrados" class="max-sm:w-[200px] max-sm:h-[160px] w-[300px] h-[300px] mb-[100px]" >
+            <app-products-wrapper [@fadeIn] *ngIf="this.produtosFiltrados.length; else empty" >
+                <ng-container *ngFor="let item of produtosFiltrados"  >
                     <app-base-product-container [produto]="item"/>
-                </div>
-            </div>
+                </ng-container>
+            </app-products-wrapper>
             
             <ng-template #empty>
                 <div class="ml-10 text-gray-400">
                    Nenhum produto encontrado
                 </div>
             </ng-template>
-
-    </div>
+    </app-grid-wrapper>
 </ng-container>
 <ng-template #loading>
-    <div class="max-sm:mt-1">
-        <div class="w-full max-[400px]:!flex grid gap-10 justify-center max-[630px]:grid-cols-2 grid-cols-4 max-[1200px]:grid-cols-3 max-[900px]:grid-cols-2">
-            <div *ngFor="let _ of [].constructor(50); let i = index" class="mb-4">
-                <app-base-product-container [produto]="_" class="max-sm:w-[200px] max-sm:h-[160px] w-[300px] h-[300px] mb-[100px]"/>
-            </div>
-        </div>
-    </div>
+    <app-grid-wrapper>
+        <app-products-wrapper>
+            <ng-container *ngFor="let _ of [].constructor(50); let i = index">
+                <app-base-product-container [produto]="_" />
+            </ng-container>
+        </app-products-wrapper>
+    </app-grid-wrapper>
 </ng-template>

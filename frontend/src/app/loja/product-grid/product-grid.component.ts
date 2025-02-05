@@ -10,11 +10,13 @@ import { BannerComponent } from '../banner/banner.component';
 import { LojaContextService } from '../loja-context.service';
 import { fadeIn } from '../../animations/fadeIn';
 import { Catalogo } from '../../services/catalogo.service';
+import { GridWrapperComponent } from "./grid-wrapper/grid-wrapper.component";
+import { ProductsWrapperComponent } from "./products-wrapper/products-wrapper.component";
 
 
 @Component({
   selector: 'app-product-grid',
-  imports: [ SharedModule, BaseProductContainerComponent],
+  imports: [SharedModule, BaseProductContainerComponent, GridWrapperComponent, ProductsWrapperComponent],
   templateUrl: './product-grid.component.html',
   animations:[fadeIn]
 })
