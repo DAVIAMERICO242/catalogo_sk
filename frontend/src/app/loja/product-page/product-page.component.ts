@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CatalogoService } from '../../services/catalogo.service';
+import { Catalogo, CatalogoService } from '../../services/catalogo.service';
 import { SharedModule } from '../../shared/shared.module';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Produto, ProdutosService } from '../../services/produtos.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LojaContextService } from '../loja-context.service';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-product-page',
@@ -11,15 +15,49 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProductPageComponent implements OnInit{
 
   productId="";
+  produto!:Catalogo.Produto;
+  
 
-  constructor(private catalogoService:CatalogoService,private route:ActivatedRoute){}
+  constructor(
+    private catalogoService:CatalogoService,
+    private lojaContext:LojaContextService,
+    private route:ActivatedRoute,
+    private produtoService:ProdutosService
+  ){}
 
 
   ngOnInit(): void {
-    this.productId = this.route.snapshot.paramMap.get("id") || "";
     console.log(this.productId);
-    this.catalogoService.getByProdutoCatalogoId(this.productId).subscribe();
+    this.productId = this.route.snapshot.paramMap.get("id") || "";
+    this.loadProduct();
   }
+
+  loadProduct(){
+    this.catalogoService.getByProdutoCatalogoId(this.productId).subscribe(
+      {
+        next:(data)=>{
+          this.produto = data;
+          this.loadStock();
+        },
+        error:(err:HttpErrorResponse)=>{
+          alert(err.error);
+        }
+      }
+    );
+  }
+
+  loadStock(){
+    this.lojaContext.lojaSub
+    .pipe(first((loja) => loja !== null))  // Desinscreve automaticamente após encontrar o valor não nulo
+    .subscribe((loja) => {
+      // Seu código aqui para tratar o valor não nulo
+      if(loja){
+        this.produtoService.getStock([this.produto.produtoBase.sku],loja.slug).subscribe();
+      }
+    });
+  }
+
+  
 
 
 }
