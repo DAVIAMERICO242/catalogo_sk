@@ -40,6 +40,14 @@ public class ProdutoCatalogoService {
 //        this.produtoCatalogoRepository.save(produtoCatalogo);
 //    }
 
+    public ProdutoCatalogoDTO getProduct(String id){
+        Optional<ProdutoCatalogo> produtoCatalogoOptional = this.produtoCatalogoRepository.findById(id);
+        if(produtoCatalogoOptional.isEmpty()){
+            throw new RuntimeException("Esse produto não está mais disponível no catálogo");
+        }
+        return this.entityToDTO(produtoCatalogoOptional.get());
+    }
+
     @Transactional
     public ProdutoCatalogoDTO cadastrarProdutoCatalogo(ProdutoCadastroDTO payload){
         Optional<Produto> produtoOPT = this.produtoRepository.findById(payload.getSystemId());

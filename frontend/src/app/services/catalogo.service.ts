@@ -42,6 +42,10 @@ export class CatalogoService {
     );
   }
 
+  getByProdutoCatalogoId(id:string){
+    return this.http.get<Catalogo.Produto>(env.BACKEND_URL+"/catalogo/produto?id="+id);
+  }
+
   adicionarProduto(payload:Catalogo.CadastroModel){
      return this.http.post<Catalogo.Produto>(env.BACKEND_URL+"/catalogo",payload).pipe(
       tap((value)=>{

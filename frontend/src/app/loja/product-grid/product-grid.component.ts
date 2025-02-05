@@ -42,7 +42,6 @@ export class ProductGridComponent {
   }
 
   loadContext(){
-    this.lojaContext.setLoja(this.slug)
     this.lojaContext.setCatalogo(this.slug)
   }
 

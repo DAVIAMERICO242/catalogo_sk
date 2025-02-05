@@ -20,14 +20,14 @@ import { LojaContextService } from '../loja-context.service';
 })
 export class LojaComponent {
   slug = "";
-  showBanner = false;
+  isHome = false;
 
   constructor(private route:ActivatedRoute,private lojaContext:LojaContextService,private router:Router){//so mostra o banner na home
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       const segments = event.urlAfterRedirects.split('/').filter(Boolean);
-      this.showBanner = segments.length === 1; // Apenas se houver um único segmento na URL
+      this.isHome = segments.length === 1; // Apenas se houver um único segmento na URL
     });
   }
 
@@ -37,8 +37,7 @@ export class LojaComponent {
   }
 
   loadContext(){
-    this.lojaContext.setLoja(this.slug)
-    this.lojaContext.setCatalogo(this.slug)
+    this.lojaContext.setLoja(this.slug);
   }
 
 }

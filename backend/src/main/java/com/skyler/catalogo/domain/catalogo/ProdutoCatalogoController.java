@@ -35,6 +35,15 @@ public class ProdutoCatalogoController {
         }
     }
 
+    @GetMapping("/produto")
+    public ResponseEntity getProduto(String id){
+        try{
+            return ResponseEntity.ok().body(this.produtoCatalogoService.getProduct(id));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
     @GetMapping
     public ResponseEntity getCatalogo(String lojaSlug){
         try{
