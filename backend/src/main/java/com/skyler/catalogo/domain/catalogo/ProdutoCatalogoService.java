@@ -5,6 +5,7 @@ import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.domain.produtos.DTOs.ProdutoDTO;
 import com.skyler.catalogo.domain.produtos.entities.Produto;
+import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
 import com.skyler.catalogo.domain.produtos.services.ProdutoService;
 import jakarta.transaction.Transactional;
@@ -88,6 +89,14 @@ public class ProdutoCatalogoService {
         produtoCatalogo.setSystemId(catalogoEnt.getSystemId());
         produtoCatalogo.setProdutoBase(produto);
         produtoCatalogo.setLojaCatalogo(loja);
+        for(ProdutoVariacao variacaoEnt:produtoEnt.getVariacoes()){
+            ProdutoDTO.Variacao variacao = new ProdutoDTO.Variacao();
+            variacao.setSystemId(variacaoEnt.getSystemId());
+            variacao.setSku(variacaoEnt.getSkuPonto());
+            variacao.setCor(variacaoEnt.getCor());
+            variacao.setTamanho(variacaoEnt.getTamanho());
+            produto.addVariacao(variacao);
+        }
         return produtoCatalogo;
     }
 

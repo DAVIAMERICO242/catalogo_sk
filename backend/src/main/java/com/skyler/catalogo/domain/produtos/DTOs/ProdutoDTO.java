@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class ProdutoDTO {
+public class ProdutoDTO {//as variações nem sempre são carregadas
     String systemId;
     Franquia franquia;
     Integer erpId;
@@ -24,6 +24,19 @@ public class ProdutoDTO {
     Float preco;
     String photoUrl;
     Boolean onCatalogo;
+    List<Variacao> variacoes = new ArrayList<>();
+
+    public void addVariacao(Variacao variacao){
+        this.variacoes.add(variacao);
+    }
+    
+    @Data
+    public static class Variacao{
+        String systemId;
+        String sku;
+        String cor;
+        String tamanho;
+    }
 
     @Data
     public static class Franquia{
