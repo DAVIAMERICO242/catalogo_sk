@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Produto, ProdutosService } from '../../services/produtos.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LojaContextService } from '../loja-context.service';
-import { first } from 'rxjs';
+import { first, take } from 'rxjs';
 
 @Component({
   selector: 'app-product-page',
@@ -48,7 +48,7 @@ export class ProductPageComponent implements OnInit{
 
   loadStock(){
     this.lojaContext.lojaSub
-    .pipe(first((loja) => loja !== null))  // Desinscreve automaticamente após encontrar o valor não nulo
+    .pipe(take(1))  // Desinscreve automaticamente após encontrar o valor não nulo
     .subscribe((loja) => {
       // Seu código aqui para tratar o valor não nulo
       if(loja){
