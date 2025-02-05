@@ -1,6 +1,6 @@
-<div (click)="this.goToProductPage()" class="p-2  cursor-pointer">
+<div *ngIf="this.produto;else loading" (click)="this.goToProductPage()" class="p-2  cursor-pointer">
     <div class="border-[1px] border-solid border-slate-200">
-        <img *ngIf="produto.produtoBase.photoUrl" class="w-full h-[280px] max-sm:h-[160px] " [src]="produto.produtoBase.photoUrl" />
+        <img *ngIf="produto.produtoBase.photoUrl" class="w-full aspect-square max-sm:h-[160px] " [src]="produto.produtoBase.photoUrl" />
     </div>
     <div *ngIf="!produto.produtoBase.photoUrl" class=" pi pi-image !text-[280px] text-gray-300" ></div>
     <div class="mt-1 space-y-3">
@@ -15,3 +15,9 @@
 
     </div>
 </div>
+
+<ng-template #loading>
+    <p-skeleton styleClass="!w-[300px]" height="280px" />
+    <p-skeleton styleClass="!w-[100px] !mt-3" height="10px" />
+    <p-skeleton styleClass="!w-full !mt-3" height="30px" />
+</ng-template>
