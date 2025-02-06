@@ -45,7 +45,7 @@ export class SacolaService {
       }
     });
     return {
-      itens:Array.from(mapa.values());
+      itens:Array.from(mapa.values())
     }
   }
 
