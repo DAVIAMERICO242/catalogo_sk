@@ -13,9 +13,13 @@ import { first, take } from 'rxjs';
   templateUrl: './product-page.component.html',
   styles:[
     `
-    /* .photos::-webkit-scrollbar {
-      display: none;
-    } */
+    .photos::-webkit-scrollbar {
+      width: 5px; /* Largura do scrollbar vertical */
+      height: 5px;
+    }
+    .photos::-webkit-scrollbar-thumb{
+      background: #dfdada; /* Cor do trilho */
+    }
     `
   ]
 })
