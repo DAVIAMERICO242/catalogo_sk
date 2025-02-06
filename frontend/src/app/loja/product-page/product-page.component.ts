@@ -32,6 +32,7 @@ export class ProductPageComponent implements OnInit{
   loja!:Loja.Loja;
   productId="";
   produto!:Catalogo.Produto;
+  focusedSku!:string;
   stock!:Produto.ProdutoEstoque;
   photos:string[] = [];
   cores:string[] = [];
@@ -67,6 +68,7 @@ export class ProductPageComponent implements OnInit{
           this.photos = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.foto))];
           this.cores = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.cor).sort((a,b)=>a.localeCompare(b)))];
           this.tamanhos = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.tamanho))];
+          this.focusedSku = this.produto.produtoBase.sku;
           this.loadStock();
         },
         error:(err:HttpErrorResponse)=>{
@@ -102,7 +104,7 @@ export class ProductPageComponent implements OnInit{
     for(let cor of this.cores){
       let hasStockForCor = false;
       for(let tamanho of this.tamanhos){
-        const sku = this.produto.produtoBase.variacoes.find((e)=>e.cor===cor && e.tamanho===tamanho)?.sku;
+        const sku = this.getSkuByCorETamanho(cor,tamanho);
         if(sku){
           hasStockForCor = (this.stock.estoque.find((e)=>e.sku===sku)?.estoque || 0)>0;
           if(hasStockForCor){
@@ -130,20 +132,36 @@ export class ProductPageComponent implements OnInit{
   }
 
   getStockForTamanhoAndContextualCor(tamanho:string){
-    const sku = this.produto.produtoBase.variacoes.find((e)=>e.cor===this.selectedCor && e.tamanho===tamanho)?.sku;
+    const sku = this.getSkuByCorETamanho(this.selectedCor,tamanho);
     if(!sku){
       return 0;
     }
     return this.stock.estoque.find((e)=>e.sku===sku)?.estoque || 0;
   }
 
+  getSkuByCorETamanho(cor:string|undefined,tamanho:string|undefined):string|undefined{
+    if(!cor || !tamanho){
+      return undefined;
+    }
+    return this.produto.produtoBase.variacoes.find((e)=>e.cor===cor && e.tamanho===tamanho)?.sku;
+  }
+
   manageCorChange(){
+    this.changeFocusedSku();
     this.overAddedTheSameSku = false;
     this.changeFotoAfterCorChange();
   }
 
   manageTamanhoChange(){
+    this.changeFocusedSku();
     this.overAddedTheSameSku = false;
+  }
+
+  changeFocusedSku(){
+    const sku = this.getSkuByCorETamanho(this.selectedCor,this.selectedTamanho);
+    if(sku){
+      this.focusedSku = sku;
+    }
   }
 
   changeFotoAfterCorChange(){
