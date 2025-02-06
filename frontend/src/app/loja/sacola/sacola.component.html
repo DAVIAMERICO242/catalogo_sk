@@ -2,4 +2,33 @@
     <div *ngIf="this.totaisItensSacola" class="h-[15px] w-[15px] bg-white absolute top-[10px] right-[7px] rounded-full flex items-center justify-center text-xs font-bold">{{this.totaisItensSacola}}</div>
     <div  class="pi pi-shopping-bag !text-[20px] !text-white"></div>
 </div>
-<p-drawer position="right" [visible]="this.open" (onHide)="this.sacolaService.closeSacola()"/>
+<p-drawer  position="right" [visible]="this.open" (onHide)="this.sacolaService.closeSacola()">
+    <ng-template #header>
+        <div>
+            <div class="flex items-center gap-3">
+                <div class="pi pi-shopping-bag"></div>
+                <div>
+                    SACOLA
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <div class="h-[1px] flex-1 bg-slate-300 mt-1 mb-5">
+    </div>
+    <div>
+        <div class="text-sm" *ngIf="!this.totaisItensSacola">
+            Nenhum produto na sacola
+        </div>
+    </div>
+    <div *ngIf="this.totaisItensSacola">
+        <ng-container  *ngFor="let item of this.beautySacola?.itens">
+            <div class="flex bg-slate-50 mb-3 border-[1px] border-slate-100 shadow-sm ">
+                <img class="w-[100px] h-[100px]" [src]="item.fotoUrl"/>
+                <div class="space-y-3 p-1">
+                    <div class="text-[10px] font-bold">{{item.nome}}</div>
+                    <div class="text-sm">{{item.cor}}/{{item.tamanho}}</div>
+                </div>
+            </div   >
+        </ng-container>
+    </div>
+</p-drawer>

@@ -43,7 +43,7 @@ export class SacolaComponent implements OnInit,OnDestroy {
       slug:this.loja.slug,
       systemId:this.loja.systemId
     });
-    if(this.beautySacola){
+    if(this.beautySacola?.itens.length){
       this.totaisItensSacola = this.beautySacola?.itens.reduce((a,b)=>a+b.quantidade,0);
     }
     console.log(this.beautySacola)

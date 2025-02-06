@@ -16,6 +16,7 @@ export namespace Sacola{
   }
 
   export interface BeautySacolaItem extends Pedidos.VariacaoPedido{
+    nome:string;
     quantidade:number;
   }
 
@@ -59,7 +60,8 @@ export class SacolaService {
       if (mapa.has(item.systemId)) {
         mapa.get(item.systemId)!.quantidade += 1;
       } else {
-        mapa.set(item.systemId, { ...item, quantidade: 1 });
+        const nome = raw?.produtos.find((e)=>e.variacoesCompradas.map(e=>e.systemId).includes(item.systemId))?.nome as string;
+        mapa.set(item.systemId, { ...item,nome: nome,quantidade: 1 });
       }
     });
     return {

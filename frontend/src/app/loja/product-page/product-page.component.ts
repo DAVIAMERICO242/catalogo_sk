@@ -201,6 +201,7 @@ export class ProductPageComponent implements OnInit{
     }else{
       alert("Selecione uma opção")
     }
+    this.sacolaService.openSacola();
     this.sacolaService.notifySacolaChange();
   }
 
