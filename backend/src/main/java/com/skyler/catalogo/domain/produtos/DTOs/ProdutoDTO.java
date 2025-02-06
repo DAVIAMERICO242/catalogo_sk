@@ -36,6 +36,7 @@ public class ProdutoDTO {//as variações nem sempre são carregadas
         String sku;
         String cor;
         String tamanho;
+        String foto;
     }
 
     @Data

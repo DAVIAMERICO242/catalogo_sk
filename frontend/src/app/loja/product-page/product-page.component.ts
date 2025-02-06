@@ -27,6 +27,7 @@ export class ProductPageComponent implements OnInit{
 
   productId="";
   produto!:Catalogo.Produto;
+  photos:string[] = [];
   
 
   constructor(
@@ -48,6 +49,7 @@ export class ProductPageComponent implements OnInit{
       {
         next:(data)=>{
           this.produto = data;
+          this.photos = this.produto.produtoBase.variacoes.map((e)=>e.foto);
           this.loadStock();
         },
         error:(err:HttpErrorResponse)=>{
@@ -56,6 +58,7 @@ export class ProductPageComponent implements OnInit{
       }
     );
   }
+
 
   loadStock(){
     this.lojaContext.lojaSub

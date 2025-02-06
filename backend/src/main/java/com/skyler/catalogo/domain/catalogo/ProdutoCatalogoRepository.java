@@ -19,6 +19,12 @@ public interface ProdutoCatalogoRepository extends JpaRepository<ProdutoCatalogo
             "WHERE l.slug = :slug")
     List<ProdutoCatalogo> findAllByLojaSlug(String slug);
 
+    @Query("SELECT pc FROM ProdutoCatalogo pc " +
+            "JOIN FETCH pc.loja l " +
+            "JOIN FETCH pc.produtoBaseFranquia pb " +
+            "WHERE l.slug = :slug")
+    List<ProdutoCatalogo> findAllByLojaWithoutVariacoesLoaded(String slug);
+
 
     @Query("SELECT pc FROM ProdutoCatalogo pc " +
             "JOIN FETCH pc.loja l " +

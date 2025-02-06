@@ -3,21 +3,29 @@
         <div class="flex max-lg:gap-10 max-[910px]:flex-col gap-20 max-[500px]:gap-3 justify-center ">
             <div class="max-[500px]:h-[350px] !h-[400px] max-[500px]:!w-[300px]  max-md:!h-[350px] flex  gap-3 max-[500px]:justify-center max-[500px]:flex-col ">
                 <div class="flex-1 ">
-                    <p-skeleton styleClass="!w-[400px]  !h-full   max-[500px]:!w-[300px] max-md:!w-[350px]   "/>
+                    <p-skeleton *ngIf="!this.produto" styleClass="!w-[400px]  !h-full   max-[500px]:!w-[300px] max-md:!w-[350px] border-[1px]  "/>
+                    <img *ngIf="this.produto" class="!w-[400px]  !h-full   max-[500px]:!w-[300px] max-md:!w-[350px]  border-[1px] border-solid border-slate-100"  [src]="this.produto.produtoBase.photoUrl"/>
                 </div>
                 <div class="photos max-[500px]:flex max-[500px]:items-center max-[500px]:gap-6 overflow-auto ">
-                    <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
-                    <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
-                    <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
-                    <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
-                    <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
-                    <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
+                    <div *ngIf="!this.produto">
+                        <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
+                        <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
+                        <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
+                        <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
+                        <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
+                        <p-skeleton styleClass="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 "/>
+                    </div>
+                    <div *ngFor="let item of photos">
+                        <img *ngIf="this.produto" [src]="item" class="max-[500px]:!w-[50px] max-[500px]:!h-[50px] !w-[100px] !h-[100px] !mb-5 border-[1px] border-solid border-slate-100"/>
+                    </div>
                 </div>
             </div>
             <div class="flex flex-col max-[500px]:w-[300px] max-[910px]:w-[400px] max-[910px]:justify-center  max-lg:w-[350px] max-xl:w-[400px] w-[500px]">
                 <div class="max-[500px]:mb-2 mb-5">
-                    <p-skeleton styleClass="!w-full !h-[20px] !mb-5"/>
-                    <p-skeleton styleClass="!w-[100px] !h-[20px] !mb-5"/>
+                    <p-skeleton *ngIf="!this.produto" styleClass="!w-full !h-[20px] !mb-5"/>
+                    <div class="mb-5" *ngIf="this.produto">{{this.produto.produtoBase.descricao}}</div>
+                    <p-skeleton *ngIf="!this.produto" styleClass="!w-[100px] !h-[20px] !mb-5"/>
+                    <div *ngIf="this.produto">{{this.produto.produtoBase.preco| currency:"BRL"}}</div>
                 </div>
                 <p-skeleton styleClass=" !w-[100px] !h-[30px] !rounded-sm !mb-5"/>
                 <div class="flex items-center gap-2 max-[500px]:!mb-2 mb-20 max-lg:mb-5 ">
@@ -25,7 +33,10 @@
                     <p-skeleton styleClass="!w-[50px] !h-[50px] !rounded-full !mb-5"/>
                     <p-skeleton styleClass="!w-[50px] !h-[50px] !rounded-full !mb-5"/>
                 </div>
-                <p-skeleton styleClass=" !w-full !h-[50px] !rounded-sm !mb-5"/>
+                <p-skeleton *ngIf="!this.produto" styleClass=" !w-full !h-[50px] !rounded-sm !mb-5"/>
+                <button pButton class="!bg-black !w-full !h-[50px] !rounded-sm !mb-5 !text-sm">
+                    Adicionar na sacola
+                </button>
             </div>
         </div>
     </div>

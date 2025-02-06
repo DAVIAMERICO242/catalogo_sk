@@ -45,9 +45,9 @@ public class ProdutoCatalogoController {
     }
 
     @GetMapping
-    public ResponseEntity getCatalogo(String lojaSlug){
+    public ResponseEntity getCatalogo(String lojaSlug, @RequestParam(required = false) Boolean loadVariations){
         try{
-            return ResponseEntity.ok().body(this.produtoCatalogoService.getProdutosCatalogo(lojaSlug));
+            return ResponseEntity.ok().body(this.produtoCatalogoService.getProdutosCatalogo(lojaSlug,loadVariations));
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

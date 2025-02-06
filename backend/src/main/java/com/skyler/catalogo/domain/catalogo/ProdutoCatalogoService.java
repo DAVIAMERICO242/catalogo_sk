@@ -45,7 +45,7 @@ public class ProdutoCatalogoService {
         if(produtoCatalogoOptional.isEmpty()){
             throw new RuntimeException("Esse produto não está mais disponível no catálogo");
         }
-        return this.entityToDTO(produtoCatalogoOptional.get());
+        return this.entityToDTO(produtoCatalogoOptional.get(),true);
     }
 
     @Transactional
@@ -74,19 +74,24 @@ public class ProdutoCatalogoService {
         produtoCatalogo.setLoja(loja);
         produtoCatalogo.setProdutoBaseFranquia(produto);
 //        produtoCatalogo.setCatalogPrice(produto.getPreco());
-        return this.entityToDTO(this.produtoCatalogoRepository.save(produtoCatalogo));
+        return this.entityToDTO(this.produtoCatalogoRepository.save(produtoCatalogo),false);
     }
 
-    public List<ProdutoCatalogoDTO> getProdutosCatalogo(String lojaSlug){
+    public List<ProdutoCatalogoDTO> getProdutosCatalogo(String lojaSlug, Boolean loadVariations){
         List<ProdutoCatalogoDTO> output = new ArrayList<>();
-        List<ProdutoCatalogo> catalogosEnt = this.produtoCatalogoRepository.findAllByLojaSlug(lojaSlug);
+        List<ProdutoCatalogo> catalogosEnt = null;
+        if(loadVariations==null || !loadVariations){
+            catalogosEnt = this.produtoCatalogoRepository.findAllByLojaWithoutVariacoesLoaded(lojaSlug);
+        }else{
+            catalogosEnt = this.produtoCatalogoRepository.findAllByLojaSlug(lojaSlug);
+        }
         for(ProdutoCatalogo catalogoEnt:catalogosEnt){
-            output.add(this.entityToDTO(catalogoEnt));
+            output.add(this.entityToDTO(catalogoEnt,Optional.ofNullable(loadVariations).orElse(false)));
         }
         return output;
     }
 
-    public ProdutoCatalogoDTO entityToDTO(ProdutoCatalogo catalogoEnt){
+    public ProdutoCatalogoDTO entityToDTO(ProdutoCatalogo catalogoEnt,Boolean withVariations){
         ProdutoCatalogoDTO produtoCatalogo = new ProdutoCatalogoDTO();
         Produto produtoEnt = catalogoEnt.getProdutoBaseFranquia();
         ProdutoDTO produto = this.produtoService.entityToDTOExistingOnCatalogo(produtoEnt);
@@ -97,13 +102,16 @@ public class ProdutoCatalogoService {
         produtoCatalogo.setSystemId(catalogoEnt.getSystemId());
         produtoCatalogo.setProdutoBase(produto);
         produtoCatalogo.setLojaCatalogo(loja);
-        for(ProdutoVariacao variacaoEnt:produtoEnt.getVariacoes()){
-            ProdutoDTO.Variacao variacao = new ProdutoDTO.Variacao();
-            variacao.setSystemId(variacaoEnt.getSystemId());
-            variacao.setSku(variacaoEnt.getSkuPonto());
-            variacao.setCor(variacaoEnt.getCor());
-            variacao.setTamanho(variacaoEnt.getTamanho());
-            produto.addVariacao(variacao);
+        if(withVariations){
+            for(ProdutoVariacao variacaoEnt:produtoEnt.getVariacoes()){
+                ProdutoDTO.Variacao variacao = new ProdutoDTO.Variacao();
+                variacao.setSystemId(variacaoEnt.getSystemId());
+                variacao.setSku(variacaoEnt.getSkuPonto());
+                variacao.setCor(variacaoEnt.getCor());
+                variacao.setTamanho(variacaoEnt.getTamanho());
+                variacao.setFoto(variacaoEnt.getFotoUrl());
+                produto.addVariacao(variacao);
+            }
         }
         return produtoCatalogo;
     }
