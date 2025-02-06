@@ -23,7 +23,8 @@
             <div class="flex flex-col max-[500px]:w-[300px] max-[910px]:w-[400px] max-[910px]:justify-center  max-lg:w-[350px] max-xl:w-[400px] w-[500px]">
                 <div class="max-[500px]:mb-2 mb-5">
                     <p-skeleton *ngIf="!this.produto" styleClass="!w-full !h-[20px] !mb-5"/>
-                    <div class="mb-5" *ngIf="this.produto">{{this.produto.produtoBase.descricao}}</div>
+                    <div class="font-semibold" *ngIf="this.produto">{{this.produto.produtoBase.descricao}}</div>
+                    <div  *ngIf="this.produto" class="bg-slate-200 w-full h-[1px] mt-5 mb-5"></div>
                     <p-skeleton *ngIf="!this.produto" styleClass="!w-[100px] !h-[20px] !mb-5"/>
                     <div *ngIf="this.produto">{{this.produto.produtoBase.preco| currency:"BRL"}}</div>
                 </div>
