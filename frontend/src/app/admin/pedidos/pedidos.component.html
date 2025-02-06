@@ -1,88 +1,90 @@
-<app-admin-page-title  iconClass="pi pi-shopping-bag" title="Pedidos"/>
-<div class="p-5 relative">
-    <div *ngIf="this.loading;else pedidosTable" >
-        <div class="rounded  p-6 bg-surface-0 dark:bg-surface-900">
-            <ul class="m-0 p-0 list-none">
-                <li *ngFor="let _ of [].constructor(50); let i = index" class="mb-4">
-                    <div class="flex">
-                        <p-skeleton shape="circle" size="4rem" styleClass="mr-2" />
-                        <div class="self-center" style="flex: 1">
-                            <p-skeleton width="100%" styleClass="mb-2" />
-                            <p-skeleton width="75%" />
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <ng-template #pedidosTable>
-        <div class="shadow-md">
-            <p-table [showGridlines]="true" [stripedRows]="true" [value]="this.pedidos">
-                <ng-template #header>
-                    <tr class="!text-sm">
-                        <th></th>
-                        <th>
-                            Data
-                        </th>
-                        <th>
-                            Loja
-                        </th>
-                        <th>
-                            Cliente
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th>
-                            Endereço
-                        </th>
-                        <th>
-                            Total com descontos (sem frete)
-                        </th>
-                        <th>
-                            Descontos
-                        </th>
-                        <th>
-                            Frete
-                        </th>
-                    </tr>
-                </ng-template>
-                <ng-template #body let-row>
-                    <tr class="text-sm">
-                        <td>
-                            <app-pedido-view [pedido]="this.forceType(row)"/>
-                        </td>
-                        <td>
-                            <div>
-                                <div class="italic">
-                                    {{this.forceType(row).moment | datetimeBrazil}}
-                                </div>
+<div class="flex flex-col h-[calc(100vh-75px)]">
+    <app-admin-page-title  iconClass="pi pi-shopping-bag" title="Pedidos"/>
+    <div class="p-5 relative  flex-1">
+        <div *ngIf="this.loading;else pedidosTable" >
+            <div class="rounded  p-6 bg-surface-0 dark:bg-surface-900">
+                <ul class="m-0 p-0 list-none">
+                    <li *ngFor="let _ of [].constructor(50); let i = index" class="mb-4">
+                        <div class="flex">
+                            <p-skeleton shape="circle" size="4rem" styleClass="mr-2" />
+                            <div class="self-center" style="flex: 1">
+                                <p-skeleton width="100%" styleClass="mb-2" />
+                                <p-skeleton width="75%" />
                             </div>
-                        </td>
-                        <td>
-                            {{this.forceType(row).loja.nome}}
-                        </td>
-                        <td class="font-bold">
-                            {{this.forceType(row).nome}}
-                        </td>
-                        <td>
-                            <app-status-pedido [pedido]="this.forceType(row)"/>
-                        </td>
-                        <td>
-                            {{this.getBeautyAddress(row)}}
-                        </td>
-                        <td>
-                            {{this.forceType(row).valor | currency:"BRL"}}
-                        </td>
-                        <td>
-                            <app-detalhar-desconto [descontosAplicados]="this.forceType(row).descontosAplicados"/>
-                        </td>
-                        <td>
-                            {{this.forceType(row).valorFrete | currency:"BRL"}}
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </ng-template>
+        <ng-template #pedidosTable>
+            <div class="shadow-md">
+                <p-table [showGridlines]="true" [stripedRows]="true" [value]="this.pedidos">
+                    <ng-template #header>
+                        <tr class="!text-sm">
+                            <th></th>
+                            <th>
+                                Data
+                            </th>
+                            <th>
+                                Loja
+                            </th>
+                            <th>
+                                Cliente
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Endereço
+                            </th>
+                            <th>
+                                Total com descontos (sem frete)
+                            </th>
+                            <th>
+                                Descontos
+                            </th>
+                            <th>
+                                Frete
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template #body let-row>
+                        <tr class="text-sm">
+                            <td>
+                                <app-pedido-view [pedido]="this.forceType(row)"/>
+                            </td>
+                            <td>
+                                <div>
+                                    <div class="italic">
+                                        {{this.forceType(row).moment | datetimeBrazil}}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {{this.forceType(row).loja.nome}}
+                            </td>
+                            <td class="font-bold">
+                                {{this.forceType(row).nome}}
+                            </td>
+                            <td>
+                                <app-status-pedido [pedido]="this.forceType(row)"/>
+                            </td>
+                            <td>
+                                {{this.getBeautyAddress(row)}}
+                            </td>
+                            <td>
+                                {{this.forceType(row).valor | currency:"BRL"}}
+                            </td>
+                            <td>
+                                <app-detalhar-desconto [descontosAplicados]="this.forceType(row).descontosAplicados"/>
+                            </td>
+                            <td>
+                                {{this.forceType(row).valorFrete | currency:"BRL"}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </ng-template>
+    </div>
 </div>

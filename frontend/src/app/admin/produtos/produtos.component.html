@@ -1,60 +1,61 @@
-<app-admin-page-title iconClass="pi pi-inbox" title="Produtos"/>
-<div [ngClass]="{'opacity-70':this.produtoService.loadingProdutosSub.value , 'pointer-events-none':this.produtoService.loadingProdutosSub.value}" 
-class="space-y-2 p-4  shadow-sm  relative" *ngIf="(produtoService.produtosSub | async) as produtos;else fallback ">
-    <div class="flex items-center justify-between">
-        <div class="flex items-center gap-5">
-            <div *ngIf="this.userService.getContext()?.role==='ADMIN'" class="flex items-center gap-1">
-                <div class="text-xs">Loja:</div>
-                <p-select [filter]="true" styleClass="!text-xs !h-[30px] !flex !items-center" [(ngModel)]="this.selectedLoja" (ngModelChange)="this.loadProdutos()" [options]="this.userService.getContext()?.lojasFranquia || []" optionLabel="nome" />
-            </div>        
-            <div class="flex items-center gap-1">
-                <div class="text-xs">Sku:</div>
-                <input [(ngModel)]="this.skuFilter" placeholder="Referência" class="!text-xs w-[130px] h-[30px]" pInputText/>
-            </div>        
-            <div class="flex items-center gap-1 ml-3">
-                <div class="text-xs">Nome:</div>
-                <input [(ngModel)]="this.nomeFilter" placeholder="produto" class="!text-xs w-[130px] h-[30px]" pInputText/>
-            </div>
-            <button (click)="this.applyFilters()" pButton class="!text-xs h-[30px]">Aplicar filtro</button>
-            <div (click)="this.clearFilter()" class="pi pi-filter-slash cursor-pointer"></div>        
-        </div>
-        <app-paginator (pageChange)="this.onPageChange($event)" [currentPage]="this.produtoService.pageSub.value" [totalRecordsUnpaged]="produtos.totalElements" [rowsPerPage]="50" />
-    </div>
-    <div>
-        <div  *ngFor="let item of produtos.content">
-             <div class="flex items-center ">
-                <div class="mb-2 bg-gray-100 border-[1px] border-solid border-slate-300 shadow-sm  p-3 rounded-md w-full flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div>
-                            <img  *ngIf="item.photoUrl" class="w-[50px] h-[50px]" [src]="item.photoUrl"/>
-                            <div *ngIf="!item.photoUrl" class="pi pi-image !text-[40px] text-gray-300" ></div>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-1 mb-3">
-                                <div class="font-bold text-[12px]">sku:{{item.sku}}</div>
-                                <div class="h-[10px] bg-black w-[1px]"></div>
-                                <div class="text-[12px]">Preço: {{item.preco | currency:"BRL"}}</div>
-                            </div>
-                            <div class="text-xs">{{item.descricao}}</div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-3">
-                        <app-adicionar-loaded-produto-ao-catalogo [lojaSlug]="this.selectedLoja.slug" [alreadyOnCatalogo]="item.onCatalogo" [productId]="item.systemId"/>
-                        <app-product-variation-view [lojaSlug]="this.selectedLoja.slug" [skuBase]="item.sku" [productId]="item.systemId"/>
-                    </div>
+<div class="flex flex-col h-[calc(100vh-75px)]">
+    <app-admin-page-title iconClass="pi pi-inbox" title="Produtos"/>
+    <div [ngClass]="{'opacity-70':this.produtoService.loadingProdutosSub.value , 'pointer-events-none':this.produtoService.loadingProdutosSub.value}" 
+    class="space-y-2 p-4  shadow-sm  relative flex-1 overflow-y-auto" *ngIf="(produtoService.produtosSub | async) as produtos;else fallback ">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-5">
+                <div *ngIf="this.userService.getContext()?.role==='ADMIN'" class="flex items-center gap-1">
+                    <div class="text-xs">Loja:</div>
+                    <p-select [filter]="true" styleClass="!text-xs !h-[30px] !flex !items-center" [(ngModel)]="this.selectedLoja" (ngModelChange)="this.loadProdutos()" [options]="this.userService.getContext()?.lojasFranquia || []" optionLabel="nome" />
+                </div>        
+                <div class="flex items-center gap-1">
+                    <div class="text-xs">Sku:</div>
+                    <input [(ngModel)]="this.skuFilter" placeholder="Referência" class="!text-xs w-[130px] h-[30px]" pInputText/>
+                </div>        
+                <div class="flex items-center gap-1 ml-3">
+                    <div class="text-xs">Nome:</div>
+                    <input [(ngModel)]="this.nomeFilter" placeholder="produto" class="!text-xs w-[130px] h-[30px]" pInputText/>
                 </div>
-          </div>
+                <button (click)="this.applyFilters()" pButton class="!text-xs h-[30px]">Aplicar filtro</button>
+                <div (click)="this.clearFilter()" class="pi pi-filter-slash cursor-pointer"></div>        
+            </div>
+            <app-paginator (pageChange)="this.onPageChange($event)" [currentPage]="this.produtoService.pageSub.value" [totalRecordsUnpaged]="produtos.totalElements" [rowsPerPage]="50" />
         </div>
+        <div>
+            <div  *ngFor="let item of produtos.content">
+                 <div class="flex items-center ">
+                    <div class="mb-2 bg-gray-100 border-[1px] border-solid border-slate-300 shadow-sm  p-3 rounded-md w-full flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div>
+                                <img  *ngIf="item.photoUrl" class="w-[50px] h-[50px]" [src]="item.photoUrl"/>
+                                <div *ngIf="!item.photoUrl" class="pi pi-image !text-[40px] text-gray-300" ></div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-1 mb-3">
+                                    <div class="font-bold text-[12px]">sku:{{item.sku}}</div>
+                                    <div class="h-[10px] bg-black w-[1px]"></div>
+                                    <div class="text-[12px]">Preço: {{item.preco | currency:"BRL"}}</div>
+                                </div>
+                                <div class="text-xs">{{item.descricao}}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <app-adicionar-loaded-produto-ao-catalogo [lojaSlug]="this.selectedLoja.slug" [alreadyOnCatalogo]="item.onCatalogo" [productId]="item.systemId"/>
+                            <app-product-variation-view [lojaSlug]="this.selectedLoja.slug" [skuBase]="item.sku" [productId]="item.systemId"/>
+                        </div>
+                    </div>
+              </div>
+            </div>
+        </div>
+        <div *ngIf="this.produtoService.loadingProdutosSub.value" class="transform  absolute top-[200px] pi pi-spin pi-spinner left-[47%] !text-[40px]" ></div>
     </div>
-    <div *ngIf="this.produtoService.loadingProdutosSub.value" class="transform  absolute top-[200px] pi pi-spin pi-spinner left-[47%] !text-[40px]" ></div>
+    <ng-template #fallback >
+        <div class="w-full xl:w-6/12 p-4">
+            <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
+        </div>
+    </ng-template>
 </div>
-<ng-template #fallback >
-    <div class="w-full xl:w-6/12 p-4">
-        <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
-        <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
-        <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
-        <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
-        <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
-    </div>
-</ng-template>
-<p-dialog/>
