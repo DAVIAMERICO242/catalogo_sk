@@ -18,6 +18,13 @@ import { filter, Subscriber, Subscription, take } from 'rxjs';
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .tiny-scroll::-webkit-scrollbar {
+      width: 5px; /* Largura do scrollbar vertical */
+      height: 5px;
+    }
+    .tiny-scroll::-webkit-scrollbar-thumb{
+      background: #dfdada; /* Cor do trilho */
+    }
     `
   ]
 })

@@ -2,7 +2,7 @@
     <div *ngIf="this.totaisItensSacola" class="h-[15px] w-[15px] bg-white absolute top-[10px] right-[7px] rounded-full flex items-center justify-center text-xs font-bold">{{this.totaisItensSacola}}</div>
     <div  class="pi pi-shopping-bag !text-[20px] !text-white"></div>
 </div>
-<p-drawer  position="right" [visible]="this.open" (onHide)="this.sacolaService.closeSacola()">
+<p-drawer appendTo="body"  position="right" [visible]="this.open" (onHide)="this.sacolaService.closeSacola()">
     <ng-template #header>
         <div>
             <div class="flex items-center gap-3">
@@ -20,9 +20,9 @@
             Nenhum produto na sacola
         </div>
     </div>
-    <div *ngIf="this.totaisItensSacola">
+    <div *ngIf="this.totaisItensSacola" class="h-[500px] overflow-auto tiny-scroll">
         <ng-container  *ngFor="let item of this.beautySacola?.itens">
-            <div class="flex bg-slate-50 mb-3 border-[1px] border-slate-100 shadow-sm ">
+            <div class="flex bg-slate-50 mb-5 border-[1px] border-slate-100 shadow-sm ">
                 <img class="w-[130px] h-[130px]" [src]="item.fotoUrl"/>
                 <div class="space-y-3 p-1">
                     <div class="descricao text-[10px] h-[30px] font-bold">{{item.nome}}</div>
