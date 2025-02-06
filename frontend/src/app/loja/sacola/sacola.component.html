@@ -1,4 +1,5 @@
-<div class="cursor-pointer h-[50px] w-[50px] rounded-full bg-black flex items-center justify-center relative">
+<div (click)="this.sacolaService.openSacola()" class="cursor-pointer h-[50px] w-[50px] rounded-full bg-black flex items-center justify-center relative">
     <div *ngIf="this.totaisItensSacola" class="h-[15px] w-[15px] bg-white absolute top-[10px] right-[7px] rounded-full flex items-center justify-center text-xs font-bold">{{this.totaisItensSacola}}</div>
     <div  class="pi pi-shopping-bag !text-[20px] !text-white"></div>
 </div>
+<p-drawer position="right" [visible]="this.open" (onHide)="this.sacolaService.closeSacola()"/>

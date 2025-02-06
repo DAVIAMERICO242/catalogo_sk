@@ -15,22 +15,23 @@ export class SacolaComponent implements OnInit,OnDestroy {
   beautySacola!:Sacola.BeautySacola|undefined;
   totaisItensSacola!:number;
   subscriptions = new Subscription();
-  constructor(private sacolaService:SacolaService,private lojaContext:LojaContextService){}
+  open = false;
+  constructor(protected sacolaService:SacolaService,private lojaContext:LojaContextService){}
   ngOnInit(): void {
-    this.lojaContext.loja$    
-    .pipe(
-      filter(loja => !!loja), // Filtra valores nulos ou undefined
-      take(1) // Pega apenas um valor e desinscreve automaticamente
-    )  //
-        .subscribe((loja)=>{
+    this.lojaContext.loja$.pipe(filter(loja => !!loja), take(1)).subscribe((loja)=>
+      {
           if(loja){
             this.loja = loja;
             this.setSacola();
           }
-        });
-        this.subscriptions.add(this.sacolaService.onSacolaChange$.subscribe(()=>{
-          this.setSacola();
-        }));
+      });
+    this.subscriptions.add(this.sacolaService.onSacolaChange$.subscribe(()=>{
+      this.setSacola();
+    }));
+    this.subscriptions.add(this.sacolaService.open$.subscribe((val)=>{
+      this.open = val;
+    }));
+     
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

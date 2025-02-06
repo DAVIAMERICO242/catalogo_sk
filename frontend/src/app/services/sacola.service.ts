@@ -28,6 +28,8 @@ export class SacolaService {
 
   private onSacolaChangeSub = new Subject();
   onSacolaChange$ = this.onSacolaChangeSub.asObservable();
+  private openSub = new BehaviorSubject<boolean>(false);
+  open$= this.openSub.asObservable();
 
   private readonly sacolasStorageName = "sacolas-lojas";
 
@@ -35,6 +37,14 @@ export class SacolaService {
 
   notifySacolaChange(){
     this.onSacolaChangeSub.next(1);
+  }
+
+  openSacola(){
+    this.openSub.next(true);
+  }
+
+  closeSacola(){
+    this.openSub.next(false);
   }
 
   getDescontoForSacola(raw:Sacola.RawSacola){
