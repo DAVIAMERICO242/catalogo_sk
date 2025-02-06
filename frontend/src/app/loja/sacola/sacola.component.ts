@@ -8,7 +8,18 @@ import { filter, Subscriber, Subscription, take } from 'rxjs';
 @Component({
   selector: 'app-sacola',
   imports: [SharedModule],
-  templateUrl: './sacola.component.html'
+  templateUrl: './sacola.component.html',
+  styles:[
+    `
+    .descricao{
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    `
+  ]
 })
 export class SacolaComponent implements OnInit,OnDestroy {
   loja!:Loja.Loja;
