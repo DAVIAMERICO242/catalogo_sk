@@ -29,6 +29,7 @@ export class ProductPageComponent implements OnInit{
 
   productId="";
   produto!:Catalogo.Produto;
+  stock!:Produto.ProdutoEstoque;
   photos:string[] = [];
   cores:string[] = [];
   tamanhos:string[] = [];
@@ -72,7 +73,14 @@ export class ProductPageComponent implements OnInit{
     .subscribe((loja) => {
       // Seu código aqui para tratar o valor não nulo
       if(loja){
-        this.produtoService.getStock([this.produto.produtoBase.sku],loja.slug).subscribe();
+        this.produtoService.getStock([this.produto.produtoBase.sku],loja.slug).subscribe({
+          next:(s)=>{
+            this.stock = s[0];
+          },
+          error:(e:HttpErrorResponse)=>{
+            alert("Erro ao carregar estoque");
+          }
+        });
       }
     });
   }
