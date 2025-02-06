@@ -32,6 +32,7 @@ export class ProductPageComponent implements OnInit{
   stock!:Produto.ProdutoEstoque;
   photos:string[] = [];
   cores:string[] = [];
+  coresOption:{label:string,value:string,disabled:boolean}[] = [];
   coresSemEstoque:string[] = [];
   selectedCor:string|undefined;
   selectedTamanho:string|undefined;
@@ -104,9 +105,21 @@ export class ProductPageComponent implements OnInit{
       }
       if(!hasStockForCor){
         this.coresSemEstoque.push(cor);
+        this.coresOption.push({
+          label:cor,
+          value:cor,
+          disabled:true
+        })
+      }else{
+        this.coresOption.push({
+          label:cor,
+          value:cor,
+          disabled:false
+        })
       }
     }
     this.selectedCor = this.cores.find(e=>!this.coresSemEstoque.includes(e));
+    
   }
 
   getStockForTamanhoAndContextualCor(tamanho:string){
