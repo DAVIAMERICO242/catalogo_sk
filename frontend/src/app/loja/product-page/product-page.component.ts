@@ -32,8 +32,9 @@ export class ProductPageComponent implements OnInit{
   stock!:Produto.ProdutoEstoque;
   photos:string[] = [];
   cores:string[] = [];
-  selectedCor!:string;
-  selectedTamanho!:string;
+  coresSemEstoque:string[] = [];
+  selectedCor:string|undefined;
+  selectedTamanho:string|undefined;
   tamanhos:string[] = [];
   
 
@@ -58,9 +59,7 @@ export class ProductPageComponent implements OnInit{
           this.produto = data;
           this.photos = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.foto))];
           this.cores = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.cor).sort((a,b)=>a.localeCompare(b)))];
-          this.selectedCor = this.cores[0];
           this.tamanhos = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.tamanho))];
-          this.selectedTamanho = this.tamanhos[0];
           this.loadStock();
         },
         error:(err:HttpErrorResponse)=>{
@@ -80,6 +79,7 @@ export class ProductPageComponent implements OnInit{
         this.produtoService.getStock([this.produto.produtoBase.sku],loja.slug).subscribe({
           next:(s)=>{
             this.stock = s[0];
+            this.coresETamanhosSemEstoqueUI();
           },
           error:(e:HttpErrorResponse)=>{
             alert("Erro ao carregar estoque");
@@ -87,6 +87,26 @@ export class ProductPageComponent implements OnInit{
         });
       }
     });
+  }
+
+  coresETamanhosSemEstoqueUI(){
+    // this.selectedTamanho = this.tamanhos[0];
+    for(let cor of this.cores){
+      let hasStockForCor = false;
+      for(let tamanho of this.tamanhos){
+        const sku = this.produto.produtoBase.variacoes.find((e)=>e.cor===cor && e.tamanho===tamanho)?.sku;
+        if(sku){
+          hasStockForCor = (this.stock.estoque.find((e)=>e.sku===sku)?.estoque || 0)>0;
+          if(hasStockForCor){
+            break;
+          }
+        }
+      }
+      if(!hasStockForCor){
+        this.coresSemEstoque.push(cor);
+      }
+    }
+    this.selectedCor = this.cores.find(e=>!this.coresSemEstoque.includes(e));
   }
 
   getStockForTamanhoAndContextualCor(tamanho:string){

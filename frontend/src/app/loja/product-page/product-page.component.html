@@ -25,8 +25,8 @@
                     <p-skeleton *ngIf="!this.produto" styleClass="!w-[100px] !h-[20px] !mb-5"/>
                     <div  *ngIf="this.produto">{{this.produto.produtoBase.preco| currency:"BRL"}}</div>
                 </div>
-                <p-skeleton *ngIf="!this.produto" styleClass=" !w-[100px] !h-[30px] !rounded-sm !mb-5"/>
-                <p-select styleClass="!w-[200px] !mb-5  !flex !items-center !text-xs" *ngIf="this.produto" [options]="this.cores" [(ngModel)]="this.selectedCor" />
+                <p-skeleton *ngIf="!this.stock" styleClass=" !w-[100px] !h-[30px] !rounded-sm !mb-5"/>
+                <p-select  styleClass="!w-[200px] !mb-5  !flex !items-center !text-xs" *ngIf="this.stock" [options]="this.cores" [(ngModel)]="this.selectedCor" />
                 <div class="flex items-center gap-2 max-[500px]:mb-3 mb-20 max-lg:mb-5 max-[400px]:w-[300px] overflow-auto tiny-scroll flex-nowrap">
                     <ng-container *ngIf="!this.stock">
                         <p-skeleton styleClass=" !w-[50px] !h-[50px] !rounded-full "/>
@@ -41,8 +41,8 @@
                         </ng-container>
                     </ng-container>
                 </div>
-                <p-skeleton *ngIf="!this.produto" styleClass=" !w-full !h-[50px] !rounded-sm !mb-5"/>
-                <button *ngIf="this.produto" pButton class="!bg-black !w-full !h-[50px] !rounded-sm !mb-5 !text-sm">
+                <p-skeleton *ngIf="!this.stock" styleClass=" !w-full !h-[50px] !rounded-sm !mb-5"/>
+                <button *ngIf="this.stock" pButton class="!bg-black !w-full !h-[50px] !rounded-sm !mb-5 !text-sm">
                     Adicionar à sacola
                 </button>
             </div>
