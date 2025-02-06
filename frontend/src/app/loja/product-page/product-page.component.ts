@@ -10,7 +10,14 @@ import { first, take } from 'rxjs';
 @Component({
   selector: 'app-product-page',
   imports: [SharedModule],
-  templateUrl: './product-page.component.html'
+  templateUrl: './product-page.component.html',
+  styles:[
+    `
+    .photos::-webkit-scrollbar {
+      display: none;
+    }
+    `
+  ]
 })
 export class ProductPageComponent implements OnInit{
 
