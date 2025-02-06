@@ -26,7 +26,7 @@
                 <img class="w-[130px] h-[130px]" [src]="item.fotoUrl"/>
                 <div class="space-y-3 p-1">
                     <div class="descricao text-[10px] h-[30px] font-bold">{{item.nome}}</div>
-                    <div class="text-sm">{{item.cor}}/{{item.tamanho}}</div>
+                    <div class="text-xs">{{item.cor}}/{{item.tamanho}}</div>
                     <p-inputnumber [(ngModel)]="item.quantidade" [showButtons]="true" buttonLayout="horizontal" spinnerMode="horizontal" inputId="horizontal" [inputStyle]="{ width: '40px',height:'30px',fontSize:'12px',display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center' }">
                         <ng-template #incrementbuttonicon>
                             <span class="pi pi-plus"></span>
