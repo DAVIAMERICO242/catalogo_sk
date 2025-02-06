@@ -3,6 +3,7 @@ import { Pedidos } from './pedidos.service';
 import { HttpClient } from '@angular/common/http';
 import { Desconto } from './descontos.service';
 import { env } from '../../env';
+import { BehaviorSubject, Subject } from 'rxjs';
 export namespace Sacola{
 
   export interface RawSacola{
@@ -25,9 +26,16 @@ export namespace Sacola{
 })
 export class SacolaService {
 
+  private onSacolaChangeSub = new Subject();
+  onSacolaChange$ = this.onSacolaChangeSub.asObservable();
+
   private readonly sacolasStorageName = "sacolas-lojas";
 
   constructor(private http:HttpClient){}
+
+  notifySacolaChange(){
+    this.onSacolaChangeSub.next(1);
+  }
 
   getDescontoForSacola(raw:Sacola.RawSacola){
     return this.http.post<Desconto.DescontoAplicado[]>(env.BACKEND_URL+"/carrinho/descontos-validos",raw);

@@ -33,7 +33,7 @@ public class RoutesAuth {
                         .requestMatchers(new AntPathRequestMatcher("/carrinho/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/login-by-loja")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/lojas/**",HttpMethod.GET.toString())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/catalogo",HttpMethod.GET.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/catalogo/**",HttpMethod.GET.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/media/banner",HttpMethod.GET.toString())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/pedidos",HttpMethod.POST.toString())).permitAll()
                         .anyRequest().authenticated()

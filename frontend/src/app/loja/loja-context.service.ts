@@ -8,7 +8,7 @@ import { Loja } from '../services/loja.service';
 @Injectable()
 export class LojaContextService {
 
-  lojaSub = new BehaviorSubject<Loja.Loja | undefined>(undefined);
+  private lojaSub = new BehaviorSubject<Loja.Loja | undefined>(undefined);
   loja$ = this.lojaSub.asObservable();
   produtosSub = new BehaviorSubject<Catalogo.Produto[]|undefined>(undefined);
   produtos$ = this.produtosSub.asObservable();

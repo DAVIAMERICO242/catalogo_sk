@@ -77,7 +77,7 @@ export class ProductPageComponent implements OnInit{
 
 
   loadStock(){
-    this.lojaContext.lojaSub
+    this.lojaContext.loja$
     .pipe(take(1))  // Desinscreve automaticamente após encontrar o valor não nulo
     .subscribe((loja) => {
       // Seu código aqui para tratar o valor não nulo
@@ -166,6 +166,7 @@ export class ProductPageComponent implements OnInit{
     }else{
       alert("Selecione uma opção")
     }
+    this.sacolaService.notifySacolaChange();
   }
 
 
