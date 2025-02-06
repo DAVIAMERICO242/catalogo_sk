@@ -26,7 +26,7 @@
                     <div  *ngIf="this.produto">{{this.produto.produtoBase.preco| currency:"BRL"}}</div>
                 </div>
                 <p-skeleton *ngIf="!this.produto" styleClass=" !w-[100px] !h-[30px] !rounded-sm !mb-5"/>
-                <p-select styleClass="!w-[200px] !mb-5  !flex !items-center !text-xs" *ngIf="this.produto" [options]="this.cores" />
+                <p-select styleClass="!w-[200px] !mb-5  !flex !items-center !text-xs" *ngIf="this.produto" [options]="this.cores" [(ngModel)]="this.selectedCor" />
                 <div class="flex items-center gap-2 max-[500px]:mb-3 mb-20 max-lg:mb-5 max-[400px]:w-[300px] overflow-auto tiny-scroll flex-nowrap">
                     <ng-container *ngIf="!this.stock">
                         <p-skeleton styleClass=" !w-[50px] !h-[50px] !rounded-full "/>
@@ -34,9 +34,11 @@
                         <p-skeleton styleClass="!w-[50px] !h-[50px] !rounded-full "/>
                     </ng-container>
                     <ng-container *ngIf="this.stock">
-                        <div class="text-xs max-[400px]:w-[30px] max-[400px]:h-[30px] w-[50px] h-[50px] rounded-full border-[1px] border-solid flex items-center justify-center flex-shrink-0" *ngFor="let item of this.tamanhos">
+                        <ng-container *ngFor="let item of this.tamanhos">
+                            <div (click)="this.selectedTamanho=item" [ngClass]="{'border-black':item===this.selectedTamanho,'pointer-events-none opacity-35':this.getStockForTamanhoAndContextualCor(item)===0}" class="cursor-pointer text-xs max-[400px]:w-[30px] max-[400px]:h-[30px] w-[50px] h-[50px] rounded-full border-[1px] border-solid flex items-center justify-center flex-shrink-0">
                                 {{item}}
-                        </div>
+                            </div>    
+                        </ng-container>
                     </ng-container>
                 </div>
                 <p-skeleton *ngIf="!this.produto" styleClass=" !w-full !h-[50px] !rounded-sm !mb-5"/>

@@ -32,6 +32,8 @@ export class ProductPageComponent implements OnInit{
   stock!:Produto.ProdutoEstoque;
   photos:string[] = [];
   cores:string[] = [];
+  selectedCor!:string;
+  selectedTamanho!:string;
   tamanhos:string[] = [];
   
 
@@ -56,7 +58,9 @@ export class ProductPageComponent implements OnInit{
           this.produto = data;
           this.photos = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.foto))];
           this.cores = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.cor).sort((a,b)=>a.localeCompare(b)))];
+          this.selectedCor = this.cores[0];
           this.tamanhos = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.tamanho))];
+          this.selectedTamanho = this.tamanhos[0];
           this.loadStock();
         },
         error:(err:HttpErrorResponse)=>{
@@ -85,7 +89,13 @@ export class ProductPageComponent implements OnInit{
     });
   }
 
-  
+  getStockForTamanhoAndContextualCor(tamanho:string){
+    const sku = this.produto.produtoBase.variacoes.find((e)=>e.cor===this.selectedCor && e.tamanho===tamanho)?.sku;
+    if(!sku){
+      return 0;
+    }
+    return this.stock.estoque.find((e)=>e.sku===sku)?.estoque || 0;
+  }
 
 
 }
