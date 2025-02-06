@@ -13,9 +13,9 @@ import { first, take } from 'rxjs';
   templateUrl: './product-page.component.html',
   styles:[
     `
-    .photos::-webkit-scrollbar {
+    /* .photos::-webkit-scrollbar {
       display: none;
-    }
+    } */
     `
   ]
 })
