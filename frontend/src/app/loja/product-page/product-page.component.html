@@ -1,10 +1,10 @@
 <div [@fadeIn] class="flex justify-center items-center min-h-[70vh]">
     <div>
         <div class="flex max-lg:gap-10 max-[910px]:flex-col gap-20 max-[500px]:gap-3 justify-center ">
-            <div class="max-[500px]:h-fit !h-[400px] max-[500px]:!w-[300px]  max-md:!h-[350px] flex  gap-3 max-[500px]:justify-center max-[500px]:flex-col ">
+            <div class="max-[500px]:h-fit h-[400px] max-[500px]:w-[300px]  max-md:h-[350px] flex  gap-3 max-[500px]:justify-center max-[500px]:flex-col ">
                 <div >
                     <p-skeleton *ngIf="!this.produto" styleClass="!w-[400px]  !h-full max-[500px]:!h-[300px]   max-[500px]:!w-[300px] max-md:!w-[350px] border-[1px]  "/>
-                    <img *ngIf="this.produto" class="!w-[400px]  !h-full   max-[500px]:!w-[300px] max-md:!w-[350px]  border-[1px] border-solid border-slate-100"  [src]="this.produto.produtoBase.photoUrl"/>
+                    <img *ngIf="this.produto" class="w-[400px]  h-full   max-[500px]:w-[300px] max-md:w-[350px]  border-[1px] border-solid border-slate-100"  [src]="this.produto.produtoBase.photoUrl"/>
                 </div>
                 <div class="photos max-[500px]:flex max-[500px]:items-center max-[500px]:gap-6 overflow-auto">
                     <ng-container *ngIf="!this.produto">
@@ -30,10 +30,10 @@
                 </div>
                 <p-skeleton *ngIf="!this.produto" styleClass=" !w-[100px] !h-[30px] !rounded-sm !mb-5"/>
                 <p-select styleClass="!w-[200px] !mb-5  !flex !items-center !text-xs" *ngIf="this.produto" [options]="this.cores" />
-                <div class="flex items-center gap-2 max-[500px]:!mb-2 mb-20 max-lg:mb-5 ">
-                    <p-skeleton styleClass=" !w-[50px] !h-[50px] !rounded-full !mb-5"/>
-                    <p-skeleton styleClass="!w-[50px] !h-[50px] !rounded-full !mb-5"/>
-                    <p-skeleton styleClass="!w-[50px] !h-[50px] !rounded-full !mb-5"/>
+                <div class="flex items-center gap-2 max-[500px]:mb-3 mb-20 max-lg:mb-5 ">
+                    <p-skeleton styleClass=" !w-[50px] !h-[50px] !rounded-full "/>
+                    <p-skeleton styleClass="!w-[50px] !h-[50px] !rounded-full "/>
+                    <p-skeleton styleClass="!w-[50px] !h-[50px] !rounded-full "/>
                 </div>
                 <p-skeleton *ngIf="!this.produto" styleClass=" !w-full !h-[50px] !rounded-sm !mb-5"/>
                 <button pButton class="!bg-black !w-full !h-[50px] !rounded-sm !mb-5 !text-sm">
