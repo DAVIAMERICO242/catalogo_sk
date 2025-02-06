@@ -14,11 +14,11 @@ import { fadeIn } from '../../animations/fadeIn';
   templateUrl: './product-page.component.html',
   styles:[
     `
-    .photos::-webkit-scrollbar {
+    .tiny-scroll::-webkit-scrollbar {
       width: 5px; /* Largura do scrollbar vertical */
       height: 5px;
     }
-    .photos::-webkit-scrollbar-thumb{
+    .tiny-scroll::-webkit-scrollbar-thumb{
       background: #dfdada; /* Cor do trilho */
     }
     `
