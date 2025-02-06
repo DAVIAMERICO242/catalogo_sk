@@ -36,6 +36,7 @@ export class ProductPageComponent implements OnInit{
   coresSemEstoque:string[] = [];
   selectedCor:string|undefined;
   selectedTamanho:string|undefined;
+  selectedPhoto!:string;
   tamanhos:string[] = [];
   
 
@@ -119,7 +120,7 @@ export class ProductPageComponent implements OnInit{
       }
     }
     this.selectedCor = this.cores.find(e=>!this.coresSemEstoque.includes(e));
-    
+    this.selectedPhoto = this.produto.produtoBase.variacoes.find((e)=>e.cor===this.selectedCor)?.foto || this.produto.produtoBase.photoUrl;
   }
 
   getStockForTamanhoAndContextualCor(tamanho:string){
@@ -128,6 +129,10 @@ export class ProductPageComponent implements OnInit{
       return 0;
     }
     return this.stock.estoque.find((e)=>e.sku===sku)?.estoque || 0;
+  }
+
+  changeFotoAfterCorChange(){
+    this.selectedPhoto = this.produto.produtoBase.variacoes.find((e)=>e.cor===this.selectedCor)?.foto || this.produto.produtoBase.photoUrl;
   }
 
 
