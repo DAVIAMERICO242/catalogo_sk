@@ -27,8 +27,8 @@
                     <div  *ngIf="this.produto">{{this.produto.produtoBase.preco| currency:"BRL"}}</div>
                 </div>
                 <p-skeleton *ngIf="!this.stock" styleClass=" !w-[100px] !h-[30px] !rounded-sm !mb-5"/>
-                <p-select  styleClass="!w-[200px] !mb-5  !flex !items-center !text-xs" *ngIf="this.stock" [options]="this.coresOption" optionValue="value" optionLabel="label" [(ngModel)]="this.selectedCor" (ngModelChange)="this.changeFotoAfterCorChange()" />
-                <div class="flex items-center gap-2 max-[500px]:mb-3 mb-20 max-lg:mb-5 max-[400px]:w-[300px] overflow-auto tiny-scroll flex-nowrap">
+                <p-select  styleClass="!w-[200px] !mb-5  !flex !items-center !text-xs" *ngIf="this.stock" [options]="this.coresOption" optionValue="value" optionLabel="label" [(ngModel)]="this.selectedCor" (ngModelChange)="this.manageCorChange()" />
+                <div class="flex items-center gap-2 max-[400px]:w-[300px] overflow-auto tiny-scroll flex-nowrap">
                     <ng-container *ngIf="!this.stock">
                         <p-skeleton styleClass=" !w-[50px] !h-[50px] !rounded-full "/>
                         <p-skeleton styleClass="!w-[50px] !h-[50px] !rounded-full "/>
@@ -36,12 +36,14 @@
                     </ng-container>
                     <ng-container *ngIf="this.stock">
                         <ng-container *ngFor="let item of this.tamanhos">
-                            <div (click)="this.selectedTamanho=item" [ngClass]="{'border-black':item===this.selectedTamanho,'pointer-events-none opacity-35':this.getStockForTamanhoAndContextualCor(item)===0}" class="cursor-pointer text-xs max-[400px]:w-[30px] max-[400px]:h-[30px] w-[50px] h-[50px] rounded-full border-[1px] border-solid flex items-center justify-center flex-shrink-0">
+                            <div (click)="this.selectedTamanho=item;this.manageTamanhoChange()" [ngClass]="{'border-black':item===this.selectedTamanho,'pointer-events-none opacity-35':this.getStockForTamanhoAndContextualCor(item)===0}" class="cursor-pointer text-xs max-[400px]:w-[30px] max-[400px]:h-[30px] w-[50px] h-[50px] rounded-full border-[1px] border-solid flex items-center justify-center flex-shrink-0">
                                 {{item}}
                             </div>    
                         </ng-container>
                     </ng-container>
                 </div>
+                <div [ngClass]="{'opacity-100':this.overAddedTheSameSku,'h-auto':this.overAddedTheSameSku}" class="text-red-600 mt-1 text-sm opacity-0 transition-all ease-linear h-[0px]">Você adicionou todo estoque dessa opção no carrinho</div>
+                <div class="max-[500px]:mb-3 mb-20 max-lg:mb-5"></div>
                 <p-skeleton *ngIf="!this.stock" styleClass=" !w-full !h-[50px] !rounded-sm !mb-5"/>
                 <button (click)="this.addToSacola()" *ngIf="this.stock" pButton class="!bg-black !w-full !h-[50px] !rounded-sm !mb-5 !text-sm">
                     Adicionar à sacola

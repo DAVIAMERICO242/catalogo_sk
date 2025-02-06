@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Produto, ProdutosService } from '../../services/produtos.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LojaContextService } from '../loja-context.service';
-import { first, take } from 'rxjs';
+import { filter, first, take } from 'rxjs';
 import { fadeIn } from '../../animations/fadeIn';
 import { Sacola, SacolaService } from '../../services/sacola.service';
 import { Loja } from '../../services/loja.service';
@@ -41,6 +41,7 @@ export class ProductPageComponent implements OnInit{
   selectedTamanho:string|undefined;
   selectedPhoto!:string;
   tamanhos:string[] = [];
+  overAddedTheSameSku = false;
   
 
   constructor(
@@ -78,7 +79,7 @@ export class ProductPageComponent implements OnInit{
 
   loadStock(){
     this.lojaContext.loja$
-    .pipe(take(1))  // Desinscreve automaticamente após encontrar o valor não nulo
+    .pipe(filter(loja=>loja!=undefined),take(1))  // Desinscreve automaticamente após encontrar o valor não nulo
     .subscribe((loja) => {
       // Seu código aqui para tratar o valor não nulo
       if(loja){
@@ -136,18 +137,34 @@ export class ProductPageComponent implements OnInit{
     return this.stock.estoque.find((e)=>e.sku===sku)?.estoque || 0;
   }
 
+  manageCorChange(){
+    this.overAddedTheSameSku = false;
+    this.changeFotoAfterCorChange();
+  }
+
+  manageTamanhoChange(){
+    this.overAddedTheSameSku = false;
+  }
+
   changeFotoAfterCorChange(){
     this.selectedPhoto = this.produto.produtoBase.variacoes.find((e)=>e.cor===this.selectedCor)?.foto || this.produto.produtoBase.photoUrl;
   }
 
   addToSacola(){
     const variacaoSelecionadaTransformed:Produto.ProdutoVariacao|undefined = this.produto.produtoBase.variacoes.find(e=>e.cor===this.selectedCor && e.tamanho===this.selectedTamanho);
-    if(variacaoSelecionadaTransformed){
+    if(variacaoSelecionadaTransformed && this.selectedTamanho){
       const loja:Pedidos.LojaPedido = {
         nome:this.loja.loja,
         slug:this.loja.slug,
         systemId:this.loja.systemId
       };
+      const quantidadeAtualDoItemSolicitadoNaSacola = this.sacolaService.getBeautySacolaForLoja(loja)?.itens.find(e=>e.systemId===variacaoSelecionadaTransformed.systemId)?.quantidade;
+      if(quantidadeAtualDoItemSolicitadoNaSacola){
+        if(this.getStockForTamanhoAndContextualCor(this.selectedTamanho)===quantidadeAtualDoItemSolicitadoNaSacola){
+          this.overAddedTheSameSku = true;
+          return;
+        }
+      }
       const produto:Pedidos.ProdutoPedido = {
         systemId:this.produto.produtoBase.systemId,
         nome:this.produto.produtoBase.descricao,
