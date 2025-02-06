@@ -31,6 +31,7 @@ export class ProductPageComponent implements OnInit{
   produto!:Catalogo.Produto;
   photos:string[] = [];
   cores:string[] = [];
+  tamanhos:string[] = [];
   
 
   constructor(
@@ -52,8 +53,9 @@ export class ProductPageComponent implements OnInit{
       {
         next:(data)=>{
           this.produto = data;
-          this.photos = this.produto.produtoBase.variacoes.map((e)=>e.foto);
+          this.photos = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.foto))];
           this.cores = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.cor).sort((a,b)=>a.localeCompare(b)))];
+          this.tamanhos = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.tamanho))];
           this.loadStock();
         },
         error:(err:HttpErrorResponse)=>{
