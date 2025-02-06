@@ -43,7 +43,7 @@
                     </ng-container>
                 </div>
                 <p-skeleton *ngIf="!this.stock" styleClass=" !w-full !h-[50px] !rounded-sm !mb-5"/>
-                <button *ngIf="this.stock" pButton class="!bg-black !w-full !h-[50px] !rounded-sm !mb-5 !text-sm">
+                <button (click)="this.addToSacola()" *ngIf="this.stock" pButton class="!bg-black !w-full !h-[50px] !rounded-sm !mb-5 !text-sm">
                     Adicionar à sacola
                 </button>
             </div>

@@ -7,6 +7,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { LojaContextService } from '../loja-context.service';
 import { first, take } from 'rxjs';
 import { fadeIn } from '../../animations/fadeIn';
+import { Sacola, SacolaService } from '../../services/sacola.service';
+import { Loja } from '../../services/loja.service';
+import { Pedidos } from '../../services/pedidos.service';
 
 @Component({
   selector: 'app-product-page',
@@ -26,7 +29,7 @@ import { fadeIn } from '../../animations/fadeIn';
   animations:[fadeIn]
 })
 export class ProductPageComponent implements OnInit{
-
+  loja!:Loja.Loja;
   productId="";
   produto!:Catalogo.Produto;
   stock!:Produto.ProdutoEstoque;
@@ -44,7 +47,8 @@ export class ProductPageComponent implements OnInit{
     private catalogoService:CatalogoService,
     private lojaContext:LojaContextService,
     private route:ActivatedRoute,
-    private produtoService:ProdutosService
+    private produtoService:ProdutosService,
+    private sacolaService:SacolaService
   ){}
 
 
@@ -78,6 +82,7 @@ export class ProductPageComponent implements OnInit{
     .subscribe((loja) => {
       // Seu código aqui para tratar o valor não nulo
       if(loja){
+        this.loja = loja;
         this.produtoService.getStock([this.produto.produtoBase.sku],loja.slug).subscribe({
           next:(s)=>{
             this.stock = s[0];
@@ -133,6 +138,34 @@ export class ProductPageComponent implements OnInit{
 
   changeFotoAfterCorChange(){
     this.selectedPhoto = this.produto.produtoBase.variacoes.find((e)=>e.cor===this.selectedCor)?.foto || this.produto.produtoBase.photoUrl;
+  }
+
+  addToSacola(){
+    const variacaoSelecionadaTransformed:Produto.ProdutoVariacao|undefined = this.produto.produtoBase.variacoes.find(e=>e.cor===this.selectedCor && e.tamanho===this.selectedTamanho);
+    if(variacaoSelecionadaTransformed){
+      const loja:Pedidos.LojaPedido = {
+        nome:this.loja.loja,
+        slug:this.loja.slug,
+        systemId:this.loja.systemId
+      };
+      const produto:Pedidos.ProdutoPedido = {
+        systemId:this.produto.produtoBase.systemId,
+        nome:this.produto.produtoBase.descricao,
+        sku:this.produto.produtoBase.sku,
+        valorBase:this.produto.produtoBase.preco,
+        variacoesCompradas:[{
+          cor:variacaoSelecionadaTransformed.cor,
+          fotoUrl:variacaoSelecionadaTransformed.foto,
+          sku:variacaoSelecionadaTransformed.sku,
+          systemId:variacaoSelecionadaTransformed.systemId,
+          tamanho:variacaoSelecionadaTransformed.tamanho,
+          valorBase:this.produto.produtoBase.preco
+        }]
+      }
+      this.sacolaService.addToSacolaForLoja(loja,produto);
+    }else{
+      alert("Selecione uma opção")
+    }
   }
 
 
