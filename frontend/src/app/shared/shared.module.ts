@@ -21,6 +21,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { Carousel } from 'primeng/carousel';
+import { BadgeModule } from 'primeng/badge';
 
 @NgModule({
   declarations: [],
@@ -28,6 +29,7 @@ import { Carousel } from 'primeng/carousel';
     CommonModule,
     Carousel,
     FormsModule,
+    BadgeModule,
     DrawerModule,
     TooltipModule,
     InputTextModule,
@@ -55,6 +57,7 @@ import { Carousel } from 'primeng/carousel';
     FormsModule,
     DrawerModule,
     TooltipModule,
+    BadgeModule,
     InputTextModule,
     SkeletonModule,
     InputGroupModule, 

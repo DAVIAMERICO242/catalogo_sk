@@ -2,10 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { Router } from '@angular/router';
 import { LojaContextService } from '../loja-context.service';
+import { SacolaComponent } from "../sacola/sacola.component";
 
 @Component({
   selector: 'app-header',
-  imports: [SharedModule],
+  imports: [SharedModule, SacolaComponent],
   templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {

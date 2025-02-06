@@ -80,6 +80,13 @@ export namespace Desconto{
     slug:string
   }
 
+  export interface DescontoAplicado{
+    systemId:string,
+    nome:string,
+    tipo:DescontoTipo,
+    valorAplicado:number
+  }
+
   export enum DescontoTipo{
     DESCONTO_FRETE="DESCONTO_FRETE",
     DESCONTO_GENERICO_CARRINHO="DESCONTO_GENERICO_CARRINHO",
