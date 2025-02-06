@@ -6,6 +6,7 @@ import { Produto, ProdutosService } from '../../services/produtos.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LojaContextService } from '../loja-context.service';
 import { first, take } from 'rxjs';
+import { fadeIn } from '../../animations/fadeIn';
 
 @Component({
   selector: 'app-product-page',
@@ -21,13 +22,15 @@ import { first, take } from 'rxjs';
       background: #dfdada; /* Cor do trilho */
     }
     `
-  ]
+  ],
+  animations:[fadeIn]
 })
 export class ProductPageComponent implements OnInit{
 
   productId="";
   produto!:Catalogo.Produto;
   photos:string[] = [];
+  cores:string[] = [];
   
 
   constructor(
@@ -50,6 +53,7 @@ export class ProductPageComponent implements OnInit{
         next:(data)=>{
           this.produto = data;
           this.photos = this.produto.produtoBase.variacoes.map((e)=>e.foto);
+          this.cores = [...new Set(this.produto.produtoBase.variacoes.map((e)=>e.cor).sort((a,b)=>a.localeCompare(b)))];
           this.loadStock();
         },
         error:(err:HttpErrorResponse)=>{
