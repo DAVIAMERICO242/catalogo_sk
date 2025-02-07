@@ -15,6 +15,9 @@
     </ng-template>
     <div class="h-[1px] flex-1 bg-slate-300 mt-1 mb-5">
     </div>
+    <div (click)="this.limpar()" class="mb-5 underline cursor-pointer w-fit" *ngIf="this.totaisItensSacola">
+        Limpar sacola
+    </div>
     <div>
         <div class="text-sm" *ngIf="!this.totaisItensSacola">
             Nenhum produto na sacola

@@ -5,6 +5,7 @@ import { LojaContextService } from '../loja-context.service';
 import { Loja } from '../../services/loja.service';
 import { filter, Subscriber, Subscription, take } from 'rxjs';
 import { ProdutoSacolaComponent } from "./produto-sacola/produto-sacola.component";
+import { Pedidos } from '../../services/pedidos.service';
 
 @Component({
   selector: 'app-sacola',
@@ -66,6 +67,15 @@ export class SacolaComponent implements OnInit,OnDestroy {
       this.totaisItensSacola = this.beautySacola?.itens.reduce((a,b)=>a+b.quantidade,0);
     }
     console.log(this.beautySacola)
+  }
+
+  limpar(){
+    const loja:Pedidos.LojaPedido={
+      nome:this.loja.loja,
+      slug:this.loja.slug,
+      systemId:this.loja.systemId
+    }
+    this.sacolaService.limparSacola(loja);
   }
 
 }

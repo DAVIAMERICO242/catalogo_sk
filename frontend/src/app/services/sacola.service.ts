@@ -87,6 +87,19 @@ export class SacolaService {
     return undefined;
   }
 
+  limparSacola(loja:Pedidos.LojaPedido){
+    const sacolasString = localStorage.getItem(this.sacolasStorageName);
+    if(sacolasString){
+      let sacolas = JSON.parse(sacolasString) as Sacola.RawSacola[];
+      let sacolaForLoja = sacolas.find(e=>e.loja.systemId===loja.systemId);
+      if(sacolaForLoja){
+        sacolas = sacolas.filter((e)=>e.loja.systemId!==loja.systemId);
+      }
+      localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
+    }
+    this.notifySacolaChange();
+  }
+
   addToSacolaForLoja(loja:Pedidos.LojaPedido,produto:Sacola.ProdutoSacolaRequest):void{
     const sacolasString = localStorage.getItem(this.sacolasStorageName);
     if(sacolasString){
