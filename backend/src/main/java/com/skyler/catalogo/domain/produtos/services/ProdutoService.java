@@ -12,10 +12,7 @@ import com.skyler.catalogo.domain.produtos.entities.Produto;
 import com.skyler.catalogo.domain.produtos.entities.ProdutoVariacao;
 import com.skyler.catalogo.domain.produtos.repositories.ProdutoRepository;
 import com.skyler.catalogo.domain.produtos.specifications.ProdutoSpecifications;
-import com.skyler.catalogo.infra.integrador.IntegradorBridge;
-import com.skyler.catalogo.infra.integrador.IntegradorEstoque;
-import com.skyler.catalogo.infra.integrador.IntegradorFranquiasELojas;
-import com.skyler.catalogo.infra.integrador.IntegradorProdutos;
+import com.skyler.catalogo.infra.integrador.*;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -65,6 +62,20 @@ public class ProdutoService {
         }
         return output;
     }
+
+    public ProdutoEstoqueDTO.VariacaoEstoque getEstoqueVariacao(String sku, String lojaSlug){
+        ProdutoEstoqueDTO.VariacaoEstoque output = new ProdutoEstoqueDTO.VariacaoEstoque();
+        Optional<Loja> lojaOPT = this.lojaRepository.findByLojaSlug(lojaSlug);
+        if(lojaOPT.isEmpty()){
+            throw new RuntimeException("Slug da loja não encontrado");
+        }
+        Loja loja = lojaOPT.get();
+        IntegradorUnicaVariacaoEstoque integradorUnicaVariacaoEstoque = this.integradorBridge.getEstoqueForVariacao(sku,loja.getIntegradorId());
+        output.setSku(sku);
+        output.setEstoque(integradorUnicaVariacaoEstoque.getEstoque());
+        return output;
+    }
+
 
     public TermoDTO getTermos(String franquiaSystemId){
         TermoDTO output = new TermoDTO();

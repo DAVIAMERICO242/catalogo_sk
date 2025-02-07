@@ -69,4 +69,13 @@ public class ProdutoController {
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
     }
+
+    @GetMapping("/estoque-variacao")
+    public ResponseEntity getEstoqueVar(String sku, String lojaSlug){
+        try{
+            return ResponseEntity.ok().body(this.produtoService.getEstoqueVariacao(sku,lojaSlug));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
 }

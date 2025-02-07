@@ -38,5 +38,13 @@ public class IntegradorBridge extends IntegradorContext {
         return Arrays.stream(output).toList();
     }
 
+    public IntegradorUnicaVariacaoEstoque getEstoqueForVariacao(String skuVar,String lojaIntegradorId){
+        String url = this.integradorUrl+"/estoque/variacao?skuVar="+skuVar+"&lojaIntegradorId="+lojaIntegradorId;
+        IntegradorUnicaVariacaoEstoque output = restTemplate.getForObject(url,IntegradorUnicaVariacaoEstoque.class);
+        return output;
+    }
+
+
+
 
 }
