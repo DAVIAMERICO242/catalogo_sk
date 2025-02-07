@@ -12,7 +12,7 @@
         </div>
         <div class="mt-1">
             <div class="text-[10px]">Total ({{this.produtoSacola.quantidade}}x):</div>
-            <app-produto-preco [multiplier]="produtoSacola.quantidade" [produto]="produtoPrecificavel"/>
+            <app-produto-preco styleClass="font-bold" [multiplier]="produtoSacola.quantidade" [produto]="produtoPrecificavel"/>
         </div>
         <div class="flex items-center gap-2">
             <div (click)="this.decreaseOneUnit()" class="cursor-pointer w-[20px] h-[20px] flex items-center justify-center bg-black text-white rounded-full">

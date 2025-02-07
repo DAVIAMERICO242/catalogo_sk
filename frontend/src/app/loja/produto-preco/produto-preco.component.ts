@@ -6,6 +6,7 @@ import { filter, take } from 'rxjs';
 import { Desconto } from '../../services/descontos.service';
 
 export interface ProdutoPrecificavel{
+  
   systemId:string,
   categoria:string,
   grupo:string,
