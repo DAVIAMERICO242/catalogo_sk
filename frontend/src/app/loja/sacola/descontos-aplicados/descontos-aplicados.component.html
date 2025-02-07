@@ -1,0 +1,39 @@
+<div class="flex items-center gap-1">
+    <div class="font-bold ">
+        Descontos: {{this.totalDescontos|currency:"BRL"}}
+    </div>
+    <div (click)="this.open=true" class="pi pi-question-circle cursor-pointer"></div>
+</div>
+<p-dialog appendTo="body"  [modal]="true" [dismissableMask]="true" [(visible)]="open" header="Descontos aplicados" styleClass="!w-[320px] !max-h-[310px] overflow-auto">
+    <p-table [showGridlines]="true" [stripedRows]="true" [value]="this.descontosResumidos">
+        <ng-template #header>
+            <tr>
+                <th class="text-xs">
+                    Desconto
+                </th>
+                <th class="text-xs">
+                    N° aplicações
+                </th>
+                <th class="text-xs">
+                    Valor aplicado total
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-row>
+            <tr>
+                <td class="text-xs">
+                    {{this.forceType(row).nome}}
+                </td >
+                <td class="text-xs">
+                    {{this.forceType(row).quantidadeAplicacoes}}
+                </td>
+                <td class="text-xs">
+                    {{this.forceType(row).valor | currency:"BRL"}}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <div class="text-xs">Nenhum desconto</div>
+        </ng-template>
+    </p-table>
+</p-dialog>

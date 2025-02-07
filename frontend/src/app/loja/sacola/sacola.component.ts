@@ -6,11 +6,13 @@ import { Loja } from '../../services/loja.service';
 import { filter, Subscriber, Subscription, take } from 'rxjs';
 import { ProdutoSacolaComponent } from "./produto-sacola/produto-sacola.component";
 import { Pedidos } from '../../services/pedidos.service';
-import { DescontosService } from '../../services/descontos.service';
+import { Desconto, DescontosService } from '../../services/descontos.service';
+import { DescontosAplicadosComponent } from "./descontos-aplicados/descontos-aplicados.component";
+import { ValoresDetailsComponent } from "./valores-details/valores-details.component";
 
 @Component({
   selector: 'app-sacola',
-  imports: [SharedModule, ProdutoSacolaComponent],
+  imports: [SharedModule, ProdutoSacolaComponent, DescontosAplicadosComponent, ValoresDetailsComponent],
   templateUrl: './sacola.component.html',
   styles:[
     `
@@ -34,6 +36,8 @@ import { DescontosService } from '../../services/descontos.service';
 export class SacolaComponent implements OnInit,OnDestroy {
   loja!:Loja.Loja;
   beautySacola!:Sacola.BeautySacola|undefined;
+  
+  rawSacola!:Sacola.RawSacola | undefined;
   totaisItensSacola!:number;
   subscriptions = new Subscription();
   open = false;
@@ -65,24 +69,20 @@ export class SacolaComponent implements OnInit,OnDestroy {
       slug:this.loja.slug,
       systemId:this.loja.systemId
     });
+    this.rawSacola = this.sacolaService.getRawSacolaForLoja({
+      nome:this.loja.loja,
+      slug:this.loja.slug,
+      systemId:this.loja.systemId
+    });
     if(this.beautySacola?.itens.length || this.beautySacola?.itens.length===0){
       this.totaisItensSacola = this.beautySacola?.itens.reduce((a,b)=>a+b.quantidade,0);
-      this.calcularDescontos();
+    }
+    if(this.rawSacola){
+      this.sacolaService.setDescontos(this.rawSacola);
     }
     console.log(this.beautySacola)
   }
 
-  calcularDescontos(){
-    const loja:Pedidos.LojaPedido={
-      nome:this.loja.loja,
-      slug:this.loja.slug,
-      systemId:this.loja.systemId
-    }
-    const raw = this.sacolaService.getRawSacolaForLoja(loja);
-    if(raw){
-      this.sacolaService.getDescontoForSacola(raw).subscribe();
-    } 
-  }
 
   limpar(){
     const loja:Pedidos.LojaPedido={

@@ -6,6 +6,11 @@ import { BackendDatePipe } from '../pipes/backend-date.pipe';
 import { map } from 'rxjs';
 
 export namespace Desconto{
+  export interface DescontoSummary{
+    nome:string
+    quantidadeAplicacoes:number,
+    valor:number
+  }
   export interface DescontoModel{
     systemId:string,
     nome:string,

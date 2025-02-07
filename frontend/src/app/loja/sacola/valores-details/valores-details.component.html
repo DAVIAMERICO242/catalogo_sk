@@ -1,0 +1,6 @@
+<div [ngClass]="{'opacity-50':this.sacolaService.loadingDescontosSub.value}" class="text-sm ">
+    <div class="font-bold mb-3">
+        Total: {{this.total|currency:"BRL"}}
+    </div>
+    <app-descontos-aplicados [rawSacola]="rawSacola"/>
+</div>

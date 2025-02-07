@@ -15,8 +15,11 @@
     </ng-template>
     <div class="h-[1px] flex-1 bg-slate-300 mt-1 mb-5">
     </div>
-    <div (click)="this.limpar()" class="mb-5 underline cursor-pointer w-fit" *ngIf="this.totaisItensSacola">
+    <div (click)="this.limpar()" class="text-xs mb-5 underline cursor-pointer w-fit" *ngIf="this.totaisItensSacola">
         Limpar sacola
+    </div>
+    <div class="mb-5">
+        <app-valores-details *ngIf="this.rawSacola" [rawSacola]="this.rawSacola"/>
     </div>
     <div>
         <div class="text-sm" *ngIf="!this.totaisItensSacola">

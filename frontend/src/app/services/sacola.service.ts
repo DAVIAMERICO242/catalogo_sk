@@ -43,6 +43,9 @@ export class SacolaService {
   onSacolaChange$ = this.onSacolaChangeSub.asObservable();
   private openSub = new BehaviorSubject<boolean>(false);
   open$= this.openSub.asObservable();
+  private descontosAplicadosSub = new BehaviorSubject<Desconto.DescontoAplicado[]>([]);
+  descontosAplicados$ = this.descontosAplicadosSub.asObservable();
+  loadingDescontosSub = new BehaviorSubject<boolean>(false);
 
   private readonly sacolasStorageName = "sacolas-lojas";
 
@@ -60,7 +63,15 @@ export class SacolaService {
     this.openSub.next(false);
   }
 
-  getDescontoForSacola(raw:Sacola.RawSacola){
+  setDescontos(raw:Sacola.RawSacola){
+    this.loadingDescontosSub.next(true);
+    this.getDescontoForSacola(raw).subscribe((data)=>{
+      this.loadingDescontosSub.next(false);
+      this.descontosAplicadosSub.next(data);
+    })
+  }
+
+  private getDescontoForSacola(raw:Sacola.RawSacola){
     return this.http.post<Desconto.DescontoAplicado[]>(env.BACKEND_URL+"/carrinho/descontos-validos",raw);
   }
 
@@ -101,6 +112,7 @@ export class SacolaService {
       }
       localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
     }
+    this.descontosAplicadosSub.next([]);
     this.notifySacolaChange();
   }
 
@@ -142,6 +154,7 @@ export class SacolaService {
           }
         });
         localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
+
       }else{
         const produtoSacola:Sacola.ProdutoRawSacola = {
           nome:produto.nome,
@@ -154,10 +167,11 @@ export class SacolaService {
           linha:produto.linha,
           preco:produto.preco
         }
-        sacolas.unshift({
+        const sacolaForLoja = {
           loja,
           produtos:[produtoSacola]
-        });
+        }
+        sacolas.unshift(sacolaForLoja);
         localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
       }
     }else{
@@ -172,10 +186,11 @@ export class SacolaService {
         linha:produto.linha,
         preco:produto.preco
       }
-      const sacolas:Sacola.RawSacola[] = [{
+      const sacolaForLoja:Sacola.RawSacola = {
         loja:loja,
         produtos:[produtoSacola]
-      }];
+      }
+      const sacolas:Sacola.RawSacola[] = [sacolaForLoja];
       localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
     }
     this.notifySacolaChange();
