@@ -8,7 +8,7 @@
         <div class=" text-xs mt-3 text-nowrap overflow-hidden text-ellipsis font-semibold ">
             {{ produto.produtoBase.descricao }}
         </div>
-        <app-produto-preco [produto]="produto"/>
+        <app-produto-preco [produto]="produto.produtoBase"/>
         <div class="text-[10px] rounded-sm bg-slate-100 w-fit  p-1">{{produto.produtoBase.linha}}</div>
 
     </div>

@@ -39,6 +39,7 @@ export class SacolaComponent implements OnInit,OnDestroy {
   open = false;
   constructor(protected sacolaService:SacolaService,private lojaContext:LojaContextService){}
   ngOnInit(): void {
+
     this.lojaContext.loja$.pipe(filter(loja => !!loja), take(1)).subscribe((loja)=>
       {
           if(loja){

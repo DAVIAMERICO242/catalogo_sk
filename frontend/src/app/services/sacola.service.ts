@@ -4,14 +4,18 @@ import { HttpClient } from '@angular/common/http';
 import { Desconto, DescontosService } from './descontos.service';
 import { env } from '../../env';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { ProdutoPrecificavel } from '../loja/produto-preco/produto-preco.component';
 export namespace Sacola{
 
   export interface RawSacola{//O MESMO PRODUTO PODE ESTAR VARIAS VEZES NA MESMA SACOLA, CADA UM DELE DEVE TER EXATAMENTE UMA VARIAÇÃO POR MAIS QUE SEJA UM ARRAY
     loja:Pedidos.LojaPedido,
-    produtos:Pedidos.ProdutoPedido[]
+    produtos:ProdutoRawSacola[]
   }
 
-  export interface ProdutoSacolaRequest{
+  export interface ProdutoRawSacola extends Pedidos.ProdutoPedido, ProdutoPrecificavel{  
+  }
+
+  export interface ProdutoSacolaRequest extends ProdutoPrecificavel{
     systemId:string,
     sku:string,
     nome:string,
@@ -117,12 +121,16 @@ export class SacolaService {
             }
           })
         }else{
-          const produtoSacola:Pedidos.ProdutoPedido = {
+          const produtoSacola:Sacola.ProdutoRawSacola = {
             nome:produto.nome,
             sku:produto.sku,
             systemId:produto.systemId,
             valorBase:produto.valorBase,
-            variacoesCompradas:[produto.variacaoAlvo]
+            variacoesCompradas:[produto.variacaoAlvo],
+            categoria:produto.categoria,
+            grupo:produto.grupo,
+            linha:produto.linha,
+            preco:produto.preco
           }
           sacolaForLoja.produtos.unshift(produtoSacola);
         }
@@ -135,12 +143,16 @@ export class SacolaService {
         });
         localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
       }else{
-        const produtoSacola:Pedidos.ProdutoPedido = {
+        const produtoSacola:Sacola.ProdutoRawSacola = {
           nome:produto.nome,
           sku:produto.sku,
           systemId:produto.systemId,
           valorBase:produto.valorBase,
-          variacoesCompradas:[produto.variacaoAlvo]
+          variacoesCompradas:[produto.variacaoAlvo],
+          categoria:produto.categoria,
+          grupo:produto.grupo,
+          linha:produto.linha,
+          preco:produto.preco
         }
         sacolas.unshift({
           loja,
@@ -149,12 +161,16 @@ export class SacolaService {
         localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
       }
     }else{
-      const produtoSacola:Pedidos.ProdutoPedido = {
+      const produtoSacola:Sacola.ProdutoRawSacola = {
         nome:produto.nome,
         sku:produto.sku,
         systemId:produto.systemId,
         valorBase:produto.valorBase,
-        variacoesCompradas:[produto.variacaoAlvo]
+        variacoesCompradas:[produto.variacaoAlvo],
+        categoria:produto.categoria,
+        grupo:produto.grupo,
+        linha:produto.linha,
+        preco:produto.preco
       }
       const sacolas:Sacola.RawSacola[] = [{
         loja:loja,

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Sacola, SacolaService } from '../../../services/sacola.service';
 import { Loja } from '../../../services/loja.service';
 import { Produto, ProdutosService } from '../../../services/produtos.service';
@@ -6,20 +6,34 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { Pedidos } from '../../../services/pedidos.service';
 import { SharedModule } from '../../../shared/shared.module';
+import { ProdutoPrecificavel, ProdutoPrecoComponent } from '../../produto-preco/produto-preco.component';
 
 @Component({
   selector: 'app-produto-sacola',
-  imports: [SharedModule],
+  imports: [SharedModule, ProdutoPrecoComponent],
   templateUrl: './produto-sacola.component.html'
 })
-export class ProdutoSacolaComponent {
+export class ProdutoSacolaComponent implements OnInit {
   @Input({required:true})
   loja!:Loja.Loja;
   @Input({required:true})
   produtoSacola!:Sacola.BeautySacolaItem;//VARIACAO
+  produtoPrecificavel!:ProdutoPrecificavel;//pra usar o componente que abstrai descontos
   loadingUnitUpdate = false;
 
   constructor(private sacolaService:SacolaService,private produtoService:ProdutosService,private message:MessageService){}
+  ngOnInit(): void {
+    const loja:Pedidos.LojaPedido={
+      nome:this.loja.loja,
+      slug:this.loja.slug,
+      systemId:this.loja.systemId
+    }
+    const produto:Sacola.ProdutoRawSacola | undefined = this.sacolaService.getRawSacolaForLoja(loja)?.produtos.find(e=>e.variacoesCompradas.map(e=>e.systemId).includes(this.produtoSacola.systemId));
+    if(produto){
+      this.produtoPrecificavel = produto;
+    }
+  }
+
 
 
   increaseOneUnit(){
@@ -36,10 +50,7 @@ export class ProdutoSacolaComponent {
           const produtoExistente = sacolaRaw?.produtos.find((e)=>e.variacoesCompradas.map((e1)=>e1.systemId).includes(this.produtoSacola.systemId));
           if(produtoExistente){
             const requestProdutoSacola:Sacola.ProdutoSacolaRequest = {
-              nome:produtoExistente.nome,
-              sku:produtoExistente.sku,
-              systemId:produtoExistente.systemId,
-              valorBase:produtoExistente.valorBase,
+              ...produtoExistente,
               variacaoAlvo:this.produtoSacola
             }
             this.sacolaService.addToSacolaForLoja(loja,requestProdutoSacola);

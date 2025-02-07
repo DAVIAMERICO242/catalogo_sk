@@ -189,6 +189,10 @@ export class ProductPageComponent implements OnInit{
         nome:this.produto.produtoBase.descricao,
         sku:this.produto.produtoBase.sku,
         valorBase:this.produto.produtoBase.preco,
+        categoria:this.produto.produtoBase.categoria,
+        grupo:this.produto.produtoBase.grupo,
+        linha:this.produto.produtoBase.linha,
+        preco:this.produto.produtoBase.preco,
         variacaoAlvo:{
           cor:variacaoSelecionadaTransformed.cor,
           fotoUrl:variacaoSelecionadaTransformed.foto,

@@ -4,6 +4,9 @@
     <div class="space-y-3 p-1">
         <div class="descricao text-[10px] h-[30px] font-bold overflow-hidden">{{produtoSacola.nome}}</div>
         <div class="text-xs">{{produtoSacola.cor}}/{{produtoSacola.tamanho}}</div>
+        <div class="mt-1">
+            <app-produto-preco [multiplier]="produtoSacola.quantidade" [produto]="produtoPrecificavel"/>
+        </div>
         <div class="flex items-center gap-2">
             <div (click)="this.decreaseOneUnit()" class="cursor-pointer w-[20px] h-[20px] flex items-center justify-center bg-black text-white rounded-full">
                 <div class="pi pi-minus !text-xs"></div>
