@@ -155,6 +155,7 @@ public class DescontoService {
         this.descontoRepository.save(entity);
         DescontoProgressivoDTO descontoProgressivoDTO = descontoDTO.getDescontoProgressivo();
         descontoProgressivoDTO.setSystemId(descontoProgressivo.getSystemId());
+        descontoDTO.setSystemId(entity.getSystemId());
         descontoDTO.setDescontoProgressivo(descontoProgressivoDTO);
         descontoDTO.setCreatedAt(entity.getCreatedAt());
         return descontoDTO;
@@ -175,6 +176,7 @@ public class DescontoService {
         this.descontoRepository.save(entity);
         DescontoMenorValorDTO descontoMenorValorDTO = descontoDTO.getDescontoMenorValor();
         descontoMenorValorDTO.setSystemId(descontoMenorValor.getSystemId());
+        descontoDTO.setSystemId(entity.getSystemId());
         descontoDTO.setDescontoMenorValor(descontoMenorValorDTO);
         descontoDTO.setCreatedAt(entity.getCreatedAt());
         return descontoDTO;
@@ -195,6 +197,7 @@ public class DescontoService {
         this.descontoRepository.save(entity);
         DescontoMaiorValorDTO descontoMaiorValorDTO = descontoDTO.getDescontoMaiorValor();
         descontoMaiorValorDTO.setSystemId(descontoMaiorValor.getSystemId());
+        descontoDTO.setSystemId(entity.getSystemId());
         descontoDTO.setDescontoMaiorValor(descontoMaiorValorDTO);
         descontoDTO.setCreatedAt(entity.getCreatedAt());
         return descontoDTO;
@@ -214,6 +217,7 @@ public class DescontoService {
         this.descontoRepository.save(entity);
         DescontoSimplesTermoDTO descontoSimplesTermoDTO = descontoDTO.getDescontoSimplesTermo();
         descontoSimplesTermoDTO.setSystemId(descontoSimplesTermo.getSystemId());
+        descontoDTO.setSystemId(entity.getSystemId());
         descontoDTO.setDescontoSimplesTermo(descontoSimplesTermoDTO);
         descontoDTO.setCreatedAt(entity.getCreatedAt());
         return descontoDTO;
@@ -243,6 +247,7 @@ public class DescontoService {
         produtoDescontoDTO.setNome(produtoCatalogo.getProdutoBaseFranquia().getDescricao());
         produtoDescontoDTO.setBaseValue(produtoCatalogo.getProdutoBaseFranquia().getPreco());
         descontoSimplesDTO.setProduto(produtoDescontoDTO);
+        descontoDTO.setSystemId(entity.getSystemId());
         descontoDTO.setDescontoSimples(descontoSimplesDTO);
         descontoDTO.setCreatedAt(entity.getCreatedAt());
         return descontoDTO;
@@ -262,6 +267,7 @@ public class DescontoService {
         this.descontoRepository.save(entity);
         DescontoGenericoCarrinhoDTO descontoGenericoCarrinhoDTO = descontoDTO.getDescontoGenericoCarrinho();
         descontoGenericoCarrinhoDTO.setSystemId(descontoGenericoCarrinho.getSystemId());
+        descontoDTO.setSystemId(entity.getSystemId());
         descontoDTO.setDescontoGenericoCarrinho(descontoGenericoCarrinhoDTO);
         descontoDTO.setCreatedAt(entity.getCreatedAt());
         return descontoDTO;
@@ -281,6 +287,7 @@ public class DescontoService {
         this.descontoRepository.save(entity);
         DescontoFreteDTO descontoFreteDTO = descontoDTO.getDescontoFrete();
         descontoFreteDTO.setSystemId(descontoFrete.getSystemId());
+        descontoDTO.setSystemId(entity.getSystemId());
         descontoDTO.setDescontoFrete(descontoFreteDTO);
         descontoDTO.setCreatedAt(entity.getCreatedAt());
         return descontoDTO;
