@@ -43,11 +43,21 @@ export class ProdutoPrecoComponent implements OnInit {
     decontoTermos.forEach((e)=>{
       const delimitedTermos = [e?.delimitedCategorias,e?.delimitedGrupos,e?.delimitedLinhas].flat().filter(Boolean);
       const excludedTermos = [e?.excludedCategorias,e?.excludedGrupos,e?.excludedLinhas].flat().filter(Boolean);
-      termos.forEach((e1)=>{
-        if(delimitedTermos.includes(e1) && !excludedTermos.includes(e1)){
+      let allowedEvenExcluding = true;
+      excludedTermos.forEach((ex)=>{
+          if(ex && termos.includes(ex)){
+            allowedEvenExcluding = false;
+          }
+      });
+      if(!allowedEvenExcluding){
+        return;
+      }
+      for(let delimited of delimitedTermos){
+        if(delimited && termos.includes(delimited)){
           this.precoComDesconto = this.precoComDesconto - this.precoComDesconto*(e?.percentDecimalDiscount||0);
+          break;
         }
-      })
+      }
     });
     if(this.produto.produtoBase.descricao.includes("SUNGA")){
       console.log("a")
