@@ -15,6 +15,15 @@ public class DescontoController {
         this.descontoService = descontoService;
     }
 
+    @GetMapping("/ativos/by-slug")
+    public ResponseEntity getDescontosBySlug(String lojaSlug){
+        try{
+            return ResponseEntity.ok().body(this.descontoService.getDescontosAtivosByLojaSlug(lojaSlug));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
 
     @GetMapping
     public ResponseEntity getDescontos(

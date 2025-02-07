@@ -106,6 +106,9 @@ public class DiscountCalculator {
                                 desconto.getExcludedTermos(),
                                 desconto.getDescontoSimplesTermo().getPercentDecimalDiscount()
                         );
+                        if(descontoVal==0f){
+                            continue;
+                        }
                         finalValue = finalValue - descontoVal;
                         DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
                         descontoAplicadoDTO.setSystemId(desconto.getSystemId());
@@ -263,13 +266,13 @@ public class DiscountCalculator {
         List<String> delimitedGrupos = delimitedTermos.stream()
                 .filter(o->o.getClassificacaoTermo().equals(TermoTipo.GRUPO)).map(o->o.getTermo()).toList();
         if(delimitedCategorias.contains(produto.getCategoria())){
-            return produto.getPreco()*(1 - knownDescontoPercentage);
+            return produto.getPreco()*(knownDescontoPercentage);
         }
         if(delimitedLinhas.contains(produto.getLinha())){
-            return produto.getPreco()*(1 - knownDescontoPercentage);
+            return produto.getPreco()*(knownDescontoPercentage);
         }
         if(delimitedGrupos.contains(produto.getGrupo())){
-            return produto.getPreco()*(1 - knownDescontoPercentage);
+            return produto.getPreco()*(knownDescontoPercentage);
         }
         return 0f;
     }

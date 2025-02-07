@@ -8,9 +8,7 @@
         <div class=" text-xs mt-3 text-nowrap overflow-hidden text-ellipsis font-semibold ">
             {{ produto.produtoBase.descricao }}
         </div>
-        <div class="text-sm">
-            {{produto.produtoBase.preco | currency:"BRL"}}
-        </div>
+        <app-produto-preco [produto]="produto"/>
         <div class="text-[10px] rounded-sm bg-slate-100 w-fit  p-1">{{produto.produtoBase.linha}}</div>
 
     </div>

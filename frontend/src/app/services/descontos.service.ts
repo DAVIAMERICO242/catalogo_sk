@@ -123,6 +123,22 @@ export class DescontosService {
     );
   }
 
+  getDescontosAtivosBySlug(lojaSlug:string){
+    let url = env.BACKEND_URL + "/descontos/ativos/by-slug?lojaSlug="+lojaSlug;
+    return this.http.get<Desconto.DescontoModel[]>(url).pipe(
+      map((raw)=>{
+        const buffer = raw.map((e)=>{
+          return{
+            ...e,
+            expiresAt:new Date(e.expiresAt + "T00:00:00-03:00"),
+            createdAt:new Date((e.createdAt as Date))
+          }
+        })
+        return buffer;
+      })
+    );
+  }
+
   getDescontos(franquiaId:string,lojaId?:string){
     let url = env.BACKEND_URL + "/descontos?franquiaId="+franquiaId;
     if(lojaId){

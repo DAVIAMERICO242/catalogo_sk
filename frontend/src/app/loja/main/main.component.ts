@@ -38,6 +38,7 @@ export class LojaComponent {
 
   loadContext(){
     this.lojaContext.setLoja(this.slug);
+    this.lojaContext.setDescontos(this.slug);
   }
 
 }

@@ -4,6 +4,7 @@ import { Catalogo, CatalogoService } from '../services/catalogo.service';
 import { HttpClient } from '@angular/common/http';
 import { env } from '../../env';
 import { Loja } from '../services/loja.service';
+import { Desconto, DescontosService } from '../services/descontos.service';
 
 @Injectable()
 export class LojaContextService {
@@ -12,13 +13,21 @@ export class LojaContextService {
   loja$ = this.lojaSub.asObservable();
   produtosSub = new BehaviorSubject<Catalogo.Produto[]|undefined>(undefined);
   produtos$ = this.produtosSub.asObservable();
-  constructor(private http:HttpClient,private catalogoService:CatalogoService){}
+  descontosSub = new BehaviorSubject<Desconto.DescontoModel[]|undefined>(undefined);
+  descontos$ = this.descontosSub.asObservable();
+  constructor(private http:HttpClient,private catalogoService:CatalogoService,private descontoService:DescontosService){}
 
   setCatalogo(slug:string){
     this.catalogoService.getCatalogo(slug).subscribe({
       next:(data)=>{
         this.produtosSub.next(data);
       }
+    })
+  }
+
+  setDescontos(slug:string){
+    this.descontoService.getDescontosAtivosBySlug(slug).subscribe((data)=>{
+      this.descontosSub.next(data);
     })
   }
 

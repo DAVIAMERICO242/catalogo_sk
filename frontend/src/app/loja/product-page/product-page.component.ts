@@ -10,10 +10,11 @@ import { fadeIn } from '../../animations/fadeIn';
 import { Sacola, SacolaService } from '../../services/sacola.service';
 import { Loja } from '../../services/loja.service';
 import { Pedidos } from '../../services/pedidos.service';
+import { ProdutoPrecoComponent } from "../produto-preco/produto-preco.component";
 
 @Component({
   selector: 'app-product-page',
-  imports: [SharedModule],
+  imports: [SharedModule, ProdutoPrecoComponent],
   templateUrl: './product-page.component.html',
   styles:[
     `

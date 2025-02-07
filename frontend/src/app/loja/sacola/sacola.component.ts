@@ -6,6 +6,7 @@ import { Loja } from '../../services/loja.service';
 import { filter, Subscriber, Subscription, take } from 'rxjs';
 import { ProdutoSacolaComponent } from "./produto-sacola/produto-sacola.component";
 import { Pedidos } from '../../services/pedidos.service';
+import { DescontosService } from '../../services/descontos.service';
 
 @Component({
   selector: 'app-sacola',
@@ -65,8 +66,21 @@ export class SacolaComponent implements OnInit,OnDestroy {
     });
     if(this.beautySacola?.itens.length || this.beautySacola?.itens.length===0){
       this.totaisItensSacola = this.beautySacola?.itens.reduce((a,b)=>a+b.quantidade,0);
+      this.calcularDescontos();
     }
     console.log(this.beautySacola)
+  }
+
+  calcularDescontos(){
+    const loja:Pedidos.LojaPedido={
+      nome:this.loja.loja,
+      slug:this.loja.slug,
+      systemId:this.loja.systemId
+    }
+    const raw = this.sacolaService.getRawSacolaForLoja(loja);
+    if(raw){
+      this.sacolaService.getDescontoForSacola(raw).subscribe();
+    } 
   }
 
   limpar(){

@@ -4,10 +4,11 @@ import { Produto } from '../../../services/produtos.service';
 import { Catalogo } from '../../../services/catalogo.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
+import { ProdutoPrecoComponent } from "../../produto-preco/produto-preco.component";
 
 @Component({
   selector: 'app-base-product-container',
-  imports: [SharedModule],
+  imports: [SharedModule, ProdutoPrecoComponent],
   templateUrl: './base-product-container.component.html'
 })
 export class BaseProductContainerComponent {

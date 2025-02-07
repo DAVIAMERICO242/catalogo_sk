@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Pedidos } from './pedidos.service';
 import { HttpClient } from '@angular/common/http';
-import { Desconto } from './descontos.service';
+import { Desconto, DescontosService } from './descontos.service';
 import { env } from '../../env';
 import { BehaviorSubject, Subject } from 'rxjs';
 export namespace Sacola{

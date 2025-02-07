@@ -13,6 +13,7 @@ import com.skyler.catalogo.domain.lojas.Loja;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,17 @@ public class DescontoService {
             throw new RuntimeException("Existem pedidos associados a esse desconto.");
         }
         this.descontoRepository.deleteById(id);
+    }
+
+    public List<DescontoDTO> getDescontosAtivosByLojaSlug(String slug){
+        List<DescontoDTO> descontoDTOList = new ArrayList<>();
+        List<Desconto> descontos = new ArrayList<>();
+        descontos = this.descontoRepository.findAllActiveAndNotExpiredByLojaId(LocalDate.now(),this.lojaRepository.findByLojaSlug(slug).get().getSystemId());
+        for(Desconto desconto:descontos){
+            descontoDTOList.add(this.descontoMapper.entityToDTO(desconto));
+        }
+        descontoDTOList.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+        return descontoDTOList;
     }
 
     public List<DescontoDTO> getDescontos(String lojaSystemId, String franquiaSystemId){
