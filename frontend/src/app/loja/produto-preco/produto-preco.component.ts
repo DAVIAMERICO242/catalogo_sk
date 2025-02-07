@@ -6,7 +6,7 @@ import { filter, take } from 'rxjs';
 import { Desconto } from '../../services/descontos.service';
 
 export interface ProdutoPrecificavel{
-  
+
   systemId:string,
   categoria:string,
   grupo:string,
@@ -67,6 +67,9 @@ export class ProdutoPrecoComponent implements OnInit {
           this.precoComDesconto = this.precoComDesconto - this.precoComDesconto*(e?.percentDecimalDiscount||0);
           break;
         }
+      }
+      if(!delimitedTermos?.length){
+        this.precoComDesconto = this.precoComDesconto - this.precoComDesconto*(e?.percentDecimalDiscount||0);
       }
     });
 
