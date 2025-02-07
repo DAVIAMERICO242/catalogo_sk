@@ -42,6 +42,7 @@ public class DiscountCalculator {
         List<Produto> produtosBase = this.produtoRepository.findAllByIdIn(discountable.getProdutos().stream().map(o->o.getSystemId()).toList());
         List<ProdutoVariacao> variacoesEntNoDiscountable = new ArrayList<>();
         List<String> variacoesIdOnDiscountable = discountable.getProdutos().stream().flatMap(o->o.getVariacoesCompradas().stream()).map(o->o.getSystemId()).toList();
+        Integer cartSize = variacoesIdOnDiscountable.size();
         for(Produto produtoBase:produtosBase){
             for(ProdutoVariacao variacao:produtoBase.getVariacoes()){
                 if(variacoesIdOnDiscountable.contains(variacao.getSystemId())){
@@ -55,7 +56,7 @@ public class DiscountCalculator {
         Float finalValue = initialValue;
         for(Desconto desconto:descontos){
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_FRETE)){
-                Float descontoVal = discountable.getValorFrete()*(1 - desconto.getDescontoFrete().getPercentDecimalDiscount());
+                Float descontoVal = discountable.getValorFrete()*(desconto.getDescontoFrete().getPercentDecimalDiscount());
                 finalValue = finalValue - descontoVal;
                 DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
                 descontoAplicadoDTO.setSystemId(desconto.getSystemId());
@@ -81,7 +82,7 @@ public class DiscountCalculator {
                             continue;
                         }
                         if(produto.getProdutosCatalogo().contains(desconto.getDescontoSimplesProduto().getProdutoCatalogo())){
-                            Float descontoVal = produto.getPreco()*(1 - desconto.getDescontoSimplesProduto().getPercentDecimalDiscount());
+                            Float descontoVal = produto.getPreco()*(desconto.getDescontoSimplesProduto().getPercentDecimalDiscount());
                             finalValue = finalValue - descontoVal;
                             DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
                             descontoAplicadoDTO.setSystemId(desconto.getSystemId());
@@ -120,16 +121,19 @@ public class DiscountCalculator {
                 }
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_PECA_MAIOR_VALOR)){//nao é cumulativo
-                List<Produto> produtosParticipantes = this.getProdutosParticipantesDelimitedTermosExcludedTermos(
-                        produtosBase,
-                        desconto.getDelimitedTermos(),
-                        desconto.getExcludedTermos()
-                );
-                if(!produtosParticipantes.isEmpty()){
+                List<Produto> produtosParticipantes = produtosBase;
+                if(!desconto.getDelimitedTermos().isEmpty() || !desconto.getExcludedTermos().isEmpty()){
+                    produtosParticipantes = this.getProdutosParticipantesDelimitedTermosExcludedTermos(
+                            produtosBase,
+                            desconto.getDelimitedTermos(),
+                            desconto.getExcludedTermos()
+                    );
+                }
+                if(cartSize>=desconto.getDescontoMaiorValor().getLowerQuantityLimitToApply()){
                     Produto produtoComMaiorPreco = produtosParticipantes.stream()
                             .max(Comparator.comparing(Produto::getPreco))
                             .orElse(null); // Retorna null caso o Stream esteja vazio
-                    Float descontoVal = produtoComMaiorPreco.getPreco()*(1-desconto.getDescontoMaiorValor().getPercentDecimalDiscount());
+                    Float descontoVal = produtoComMaiorPreco.getPreco()*(desconto.getDescontoMaiorValor().getPercentDecimalDiscount());
                     finalValue = finalValue - descontoVal;
                     DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
                     descontoAplicadoDTO.setSystemId(desconto.getSystemId());
@@ -140,16 +144,19 @@ public class DiscountCalculator {
                 }
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_PECA_MENOR_VALOR)){//nao é cumulativo
-                List<Produto> produtosParticipantes = this.getProdutosParticipantesDelimitedTermosExcludedTermos(
-                        produtosBase,
-                        desconto.getDelimitedTermos(),
-                        desconto.getExcludedTermos()
-                );
-                if(!produtosParticipantes.isEmpty()){
+                List<Produto> produtosParticipantes = produtosBase;
+                if(!desconto.getDelimitedTermos().isEmpty() || !desconto.getExcludedTermos().isEmpty()){
+                    produtosParticipantes = this.getProdutosParticipantesDelimitedTermosExcludedTermos(
+                            produtosBase,
+                            desconto.getDelimitedTermos(),
+                            desconto.getExcludedTermos()
+                    );
+                }
+                if(cartSize>=desconto.getDescontoMenorValor().getLowerQuantityLimitToApply()){
                     Produto produtoComMenorPreco = produtosParticipantes.stream()
                             .min(Comparator.comparing(Produto::getPreco))
                             .orElse(null); // Retorna null caso o Stream esteja vazio
-                    Float descontoVal = produtoComMenorPreco.getPreco()*(1-desconto.getDescontoMenorValor().getPercentDecimalDiscount());
+                    Float descontoVal = produtoComMenorPreco.getPreco()*(desconto.getDescontoMenorValor().getPercentDecimalDiscount());
                     finalValue = finalValue - descontoVal;
                     DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
                     descontoAplicadoDTO.setSystemId(desconto.getSystemId());
@@ -158,35 +165,38 @@ public class DiscountCalculator {
                     descontoAplicadoDTO.setValorAplicado(descontoVal);
                     discountChain.add(descontoAplicadoDTO);
                 }
+
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_PROGRESSIVO)){
-                List<Produto> produtosParticipantes = this.getProdutosParticipantesDelimitedTermosExcludedTermos(
-                        produtosBase,
-                        desconto.getDelimitedTermos(),
-                        desconto.getExcludedTermos()
-                );
-                if(!produtosParticipantes.isEmpty()){
-                    List<String> produtosParticipantesIds = produtosParticipantes.stream().map(o->o.getSystemId()).toList();
-                    List<ProdutoPedidoDTO.ProdutoVariacao> variacoesParticipantesFromDiscountableNotUnique = discountable.getProdutos().stream()
-                            .filter(o->produtosParticipantesIds.contains(o.getSystemId()))
-                            .flatMap(produto -> produto.getVariacoesCompradas().stream())
-                            .toList();
-                    Set<DescontoProgressivoIntervalos> descontoProgressivoIntervalos = desconto.getDescontoProgressivo().getIntervalos();
-                    List<DescontoProgressivoIntervalos> intervalosOrdenadosDesc = descontoProgressivoIntervalos.stream()
-                            .sorted(Comparator.comparing(DescontoProgressivoIntervalos::getMinQuantity).reversed())
-                            .toList();
-                    for(DescontoProgressivoIntervalos intervalo:intervalosOrdenadosDesc){
-                        if(variacoesParticipantesFromDiscountableNotUnique.size()>=intervalo.getMinQuantity()){
-                            Float descontoVal = finalValue*intervalo.getPercentDecimalDiscount();
-                            finalValue = finalValue - descontoVal;
-                            DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
-                            descontoAplicadoDTO.setSystemId(desconto.getSystemId());
-                            descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_PROGRESSIVO);
-                            descontoAplicadoDTO.setNome(desconto.getDiscountName());
-                            descontoAplicadoDTO.setValorAplicado(descontoVal);
-                            discountChain.add(descontoAplicadoDTO);
-                            break;
-                        }
+                List<Produto> produtosParticipantes = produtosBase;
+                if(!desconto.getDelimitedTermos().isEmpty() || !desconto.getExcludedTermos().isEmpty()){
+                    produtosParticipantes = this.getProdutosParticipantesDelimitedTermosExcludedTermos(
+                            produtosBase,
+                            desconto.getDelimitedTermos(),
+                            desconto.getExcludedTermos()
+                    );
+                }
+                List<String> produtosParticipantesIds = produtosParticipantes.stream().map(o->o.getSystemId()).toList();
+                List<ProdutoPedidoDTO.ProdutoVariacao> variacoesParticipantesFromDiscountableNotUnique = discountable.getProdutos().stream()
+                        .filter(o->produtosParticipantesIds.contains(o.getSystemId()))
+                        .flatMap(produto -> produto.getVariacoesCompradas().stream())
+                        .toList();
+                Set<DescontoProgressivoIntervalos> descontoProgressivoIntervalos = desconto.getDescontoProgressivo().getIntervalos();
+                List<DescontoProgressivoIntervalos> intervalosOrdenadosDesc = descontoProgressivoIntervalos.stream()
+                        .sorted(Comparator.comparing(DescontoProgressivoIntervalos::getMinQuantity).reversed())
+                        .toList();
+                for(DescontoProgressivoIntervalos intervalo:intervalosOrdenadosDesc){
+                    if(variacoesParticipantesFromDiscountableNotUnique.size()>=intervalo.getMinQuantity()){
+                        Float descontoVal = finalValue*intervalo.getPercentDecimalDiscount();
+                        finalValue = finalValue - descontoVal;
+                        DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
+                        descontoAplicadoDTO.setSystemId(desconto.getSystemId());
+                        descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_PROGRESSIVO);
+                        descontoAplicadoDTO.setNome(desconto.getDiscountName());
+                        descontoAplicadoDTO.setValorAplicado(descontoVal);
+                        discountChain.add(descontoAplicadoDTO);
+                        break;
+
                     }
                 }
             }

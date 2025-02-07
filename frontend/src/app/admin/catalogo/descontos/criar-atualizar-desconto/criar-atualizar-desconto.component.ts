@@ -53,6 +53,7 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   definePayLoadModel(){
     this.payload = {
       ...this.payload,
+      nome:"",
       tipo:this.focusedTipo.pure_name,
       systemId: this.payload?.systemId || "",
       lojas: [],
@@ -77,10 +78,13 @@ export class CriarAtualizarDescontoComponent implements OnInit {
           systemId:loja.systemId
         })
       }
+    } 
+  }
+
+  resetFormIfCadastro(){
+    if(!this.update){
+      this.definePayLoadModel()
     }
-
-
-    
   }
 
   manageTipoChange(){
