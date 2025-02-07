@@ -45,8 +45,11 @@ public class DiscountCalculator {
         Integer cartSize = variacoesIdOnDiscountable.size();
         for(Produto produtoBase:produtosBase){
             for(ProdutoVariacao variacao:produtoBase.getVariacoes()){
-                if(variacoesIdOnDiscountable.contains(variacao.getSystemId())){
-                    variacoesEntNoDiscountable.add(variacao);
+                if(variacoesIdOnDiscountable.contains(variacao.getSystemId())){//adicionar o numero de vezes em que se repete a variacao
+                    Integer howMany = variacoesIdOnDiscountable.stream().filter(o->o.equals(variacao.getSystemId())).toList().size();
+                    for(int i=0;i<howMany;i++){
+                        variacoesEntNoDiscountable.add(variacao);
+                    }
                 }
             }
         }
@@ -66,14 +69,16 @@ public class DiscountCalculator {
                 discountChain.add(descontoAplicadoDTO);
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_GENERICO_CARRINHO)){
-                Float descontoVal =  finalValue*(desconto.getDescontoGenericoCarrinho().getPercentDecimalDiscount());
-                finalValue = finalValue - descontoVal;
-                DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
-                descontoAplicadoDTO.setSystemId(desconto.getSystemId());
-                descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_GENERICO_CARRINHO);
-                descontoAplicadoDTO.setNome(desconto.getDiscountName());
-                descontoAplicadoDTO.setValorAplicado(descontoVal);
-                discountChain.add(descontoAplicadoDTO);
+                if(finalValue>=desconto.getDescontoGenericoCarrinho().getMinValue()){
+                    Float descontoVal =  finalValue*(desconto.getDescontoGenericoCarrinho().getPercentDecimalDiscount());
+                    finalValue = finalValue - descontoVal;
+                    DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
+                    descontoAplicadoDTO.setSystemId(desconto.getSystemId());
+                    descontoAplicadoDTO.setTipo(DescontoTipo.DESCONTO_GENERICO_CARRINHO);
+                    descontoAplicadoDTO.setNome(desconto.getDiscountName());
+                    descontoAplicadoDTO.setValorAplicado(descontoVal);
+                    discountChain.add(descontoAplicadoDTO);
+                }
             }
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_SIMPLES_PRODUTO)){//ERRADO
                 for(Produto produto:produtosBase){
