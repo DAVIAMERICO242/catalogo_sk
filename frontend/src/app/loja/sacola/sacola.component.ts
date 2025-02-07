@@ -4,10 +4,11 @@ import { Sacola, SacolaService } from '../../services/sacola.service';
 import { LojaContextService } from '../loja-context.service';
 import { Loja } from '../../services/loja.service';
 import { filter, Subscriber, Subscription, take } from 'rxjs';
+import { ProdutoSacolaComponent } from "./produto-sacola/produto-sacola.component";
 
 @Component({
   selector: 'app-sacola',
-  imports: [SharedModule],
+  imports: [SharedModule, ProdutoSacolaComponent],
   templateUrl: './sacola.component.html',
   styles:[
     `
@@ -61,7 +62,7 @@ export class SacolaComponent implements OnInit,OnDestroy {
       slug:this.loja.slug,
       systemId:this.loja.systemId
     });
-    if(this.beautySacola?.itens.length){
+    if(this.beautySacola?.itens.length || this.beautySacola?.itens.length===0){
       this.totaisItensSacola = this.beautySacola?.itens.reduce((a,b)=>a+b.quantidade,0);
     }
     console.log(this.beautySacola)

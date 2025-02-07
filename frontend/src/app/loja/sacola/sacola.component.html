@@ -22,22 +22,7 @@
     </div>
     <div *ngIf="this.totaisItensSacola" class="h-[500px] overflow-auto tiny-scroll">
         <ng-container  *ngFor="let item of this.beautySacola?.itens">
-            <div class="flex mb-5 border-[1px] border-slate-100 shadow-sm ">
-                <img class="w-[130px] h-[130px]" [src]="item.fotoUrl"/>
-                <div class="space-y-3 p-1">
-                    <div class="descricao text-[10px] h-[30px] font-bold">{{item.nome}}</div>
-                    <div class="text-xs">{{item.cor}}/{{item.tamanho}}</div>
-                    <div class="flex items-center gap-2">
-                        <div class="cursor-pointer w-[20px] h-[20px] flex items-center justify-center bg-black text-white rounded-full">
-                            <div class="pi pi-minus !text-xs"></div>
-                        </div>
-                        <div class="pointer-events-none">{{item.quantidade}}</div>
-                        <div class=" cursor-pointer w-[20px] h-[20px] flex items-center justify-center bg-black text-white rounded-full">
-                            <div class="pi pi-plus !text-xs"></div>
-                        </div>
-                    </div>
-                </div>
-            </div   >
+            <app-produto-sacola [loja]="loja" [produtoSacola]="item" />
         </ng-container>
     </div>
 </p-drawer>

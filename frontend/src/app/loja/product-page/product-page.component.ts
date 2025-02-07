@@ -183,26 +183,25 @@ export class ProductPageComponent implements OnInit{
           return;
         }
       }
-      const produto:Pedidos.ProdutoPedido = {
+      const produto:Sacola.ProdutoSacolaRequest = {
         systemId:this.produto.produtoBase.systemId,
         nome:this.produto.produtoBase.descricao,
         sku:this.produto.produtoBase.sku,
         valorBase:this.produto.produtoBase.preco,
-        variacoesCompradas:[{
+        variacaoAlvo:{
           cor:variacaoSelecionadaTransformed.cor,
           fotoUrl:variacaoSelecionadaTransformed.foto,
           sku:variacaoSelecionadaTransformed.sku,
           systemId:variacaoSelecionadaTransformed.systemId,
           tamanho:variacaoSelecionadaTransformed.tamanho,
           valorBase:this.produto.produtoBase.preco
-        }]
+        }
       }
       this.sacolaService.addToSacolaForLoja(loja,produto);
     }else{
       alert("Selecione uma opção")
     }
     this.sacolaService.openSacola();
-    this.sacolaService.notifySacolaChange();
   }
 
 
