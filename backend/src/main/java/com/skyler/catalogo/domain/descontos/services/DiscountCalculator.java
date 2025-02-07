@@ -248,6 +248,9 @@ public class DiscountCalculator {
             if(delimitedGrupos.contains(o.getGrupo())){
                 return true;
             }
+            if(delimitedCategorias.isEmpty() && delimitedLinhas.isEmpty() && delimitedGrupos.isEmpty()){//passou no filtro de exclusao e nao tem filtro limitando
+                return true;
+            }
             return false;
         }).toList();
     }
@@ -287,6 +290,9 @@ public class DiscountCalculator {
             return produto.getPreco()*(knownDescontoPercentage);
         }
         if(delimitedGrupos.contains(produto.getGrupo())){
+            return produto.getPreco()*(knownDescontoPercentage);
+        }
+        if(delimitedCategorias.isEmpty() && delimitedLinhas.isEmpty() && delimitedGrupos.isEmpty()){//passou na exclusao e nao tem termo limitando
             return produto.getPreco()*(knownDescontoPercentage);
         }
         return 0f;
