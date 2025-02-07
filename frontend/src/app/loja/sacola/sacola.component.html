@@ -22,19 +22,20 @@
     </div>
     <div *ngIf="this.totaisItensSacola" class="h-[500px] overflow-auto tiny-scroll">
         <ng-container  *ngFor="let item of this.beautySacola?.itens">
-            <div class="flex bg-slate-50 mb-5 border-[1px] border-slate-100 shadow-sm ">
+            <div class="flex mb-5 border-[1px] border-slate-100 shadow-sm ">
                 <img class="w-[130px] h-[130px]" [src]="item.fotoUrl"/>
                 <div class="space-y-3 p-1">
                     <div class="descricao text-[10px] h-[30px] font-bold">{{item.nome}}</div>
                     <div class="text-xs">{{item.cor}}/{{item.tamanho}}</div>
-                    <p-inputnumber [(ngModel)]="item.quantidade" [showButtons]="true" buttonLayout="horizontal" spinnerMode="horizontal" inputId="horizontal" [inputStyle]="{ width: '40px',height:'30px',fontSize:'12px',display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center' }">
-                        <ng-template #incrementbuttonicon>
-                            <span class="pi pi-plus"></span>
-                        </ng-template>
-                        <ng-template #decrementbuttonicon>
-                            <span class="pi pi-minus"></span>
-                        </ng-template>
-                    </p-inputnumber>
+                    <div class="flex items-center gap-2">
+                        <div class="cursor-pointer w-[20px] h-[20px] flex items-center justify-center bg-black text-white rounded-full">
+                            <div class="pi pi-minus !text-xs"></div>
+                        </div>
+                        <div class="pointer-events-none">{{item.quantidade}}</div>
+                        <div class=" cursor-pointer w-[20px] h-[20px] flex items-center justify-center bg-black text-white rounded-full">
+                            <div class="pi pi-plus !text-xs"></div>
+                        </div>
+                    </div>
                 </div>
             </div   >
         </ng-container>

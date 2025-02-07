@@ -113,6 +113,10 @@ export class ProdutosService {
     return this.http.get<Produto.ProdutoEstoque[]>(env.BACKEND_URL + "/produtos/estoque" + "?skusBase=" + skusStr + "&lojaSlug="+lojaSlug);
   }
 
+  getVariationStock(sku:string,lojaSlug:string){
+    return this.http.get<Produto.VariacaoEstoque>(env.BACKEND_URL+"/produtos/estoque-variacao?sku="+sku +"&lojaSlug="+lojaSlug)
+  }
+
   getTermos(franquiaId:string){
     return this.http.get<Produto.Termos>(env.BACKEND_URL+"/produtos/termos?franquiaSystemId="+franquiaId)
   }
