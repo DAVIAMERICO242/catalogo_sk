@@ -111,7 +111,7 @@ export class SacolaService {
             valorBase:produto.valorBase,
             variacoesCompradas:[produto.variacaoAlvo]
           }
-          sacolaForLoja.produtos = [...sacolaForLoja.produtos,produtoSacola];
+          sacolaForLoja.produtos.unshift(produtoSacola);
         }
         sacolas = sacolas.map((e)=>{
           if(e.loja.systemId===loja.systemId){
