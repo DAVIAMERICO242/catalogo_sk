@@ -55,7 +55,7 @@ export class SacolaService {
     let rawVariacoes:Pedidos.VariacaoPedido[] = [];
     for(let produtoSacola of model.produtos){
       for(let variacao of produtoSacola.produtoBase.variacoes){
-        for(let i=0;i<produtoSacola.produtoBase.variacoes.length;i++){
+        for(let i=0;i<variacao.quantidade;i++){
           rawVariacoes.push({
             cor:variacao.cor,
             fotoUrl:variacao.foto,
