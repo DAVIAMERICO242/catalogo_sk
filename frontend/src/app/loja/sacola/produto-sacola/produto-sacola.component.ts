@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { Pedidos } from '../../../services/pedidos.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { ProdutoPrecificavel, ProdutoPrecoComponent } from '../../produto-preco/produto-preco.component';
+import { SacolaUiContextService } from '../sacola-ui-context.service';
 
 @Component({
   selector: 'app-produto-sacola',
@@ -21,14 +22,14 @@ export class ProdutoSacolaComponent implements OnInit {
   produtoPrecificavel!:ProdutoPrecificavel;//pra usar o componente que abstrai descontos
   loadingUnitUpdate = false;
 
-  constructor(private sacolaService:SacolaService,private produtoService:ProdutosService,private message:MessageService){}
+  constructor(private sacolaContext:SacolaUiContextService,private produtoService:ProdutosService,private message:MessageService){}
   ngOnInit(): void {
     const loja:Pedidos.LojaPedido={
       nome:this.loja.loja,
       slug:this.loja.slug,
       systemId:this.loja.systemId
     }
-    const produto:Sacola.ProdutoRawSacola | undefined = this.sacolaService.getRawSacolaForLoja(loja)?.produtos.find(e=>e.variacoesCompradas.map(e=>e.systemId).includes(this.produtoSacola.systemId));
+    const produto:Sacola.ProdutoRawSacola | undefined = this.sacolaContext.getRawSacolaForLoja(loja)?.produtos.find(e=>e.variacoesCompradas.map(e=>e.systemId).includes(this.produtoSacola.systemId));
     if(produto){
       this.produtoPrecificavel = produto;
     }
@@ -46,14 +47,14 @@ export class ProdutoSacolaComponent implements OnInit {
             slug:this.loja.slug,
             systemId:this.loja.systemId
           }
-          const sacolaRaw = this.sacolaService.getRawSacolaForLoja(loja);
+          const sacolaRaw = this.sacolaContext.getRawSacolaForLoja(loja);
           const produtoExistente = sacolaRaw?.produtos.find((e)=>e.variacoesCompradas.map((e1)=>e1.systemId).includes(this.produtoSacola.systemId));
           if(produtoExistente){
             const requestProdutoSacola:Sacola.ProdutoSacolaRequest = {
               ...produtoExistente,
               variacaoAlvo:this.produtoSacola
             }
-            this.sacolaService.addToSacolaForLoja(loja,requestProdutoSacola);
+            this.sacolaContext.addToSacolaForLoja(loja,requestProdutoSacola);
           }
           this.loadingUnitUpdate = false;
         }else{
@@ -79,7 +80,7 @@ export class ProdutoSacolaComponent implements OnInit {
       slug:this.loja.slug,
       systemId:this.loja.systemId
     }
-    this.sacolaService.removeExactlyOneQuantityOfItemFromSacolaLoja(loja,this.produtoSacola.systemId);
+    this.sacolaContext.removeExactlyOneQuantityOfItemFromSacolaLoja(loja,this.produtoSacola.systemId);
     
   }
 

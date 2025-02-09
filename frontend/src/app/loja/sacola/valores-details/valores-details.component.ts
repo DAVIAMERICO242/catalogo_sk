@@ -5,6 +5,7 @@ import { Button } from 'primeng/button';
 import { Desconto } from '../../../services/descontos.service';
 import { filter, Subscription, take } from 'rxjs';
 import { SharedModule } from '../../../shared/shared.module';
+import { SacolaUiContextService } from '../sacola-ui-context.service';
 
 @Component({
   selector: 'app-valores-details',
@@ -18,11 +19,11 @@ export class ValoresDetailsComponent implements OnInit,OnDestroy {
   descontosAplicados!:Desconto.DescontoAplicado[];
   subscriptions = new Subscription();
 
-  constructor(protected sacolaService:SacolaService){}
+  constructor(protected sacolaContext:SacolaUiContextService){}
   
   ngOnInit(): void {
 
-    this.subscriptions.add(this.sacolaService.descontosAplicados$.subscribe((data)=>{
+    this.subscriptions.add(this.sacolaContext.descontosAplicados$.subscribe((data)=>{
       let bruto = 0;
       for(let produto of this.rawSacola.produtos){
         for(let variacao of produto.variacoesCompradas){

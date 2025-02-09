@@ -9,6 +9,7 @@ import { Pedidos } from '../../services/pedidos.service';
 import { Desconto, DescontosService } from '../../services/descontos.service';
 import { DescontosAplicadosComponent } from "./descontos-aplicados/descontos-aplicados.component";
 import { ValoresDetailsComponent } from "./valores-details/valores-details.component";
+import { SacolaUiContextService } from './sacola-ui-context.service';
 
 @Component({
   selector: 'app-sacola',
@@ -41,7 +42,7 @@ export class SacolaComponent implements OnInit,OnDestroy {
   totaisItensSacola!:number;
   subscriptions = new Subscription();
   open = false;
-  constructor(protected sacolaService:SacolaService,private lojaContext:LojaContextService){}
+  constructor(protected sacolaContext:SacolaUiContextService,private lojaContext:LojaContextService){}
   ngOnInit(): void {
 
     this.lojaContext.loja$.pipe(filter(loja => !!loja), take(1)).subscribe((loja)=>
@@ -51,10 +52,10 @@ export class SacolaComponent implements OnInit,OnDestroy {
             this.setSacola();
           }
       });
-    this.subscriptions.add(this.sacolaService.onSacolaChange$.subscribe(()=>{
+    this.subscriptions.add(this.sacolaContext.onSacolaChange$.subscribe(()=>{
       this.setSacola();
     }));
-    this.subscriptions.add(this.sacolaService.open$.subscribe((val)=>{
+    this.subscriptions.add(this.sacolaContext.open$.subscribe((val)=>{
       this.open = val;
     }));
      
@@ -64,12 +65,12 @@ export class SacolaComponent implements OnInit,OnDestroy {
   }
       
   setSacola(){
-    this.beautySacola = this.sacolaService.getBeautySacolaForLoja({
+    this.beautySacola = this.sacolaContext.getBeautySacolaForLoja({
       nome:this.loja.loja,
       slug:this.loja.slug,
       systemId:this.loja.systemId
     });
-    this.rawSacola = this.sacolaService.getRawSacolaForLoja({
+    this.rawSacola = this.sacolaContext.getRawSacolaForLoja({
       nome:this.loja.loja,
       slug:this.loja.slug,
       systemId:this.loja.systemId
@@ -78,7 +79,7 @@ export class SacolaComponent implements OnInit,OnDestroy {
       this.totaisItensSacola = this.beautySacola?.itens.reduce((a,b)=>a+b.quantidade,0);
     }
     if(this.rawSacola){
-      this.sacolaService.setDescontos(this.rawSacola);
+      this.sacolaContext.setDescontos(this.rawSacola);
     }
     console.log(this.beautySacola)
   }
@@ -90,7 +91,7 @@ export class SacolaComponent implements OnInit,OnDestroy {
       slug:this.loja.slug,
       systemId:this.loja.systemId
     }
-    this.sacolaService.limparSacola(loja);
+    this.sacolaContext.limparSacola(loja);
   }
 
 }

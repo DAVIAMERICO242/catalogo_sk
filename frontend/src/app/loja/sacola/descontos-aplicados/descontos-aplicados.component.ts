@@ -3,6 +3,7 @@ import { Sacola, SacolaService } from '../../../services/sacola.service';
 import { Desconto } from '../../../services/descontos.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { Subscription } from 'rxjs';
+import { SacolaUiContextService } from '../sacola-ui-context.service';
 
 
 @Component({
@@ -18,9 +19,9 @@ export class DescontosAplicadosComponent implements OnInit{
   descontosResumidos!:Desconto.DescontoSummary[];
   descontosAplicados!:Desconto.DescontoAplicado[];
   subscriptions = new Subscription();
-  constructor(private sacolaService:SacolaService){}
+  constructor(private sacolaContext:SacolaUiContextService){}
   ngOnInit(): void {
-    this.subscriptions.add(this.sacolaService.descontosAplicados$.subscribe((data)=>{
+    this.subscriptions.add(this.sacolaContext.descontosAplicados$.subscribe((data)=>{
         this.descontosAplicados = data;
         this.totalDescontos = this.descontosAplicados.reduce((a,b)=>a+b.valorAplicado,0);
         this.setResumo();
