@@ -5,14 +5,6 @@ import { LojaContextService } from '../loja-context.service';
 import { filter, take } from 'rxjs';
 import { Desconto } from '../../services/descontos.service';
 
-export interface ProdutoPrecificavel{
-
-  systemId:string,
-  categoria:string,
-  grupo:string,
-  linha:string,
-  preco:number
-}
 @Component({
   selector: 'app-produto-preco',
   imports: [SharedModule],
@@ -24,13 +16,13 @@ export class ProdutoPrecoComponent implements OnInit {
   @Input()
   styleClass = "";
   @Input()
-  produto!:ProdutoPrecificavel;
+  produto!:Catalogo.Produto;
   descontos!:Desconto.DescontoModel[];
   precoComDesconto!:number;
 
   constructor(private lojaContext:LojaContextService){}
   ngOnInit(): void {
-    this.precoComDesconto = this.produto.preco;
+    this.precoComDesconto = this.produto.produtoBase.preco;
     this.lojaContext.descontosSub.pipe(
       filter(d=>d!==undefined),
       take(1)
@@ -41,12 +33,12 @@ export class ProdutoPrecoComponent implements OnInit {
   }
 
   calcularDesconto(){
-    const termos = [this.produto.categoria,this.produto.grupo,this.produto.linha];
+    const termos = [this.produto.produtoBase.categoria,this.produto.produtoBase.grupo,this.produto.produtoBase.linha];
     const produtosEmDesconto = this.descontos.map((e)=>e.descontoSimples?.produto);
     if(produtosEmDesconto?.map(e=>e?.systemId).includes(this.produto.systemId)){
       const valorPercentDesconto = this.descontos.filter((e)=>e.descontoSimples?.produto.systemId===this.produto.systemId).reduce((a,b)=>a+(b?.descontoSimples?.percentDecimalDiscount||0),0);
       if(valorPercentDesconto){
-        this.precoComDesconto = this.produto.preco*(1-valorPercentDesconto);
+        this.precoComDesconto = this.produto.produtoBase.preco*(1-valorPercentDesconto);
       }
     }
     const decontoTermos = this.descontos.map((e)=>e.descontoSimplesTermo);

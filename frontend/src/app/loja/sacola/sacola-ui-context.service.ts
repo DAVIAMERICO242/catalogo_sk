@@ -3,9 +3,10 @@ import { Pedidos } from '../../services/pedidos.service';
 import { Sacola, SacolaService } from '../../services/sacola.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Desconto } from '../../services/descontos.service';
-
-
-
+import { Loja } from '../../services/loja.service';
+import { Catalogo } from '../../services/catalogo.service';
+import { Produto } from '../../services/produtos.service';
+import { SacolaComponent } from './sacola.component';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,8 @@ export class SacolaUiContextService {
   }
 
 
-  setDescontos(raw:Sacola.RawSacola){
+  setDescontos(sacola:Sacola.SacolaModel){
+    const raw = this.sacolaService.mapModelToRawSacola(sacola);
     this.loadingDescontosSub.next(true);
     this.sacolaService.getDescontoForSacola(raw).subscribe((data)=>{
       this.loadingDescontosSub.next(false);
@@ -44,37 +46,20 @@ export class SacolaUiContextService {
   }
 
 
-  getBeautySacolaForLoja(loja:Pedidos.LojaPedido):Sacola.BeautySacola | undefined{
-    const raw = this.getRawSacolaForLoja(loja);
-    const variacoes = raw?.produtos.flatMap((e)=>e.variacoesCompradas);
-    const mapa = new Map<string, Sacola.BeautySacolaItem>();
-    variacoes?.forEach((item) => {
-      if (mapa.has(item.systemId)) {
-        mapa.get(item.systemId)!.quantidade += 1;
-      } else {
-        const nome = raw?.produtos.find((e)=>e.variacoesCompradas.map(e=>e.systemId).includes(item.systemId))?.nome as string;
-        mapa.set(item.systemId, { ...item,nome: nome,quantidade: 1 });
-      }
-    });
-    return {
-      itens:Array.from(mapa.values())
-    }
-  }
-
-  getRawSacolaForLoja(loja:Pedidos.LojaPedido):Sacola.RawSacola | undefined{
+  getSacolaForLoja(loja:Loja.Loja):Sacola.SacolaModel | undefined{
     const sacolasString = localStorage.getItem(this.sacolasStorageName);
     if(sacolasString){
-      let sacolas = JSON.parse(sacolasString) as Sacola.RawSacola[];
-      let sacolaForLoja = sacolas.find(e=>e.loja.systemId===loja.systemId);
-      return sacolaForLoja;
+      let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];
+      return sacolas.find((e)=>e.loja.systemId===loja.systemId)
     }
     return undefined;
   }
 
-  limparSacola(loja:Pedidos.LojaPedido){
+
+  limparSacola(loja:Loja.Loja){
     const sacolasString = localStorage.getItem(this.sacolasStorageName);
     if(sacolasString){
-      let sacolas = JSON.parse(sacolasString) as Sacola.RawSacola[];
+      let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];
       let sacolaForLoja = sacolas.find(e=>e.loja.systemId===loja.systemId);
       if(sacolaForLoja){
         sacolas = sacolas.filter((e)=>e.loja.systemId!==loja.systemId);
@@ -85,33 +70,64 @@ export class SacolaUiContextService {
     this.notifySacolaChange();
   }
 
-  addToSacolaForLoja(loja:Pedidos.LojaPedido,produto:Sacola.ProdutoSacolaRequest):void{
+  addToSacolaForLoja(loja:Loja.Loja,produto:Catalogo.Produto,variacao:Produto.ProdutoVariacao):void{
     const sacolasString = localStorage.getItem(this.sacolasStorageName);
     if(sacolasString){
-      let sacolas = JSON.parse(sacolasString) as Sacola.RawSacola[];
+      let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];
       let sacolaForLoja = sacolas.find(e=>e.loja.systemId===loja.systemId);
       if(sacolaForLoja){
-        const foundProduto = sacolaForLoja.produtos.find((e)=>e.systemId===produto.systemId);
+        let foundProduto = sacolaForLoja.produtos.find((e)=>e.systemId===produto.systemId);
         if(foundProduto){
-          foundProduto.variacoesCompradas.unshift(produto.variacaoAlvo);
-          sacolaForLoja.produtos = sacolaForLoja.produtos.map((e)=>{
-            if(e.systemId===produto.systemId){
-              return foundProduto;
-            }else{
-              return e;
-            }
-          })
+          const foundVariacao = foundProduto.produtoBase.variacoes.find((e)=>e.systemId===variacao.systemId);
+          if(foundVariacao){
+            sacolaForLoja.produtos = sacolaForLoja.produtos.map((e)=>{
+              if(e.systemId===produto.systemId){
+                const produtoBase:Sacola.ProdutoBaseModel = {
+                  ...e.produtoBase,
+                  variacoes:[...e.produtoBase.variacoes.map((v)=>{
+                    if(v.systemId===variacao.systemId){
+                      return{
+                        ...v,
+                        quantidade:v.quantidade + 1
+                      }
+                    }else{
+                      return v
+                    }
+                  })]
+                }
+                return {
+                  ...foundProduto,
+                  produtoBase
+                };
+              }else{
+                return e;
+              }
+            })
+          }else{
+            foundProduto.produtoBase.variacoes.unshift({
+              ...variacao,
+              quantidade:1
+            });
+            sacolaForLoja.produtos = sacolaForLoja.produtos.map((e)=>{
+              if(e.systemId===foundProduto.systemId){
+                return foundProduto;
+              }else{
+                return e;
+              }
+            })
+          }
         }else{
-          const produtoSacola:Sacola.ProdutoRawSacola = {
-            nome:produto.nome,
-            sku:produto.sku,
+          const produtoBase:Sacola.ProdutoBaseModel = {
+            ...produto.produtoBase,
+            variacoes:[{
+              ...variacao,
+              quantidade:1
+            }]
+          }
+          const produtoSacola:Sacola.ProdutoCatalogoModel = {
+            lojaCatalogo:loja,
             systemId:produto.systemId,
-            valorBase:produto.valorBase,
-            variacoesCompradas:[produto.variacaoAlvo],
-            categoria:produto.categoria,
-            grupo:produto.grupo,
-            linha:produto.linha,
-            preco:produto.preco
+            produtoBase:produtoBase
           }
           sacolaForLoja.produtos.unshift(produtoSacola);
         }
@@ -125,62 +141,74 @@ export class SacolaUiContextService {
         localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
 
       }else{
-        const produtoSacola:Sacola.ProdutoRawSacola = {
-          nome:produto.nome,
-          sku:produto.sku,
-          systemId:produto.systemId,
-          valorBase:produto.valorBase,
-          variacoesCompradas:[produto.variacaoAlvo],
-          categoria:produto.categoria,
-          grupo:produto.grupo,
-          linha:produto.linha,
-          preco:produto.preco
+        const produtoBase:Sacola.ProdutoBaseModel = {
+          ...produto.produtoBase,
+          variacoes:[{
+            ...variacao,
+            quantidade:1
+          }]
         }
-        const sacolaForLoja = {
-          loja,
-          produtos:[produtoSacola]
+        const sacolaForLoja:Sacola.SacolaModel = {
+          loja:loja,
+          produtos:[{
+            ...produto,
+            produtoBase
+          }]
         }
         sacolas.unshift(sacolaForLoja);
         localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
       }
     }else{
-      const produtoSacola:Sacola.ProdutoRawSacola = {
-        nome:produto.nome,
-        sku:produto.sku,
-        systemId:produto.systemId,
-        valorBase:produto.valorBase,
-        variacoesCompradas:[produto.variacaoAlvo],
-        categoria:produto.categoria,
-        grupo:produto.grupo,
-        linha:produto.linha,
-        preco:produto.preco
+      const produtoBase:Sacola.ProdutoBaseModel = {
+        ...produto.produtoBase,
+        variacoes:[{
+          ...variacao,
+          quantidade:1
+        }]
       }
-      const sacolaForLoja:Sacola.RawSacola = {
+      const sacolaForLoja:Sacola.SacolaModel = {
         loja:loja,
-        produtos:[produtoSacola]
+        produtos:[{
+          ...produto,
+          produtoBase
+        }]
       }
-      const sacolas:Sacola.RawSacola[] = [sacolaForLoja];
+      const sacolas:Sacola.SacolaModel[] = [sacolaForLoja];
       localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
     }
     this.notifySacolaChange();
   }
 
-  removeExactlyOneQuantityOfItemFromSacolaLoja(loja:Pedidos.LojaPedido,variationSystemId:string){//id do produto base
+  removeExactlyOneQuantityOfItemFromSacolaLoja(loja:Loja.Loja,variationSystemId:string){//id do produto base
     const sacolasString = localStorage.getItem(this.sacolasStorageName);
     if(sacolasString){
-      let sacolas = JSON.parse(sacolasString) as Sacola.RawSacola[];
+      let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];
       let sacolaForLoja = sacolas.find(e=>e.loja.systemId===loja.systemId);
       if(sacolaForLoja){
-        let foundProduto = sacolaForLoja.produtos.find((e)=>e.variacoesCompradas.map((e)=>e.systemId).includes(variationSystemId));
-        if(!foundProduto){
-          throw new Error("Estado inválido");
-        }
-        if(foundProduto.variacoesCompradas.length===1){
-          sacolaForLoja.produtos = [...sacolaForLoja.produtos.filter((e)=>!e.variacoesCompradas.map((e)=>e.systemId).includes(variationSystemId))];
-        }else if(foundProduto.variacoesCompradas.length>1){
-          const index = foundProduto.variacoesCompradas.findIndex(e => e.systemId === variationSystemId);
-          if (index !== -1) {
-            foundProduto.variacoesCompradas.splice(index, 1); // Remove exatamente uma unidade da variação
+        let foundProduto = sacolaForLoja.produtos.find((e)=>e.produtoBase.variacoes.map((e)=>e.systemId).includes(variationSystemId)) as Sacola.ProdutoCatalogoModel;
+        if(foundProduto.produtoBase.variacoes.length===1){
+          sacolaForLoja.produtos = [...sacolaForLoja.produtos.filter((e)=>!e.produtoBase.variacoes.map((e)=>e.systemId).includes(variationSystemId))];
+        }else if(foundProduto.produtoBase.variacoes.length>1){
+          const regardingVariacao = foundProduto.produtoBase.variacoes.find((e)=>e.systemId===variationSystemId);
+          if(regardingVariacao?.quantidade===1){
+            foundProduto.produtoBase.variacoes = foundProduto.produtoBase.variacoes.filter((e)=>e.systemId!==variationSystemId);
+          }else if(regardingVariacao && regardingVariacao?.quantidade>1){
+            foundProduto = {
+              ...foundProduto,
+              produtoBase:{
+                ...foundProduto.produtoBase,
+                variacoes: foundProduto.produtoBase.variacoes.map((e)=>{
+                  if(e.systemId===variationSystemId){
+                    return{
+                      ...e,
+                      quantidade: e.quantidade - 1
+                    }
+                  }else{
+                    return e
+                  }
+                })
+              }
+            }
           }
           sacolaForLoja.produtos = sacolaForLoja.produtos.map((e)=>{
             if(e.systemId===foundProduto.systemId){

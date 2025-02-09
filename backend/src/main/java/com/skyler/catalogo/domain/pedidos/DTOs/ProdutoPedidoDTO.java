@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class ProdutoPedidoDTO {
-    String systemId;
+    String systemId;//nao e o id do produto catalgoo
     String sku;
     String nome;
     Float valorBase;

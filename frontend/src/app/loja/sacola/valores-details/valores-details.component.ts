@@ -14,7 +14,7 @@ import { SacolaUiContextService } from '../sacola-ui-context.service';
 })
 export class ValoresDetailsComponent implements OnInit,OnDestroy {
   @Input({required:true})
-  rawSacola!:Sacola.RawSacola;
+  sacola!:Sacola.SacolaModel;
   total!:number;
   descontosAplicados!:Desconto.DescontoAplicado[];
   subscriptions = new Subscription();
@@ -25,9 +25,9 @@ export class ValoresDetailsComponent implements OnInit,OnDestroy {
 
     this.subscriptions.add(this.sacolaContext.descontosAplicados$.subscribe((data)=>{
       let bruto = 0;
-      for(let produto of this.rawSacola.produtos){
-        for(let variacao of produto.variacoesCompradas){
-          bruto = bruto + produto.preco;
+      for(let produto of this.sacola.produtos){
+        for(let variacao of produto.produtoBase.variacoes){
+          bruto = bruto + produto.produtoBase.preco;
         }
       }
         this.descontosAplicados = data;

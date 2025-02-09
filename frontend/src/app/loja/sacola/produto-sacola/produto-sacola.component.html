@@ -1,24 +1,24 @@
 <div [ngClass]="{'opacity-50 pointer-events-none':this.loadingUnitUpdate}" class="flex mb-5 border-[1px] border-slate-100 shadow-sm relative ">
     <div *ngIf="this.loadingUnitUpdate" class="!text-[30px] pi pi-spin pi-spinner absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
     <div class="flex justify-center items-center">
-        <img class="w-[170px] h-[170px]" [src]="produtoSacola.fotoUrl"/>
+        <img class="w-[170px] h-[170px]" [src]="produtoSacola.produtoBase.photoUrl"/>
     </div>
     <div class="space-y-3 p-1">
-        <div class="descricao text-[10px] h-[30px] font-bold overflow-hidden w-[100px]">{{produtoSacola.nome}}</div>
-        <div class="text-xs">{{produtoSacola.cor}}/{{produtoSacola.tamanho}}</div>
+        <div class="descricao text-[10px] h-[30px] font-bold overflow-hidden w-[100px]">{{produtoSacola.produtoBase.descricao}}</div>
+        <div class="text-xs">{{variacaoSacola.cor}}/{{variacaoSacola.tamanho}}</div>
         <div class="mt-1">
             <div class="text-[10px]">Unidade (1x): </div>
-            <app-produto-preco [produto]="produtoPrecificavel"/>
+            <app-produto-preco [produto]="produtoSacola"/>
         </div>
         <div class="mt-1">
-            <div class="text-[10px]">Total ({{this.produtoSacola.quantidade}}x):</div>
-            <app-produto-preco styleClass="font-bold" [multiplier]="produtoSacola.quantidade" [produto]="produtoPrecificavel"/>
+            <div class="text-[10px]">Total ({{variacaoSacola.quantidade}}x):</div>
+            <app-produto-preco styleClass="font-bold" [multiplier]="variacaoSacola.quantidade" [produto]="produtoSacola"/>
         </div>
         <div class="flex items-center gap-2">
             <div (click)="this.decreaseOneUnit()" class="cursor-pointer w-[20px] h-[20px] flex items-center justify-center bg-black text-white rounded-full">
                 <div class="pi pi-minus !text-xs"></div>
             </div>
-            <div class="pointer-events-none">{{produtoSacola.quantidade}}</div>
+            <div class="pointer-events-none">{{variacaoSacola.quantidade}}</div>
             <div (click)="this.increaseOneUnit()" class=" cursor-pointer w-[20px] h-[20px] flex items-center justify-center bg-black text-white rounded-full">
                 <div class="pi pi-plus !text-xs"></div>
             </div>

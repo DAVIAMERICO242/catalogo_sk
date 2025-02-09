@@ -24,7 +24,7 @@
                     <div class="text-[10px] text-gray-400" *ngIf="this.produto">Sku: {{this.focusedSku}}</div>
                     <div  *ngIf="this.produto" class="bg-slate-200 w-full h-[1px] mt-5 mb-5 max-[500px]:mb-2 max-[500px]:mt-2"></div>
                     <p-skeleton *ngIf="!this.produto" styleClass="!w-[100px] !h-[20px] !mb-5"/>
-                    <app-produto-preco *ngIf="this.produto" [produto]="this.produto.produtoBase"/>
+                    <app-produto-preco *ngIf="this.produto" [produto]="this.produto"/>
                 </div>
                 <p-skeleton *ngIf="!this.stock" styleClass=" !w-[100px] !h-[30px] !rounded-sm !mb-5"/>
                 <p-select  styleClass="!w-[200px] !mb-5  !flex !items-center !text-xs" *ngIf="this.stock" [options]="this.coresOption" optionValue="value" optionLabel="label" [(ngModel)]="this.selectedCor" (ngModelChange)="this.manageCorChange()" />

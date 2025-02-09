@@ -19,7 +19,7 @@
         Limpar sacola
     </div>
     <div class="mb-5">
-        <app-valores-details *ngIf="this.rawSacola" [rawSacola]="this.rawSacola"/>
+        <app-valores-details *ngIf="this.sacola" [sacola]="this.sacola"/>
     </div>
     <div>
         <div class="text-sm" *ngIf="!this.totaisItensSacola">
@@ -27,8 +27,10 @@
         </div>
     </div>
     <div *ngIf="this.totaisItensSacola" class="h-[500px] overflow-auto tiny-scroll">
-        <ng-container  *ngFor="let item of this.beautySacola?.itens">
-            <app-produto-sacola [loja]="loja" [produtoSacola]="item" />
+        <ng-container  *ngFor="let item of this.sacola?.produtos">
+            <ng-container *ngFor="let variacao of item.produtoBase.variacoes">
+                <app-produto-sacola [loja]="loja" [produtoSacola]="item" [variacaoSacola]="variacao" />
+            </ng-container>
         </ng-container>
     </div>
 </p-drawer>

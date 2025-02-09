@@ -36,13 +36,16 @@ import { SacolaUiContextService } from './sacola-ui-context.service';
 })
 export class SacolaComponent implements OnInit,OnDestroy {
   loja!:Loja.Loja;
-  beautySacola!:Sacola.BeautySacola|undefined;
-  
-  rawSacola!:Sacola.RawSacola | undefined;
+  sacola!:Sacola.SacolaModel|undefined;
   totaisItensSacola!:number;
   subscriptions = new Subscription();
+  variacoesSacola!:Sacola.ProdutoVariacaoModel[]
   open = false;
-  constructor(protected sacolaContext:SacolaUiContextService,private lojaContext:LojaContextService){}
+  constructor(
+    protected sacolaContext:SacolaUiContextService,
+    private lojaContext:LojaContextService,
+
+  ){}
   ngOnInit(): void {
 
     this.lojaContext.loja$.pipe(filter(loja => !!loja), take(1)).subscribe((loja)=>
@@ -65,33 +68,22 @@ export class SacolaComponent implements OnInit,OnDestroy {
   }
       
   setSacola(){
-    this.beautySacola = this.sacolaContext.getBeautySacolaForLoja({
-      nome:this.loja.loja,
-      slug:this.loja.slug,
-      systemId:this.loja.systemId
-    });
-    this.rawSacola = this.sacolaContext.getRawSacolaForLoja({
-      nome:this.loja.loja,
-      slug:this.loja.slug,
-      systemId:this.loja.systemId
-    });
-    if(this.beautySacola?.itens.length || this.beautySacola?.itens.length===0){
-      this.totaisItensSacola = this.beautySacola?.itens.reduce((a,b)=>a+b.quantidade,0);
+    this.sacola = this.sacolaContext.getSacolaForLoja(this.loja);
+    if(this.sacola?.produtos.length || this.sacola?.produtos.length===0){
+      this.variacoesSacola = this.sacola.produtos.flatMap((e)=>e.produtoBase.variacoes);
+      this.totaisItensSacola = this.sacola?.produtos.flatMap(e=>e.produtoBase.variacoes).reduce((a,b)=>a+b.quantidade,0);
+    }else{
+      this.totaisItensSacola = 0
     }
-    if(this.rawSacola){
-      this.sacolaContext.setDescontos(this.rawSacola);
+    if(this.sacola){
+      this.sacolaContext.setDescontos(this.sacola);
     }
-    console.log(this.beautySacola)
+    
   }
 
 
   limpar(){
-    const loja:Pedidos.LojaPedido={
-      nome:this.loja.loja,
-      slug:this.loja.slug,
-      systemId:this.loja.systemId
-    }
-    this.sacolaContext.limparSacola(loja);
+    this.sacolaContext.limparSacola(this.loja);
   }
 
 }

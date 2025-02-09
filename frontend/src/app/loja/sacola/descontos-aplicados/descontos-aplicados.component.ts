@@ -13,7 +13,7 @@ import { SacolaUiContextService } from '../sacola-ui-context.service';
 })
 export class DescontosAplicadosComponent implements OnInit{
   @Input({required:true})
-  rawSacola!:Sacola.RawSacola;
+  sacola!:Sacola.SacolaModel;
   totalDescontos = 0;
   open = false;
   descontosResumidos!:Desconto.DescontoSummary[];

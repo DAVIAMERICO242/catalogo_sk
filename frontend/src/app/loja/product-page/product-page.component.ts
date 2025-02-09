@@ -11,6 +11,7 @@ import { Sacola, SacolaService } from '../../services/sacola.service';
 import { Loja } from '../../services/loja.service';
 import { Pedidos } from '../../services/pedidos.service';
 import { ProdutoPrecoComponent } from "../produto-preco/produto-preco.component";
+import { SacolaUiContextService } from '../sacola/sacola-ui-context.service';
 
 @Component({
   selector: 'app-product-page',
@@ -51,7 +52,7 @@ export class ProductPageComponent implements OnInit{
     private lojaContext:LojaContextService,
     private route:ActivatedRoute,
     private produtoService:ProdutosService,
-    private sacolaService:SacolaService
+    private sacolaContext:SacolaUiContextService
   ){}
 
 
@@ -172,41 +173,18 @@ export class ProductPageComponent implements OnInit{
   addToSacola(){
     const variacaoSelecionadaTransformed:Produto.ProdutoVariacao|undefined = this.produto.produtoBase.variacoes.find(e=>e.cor===this.selectedCor && e.tamanho===this.selectedTamanho);
     if(variacaoSelecionadaTransformed && this.selectedTamanho){
-      const loja:Pedidos.LojaPedido = {
-        nome:this.loja.loja,
-        slug:this.loja.slug,
-        systemId:this.loja.systemId
-      };
-      const quantidadeAtualDoItemSolicitadoNaSacola = this.sacolaService.getBeautySacolaForLoja(loja)?.itens.find(e=>e.systemId===variacaoSelecionadaTransformed.systemId)?.quantidade;
+      const quantidadeAtualDoItemSolicitadoNaSacola = this.sacolaContext.getSacolaForLoja(this.loja)?.produtos.find(e=>e.systemId===this.produto.systemId)?.produtoBase.variacoes.find(e=>e.systemId===variacaoSelecionadaTransformed.systemId)?.quantidade;
       if(quantidadeAtualDoItemSolicitadoNaSacola){
         if(this.getStockForTamanhoAndContextualCor(this.selectedTamanho)===quantidadeAtualDoItemSolicitadoNaSacola){
           this.overAddedTheSameSku = true;
           return;
         }
       }
-      const produto:Sacola.ProdutoSacolaRequest = {
-        systemId:this.produto.produtoBase.systemId,
-        nome:this.produto.produtoBase.descricao,
-        sku:this.produto.produtoBase.sku,
-        valorBase:this.produto.produtoBase.preco,
-        categoria:this.produto.produtoBase.categoria,
-        grupo:this.produto.produtoBase.grupo,
-        linha:this.produto.produtoBase.linha,
-        preco:this.produto.produtoBase.preco,
-        variacaoAlvo:{
-          cor:variacaoSelecionadaTransformed.cor,
-          fotoUrl:variacaoSelecionadaTransformed.foto,
-          sku:variacaoSelecionadaTransformed.sku,
-          systemId:variacaoSelecionadaTransformed.systemId,
-          tamanho:variacaoSelecionadaTransformed.tamanho,
-          valorBase:this.produto.produtoBase.preco
-        }
-      }
-      this.sacolaService.addToSacolaForLoja(loja,produto);
+      this.sacolaContext.addToSacolaForLoja(this.loja,this.produto,variacaoSelecionadaTransformed);
     }else{
       alert("Selecione uma opção")
     }
-    this.sacolaService.openSacola();
+    this.sacolaContext.openSacola();
   }
 
 
