@@ -4,7 +4,7 @@
 <span *ngIf="this.update" (click)="this.open=true" class="underline cursor-pointer">
     Gerenciar
 </span>
-<p-drawer class="[&_.p-drawer-content.ng-star-inserted]:!overflow-visible [&_.p-overlay-mask]:!opacity-100 !overflow-auto" styleClass="!w-[600px] !overflow-auto" position="right" 
+<p-drawer  class="[&_.p-drawer-content.ng-star-inserted]:!overflow-visible [&_.p-overlay-mask]:!opacity-100 !overflow-auto" styleClass="!w-[600px] !overflow-auto" position="right" 
 [header]="this.update?'Atualizar desconto':'Novo desconto'"
 
 [(visible)]="this.open" (visibleChange)="this.resetFormIfCadastro()">

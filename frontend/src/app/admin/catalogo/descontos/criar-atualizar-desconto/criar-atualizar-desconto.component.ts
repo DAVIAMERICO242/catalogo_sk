@@ -24,11 +24,13 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   descontoTipos:DescontosBeautyNomes[] = [];
   @Input()
   payload!:Desconto.DescontoModel;
+  firstPayloadState!:Desconto.DescontoModel;
   @Output()
   onSave = new EventEmitter<Desconto.DescontoModel>();
   @Input({required:true})
   update = false;
   focusedTipo!:DescontosBeautyNomes;
+  firstFocusedTipoState!:DescontosBeautyNomes;
   loadingSave = false;
   nowAfter = new Date();
   DescontoTipoEnum = Desconto.DescontoTipo;
@@ -39,10 +41,12 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.firstPayloadState = this.payload;
     this.nowAfter.setDate(this.nowAfter.getDate()+1);
     this.nowAfter.setHours(0, 0, 0, 0);  // Set the time to 00:00:00.000
     if(!this.update){
       this.focusedTipo = this.descontoTipos[0];
+      this.firstFocusedTipoState = this.focusedTipo;
       this.definePayLoadModel();
     }else{
       this.focusedTipo = this.descontoTipos.find((e)=>e.pure_name===this.payload.tipo) as DescontosBeautyNomes;
@@ -53,7 +57,6 @@ export class CriarAtualizarDescontoComponent implements OnInit {
   definePayLoadModel(){
     this.payload = {
       ...this.payload,
-      nome:"",
       tipo:this.focusedTipo.pure_name,
       systemId: this.payload?.systemId || "",
       lojas: [],
@@ -83,6 +86,8 @@ export class CriarAtualizarDescontoComponent implements OnInit {
 
   resetFormIfCadastro(){
     if(!this.update){
+      this.payload = this.firstPayloadState;
+      this.focusedTipo = this.firstFocusedTipoState;
       this.definePayLoadModel()
     }
   }
