@@ -26,12 +26,14 @@
             Nenhum produto na sacola
         </div>
     </div>
-    <div *ngIf="this.totaisItensSacola" class="h-[400px] overflow-auto tiny-scroll">
+    <div *ngIf="this.totaisItensSacola" class="h-[350px] overflow-auto tiny-scroll">
         <ng-container  *ngFor="let item of this.sacola?.produtos">
             <ng-container *ngFor="let variacao of item.produtoBase.variacoes">
                 <app-produto-sacola [loja]="loja" [produtoSacola]="item" [variacaoSacola]="variacao" />
             </ng-container>
         </ng-container>
     </div>
-    <div>oi</div>
+    <button pButton class="!bg-black !text-xs !w-full  !mt-5" *ngIf="this.sacola?.produtos?.length">
+        Finalizar pedido
+    </button>
 </p-drawer>
