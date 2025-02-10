@@ -189,18 +189,20 @@ public class DiscountCalculator {
                             desconto.getExcludedTermos()
                     );
                 }
-                List<String> produtosParticipantesIds = produtosParticipantes.stream().map(o->o.getSystemId()).toList();
-                List<ProdutoPedidoDTO.ProdutoVariacao> variacoesParticipantesFromDiscountableNotUnique = discountable.getProdutos().stream()
-                        .filter(o->produtosParticipantesIds.contains(o.getSystemId()))
-                        .flatMap(produto -> produto.getVariacoesCompradas().stream())
+                List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
+                        .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
                         .toList();
+                List<ProdutoVariacao> variacoesParticipantes = variacoesEntNoDiscountable.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
                 Set<DescontoProgressivoIntervalos> descontoProgressivoIntervalos = desconto.getDescontoProgressivo().getIntervalos();
                 List<DescontoProgressivoIntervalos> intervalosOrdenadosDesc = descontoProgressivoIntervalos.stream()
                         .sorted(Comparator.comparing(DescontoProgressivoIntervalos::getMinQuantity).reversed())
                         .toList();
+                Float precoVariacoesParticipantes = variacoesParticipantes.stream()
+                        .map(p -> p.getProduto().getPreco()) // Extrai os preços como Float
+                        .reduce(0f, Float::sum);
                 for(DescontoProgressivoIntervalos intervalo:intervalosOrdenadosDesc){
-                    if(variacoesParticipantesFromDiscountableNotUnique.size()>=intervalo.getMinQuantity()){
-                        Float descontoVal = finalValue*intervalo.getPercentDecimalDiscount();
+                    if(variacoesParticipantes.size()>=intervalo.getMinQuantity()){
+                        Float descontoVal = precoVariacoesParticipantes*intervalo.getPercentDecimalDiscount();
                         finalValue = finalValue - descontoVal;
                         DescontoAplicadoDTO descontoAplicadoDTO = new DescontoAplicadoDTO();
                         descontoAplicadoDTO.setSystemId(desconto.getSystemId());
