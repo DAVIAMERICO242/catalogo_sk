@@ -1,7 +1,7 @@
 <div class="flex flex-col h-[calc(100vh-75px)]">
     <app-admin-page-title  iconClass="pi pi-shop" title="Lojas"/>
     <div class="p-5 relative  flex-1">
-        <p-table [value]="this.lojas" >
+        <p-table *ngIf="this.lojas;else fallback" [value]="this.lojas" >
             <ng-template #header>
                 <tr>
                     <th>Loja</th>
@@ -41,5 +41,14 @@
                 </tr>
             </ng-template>
         </p-table>
+        <ng-template #fallback >
+            <div class="w-full xl:w-6/12 p-4">
+                <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
+                <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
+                <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
+                <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
+                <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
+            </div>
+        </ng-template>
     </div>
 </div>
