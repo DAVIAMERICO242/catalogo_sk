@@ -22,6 +22,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { Carousel } from 'primeng/carousel';
 import { BadgeModule } from 'primeng/badge';
+import { InputMask } from 'primeng/inputmask';
 
 @NgModule({
   declarations: [],
@@ -37,6 +38,7 @@ import { BadgeModule } from 'primeng/badge';
     InputGroupAddonModule,
     SelectModule,
     InputNumberModule,
+    InputMask,
     SkeletonModule,
     ProgressBarModule,
     DialogModule,
@@ -60,6 +62,7 @@ import { BadgeModule } from 'primeng/badge';
     BadgeModule,
     InputTextModule,
     SkeletonModule,
+    InputMask,
     InputGroupModule, 
     SelectModule,
     InputGroupAddonModule,

@@ -32,9 +32,6 @@ export namespace User{
     systemId:string
     nome:string,
     slug:string,
-    endereco?:string,
-    telefone?:string,
-    cep?:string
   }
   export interface Franquia{
     systemId:string,

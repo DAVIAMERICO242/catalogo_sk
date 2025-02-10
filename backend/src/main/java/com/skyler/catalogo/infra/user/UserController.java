@@ -51,9 +51,6 @@ public class UserController {
             LoginResponse.Loja loja = null;
             if(user.getLoja()!=null){
                 loja = new LoginResponse.Loja();
-                loja.setEndereco(user.getLoja().getEndereco());
-                loja.setTelefone(user.getLoja().getTelefone());
-                loja.setCep(user.getLoja().getCepLoja());
                 loja.setNome(user.getLoja().getNome());
                 loja.setSlug(user.getLoja().getSlug());
                 loja.setSystemId(user.getLoja().getSystemId());
@@ -97,9 +94,6 @@ public class UserController {
             LoginResponse.Loja loja = null;
             if(user.getLoja()!=null){
                 loja = new LoginResponse.Loja();
-                loja.setEndereco(user.getLoja().getEndereco());
-                loja.setTelefone(user.getLoja().getTelefone());
-                loja.setCep(user.getLoja().getCepLoja());
                 loja.setNome(user.getLoja().getNome());
                 loja.setSlug(user.getLoja().getSlug());
                 loja.setSystemId(user.getLoja().getSystemId());

@@ -1,0 +1,31 @@
+<div class="flex items-center justify-center gap-2">
+    <button (click)="this.open=true"
+        pButton
+        pRipple
+        type="button"
+        pInitEditableRow
+        icon="pi pi-pencil"
+        text
+        rounded
+        severity="secondary"
+    ></button>
+</div>
+<p-dialog styleClass="!w-[400px]" [dismissableMask]="true" [modal]="true" header="Editar loja" [(visible)]="this.open">
+    <div class="space-y-3 mb-3">
+        <div>
+            <div class="text-sm ">Telefone:</div>
+            <p-input-mask [(ngModel)]="this.cloneLoja.telefone" mask="(99)99999-9999" styleClass="!w-full" />
+        </div>
+        <div>
+            <div class="text-sm">Cep:</div>
+            <p-input-mask [(ngModel)]="this.cloneLoja.cep" mask="99999-999" styleClass="!w-full" />
+        </div>
+        <div>
+            <div class="text-sm">Endereço:</div>
+            <input [(ngModel)]="this.cloneLoja.endereco" pInputText class="!w-full" />
+        </div>
+    </div>
+    <button [loading]="this.loading" (click)="this.save()" class="!w-full !bg-black !text-white !text-sm" pButton>
+        Salvar
+    </button>
+</p-dialog>

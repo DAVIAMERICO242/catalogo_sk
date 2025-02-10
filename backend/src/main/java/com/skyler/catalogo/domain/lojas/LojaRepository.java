@@ -46,4 +46,10 @@ public interface LojaRepository extends JpaRepository<Loja,String> {
             "JOIN FETCH l.franquia " +
             "WHERE l.slug = :slug ")
     Optional<Loja> findByLojaSlug(String slug);
+
+    @Override
+    @Query("SELECT l FROM Loja l " +
+            "JOIN FETCH l.franquia " +
+            "WHERE l.systemId = :id ")
+    Optional<Loja> findById(String id);
 }

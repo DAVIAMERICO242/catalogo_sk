@@ -1,5 +1,7 @@
 package com.skyler.catalogo.domain.lojas;
 
+import com.skyler.catalogo.infra.user.Role;
+import com.skyler.catalogo.infra.user.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,6 +49,49 @@ public class LojaService {
         franquia.setSystemId(lojaEnt.getFranquia().getSystemId());
         loja.setFranquia(franquia);
         return loja;
+    }
+
+    public LojaDTO getById(String id){
+        Optional<Loja> lojaOptional = this.lojaRepository.findById(id);
+        if(lojaOptional.isEmpty()){
+            throw new RuntimeException("Loja não encontrada");
+        }
+        Loja lojaEnt = lojaOptional.get();
+        LojaDTO loja = new LojaDTO();
+        LojaDTO.Franquia franquia = new LojaDTO.Franquia();
+        loja.setEndereco(lojaEnt.getEndereco());
+        loja.setTelefone(lojaEnt.getTelefone());
+        loja.setCep(lojaEnt.getCepLoja());
+        loja.setLoja(lojaEnt.getNome());
+        loja.setSystemId(lojaEnt.getSystemId());
+        loja.setSlug(lojaEnt.getSlug());
+        loja.setEndereco(lojaEnt.getEndereco());
+        franquia.setFranquia(lojaEnt.getFranquia().getNome());
+        franquia.setSystemId(lojaEnt.getFranquia().getSystemId());
+        loja.setFranquia(franquia);
+        return loja;
+    }
+
+
+    public List<LojaDTO> getLojasByFranquiaId(String franquiaId){
+        List<LojaDTO> output = new ArrayList<>();
+        List<Loja> lojasEnt = this.lojaRepository.findAllByFranquiaId(franquiaId);
+        for(Loja lojaEnt:lojasEnt){
+            LojaDTO loja = new LojaDTO();
+            LojaDTO.Franquia franquia = new LojaDTO.Franquia();
+            loja.setEndereco(lojaEnt.getEndereco());
+            loja.setTelefone(lojaEnt.getTelefone());
+            loja.setCep(lojaEnt.getCepLoja());
+            loja.setLoja(lojaEnt.getNome());
+            loja.setSystemId(lojaEnt.getSystemId());
+            loja.setSlug(lojaEnt.getSlug());
+            loja.setEndereco(lojaEnt.getEndereco());
+            franquia.setFranquia(lojaEnt.getFranquia().getNome());
+            franquia.setSystemId(lojaEnt.getFranquia().getSystemId());
+            loja.setFranquia(franquia);
+            output.add(loja);
+        }
+        return output;
     }
 
     public List<LojaDTO> getLojas(){

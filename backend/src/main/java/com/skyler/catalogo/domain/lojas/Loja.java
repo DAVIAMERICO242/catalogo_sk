@@ -2,10 +2,13 @@ package com.skyler.catalogo.domain.lojas;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.skyler.catalogo.domain.franquias.Franquia;
+import com.skyler.catalogo.infra.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -28,5 +31,6 @@ public class Loja {
     @JoinColumn(name="franquia_system_id")
     @JsonBackReference
     private Franquia franquia;
+
 
 }

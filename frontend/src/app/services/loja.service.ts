@@ -31,6 +31,10 @@ export namespace Loja{
 export class LojaService {
 
   constructor(private http:HttpClient) {}
+
+  getAuthorizedLojas(){
+    return this.http.get<Loja.Loja[]>(env.BACKEND_URL+"/lojas/authorized");
+  }
   
   mudarLoja(payload:Loja.LojaChangebleFieldsPayload){
     return this.http.put<void>(env.BACKEND_URL+"/lojas",payload);
@@ -70,6 +74,14 @@ export class LojaService {
           }
         })
       }));
+  }
+
+  getById(id:string){
+    return this.http.get<Loja.Loja>(env.BACKEND_URL + "/lojas/by-id?id=" + id);
+  }
+
+  getLojasByFranquiaId(id:string){
+    return this.http.get<Loja.Loja[]>(env.BACKEND_URL + "/lojas/by-franquia-id?franquiaId=" + id);
   }
 
 }

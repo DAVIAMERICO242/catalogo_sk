@@ -1,6 +1,9 @@
 package com.skyler.catalogo.domain.lojas;
 
 
+import com.skyler.catalogo.infra.auth.JwtService;
+import com.skyler.catalogo.infra.user.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class LojaController {
 
     private final LojaService lojaService;
+    private final JwtService jwtService;
 
-    public LojaController(LojaService lojaService) {
+    public LojaController(LojaService lojaService, JwtService jwtService) {
         this.lojaService = lojaService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -22,6 +27,7 @@ public class LojaController {
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
     }
+
 
     @PutMapping
     public ResponseEntity atualizarDadosMutaveisLoja(@RequestBody LojaChangePayload lojaTelefonePayload){
@@ -43,6 +49,23 @@ public class LojaController {
         }
     }
 
+    @GetMapping("/by-id")
+    public ResponseEntity getById(String id){
+        try{
+            return ResponseEntity.ok().body(this.lojaService.getById(id));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
+    @GetMapping("/by-franquia-id")
+    public ResponseEntity getByFranquiaId(String franquiaId){
+        try{
+            return ResponseEntity.ok().body(this.lojaService.getLojasByFranquiaId(franquiaId));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
 
     @GetMapping("/matriz")
     public ResponseEntity getLojasMatriz(){

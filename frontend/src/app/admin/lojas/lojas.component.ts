@@ -2,24 +2,44 @@ import { Component, OnInit } from '@angular/core';
 import { AdminPageTitleComponent } from "../admin-page-title/admin-page-title.component";
 import { User, UserService } from '../../services/user.service';
 import { SharedModule } from '../../shared/shared.module';
+import { EditLojaComponent } from "./edit-loja/edit-loja.component";
+import { Loja, LojaService } from '../../services/loja.service';
 
 @Component({
   selector: 'app-lojas',
-  imports: [AdminPageTitleComponent, SharedModule],
+  imports: [AdminPageTitleComponent, SharedModule, EditLojaComponent],
   templateUrl: './lojas.component.html'
 })
 export class LojasComponent implements OnInit{
-  lojas!:User.Loja[];//se eu ainda estiver viver e deus nao tiver me matado aqui será Loja.loja[]
-  constructor(private userService:UserService){}
+  lojas!:Loja.Loja[];//se eu ainda estiver viver e deus nao tiver me matado aqui será Loja.loja[]
+  constructor(private lojaService:LojaService,private userService:UserService){}
   ngOnInit(): void {//o localstorage tem tipagem pessimista por isso o 'as'
     const role = this.userService.getContext()?.role;
-    if(role===User.Role.ADMIN){
-      this.lojas = this.userService.getContext()?.lojasFranquia as User.Loja[];
+    const loja = this.userService.getContext()?.loja;
+    if(role===User.Role.OPERACIONAL){
+      this.lojaService.getById(loja?.systemId as string).subscribe({
+        next:(data)=>{
+          this.lojas = [data];
+        }
+      })
     }else{
-      this.lojas = [this.userService.getContext()?.loja] as User.Loja[];
+      const franquiaId = this.userService.getContext()?.franquia.systemId as string;
+      this.lojaService.getLojasByFranquiaId(franquiaId).subscribe({
+        next:(data)=>{
+          this.lojas = data;
+        }
+      })
     }
   }
   forceType(row:any){
-    return row as User.Loja;
+    return row as Loja.Loja;
   }
+
+  onEdit(loja:Loja.Loja){
+    const index = this.lojas.findIndex(l => l.systemId === loja.systemId);
+    if (index !== -1) {
+      this.lojas[index] = { ...this.lojas[index], ...loja };
+    }
+  }
+
 }
