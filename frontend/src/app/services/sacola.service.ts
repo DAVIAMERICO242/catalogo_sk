@@ -52,8 +52,8 @@ export class SacolaService {
       systemId:model.loja.systemId
     }
     let rawProdutos:Pedidos.ProdutoPedido[] = [];
-    let rawVariacoes:Pedidos.VariacaoPedido[] = [];
     for(let produtoSacola of model.produtos){
+      let rawVariacoes:Pedidos.VariacaoPedido[] = [];
       for(let variacao of produtoSacola.produtoBase.variacoes){
         for(let i=0;i<variacao.quantidade;i++){
           rawVariacoes.push({

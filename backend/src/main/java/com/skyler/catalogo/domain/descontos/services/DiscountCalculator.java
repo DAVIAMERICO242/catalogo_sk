@@ -134,7 +134,11 @@ public class DiscountCalculator {
                             desconto.getExcludedTermos()
                     );
                 }
-                if(cartSize>=desconto.getDescontoMaiorValor().getLowerQuantityLimitToApply()){
+                List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
+                        .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
+                        .toList();
+                List<ProdutoVariacao> variacoesParticipantes = variacoesEntNoDiscountable.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
+                if(variacoesParticipantes.size()>=desconto.getDescontoMaiorValor().getLowerQuantityLimitToApply()){
                     Produto produtoComMaiorPreco = produtosParticipantes.stream()
                             .max(Comparator.comparing(Produto::getPreco))
                             .orElse(null); // Retorna null caso o Stream esteja vazio
@@ -157,7 +161,11 @@ public class DiscountCalculator {
                             desconto.getExcludedTermos()
                     );
                 }
-                if(cartSize>=desconto.getDescontoMenorValor().getLowerQuantityLimitToApply()){
+                List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
+                        .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
+                        .toList();
+                List<ProdutoVariacao> variacoesParticipantes = variacoesEntNoDiscountable.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
+                if(variacoesParticipantes.size()>=desconto.getDescontoMenorValor().getLowerQuantityLimitToApply()){
                     Produto produtoComMenorPreco = produtosParticipantes.stream()
                             .min(Comparator.comparing(Produto::getPreco))
                             .orElse(null); // Retorna null caso o Stream esteja vazio
