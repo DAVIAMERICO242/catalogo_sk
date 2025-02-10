@@ -40,20 +40,8 @@ public class DiscountCalculator {
                 discountable.getLoja().getSystemId()
         );
         List<Produto> produtosBase = this.produtoRepository.findAllByIdIn(discountable.getProdutos().stream().map(o->o.getSystemId()).toList());
-        List<ProdutoVariacao> variacoesEntNoDiscountable = new ArrayList<>();
-        List<String> variacoesIdOnDiscountable = discountable.getProdutos().stream().flatMap(o->o.getVariacoesCompradas().stream()).map(o->o.getSystemId()).toList();
-        Integer cartSize = variacoesIdOnDiscountable.size();
-        for(Produto produtoBase:produtosBase){
-            for(ProdutoVariacao variacao:produtoBase.getVariacoes()){
-                if(variacoesIdOnDiscountable.contains(variacao.getSystemId())){//adicionar o numero de vezes em que se repete a variacao
-                    Integer howMany = variacoesIdOnDiscountable.stream().filter(o->o.equals(variacao.getSystemId())).toList().size();
-                    for(int i=0;i<howMany;i++){
-                        variacoesEntNoDiscountable.add(variacao);
-                    }
-                }
-            }
-        }
-        Float initialValue = variacoesEntNoDiscountable.stream()
+        List<ProdutoVariacao> nonUniqueVariacoesCompradasFromCart = this.getNonUniqueVariacoesCompradasFromCart(discountable,produtosBase);
+        Float initialValue = nonUniqueVariacoesCompradasFromCart.stream()
                 .map(p -> p.getProduto().getPreco()) // Extrai os preços como Float
                 .reduce(0f, Float::sum);
         Float finalValue = initialValue;
@@ -83,7 +71,7 @@ public class DiscountCalculator {
             if(desconto.getDescontoTipo().equals(DescontoTipo.DESCONTO_SIMPLES_PRODUTO)){//ERRADO
                 for(Produto produto:produtosBase){
                     for(ProdutoVariacao produtoVariacao:produto.getVariacoes()){
-                        if(!variacoesIdOnDiscountable.contains(produtoVariacao.getSystemId())){
+                        if(!nonUniqueVariacoesCompradasFromCart.contains(produtoVariacao)){
                             continue;
                         }
                         if(produto.getProdutosCatalogo().contains(desconto.getDescontoSimplesProduto().getProdutoCatalogo())){
@@ -137,7 +125,7 @@ public class DiscountCalculator {
                 List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
                         .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
                         .toList();
-                List<ProdutoVariacao> variacoesParticipantes = variacoesEntNoDiscountable.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
+                List<ProdutoVariacao> variacoesParticipantes = nonUniqueVariacoesCompradasFromCart.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
                 if(variacoesParticipantes.size()>=desconto.getDescontoMaiorValor().getLowerQuantityLimitToApply()){
                     Produto produtoComMaiorPreco = produtosParticipantes.stream()
                             .max(Comparator.comparing(Produto::getPreco))
@@ -164,7 +152,7 @@ public class DiscountCalculator {
                 List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
                         .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
                         .toList();
-                List<ProdutoVariacao> variacoesParticipantes = variacoesEntNoDiscountable.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
+                List<ProdutoVariacao> variacoesParticipantes = nonUniqueVariacoesCompradasFromCart.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
                 if(variacoesParticipantes.size()>=desconto.getDescontoMenorValor().getLowerQuantityLimitToApply()){
                     Produto produtoComMenorPreco = produtosParticipantes.stream()
                             .min(Comparator.comparing(Produto::getPreco))
@@ -192,7 +180,7 @@ public class DiscountCalculator {
                 List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
                         .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
                         .toList();
-                List<ProdutoVariacao> variacoesParticipantes = variacoesEntNoDiscountable.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
+                List<ProdutoVariacao> variacoesParticipantes = nonUniqueVariacoesCompradasFromCart.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
                 Set<DescontoProgressivoIntervalos> descontoProgressivoIntervalos = desconto.getDescontoProgressivo().getIntervalos();
                 List<DescontoProgressivoIntervalos> intervalosOrdenadosDesc = descontoProgressivoIntervalos.stream()
                         .sorted(Comparator.comparing(DescontoProgressivoIntervalos::getMinQuantity).reversed())
@@ -217,6 +205,26 @@ public class DiscountCalculator {
             }
         }
         return new AfterAppliedChain(discountChain,finalValue);
+    }
+
+
+    private List<ProdutoVariacao> getNonUniqueVariacoesCompradasFromCart(
+            Discountable discountable,
+            List<Produto> produtosCart
+    ){
+        List<ProdutoVariacao> variacoesEntNoDiscountable = new ArrayList<>();
+        List<String> variacoesIdOnDiscountable = discountable.getProdutos().stream().flatMap(o->o.getVariacoesCompradas().stream()).map(o->o.getSystemId()).toList();
+        for(Produto produtoBase:produtosCart){
+            for(ProdutoVariacao variacao:produtoBase.getVariacoes()){
+                if(variacoesIdOnDiscountable.contains(variacao.getSystemId())){//adicionar o numero de vezes em que se repete a variacao
+                    Integer howMany = variacoesIdOnDiscountable.stream().filter(o->o.equals(variacao.getSystemId())).toList().size();
+                    for(int i=0;i<howMany;i++){
+                        variacoesEntNoDiscountable.add(variacao);
+                    }
+                }
+            }
+        }
+        return variacoesEntNoDiscountable;
     }
 
 
