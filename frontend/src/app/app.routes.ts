@@ -1,11 +1,5 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { AdminComponent } from './admin/admin.component';
-import { ProdutosComponent } from './admin/produtos/produtos.component';
 import { AuthGuard } from './auth.guard';
-import { PedidosComponent } from './admin/pedidos/pedidos.component';
-import { CatalogoComponent as CatalogoAdmin} from './admin/catalogo/catalogo.component';
-import { CatalogoComponent } from './catalogo-choose/catalogo.component';
 
 export const routes: Routes = [
     {
@@ -49,6 +43,9 @@ export const routes: Routes = [
             ,{
                 path:"banners",
                 loadComponent:()=>import("./admin/banners/banners.component").then(m=>m.BannersComponent)
+            },{
+                path:"lojas",
+                loadComponent:()=>import("./admin/lojas/lojas.component").then(m=>m.LojasComponent)
             }
         ]
     },

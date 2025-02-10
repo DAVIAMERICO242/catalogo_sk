@@ -15,6 +15,19 @@ public class LojaService {
         this.lojaRepository = lojaRepository;
     }
 
+
+    public void mudarLoja(LojaChangePayload lojaChangePayload){
+        Optional<Loja> lojaOptional = this.lojaRepository.findById(lojaChangePayload.getSystemId());
+        if(lojaOptional.isEmpty()){
+            throw new RuntimeException("Loja não encontrada");
+        }
+        Loja loja = lojaOptional.get();
+        loja.setTelefone(lojaChangePayload.getTelefone());
+        loja.setEndereco(lojaChangePayload.getEndereco());
+        loja.setCepLoja(lojaChangePayload.getCep());
+        this.lojaRepository.save(loja);
+    }
+
     public LojaDTO getBySlug(String slug){
         Optional<Loja> lojaOptional = this.lojaRepository.findByLojaSlug(slug);
         if(lojaOptional.isEmpty()){
@@ -23,6 +36,9 @@ public class LojaService {
         Loja lojaEnt = lojaOptional.get();
         LojaDTO loja = new LojaDTO();
         LojaDTO.Franquia franquia = new LojaDTO.Franquia();
+        loja.setEndereco(lojaEnt.getEndereco());
+        loja.setTelefone(lojaEnt.getTelefone());
+        loja.setCep(lojaEnt.getCepLoja());
         loja.setLoja(lojaEnt.getNome());
         loja.setSystemId(lojaEnt.getSystemId());
         loja.setSlug(lojaEnt.getSlug());
@@ -39,6 +55,9 @@ public class LojaService {
         for(Loja lojaEnt:lojasEnt){
             LojaDTO loja = new LojaDTO();
             LojaDTO.Franquia franquia = new LojaDTO.Franquia();
+            loja.setEndereco(lojaEnt.getEndereco());
+            loja.setTelefone(lojaEnt.getTelefone());
+            loja.setCep(lojaEnt.getCepLoja());
             loja.setLoja(lojaEnt.getNome());
             loja.setSystemId(lojaEnt.getSystemId());
             loja.setSlug(lojaEnt.getSlug());
@@ -57,7 +76,10 @@ public class LojaService {
         for(Loja lojaEnt:lojasEnt){
             LojaDTO loja = new LojaDTO();
             LojaDTO.Franquia franquia = new LojaDTO.Franquia();
+            loja.setEndereco(lojaEnt.getEndereco());
+            loja.setTelefone(lojaEnt.getTelefone());
             loja.setLoja(lojaEnt.getNome());
+            loja.setCep(lojaEnt.getCepLoja());
             loja.setSystemId(lojaEnt.getSystemId());
             loja.setSlug(lojaEnt.getSlug());
             loja.setEndereco(lojaEnt.getEndereco());
@@ -75,7 +97,10 @@ public class LojaService {
         for(Loja lojaEnt:lojasEnt){
             LojaDTO loja = new LojaDTO();
             LojaDTO.Franquia franquia = new LojaDTO.Franquia();
+            loja.setEndereco(lojaEnt.getEndereco());
+            loja.setTelefone(lojaEnt.getTelefone());
             loja.setLoja(lojaEnt.getNome());
+            loja.setCep(lojaEnt.getCepLoja());
             loja.setSystemId(lojaEnt.getSystemId());
             loja.setSlug(lojaEnt.getSlug());
             loja.setEndereco(lojaEnt.getEndereco());

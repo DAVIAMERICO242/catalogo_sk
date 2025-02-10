@@ -2,9 +2,7 @@ package com.skyler.catalogo.domain.lojas;
 
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/lojas")
@@ -24,6 +22,17 @@ public class LojaController {
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }
     }
+
+    @PutMapping
+    public ResponseEntity atualizarDadosMutaveisLoja(@RequestBody LojaChangePayload lojaTelefonePayload){
+        try{
+            this.lojaService.mudarLoja(lojaTelefonePayload);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
 
     @GetMapping("/by-slug")
     public ResponseEntity getBySlug(String slug){

@@ -1,0 +1,34 @@
+<div class="flex flex-col h-[calc(100vh-75px)]">
+    <app-admin-page-title  iconClass="pi pi-shop" title="Lojas"/>
+    <div class="p-5 relative  flex-1">
+        <p-table [value]="this.lojas">
+            <ng-template #header>
+                <tr>
+                    <th>Loja</th>
+                    <th>Telefone</th>
+                    <th>Cep</th>
+                    <th>Endereço</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-loja>
+                <tr>
+                    <td class="text-sm">
+                        {{this.forceType(loja).nome}}
+                    </td>
+                    <td>
+                        <div *ngIf="this.forceType(loja).telefone">{{this.forceType(loja).telefone}}</div>
+                        <div class="text-xs" *ngIf="!this.forceType(loja).telefone">Desconhecido</div>
+                    </td>
+                    <td>
+                        <div *ngIf="this.forceType(loja).cep">{{this.forceType(loja).cep}}</div>
+                        <div class="text-xs" *ngIf="!this.forceType(loja).cep">Desconhecido</div>
+                    </td>
+                    <td>
+                        <div *ngIf="this.forceType(loja).endereco">{{this.forceType(loja).endereco}}</div>
+                        <div class="text-xs" *ngIf="!this.forceType(loja).endereco">Desconhecido</div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

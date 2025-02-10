@@ -7,8 +7,10 @@ public class LojaDTO {
     String loja;
     String slug;
     String systemId;
-    Franquia franquia;
     String endereco;
+    String telefone;
+    String cep;
+    Franquia franquia;
     @Data
     public static class Franquia{
         String franquia;

@@ -31,7 +31,10 @@ export namespace User{
   export interface Loja{
     systemId:string
     nome:string,
-    slug:string
+    slug:string,
+    endereco?:string,
+    telefone?:string,
+    cep?:string
   }
   export interface Franquia{
     systemId:string,

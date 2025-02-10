@@ -21,6 +21,9 @@
             <li pTooltip="Produtos" (click)="changePage(PageEnum.PRODUTOS,'/produtos')" class="cursor-pointer">
                 <div [ngClass]="{'font-bold':focused==='PRODUTOS'}" class="pi pi-inbox"></div>
             </li>
+            <li pTooltip="Lojas" (click)="changePage(PageEnum.LOJAS,'/lojas')" class="cursor-pointer">
+                <div [ngClass]="{'font-bold':focused==='LOJAS'}" class="pi pi-shop"></div>
+            </li>
         </ul>
     </div>
     <div *ngIf="this.expanded" [ngClass]="{'opacity-0':!expanded}" >
@@ -54,6 +57,12 @@
                     <div class="pi pi-inbox"></div>
                     <div [ngClass]="{'font-bold':focused==='PRODUTOS'}">
                         Produtos
+                    </div>
+                </li>
+                <li (click)="changePage(PageEnum.LOJAS,'/lojas')" class="text-[14px] cursor-pointer flex items-center gap-3">
+                    <div class="pi pi-shop"></div>
+                    <div [ngClass]="{'font-bold':focused==='LOJAS'}">
+                        Lojas
                     </div>
                 </li>
              </ul>

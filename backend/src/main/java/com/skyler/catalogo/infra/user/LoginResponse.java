@@ -33,6 +33,9 @@ public class LoginResponse
         String nome;
         String slug;
         String systemId;
+        String endereco;
+        String telefone;
+        String cep;
     }
 
      @Data

@@ -22,6 +22,8 @@ public class Loja {
     private String nome;
     private String slug;
     private String endereco;
+    private String telefone;
+    private String cepLoja;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="franquia_system_id")
     @JsonBackReference
