@@ -22,13 +22,13 @@
                                 <input [(ngModel)]="this.forceType(loja).telefone" class="!text-xs !w-[100px] !h-[20px]" pInputText/>
                             </ng-template>
                             <ng-template #output>
-                                <div *ngIf="this.forceType(loja).telefone">{{this.forceType(loja).telefone}}</div>
+                                <div *ngIf="this.forceType(loja).telefone">{{this.forceType(loja).telefone | phonePipe}}</div>
                                 <div class="text-xs" *ngIf="!this.forceType(loja).telefone">Desconhecido</div>
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
-                        <div *ngIf="this.forceType(loja).cep">{{this.forceType(loja).cep}}</div>
+                        <div *ngIf="this.forceType(loja).cep">{{this.forceType(loja).cep | cepPipe}}</div>
                         <div class="text-xs" *ngIf="!this.forceType(loja).cep">Desconhecido</div>
                     </td>
                     <td>

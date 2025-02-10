@@ -4,10 +4,12 @@ import { User, UserService } from '../../services/user.service';
 import { SharedModule } from '../../shared/shared.module';
 import { EditLojaComponent } from "./edit-loja/edit-loja.component";
 import { Loja, LojaService } from '../../services/loja.service';
+import { CepPipePipe } from '../../pipes/cep-pipe.pipe';
+import { PhonePipePipe } from '../../pipes/phone-pipe.pipe';
 
 @Component({
   selector: 'app-lojas',
-  imports: [AdminPageTitleComponent, SharedModule, EditLojaComponent],
+  imports: [AdminPageTitleComponent, SharedModule, EditLojaComponent,CepPipePipe,PhonePipePipe],
   templateUrl: './lojas.component.html'
 })
 export class LojasComponent implements OnInit{

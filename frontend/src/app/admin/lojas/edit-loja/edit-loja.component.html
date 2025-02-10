@@ -14,11 +14,11 @@
     <div class="space-y-3 mb-3">
         <div>
             <div class="text-sm ">Telefone:</div>
-            <p-input-mask [(ngModel)]="this.cloneLoja.telefone" mask="(99)99999-9999" styleClass="!w-full" />
+            <p-input-mask [unmask]="true" [(ngModel)]="this.cloneLoja.telefone" mask="(99)99999-9999" styleClass="!w-full" />
         </div>
         <div>
             <div class="text-sm">Cep:</div>
-            <p-input-mask [(ngModel)]="this.cloneLoja.cep" mask="99999-999" styleClass="!w-full" />
+            <p-input-mask [unmask]="true" [(ngModel)]="this.cloneLoja.cep" mask="99999-999" styleClass="!w-full" />
         </div>
         <div>
             <div class="text-sm">Endereço:</div>
