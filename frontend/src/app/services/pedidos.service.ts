@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Desconto } from './descontos.service';
 import { env } from '../../env';
 import { map } from 'rxjs';
+import { Sacola } from './sacola.service';
 
 
 export namespace Pedidos{
@@ -10,6 +11,7 @@ export namespace Pedidos{
     documento:string,
     nome:string,
     numero:number,
+    entregaLoja:boolean,
     rua:string,
     bairro:string,
     cidade:string,
@@ -90,6 +92,24 @@ export namespace Pedidos{
 export class PedidosService {
 
   constructor(private http:HttpClient) {}
+
+  mapRawSacolaAndCustomerAndValorFreteToPedidoRequest(
+    rawSacola:Sacola.RawSacola,
+    customerDetails:Pedidos.PedidoCustomerDetails,
+    frete:number
+
+  ):Pedidos.PedidoRequestTypes.PedidoRequest{
+    return {
+      loja:rawSacola.loja,
+      produtos:rawSacola.produtos,
+      valorFrete:frete,
+      ...customerDetails
+    }
+  }
+
+  novoPedido(payload:Pedidos.PedidoRequestTypes.PedidoRequest){//eu te oodeio, ME DEIXA EM PAZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ, ME DEIXA EM PAZ
+    return this.http.post(env.BACKEND_URL+"/pedidos",payload);
+  }
 
   getPedidos(franquiaId:string,lojaId?:string){
     let url = env.BACKEND_URL+"/pedidos?franquiaId="+franquiaId

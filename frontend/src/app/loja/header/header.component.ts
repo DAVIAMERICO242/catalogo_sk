@@ -29,5 +29,10 @@ export class HeaderComponent implements OnInit {
   }
 
 
+  isCheckout(){
+    return window.location.href.endsWith("/checkout");
+  }
+
+
   
 }

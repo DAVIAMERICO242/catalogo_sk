@@ -1,0 +1,116 @@
+<div class="h-[calc(100vh-220px)] max-sm:h-[110vh] flex items-center justify-center ">
+    <div class="flex max-sm:flex-col gap-5 ">
+        <div class="space-y-3">
+            <div class="mb-10" >
+                <div class="text-[20px] font-bold mb-5 flex items-center gap-2">
+                    <div class="h-[35px] w-[35px] rounded-full bg-black flex items-center justify-center text-white">
+                        1
+                    </div>
+                    <div>
+                        Identificação
+                    </div>
+                </div>
+                <div class="flex lg:items-center gap-5 max-lg:flex-col ">
+                    <div>
+                        <div class="text-xs">
+                            Nome:
+                        </div>
+                        <input [(ngModel)]="this.customerDetails.nome" class="w-[300px] border-b-[1px] border-b-slate-300 outline-none text-sm" />
+                    </div>
+                    <div>
+                        <div class="text-xs">
+                            CPF/CNPJ:
+                        </div>
+                        <input [(ngModel)]="this.customerDetails.documento" class="w-[300px]  !border-b-[1px] !border-b-slate-300 !outline-none !text-sm" placeholder="000.000.000.00"  />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="text-[20px] font-bold mb-5 flex  items-center gap-2">
+                    <div class="h-[35px] w-[35px] rounded-full bg-black flex items-center justify-center text-white">
+                        2
+                    </div>
+                    <div>
+                        Endereço
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-4">
+                    <input [(ngModel)]="this.customerDetails.entregaLoja" (ngModelChange)="this.showEntregaLoja()" type="checkbox"/>
+                    <div class="text-xs">Buscar em loja?</div>
+                </div>
+                <div [ngClass]="{'pointer-events-none':this.loadingCepAutoComplete || this.customerDetails.entregaLoja,'opacity-45':this.loadingCepAutoComplete || this.customerDetails.entregaLoja}">
+                    <div class="flex lg:items-center max-lg:flex-col gap-5 mb-4">
+                        <div>
+                            <div class="text-xs">
+                                CEP:
+                            </div>
+                            <input [(ngModel)]="this.customerDetails.cep" (ngModelChange)="this.preencherCamposPeloCep()"  placeholder="XXXXX-XXX" class="w-[300px]  border-b-[1px] border-b-slate-300 outline-none text-sm" />
+                        </div>
+                    </div>
+                    <div class="flex max-lg:flex-col lg:items-center gap-5  mb-4">
+                        <div>
+                            <div class="text-xs">
+                                Estado:
+                            </div>
+                            <input [(ngModel)]="this.customerDetails.estado" class="w-[300px]  border-b-[1px] border-b-slate-300 outline-none text-sm"/>
+                        </div>
+                        <div>
+                            <div class="text-xs">
+                                Cidade:
+                            </div>
+                            <input [(ngModel)]="this.customerDetails.cidade" class="border-b-[1px] w-[300px] border-b-slate-300 outline-none text-sm" />
+                        </div>
+                    </div>
+                    <div class="flex max-lg:flex-col lg:items-center gap-5 mb-4">
+                        <div>
+                            <div class="text-xs">
+                                Rua:
+                            </div>
+                            <input [(ngModel)]="this.customerDetails.rua" class="w-[300px]  border-b-[1px] border-b-slate-300 outline-none text-sm"/>
+                        </div>
+                        <div>
+                            <div class="text-xs">
+                                Bairro:
+                            </div>
+                            <input [(ngModel)]="this.customerDetails.bairro" class="w-[300px]  border-b-[1px] border-b-slate-300 outline-none text-sm"/>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xs">
+                            Número:
+                        </div>
+                        <input [(ngModel)]="this.customerDetails.numero" class="border-b-[1px] border-b-slate-300 outline-none text-sm" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-sm:h-[250px] h-[300px] w-[300px] p-4 bg-slate-50 flex flex-col justify-between">
+            <div>
+                <div class="mb-10 text-center">Resumo</div>
+                <div class="flex justify-between">
+                    <div class="text-xs mb-4">Subtotal:</div>
+                    <div class="font-bold">{{this.totalBruto | currency:"BRL"}}</div>
+                </div>
+                <div class="flex justify-between">
+                    <div class="text-xs mb-4">Descontos:</div>
+                    <div class="font-bold">{{this.totalDescontos | currency:"BRL"}}</div>
+                </div>
+                <div class="h-[1px] w-full bg-slate-300 mb-3"></div>
+                <div class="flex justify-between">
+                    <div class="text-xs mb-4">Valor final:</div>
+                    <div class="font-bold">{{this.total| currency:"BRL"}}</div>
+                </div>
+            </div>
+            <button pButton class="!w-full !bg-black !text-sm">
+                Solicitar pedido
+            </button>
+        </div>
+        <!-- <div class="overflow-auto h-[300px]">
+            <ng-container  *ngFor="let item of this.sacola?.produtos">
+                <ng-container *ngFor="let variacao of item.produtoBase.variacoes">
+                    <app-produto-sacola [loja]="loja" [produtoSacola]="item" [variacaoSacola]="variacao" />
+                </ng-container>
+            </ng-container>
+        </div> -->
+    </div>
+</div>

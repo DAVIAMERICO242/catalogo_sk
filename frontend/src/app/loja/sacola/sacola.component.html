@@ -33,7 +33,7 @@
                 </ng-container>
             </ng-container>
         </div>
-        <button pButton class="!bg-black !text-sm  !w-full  !mt-5" *ngIf="this.sacola?.produtos?.length">
+        <button (click)="goToCheckout()" pButton class="!bg-black !text-sm  !w-full  !mt-5" *ngIf="this.sacola?.produtos?.length">
             Finalizar pedido
         </button>
 </p-drawer>

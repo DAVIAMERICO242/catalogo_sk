@@ -10,6 +10,7 @@ import { Desconto, DescontosService } from '../../services/descontos.service';
 import { DescontosAplicadosComponent } from "./descontos-aplicados/descontos-aplicados.component";
 import { ValoresDetailsComponent } from "./valores-details/valores-details.component";
 import { SacolaUiContextService } from './sacola-ui-context.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sacola',
@@ -44,6 +45,7 @@ export class SacolaComponent implements OnInit,OnDestroy {
   constructor(
     protected sacolaContext:SacolaUiContextService,
     private lojaContext:LojaContextService,
+    private router:Router
 
   ){}
   ngOnInit(): void {
@@ -80,6 +82,13 @@ export class SacolaComponent implements OnInit,OnDestroy {
     }
     
   }
+
+  goToCheckout(){
+    this.open = false;
+    this.router.navigate([this.loja.slug + "/checkout"])
+  }
+
+
 
 
   limpar(){

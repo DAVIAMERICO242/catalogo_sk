@@ -65,6 +65,9 @@ export const routes: Routes = [
                     path:":id",
                     loadComponent:()=>import("./loja/product-page/product-page.component").then(m=>m.ProductPageComponent)
                 }]
+            },{
+                path:"checkout",
+                loadComponent:()=>import("./loja/checkout/checkout.component").then(m=>m.CheckoutComponent)
             }
         ]
     },

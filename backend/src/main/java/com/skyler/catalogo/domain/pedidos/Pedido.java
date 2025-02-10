@@ -29,6 +29,7 @@ public class Pedido {
     private String bairro;
     private String cidade;
     private String estado;
+    private Boolean entregaLoja;
     private String cep;
     private String telefone;
     private Float valor;

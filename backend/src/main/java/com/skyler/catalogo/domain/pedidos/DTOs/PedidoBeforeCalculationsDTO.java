@@ -12,6 +12,7 @@ public class PedidoBeforeCalculationsDTO implements Discountable,BasicOrder {
     private LojaPedidoDTO loja;
     private String documento;
     private String nome;
+    private Boolean entregaLoja;
     private Integer numero;
     private String rua;
     private String bairro;

@@ -13,6 +13,7 @@ public class PedidoAfterCalculationsDTO implements BasicOrder {
     private String systemId;
     private LojaPedidoDTO loja;
     private LocalDateTime moment;
+    private Boolean entregaLoja;
     private String documento;
     private String nome;
     private Integer numero;
