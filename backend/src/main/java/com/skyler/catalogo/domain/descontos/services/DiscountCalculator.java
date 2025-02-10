@@ -122,10 +122,7 @@ public class DiscountCalculator {
                             desconto.getExcludedTermos()
                     );
                 }
-                List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
-                        .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
-                        .toList();
-                List<ProdutoVariacao> variacoesParticipantes = nonUniqueVariacoesCompradasFromCart.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
+                List<ProdutoVariacao> variacoesParticipantes = this.getVariacoesParticipantesNotUniqueFromProdutosParticipantes(produtosParticipantes,nonUniqueVariacoesCompradasFromCart);
                 if(variacoesParticipantes.size()>=desconto.getDescontoMaiorValor().getLowerQuantityLimitToApply()){
                     Produto produtoComMaiorPreco = produtosParticipantes.stream()
                             .max(Comparator.comparing(Produto::getPreco))
@@ -149,10 +146,7 @@ public class DiscountCalculator {
                             desconto.getExcludedTermos()
                     );
                 }
-                List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
-                        .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
-                        .toList();
-                List<ProdutoVariacao> variacoesParticipantes = nonUniqueVariacoesCompradasFromCart.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
+                List<ProdutoVariacao> variacoesParticipantes = this.getVariacoesParticipantesNotUniqueFromProdutosParticipantes(produtosParticipantes,nonUniqueVariacoesCompradasFromCart);
                 if(variacoesParticipantes.size()>=desconto.getDescontoMenorValor().getLowerQuantityLimitToApply()){
                     Produto produtoComMenorPreco = produtosParticipantes.stream()
                             .min(Comparator.comparing(Produto::getPreco))
@@ -177,10 +171,7 @@ public class DiscountCalculator {
                             desconto.getExcludedTermos()
                     );
                 }
-                List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
-                        .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
-                        .toList();
-                List<ProdutoVariacao> variacoesParticipantes = nonUniqueVariacoesCompradasFromCart.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
+                List<ProdutoVariacao> variacoesParticipantes = this.getVariacoesParticipantesNotUniqueFromProdutosParticipantes(produtosParticipantes,nonUniqueVariacoesCompradasFromCart);
                 Set<DescontoProgressivoIntervalos> descontoProgressivoIntervalos = desconto.getDescontoProgressivo().getIntervalos();
                 List<DescontoProgressivoIntervalos> intervalosOrdenadosDesc = descontoProgressivoIntervalos.stream()
                         .sorted(Comparator.comparing(DescontoProgressivoIntervalos::getMinQuantity).reversed())
@@ -225,6 +216,17 @@ public class DiscountCalculator {
             }
         }
         return variacoesEntNoDiscountable;
+    }
+
+    private List<ProdutoVariacao> getVariacoesParticipantesNotUniqueFromProdutosParticipantes(
+            List<Produto> produtosParticipantes,
+            List<ProdutoVariacao> nonUniqueVariacoesCompradasFromCart
+    ){
+        List<ProdutoVariacao> variacoesDosProdutosParticipantes = produtosParticipantes.stream()
+                .flatMap(o -> o.getVariacoes().stream()) // Transforma a lista em Stream
+                .toList();
+        List<ProdutoVariacao> variacoesParticipantes = nonUniqueVariacoesCompradasFromCart.stream().filter(o->variacoesDosProdutosParticipantes.contains(o)).toList();
+        return variacoesParticipantes;
     }
 
 
