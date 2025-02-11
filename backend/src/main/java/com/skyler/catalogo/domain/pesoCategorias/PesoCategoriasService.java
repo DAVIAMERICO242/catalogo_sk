@@ -20,15 +20,28 @@ public class PesoCategoriasService {
         this.pesoCategoriasRepository = pesoCategoriasRepository;
     }
 
-    public PesoCategoriasDTO cadastrarAtualizar(PesoCategoriasDTO pesoCategoriasDTO){
-        if(this.pesoCategoriasRepository.findByCategoriaAndFranquiaId(
-                pesoCategoriasDTO.getCategoria(),
-                pesoCategoriasDTO.getFranquiaId()).isEmpty()
-        ){
-            return this.entityToDto(this.pesoCategoriasRepository.save(this.dtoToEntity(pesoCategoriasDTO)));
+    public PesoCategoriasDTO cadastrarAtualizar(PesoCategoriasRequest pesoCategoriasRequest){
+        Optional<PesoCategorias> pesoCategoriasOptional = this.pesoCategoriasRepository.findByCategoriaAndFranquiaId(
+                pesoCategoriasRequest.getCategoria(),
+                pesoCategoriasRequest.getFranquiaId()
+        );
+        PesoCategorias pesoCategorias = null;
+        if(pesoCategoriasOptional.isPresent()){
+            Franquia franquia = this.franquiaRepository.findById(pesoCategoriasRequest.getFranquiaId()).get();
+            pesoCategorias = pesoCategoriasOptional.get();
+            pesoCategorias.setCategoria(pesoCategoriasRequest.getCategoria());
+            pesoCategorias.setFranquia(franquia);
+            pesoCategorias.setPesoGramas(pesoCategorias.getPesoGramas());
+            this.pesoCategoriasRepository.save(pesoCategorias);
         }else{
-            throw new RuntimeException("Categoria já computada");
+            Franquia franquia = this.franquiaRepository.findById(pesoCategoriasRequest.getFranquiaId()).get();
+            pesoCategorias = new PesoCategorias();
+            pesoCategorias.setCategoria(pesoCategoriasRequest.getCategoria());
+            pesoCategorias.setFranquia(franquia);
+            pesoCategorias.setPesoGramas(pesoCategorias.getPesoGramas());
+            this.pesoCategoriasRepository.save(pesoCategorias);
         }
+        return this.entityToDto(pesoCategorias);
     }
 
     public List<PesoCategoriasDTO> getPesos(String franquiaId){
