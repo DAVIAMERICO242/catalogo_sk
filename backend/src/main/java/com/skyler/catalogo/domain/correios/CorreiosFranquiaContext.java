@@ -17,8 +17,8 @@ public class CorreiosFranquiaContext {
     private String systemId = UUID.randomUUID().toString();
     private String usuario;
     private String senha;
-    private String codigoPac;
-    private String codigoSedex;
+    private Integer codigoPac;
+    private Integer codigoSedex;
     private String cepOrigem;
 
     @OneToOne

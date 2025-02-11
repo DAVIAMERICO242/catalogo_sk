@@ -47,6 +47,20 @@ export const routes: Routes = [
                 path:"lojas",
                 loadComponent:()=>import("./admin/lojas/lojas.component").then(m=>m.LojasComponent)
             }
+            ,{
+                path:"entregas",
+                loadComponent:()=>import("./admin/entregas/entregas.component").then(m=>m.EntregasComponent),
+                children:[
+                    {
+                        path:"",
+                        redirectTo:"integracao-correios",
+                        pathMatch:"full"
+                    },{
+                        path:"integracao-correios",
+                        loadComponent:()=>import("./admin/entregas/configuracao-franquia/configuracao-franquia.component").then(m=>m.ConfiguracaoFranquiaComponent),
+                    }
+                ]
+            }
         ]
     },
     {

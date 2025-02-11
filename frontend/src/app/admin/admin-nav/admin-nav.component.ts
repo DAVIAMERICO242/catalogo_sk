@@ -7,7 +7,8 @@ enum Page{
   PEDIDOS="PEDIDOS",
   CATALOGO="CATALOGO",
   BANNERS="BANNERS",
-  LOJAS="LOJAS"
+  LOJAS="LOJAS",
+  ENTREGAS="ENTREGAS"
 }
 @Component({
   selector: 'app-admin-nav',
@@ -44,6 +45,9 @@ export class AdminNavComponent implements OnInit {
     }
     if(endPath.endsWith("/lojas")){
       this.focused = Page.LOJAS
+    }
+    if(endPath.includes("/entregas")){
+      this.focused = Page.ENTREGAS
     }
   }
 
