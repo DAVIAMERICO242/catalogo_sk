@@ -4,11 +4,12 @@
         <div class="mb-3 flex items-center gap-3">
             <div (click)="this.navToSubRoute(EntregaesPage.INTEGRACAO)" class="flex items-center gap-2 cursor-pointer">
                 <div></div>
-                <div [ngClass]="{'font-bold':this.focusedPage==='INTEGRACAO'}">Integração</div>
+                <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='INTEGRACAO'}">Contrato</div>
             </div>
             <div (click)="this.navToSubRoute(EntregaesPage.PESAGEM_COMPRIMENTAGEM)" class="flex items-center gap-2 cursor-pointer">
                 <div></div>
-                <div [ngClass]="{'font-bold':this.focusedPage==='PESAGEM_COMPRIMENTAGEM'}">Peso/Comprimento</div>
+                <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='PESAGEM_COMPRIMENTAGEM'}">Peso/Comprimento</div>
+                <div class="mt-1"></div>
             </div>
         </div>
         <router-outlet/>
