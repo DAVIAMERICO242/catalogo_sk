@@ -1,4 +1,4 @@
-<div class="p-5">
+<div class="p-5  ">
     <div class="mb-3">
         <app-novo-peso (onCadastro)="this.onCadastro($event)" *ngIf="this.pesosCategorias" [categorias]="categorias"/>
     </div>
@@ -25,7 +25,7 @@
                     {{this.forceType(peso).pesoGramas}}
                 </td>
                 <td>
-                    <app-editar-peso [categorias]="this.categorias" [payload]="this.forceType(peso)"/>
+                    <app-editar-peso (onUpdate)="this.onAtualizar($event)" [categorias]="this.categorias" [payload]="this.forceType(peso)"/>
                 </td>
             </tr>
         </ng-template>

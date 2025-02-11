@@ -45,14 +45,14 @@ export class PesagemComprimentagemComponent implements OnInit {
     this.pesosCategorias.unshift({...x});
   }
 
-  onUpdate(x:CorreiosFranquiasContext.PesoCategoria){
-    this.pesosCategorias = {...this.pesosCategorias.map((e)=>{
+  onAtualizar(x:CorreiosFranquiasContext.PesoCategoria){
+    this.pesosCategorias = [...this.pesosCategorias.map((e)=>{
       if(e.systemId===x.systemId){
         return x
       }else{
         return e;
       }
-    })}
+    })]
   }
 
   forceType(row:any){
