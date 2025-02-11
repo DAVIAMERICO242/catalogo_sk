@@ -1,4 +1,4 @@
-<div class="h-[calc(100vh-220px)] max-sm:h-[110vh] flex items-center justify-center ">
+<div class="h-[calc(100vh-220px)] max-sm:h-[130vh] flex items-center justify-center ">
     <div class="flex max-sm:flex-col gap-5 ">
         <div class="space-y-3">
             <div class="mb-10" >
@@ -45,7 +45,7 @@
                             <div class="text-xs">
                                 CEP:
                             </div>
-                            <p-input-mask [unmask]="true" [(ngModel)]="this.customerDetails.cep" styleClass="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none" mask="99999-999" placeholder="XXXXX-XXX" />
+                            <p-input-mask (ngModelChange)="this.manageCepChange()"  [unmask]="true" [(ngModel)]="this.customerDetails.cep" styleClass="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none" mask="99999-999" placeholder="XXXXX-XXX" />
                         </div>
                     </div>
                     <div class="flex max-lg:flex-col lg:items-center gap-5  mb-4">
@@ -85,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <div class="max-sm:h-[250px] h-[300px] w-[300px] p-4 bg-slate-50 flex flex-col justify-between">
+        <div class=" h-[300px] w-[300px] p-4 bg-slate-50 ">
             <div>
                 <div class="mb-10 text-center">Resumo</div>
                 <div class="flex justify-between">
@@ -98,11 +98,12 @@
                 </div>
                 <div class="h-[1px] w-full bg-slate-300 mb-3"></div>
                 <div class="flex justify-between">
-                    <div class="text-xs mb-4">Valor final:</div>
+                    <div class="text-xs mb-4">Valor sem frete:</div>
                     <div class="font-bold">{{this.total| currency:"BRL"}}</div>
                 </div>
             </div>
-            <button pButton class="!w-full !bg-black !text-sm">
+            <div class="font-bold text-xs mb-5">O frete será calculado no momento da entrega.</div>
+            <button (click)="this.postPedido()" pButton class="!w-full  !bg-black !text-sm">
                 Solicitar pedido
             </button>
         </div>
@@ -114,5 +115,4 @@
             </ng-container>
         </div> -->
     </div>
-    <p-input-mask styleClass="!border-t-0 !border-l-0 !border-r-0 !rounded-none" />
 </div>

@@ -81,6 +81,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     console.log(this.customerDetails.entregaLoja)
   }
 
+  manageCepChange(){
+    this.preencherCamposPeloCep();
+
+  }
+
   preencherCamposPeloCep(){
     const formated = this.customerDetails.cep.trim().replace("-","");
     if(formated.length===8){
@@ -141,7 +146,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       });
       return false;
     }
-    if(this.customerDetails.entregaLoja){
+    if(!this.customerDetails.entregaLoja){
       const formattedCep = this.customerDetails.cep.trim().replaceAll(" ","").replaceAll("-","");
       if(formattedCep.length!==8){
         this.message.add({
@@ -190,6 +195,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   postPedido(){
+    if(!this.isValid()){
+      return;
+    }
     const rawSacola = this.sacolaService.mapModelToRawSacola(this.sacola);
     const preparedPayload = this.pedidoService.mapRawSacolaAndCustomerAndValorFreteToPedidoRequest(rawSacola,this.customerDetails,this.frete);
     this.loadingNovoPedido = true;
