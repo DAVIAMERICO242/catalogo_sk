@@ -25,6 +25,16 @@ public class PedidoController {
         }
     }
 
+    @DeleteMapping
+    public ResponseEntity deletarPedido(String id){
+        try{
+            this.pedidoService.deletarPedido(id);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
     @PutMapping("/mudar-status")
     public ResponseEntity mudarStatus(String pedidoId){
         try{

@@ -111,6 +111,10 @@ export class PedidosService {
     return this.http.post(env.BACKEND_URL+"/pedidos",payload);
   }
 
+  deletarPedido(id:string){
+    return this.http.delete(env.BACKEND_URL+"/pedidos?id="+id);
+  }
+
   getPedidos(franquiaId:string,lojaId?:string){
     let url = env.BACKEND_URL+"/pedidos?franquiaId="+franquiaId
     if(lojaId){

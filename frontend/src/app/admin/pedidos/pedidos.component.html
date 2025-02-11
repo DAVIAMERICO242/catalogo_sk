@@ -46,6 +46,9 @@
                             <th>
                                 Frete
                             </th>
+                            <th>
+
+                            </th>
                         </tr>
                     </ng-template>
                     <ng-template #body let-row>
@@ -80,6 +83,9 @@
                             </td>
                             <td>
                                 {{this.forceType(row).valorFrete | currency:"BRL"}}
+                            </td>
+                            <td>
+                                <app-deletar-pedido (onDelete)="this.onDelete($event)" [pedido]="this.forceType(row)"/>
                             </td>
                         </tr>
                     </ng-template>

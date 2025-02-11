@@ -1,0 +1,3 @@
+<div (click)="this.open=true"  class="pi pi-trash cursor-pointer"></div>
+
+<app-confirmation-dialog [open]="this.open" (onConfirmation)="this.deletarPedido()" [loading]="this.loadingDelete"/>

@@ -36,6 +36,10 @@ public class PedidoService {
         this.discountCalculator = discountCalculator;
     }
 
+    public void deletarPedido(String id){
+        this.pedidoRepository.deleteById(id);
+    }
+
     public List<PedidoAfterCalculationsDTO> getPedidos(String lojaSystemId, String franquiaSystemId){
         List<PedidoAfterCalculationsDTO> output = new ArrayList<>();
         List<Pedido> pedidos = null;

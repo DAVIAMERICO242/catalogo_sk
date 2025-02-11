@@ -10,10 +10,11 @@ import { DateBrazilPipe } from '../../pipes/date-brazil.pipe';
 import { PedidoViewComponent } from "./pedido-view/pedido-view.component";
 import { DetalharDescontoComponent } from "./detalhar-desconto/detalhar-desconto.component";
 import { StatusPedidoComponent } from "./status-pedido/status-pedido.component";
+import { DeletarPedidoComponent } from "./deletar-pedido/deletar-pedido.component";
 
 @Component({
   selector: 'app-pedidos',
-  imports: [SharedModule, AdminPageTitleComponent, DatetimeBrazilPipe, PedidoViewComponent, DetalharDescontoComponent, StatusPedidoComponent],
+  imports: [SharedModule, AdminPageTitleComponent, DatetimeBrazilPipe, PedidoViewComponent, DetalharDescontoComponent, StatusPedidoComponent, DeletarPedidoComponent],
   templateUrl: './pedidos.component.html'
 })
 export class PedidosComponent implements OnInit{
@@ -51,6 +52,14 @@ export class PedidosComponent implements OnInit{
       })
     }
     
+  }
+
+  onDelete(id:string){
+    this.pedidos = this.pedidos.filter((e)=>e.systemId!==id);
+    this.message.add({
+      severity:"success",
+      summary:"Pedido deletado com sucesso"
+    })
   }
 
   forceType(val:any){
