@@ -21,7 +21,8 @@
                         <div class="text-xs">
                             CPF/CNPJ:
                         </div>
-                        <input [(ngModel)]="this.customerDetails.documento" class="w-[300px]  !border-b-[1px] !border-b-slate-300 !outline-none !text-sm" placeholder="000.000.000.00"  />
+                        <p-input-mask [unmask]="true" [(ngModel)]="this.customerDetails.documento" styleClass="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none" mask="999.999.999.99" placeholder="000.000.000.00" />
+
                     </div>
                 </div>
             </div>
@@ -44,7 +45,7 @@
                             <div class="text-xs">
                                 CEP:
                             </div>
-                            <input [(ngModel)]="this.customerDetails.cep" (ngModelChange)="this.preencherCamposPeloCep()"  placeholder="XXXXX-XXX" class="w-[300px]  border-b-[1px] border-b-slate-300 outline-none text-sm" />
+                            <p-input-mask [unmask]="true" [(ngModel)]="this.customerDetails.cep" styleClass="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none" mask="99999-999" placeholder="XXXXX-XXX" />
                         </div>
                     </div>
                     <div class="flex max-lg:flex-col lg:items-center gap-5  mb-4">
@@ -113,4 +114,5 @@
             </ng-container>
         </div> -->
     </div>
+    <p-input-mask styleClass="!border-t-0 !border-l-0 !border-r-0 !rounded-none" />
 </div>

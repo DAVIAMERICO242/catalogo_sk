@@ -10,5 +10,5 @@
             {{loja}}
         </div>
     </div>
-    <app-sacola *ngIf="!this.isCheckout()" class="mr-10 max-sm:mr-5"/>
+    <app-sacola  [ngClass]="{'hidden':!this.isCheckout}" class="mr-10 max-sm:mr-5"/>
 </div>
