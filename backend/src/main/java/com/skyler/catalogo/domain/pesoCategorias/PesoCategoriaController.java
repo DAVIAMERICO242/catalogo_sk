@@ -15,7 +15,7 @@ public class PesoCategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity cadastrarAtualizar(@RequestBody PesoCategoriasRequest pesoCategoriasRequest){
+    public ResponseEntity cadastrarAtualizar(@RequestBody PesoCategoriasDTO pesoCategoriasRequest){
         try{
             return ResponseEntity.ok().body(this.pesoCategoriasService.cadastrarAtualizar(pesoCategoriasRequest));
         }catch (Exception e){

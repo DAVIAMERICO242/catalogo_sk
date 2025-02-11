@@ -1,1 +1,45 @@
-<p>pesagem-comprimentagem works!</p>
+<div class="p-5">
+    <div class="mb-3">
+        <app-novo-peso (onCadastro)="this.onCadastro($event)" *ngIf="this.pesosCategorias" [categorias]="categorias"/>
+    </div>
+    <p-table styleClass="!w-[600px]" *ngIf="this.pesosCategorias;else fallback" [value]="this.pesosCategorias">
+        <ng-template #header>
+            <tr>
+                <th>
+                    Categoria
+                </th>
+                <th>
+                    Peso (g)
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-peso>
+            <tr>
+                <td>
+                    {{this.forceType(peso).categoria}}
+                </td>
+                <td>
+                    {{this.forceType(peso).pesoGramas}}
+                </td>
+                <td>
+                    <app-editar-peso [categorias]="this.categorias" [payload]="this.forceType(peso)"/>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <div class="text-xs">Nenhum registro encontrado</div>
+        </ng-template>
+    </p-table>
+    <ng-template #fallback >
+        <div class="w-full xl:w-6/12 p-4">
+            <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
+        </div>
+    </ng-template>
+</div>

@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class PesoCategoriasService {
+    //nunca leiam aquele livro de quem mora no alto
 
     private final FranquiaRepository franquiaRepository;
     private final PesoCategoriasRepository pesoCategoriasRepository;
@@ -20,25 +21,25 @@ public class PesoCategoriasService {
         this.pesoCategoriasRepository = pesoCategoriasRepository;
     }
 
-    public PesoCategoriasDTO cadastrarAtualizar(PesoCategoriasRequest pesoCategoriasRequest){
-        Optional<PesoCategorias> pesoCategoriasOptional = this.pesoCategoriasRepository.findByCategoriaAndFranquiaId(
+    public PesoCategoriasDTO cadastrarAtualizar(PesoCategoriasDTO pesoCategoriasRequest){
+        PesoCategorias pesoCategorias = new PesoCategorias();
+        if(pesoCategoriasRequest.getSystemId()!=null && !pesoCategoriasRequest.getSystemId().isBlank()){
+            Optional<PesoCategorias> pesoCategoriasOptional = this.pesoCategoriasRepository.findById(pesoCategoriasRequest.getSystemId());
+            if(pesoCategoriasOptional.isPresent()){
+                pesoCategorias = pesoCategoriasOptional.get();
+            }
+        }
+        Optional<PesoCategorias> verificarCategoriaPesada = this.pesoCategoriasRepository.findByCategoriaAndFranquiaId(
                 pesoCategoriasRequest.getCategoria(),
                 pesoCategoriasRequest.getFranquiaId()
         );
-        PesoCategorias pesoCategorias = null;
-        if(pesoCategoriasOptional.isPresent()){
-            Franquia franquia = this.franquiaRepository.findById(pesoCategoriasRequest.getFranquiaId()).get();
-            pesoCategorias = pesoCategoriasOptional.get();
-            pesoCategorias.setCategoria(pesoCategoriasRequest.getCategoria());
-            pesoCategorias.setFranquia(franquia);
-            pesoCategorias.setPesoGramas(pesoCategorias.getPesoGramas());
-            this.pesoCategoriasRepository.save(pesoCategorias);
+        if(verificarCategoriaPesada.isPresent() && !verificarCategoriaPesada.get().getSystemId().equals(pesoCategorias.getSystemId())){
+            throw new RuntimeException("Categoria já pesada");
         }else{
             Franquia franquia = this.franquiaRepository.findById(pesoCategoriasRequest.getFranquiaId()).get();
-            pesoCategorias = new PesoCategorias();
             pesoCategorias.setCategoria(pesoCategoriasRequest.getCategoria());
             pesoCategorias.setFranquia(franquia);
-            pesoCategorias.setPesoGramas(pesoCategorias.getPesoGramas());
+            pesoCategorias.setPesoGramas(pesoCategoriasRequest.getPesoGramas());
             this.pesoCategoriasRepository.save(pesoCategorias);
         }
         return this.entityToDto(pesoCategorias);

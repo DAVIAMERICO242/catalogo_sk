@@ -14,7 +14,12 @@ export namespace CorreiosFranquiasContext{
     cepOrigem:string,
     numeroDiretoriaRegional:string,
     numeroContrato:string,
-
+  }
+  export interface PesoCategoria{
+    systemId:string,
+    franquiaId:string,
+    categoria:string,
+    pesoGramas:number
   }
 }
 @Injectable({
@@ -30,5 +35,13 @@ export class CorreiosFranquiasContextService {
 
   getByFranquiaId(franquiaId:string){
     return this.http.get<CorreiosFranquiasContext.CorreiosFranquias | undefined | null>(env.BACKEND_URL+"/correio-franquia-context?franquiaId="+franquiaId);
+  }
+
+  getPesoCategorias(franquiaId:string){
+    return this.http.get<CorreiosFranquiasContext.PesoCategoria[]>(env.BACKEND_URL+"/peso-categoria?franquiaId="+franquiaId);
+  }
+
+  cadastrarAtualizarPeso(payload:CorreiosFranquiasContext.PesoCategoria){
+    return this.http.post<CorreiosFranquiasContext.PesoCategoria>(env.BACKEND_URL+"/peso-categoria",payload);
   }
 }

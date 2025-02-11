@@ -1,0 +1,18 @@
+<button (click)="open=true" class="!text-xs !bg-black" pButton>
+    + Cadastrar pesagem
+</button>
+<p-dialog styleClass="!w-[400px]" [modal]="true" [(visible)]="open">
+    <div class="space-y-5 w-full mb-5">
+        <div>
+            <div class="text-xs">Categoria</div>
+            <p-select [filter]="true" [(ngModel)]="this.payload.categoria" styleClass="!w-full" appendTo="body" [options]="categorias"/>
+        </div>
+        <div>
+            <div class="text-xs">Peso (gramas)</div>
+            <p-input-number [(ngModel)]="this.payload.pesoGramas" class="[&_input]:!text-sm [&_input]:!p-2 !w-full [&_input]:!w-full [&_input]:!border-t-0 [&_input]:!border-l-0 [&_input]:!border-r-0 [&_input]:!rounded-none"/>
+        </div>
+    </div>
+    <button (click)="this.cadastrar()" [loading]="this.loadingSave"  class="!text-xs !bg-black !w-full" pButton>
+       Cadastrar
+    </button>
+</p-dialog>
