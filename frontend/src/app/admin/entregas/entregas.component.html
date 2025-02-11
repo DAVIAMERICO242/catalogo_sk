@@ -1,15 +1,20 @@
 <div class="flex flex-col h-[calc(100vh-75px)]">
     <app-admin-page-title  iconClass="pi pi-box" title="Entregas"/>
-    <div class="p-5 relativeflex-1">
+    <div class="p-5 relative flex-1">
         <div class="mb-3 flex items-center gap-3 ">
-            <div (click)="this.navToSubRoute(EntregaesPage.INTEGRACAO)" class="flex items-center gap-2 cursor-pointer">
-                <div></div>
-                <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='INTEGRACAO'}">Integração correios</div>
+            <div (click)="this.navToSubRoute(EntregaesPage.INTEGRACAO)" class="cursor-pointer">
+                <div class="flex items-center gap-2 cursor-pointer">
+                    <div></div>
+                    <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='INTEGRACAO'}">Integração correios</div>
+                </div>
+                <div [ngClass]="{'bg-black':this.focusedPage==='INTEGRACAO','bg-slate-300':this.focusedPage!=='INTEGRACAO'}" class="w-[full] h-[1px]  mt-2 "></div>
             </div>
-            <div (click)="this.navToSubRoute(EntregaesPage.PESAGEM_COMPRIMENTAGEM)" class="flex items-center gap-2 cursor-pointer">
-                <div></div>
-                <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='PESAGEM_COMPRIMENTAGEM'}">Peso/Comprimento para cálculo de frete</div>
-                <div class="mt-1"></div>
+            <div (click)="this.navToSubRoute(EntregaesPage.PESAGEM_COMPRIMENTAGEM)" class="cursor-pointer">
+                <div class="flex items-center gap-2 cursor-pointer">
+                    <div></div>
+                    <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='PESAGEM_COMPRIMENTAGEM'}">Peso/Comprimento para cálculo de frete</div>
+                </div>
+                <div [ngClass]="{'bg-black':this.focusedPage==='PESAGEM_COMPRIMENTAGEM','bg-slate-300':this.focusedPage!=='PESAGEM_COMPRIMENTAGEM'}" class="w-[full] h-[1px]  mt-2 "></div>
             </div>
         </div>
         <router-outlet/>
