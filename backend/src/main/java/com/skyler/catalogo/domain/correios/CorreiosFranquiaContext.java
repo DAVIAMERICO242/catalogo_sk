@@ -16,6 +16,7 @@ public class CorreiosFranquiaContext {
     @Id
     private String systemId = UUID.randomUUID().toString();
     private String numeroContrato;
+    private String numeroCartaoPostal;
     private String numeroDiretoriaRegional;
     private String usuario;
     private String senha;

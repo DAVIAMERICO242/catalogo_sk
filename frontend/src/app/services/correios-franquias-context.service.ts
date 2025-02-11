@@ -14,6 +14,7 @@ export namespace CorreiosFranquiasContext{
     cepOrigem:string,
     numeroDiretoriaRegional:string,
     numeroContrato:string,
+    numeroCartaoPostal:string
   }
   export interface PesoCategoria{
     systemId:string,

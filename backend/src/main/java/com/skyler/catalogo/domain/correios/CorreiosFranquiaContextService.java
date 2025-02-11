@@ -34,6 +34,7 @@ public class CorreiosFranquiaContextService {
         output.setSystemId(correiosFranquiaContext.getSystemId());
         output.setFranquiaId(correiosFranquiaContext.getFranquia().getSystemId());
         output.setUsuario(correiosFranquiaContext.getUsuario());
+        output.setNumeroCartaoPostal(correiosFranquiaContext.getNumeroCartaoPostal());
         output.setNumeroContrato(correiosFranquiaContext.getNumeroContrato());
         output.setNumeroDiretoriaRegional(correiosFranquiaContext.getNumeroDiretoriaRegional());
         output.setSenha(correiosFranquiaContext.getSenha());
@@ -49,11 +50,12 @@ public class CorreiosFranquiaContextService {
             throw new RuntimeException("Franquia não encontrada");
         }
         CorreiosFranquiaContext correiosFranquiaContext = new CorreiosFranquiaContext();
-        if(correiosFranquiaContext.getSystemId()!=null && !correiosFranquiaContext.getSystemId().isBlank()){
+        if(correiosFranquiaDTO.getSystemId()!=null && !correiosFranquiaDTO.getSystemId().isBlank()){
             correiosFranquiaContext.setSystemId(correiosFranquiaDTO.getSystemId());
         }
         correiosFranquiaContext.setFranquia(franquiaOptional.get());
         correiosFranquiaContext.setUsuario(correiosFranquiaDTO.getUsuario());
+        correiosFranquiaContext.setNumeroCartaoPostal(correiosFranquiaDTO.getNumeroCartaoPostal());
         correiosFranquiaContext.setNumeroContrato(correiosFranquiaDTO.getNumeroContrato());
         correiosFranquiaContext.setNumeroDiretoriaRegional(correiosFranquiaDTO.getNumeroDiretoriaRegional());
         correiosFranquiaContext.setSenha(correiosFranquiaDTO.getSenha());

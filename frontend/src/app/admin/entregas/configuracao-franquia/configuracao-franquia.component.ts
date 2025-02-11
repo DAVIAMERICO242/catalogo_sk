@@ -48,7 +48,8 @@ export class ConfiguracaoFranquiaComponent implements OnInit {
       codigoSedex:"",
       cepOrigem:"",
       numeroContrato:"",
-      numeroDiretoriaRegional:""
+      numeroDiretoriaRegional:"",
+      numeroCartaoPostal:""
     }
   }
 

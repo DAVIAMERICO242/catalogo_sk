@@ -7,6 +7,7 @@ public class CorreiosFranquiaDTO {
     private String systemId;
     private String franquiaId;
     private String numeroContrato;
+    private String numeroCartaoPostal;
     private String numeroDiretoriaRegional;
     private String usuario;
     private String senha;
