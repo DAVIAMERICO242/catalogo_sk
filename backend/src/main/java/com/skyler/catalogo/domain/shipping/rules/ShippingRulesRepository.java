@@ -1,6 +1,5 @@
-package com.skyler.catalogo.domain.shipping;
+package com.skyler.catalogo.domain.shipping.rules;
 
-import jdk.dynalink.linker.LinkerServices;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
