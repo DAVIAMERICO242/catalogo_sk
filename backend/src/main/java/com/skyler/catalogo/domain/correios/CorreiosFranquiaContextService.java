@@ -34,6 +34,8 @@ public class CorreiosFranquiaContextService {
         output.setSystemId(correiosFranquiaContext.getSystemId());
         output.setFranquiaId(correiosFranquiaContext.getFranquia().getSystemId());
         output.setUsuario(correiosFranquiaContext.getUsuario());
+        output.setNumeroContrato(correiosFranquiaContext.getNumeroContrato());
+        output.setNumeroDiretoriaRegional(correiosFranquiaContext.getNumeroDiretoriaRegional());
         output.setSenha(correiosFranquiaContext.getSenha());
         output.setCodigoPac(correiosFranquiaContext.getCodigoPac());
         output.setCodigoSedex(correiosFranquiaContext.getCodigoSedex());
@@ -52,6 +54,8 @@ public class CorreiosFranquiaContextService {
         }
         correiosFranquiaContext.setFranquia(franquiaOptional.get());
         correiosFranquiaContext.setUsuario(correiosFranquiaDTO.getUsuario());
+        correiosFranquiaContext.setNumeroContrato(correiosFranquiaDTO.getNumeroContrato());
+        correiosFranquiaContext.setNumeroDiretoriaRegional(correiosFranquiaDTO.getNumeroDiretoriaRegional());
         correiosFranquiaContext.setSenha(correiosFranquiaDTO.getSenha());
         correiosFranquiaContext.setCodigoPac(correiosFranquiaDTO.getCodigoPac());
         correiosFranquiaContext.setCodigoSedex(correiosFranquiaDTO.getCodigoSedex());

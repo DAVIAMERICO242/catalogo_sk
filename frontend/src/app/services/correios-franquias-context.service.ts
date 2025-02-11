@@ -9,9 +9,12 @@ export namespace CorreiosFranquiasContext{
     franquiaId:string,
     usuario:string,
     senha:string,
-    codigoPac:number,
-    codigoSedex:number,
-    cepOrigem:string
+    codigoPac:string,
+    codigoSedex:string,
+    cepOrigem:string,
+    numeroDiretoriaRegional:string,
+    numeroContrato:string,
+
   }
 }
 @Injectable({

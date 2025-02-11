@@ -15,10 +15,12 @@ import java.util.UUID;
 public class CorreiosFranquiaContext {
     @Id
     private String systemId = UUID.randomUUID().toString();
+    private String numeroContrato;
+    private String numeroDiretoriaRegional;
     private String usuario;
     private String senha;
-    private Integer codigoPac;
-    private Integer codigoSedex;
+    private String codigoPac;
+    private String codigoSedex;
     private String cepOrigem;
 
     @OneToOne

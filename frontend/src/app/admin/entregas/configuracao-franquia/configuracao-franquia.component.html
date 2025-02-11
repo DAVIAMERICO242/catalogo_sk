@@ -1,1 +1,83 @@
-<p>configuracao-franquia works!</p>
+<div class="space-y-5">
+
+    <div *ngIf="!this.loadingConfigs;else fallback" class="w-fit">
+        <div class="flex justify-end mb-5">
+            <button [loading]="this.loadingSave" (click)="this.saveConfigs()" pButton class="!w-[150px] !h-[30px] !text-xs">
+                Salvar
+            </button>
+        </div>
+        <div class="space-y-6">
+            <div class="flex items-center gap-5">
+                <div>
+                    <div class="text-xs">
+                        Número contrato
+                    </div>
+                    <div>
+                        <input pInputText [(ngModel)]="this.currentConfig.numeroContrato" class="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none"/>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-xs">
+                        Número diretória regional (nuDR)
+                    </div>
+                    <div>
+                        <input pInputText  [(ngModel)]="this.currentConfig.numeroDiretoriaRegional" class="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none"/>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-5">
+                <div>
+                    <div class="text-xs">
+                        Usuário correios
+                    </div>
+                    <div>
+                        <input pInputText [(ngModel)]="this.currentConfig.usuario" class="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none"/>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-xs">
+                        Senha correios
+                    </div>
+                    <div>
+                        <input pInputText  [(ngModel)]="this.currentConfig.senha" class="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none"/>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-5">
+                <div>
+                    <div class="text-xs">
+                        Código PAC do contrato
+                    </div>
+                    <div>
+                        <input pInputText  [(ngModel)]="this.currentConfig.codigoPac" class="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none" />
+                    </div>
+                </div>
+                <div>
+                    <div class="text-xs">
+                        Código SEDEX do contrato
+                    </div>
+                    <div>
+                        <input pInputText [(ngModel)]="this.currentConfig.codigoSedex" class="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none"/>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="text-xs">
+                    CEP origem
+                </div>
+                <div>
+                    <p-input-mask   [unmask]="true" [(ngModel)]="this.currentConfig.cepOrigem" styleClass="!text-sm !p-0 !w-[300px] !border-t-0 !border-l-0 !border-r-0 !rounded-none" mask="99999-999" placeholder="XXXXX-XXX" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #fallback >
+        <div class="w-full xl:w-6/12 p-4">
+            <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
+        </div>
+    </ng-template>
+</div>

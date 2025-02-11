@@ -3,10 +3,11 @@ import {CorreiosFranquiasContext, CorreiosFranquiasContextService } from '../../
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../../services/user.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-configuracao-franquia',
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './configuracao-franquia.component.html'
 })
 export class ConfiguracaoFranquiaComponent implements OnInit {
@@ -25,8 +26,10 @@ export class ConfiguracaoFranquiaComponent implements OnInit {
       next:(data)=>{
         if(data){
           this.currentConfig = data;
+          this.loadingConfigs = false;
         }else{
           this.initializePayload();
+          this.loadingConfigs = false;
         }
       },
       error:(err:HttpErrorResponse)=>{
@@ -38,17 +41,19 @@ export class ConfiguracaoFranquiaComponent implements OnInit {
   initializePayload(){
     this.currentConfig = {
       systemId:"",
-      franquiaId:"",
+      franquiaId:this.auth.getContext()?.franquia.systemId as string,
       usuario:"",
       senha:"",
-      codigoPac:0,
-      codigoSedex:0,
+      codigoPac:"",
+      codigoSedex:"",
       cepOrigem:"",
+      numeroContrato:"",
+      numeroDiretoriaRegional:""
     }
   }
 
   isValid(){
-    if(!this.currentConfig.usuario || !this.currentConfig.senha || !this.currentConfig.codigoPac || !this.currentConfig.codigoSedex || !this.currentConfig.cepOrigem){
+    if(!this.currentConfig.numeroContrato || !this.currentConfig.numeroDiretoriaRegional || !this.currentConfig.usuario || !this.currentConfig.senha || !this.currentConfig.codigoPac || !this.currentConfig.codigoSedex || !this.currentConfig.cepOrigem){
       this.message.add({
         severity:"error",
         summary:"Dados inválidos"

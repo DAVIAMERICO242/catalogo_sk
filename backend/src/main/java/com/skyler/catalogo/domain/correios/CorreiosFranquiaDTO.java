@@ -6,9 +6,11 @@ import lombok.Data;
 public class CorreiosFranquiaDTO {
     private String systemId;
     private String franquiaId;
+    private String numeroContrato;
+    private String numeroDiretoriaRegional;
     private String usuario;
     private String senha;
-    private Integer codigoPac;
-    private Integer codigoSedex;
+    private String codigoPac;
+    private String codigoSedex;
     private String cepOrigem;
 }
