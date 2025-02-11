@@ -1,6 +1,6 @@
 <div class="space-y-5">
 
-    <div *ngIf="!this.loadingConfigs;else fallback" class="w-fit">
+    <div *ngIf="!this.loadingConfigs;else fallback" class="w-fit p-5">
         <div class="flex justify-end mb-5">
             <button [loading]="this.loadingSave" (click)="this.saveConfigs()" pButton class="!w-[150px] !h-[30px] !text-xs">
                 Salvar
