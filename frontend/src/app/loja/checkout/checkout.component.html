@@ -103,7 +103,7 @@
                 </div>
             </div>
             <div class="font-bold text-xs mb-5">O frete será calculado no momento da entrega.</div>
-            <button (click)="this.postPedido()" pButton class="!w-full  !bg-black !text-sm">
+            <button [loading]="this.loadingNovoPedido" (click)="this.postPedido()" pButton class="!w-full  !bg-black !text-sm">
                 Solicitar pedido
             </button>
         </div>
