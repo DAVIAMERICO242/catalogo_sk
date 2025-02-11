@@ -56,7 +56,7 @@ public class CorreiosAuth {
         TokenRequestPayload body = new TokenRequestPayload();
         body.setNumero(cartaoPostagem);
         HttpEntity<TokenRequestPayload> entity = new HttpEntity<>(body, headers);
-        TokenAcessoResponse response = restTemplate.exchange("", HttpMethod.GET,entity,TokenAcessoResponse.class).getBody();
+        TokenAcessoResponse response = restTemplate.exchange("https://api.correios.com.br/token/v1/autentica/cartaopostagem", HttpMethod.GET,entity,TokenAcessoResponse.class).getBody();
         return response.getToken();
     }
 
