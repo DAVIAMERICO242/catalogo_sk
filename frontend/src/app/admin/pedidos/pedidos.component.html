@@ -43,9 +43,9 @@
                             <th>
                                 Descontos
                             </th>
-                            <th>
+                            <!-- <th>
                                 Frete
-                            </th>
+                            </th> -->
                             <th>
 
                             </th>
@@ -73,7 +73,7 @@
                                 <app-status-pedido [pedido]="this.forceType(row)"/>
                             </td>
                             <td>
-                                {{this.getBeautyAddress(row)}}
+                                {{this.forceType(row).entregaLoja?"Coleta em loja":this.getBeautyAddress(row)}}
                             </td>
                             <td>
                                 {{this.forceType(row).valor | currency:"BRL"}}
@@ -81,9 +81,9 @@
                             <td>
                                 <app-detalhar-desconto [descontosAplicados]="this.forceType(row).descontosAplicados"/>
                             </td>
-                            <td>
+                            <!-- <td>
                                 {{this.forceType(row).valorFrete | currency:"BRL"}}
-                            </td>
+                            </td> -->
                             <td>
                                 <app-deletar-pedido (onDelete)="this.onDelete($event)" [pedido]="this.forceType(row)"/>
                             </td>
