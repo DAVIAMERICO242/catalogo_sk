@@ -86,6 +86,12 @@ public class ShippingCalculator {
             Float pesoVariacao = pesoCategoriasOptional.get().getPesoGramas();
             peso = peso + pesoVariacao;
         }
+        Float pesoCubado = this.getPesoCubado(
+                comprimentoCaixa.getComprimento()
+                ,comprimentoCaixa.getAltura()
+                ,comprimentoCaixa.getAltura()
+        );
+        peso = (pesoCubado>peso)?pesoCubado:peso;
         Float valorFrete = this.correiosBridge.getPrecoFrete(
                 token,
                 correiosFranquiaContext.getCodigoPac(),
@@ -115,6 +121,17 @@ public class ShippingCalculator {
                 valorFrete,
                 prazoFrete
         );
+    }
 
+    private Float getPesoCubado(
+            Float comprimento,
+            Float altura,
+            Float largura
+    ){
+        // Cálculo do peso cubado com conversão para float para garantir precisão
+        float pesoCubado = (largura * comprimento * altura) / 6000f;
+
+        // Arredondamento para 2 casas decimais
+        return Math.round(pesoCubado * 100.0) / 100.0f;
     }
 }
