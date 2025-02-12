@@ -28,7 +28,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription();
   loadingNovoPedido = false;
   totalBruto!:number;
-  total!:number;
+  total!:number;//liquido
   descontosAplicados!:Desconto.DescontoAplicado[];
   totalDescontos!:number;
   loadingCepAutoComplete = false;
@@ -91,14 +91,19 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   manageColetaLojaChange(){
     if(this.customerDetails.entregaLoja){
+      this.total = this.total - this.frete;
       this.frete = 0;
       this.tipoFrete = undefined;
     }
   }
 
   manageFreteChange(frete:FreteEmissionSignature){
-    this.tipoFrete = frete.tipo;
-    this.frete = frete.valorFrete;
+    if(!this.customerDetails.entregaLoja){//esse if e importante caso o usuario veja que o frete demora calcular e clique em coletar loja
+      this.total = this.total - this.frete;
+      this.tipoFrete = frete.tipo;
+      this.frete = frete.valorFrete;
+      this.total = this.total + frete.valorFrete;
+    }
   }
 
   loadTipoFrete(){

@@ -28,10 +28,17 @@ export class FreteComponent{
   onFreteChange = new EventEmitter<FreteEmissionSignature>();
   pacOuSedex!:ShippingCalculator.PacOuSedex;
   pacSedexEnum = ShippingCalculator.PacOuSedex;
+  lastFreteEmission!:FreteEmissionSignature; 
   constructor(
     private shippingCalculator:ShippingCalculatorService,
     private sacolaService:SacolaService
   ){}
+
+  manageColetaLojaChange(){
+    if(!this.entregaLoja && this.lastFreteEmission){
+      this.onFreteChange.emit(this.lastFreteEmission);
+    }
+  }
 
 
   getValorFrete(){
@@ -48,13 +55,19 @@ export class FreteComponent{
         this.loadingValorFrete = false;
         this.propostaFrete = data;
         if(data.tipo==ShippingCalculator.TipoCalculo.FAIXA_CEP){
-          this.onFreteChange.emit({
+          this.lastFreteEmission = {
             tipo:Pedidos.TipoFrete.FAIXA_CEP,
             valorFrete:data.valorFaixaCep
-          })
+          }
+          this.onFreteChange.emit(this.lastFreteEmission)
         }
         if(data.tipo===ShippingCalculator.TipoCalculo.CORREIOS){
           this.pacOuSedex = ShippingCalculator.PacOuSedex.PAC;
+          this.lastFreteEmission = {
+            tipo:Pedidos.TipoFrete.PAC,
+            valorFrete:data.valorPac
+          }
+          this.onFreteChange.emit(this.lastFreteEmission)
         }
       }
     })
@@ -63,17 +76,19 @@ export class FreteComponent{
   onPacSedexChange(value:ShippingCalculator.PacOuSedex){
     if(value===ShippingCalculator.PacOuSedex.PAC){
       this.pacOuSedex = ShippingCalculator.PacOuSedex.PAC;
-      this.onFreteChange.emit({
+      this.lastFreteEmission = {
         tipo:Pedidos.TipoFrete.PAC,
         valorFrete:this.propostaFrete.valorPac
-      })
+      };
+      this.onFreteChange.emit(this.lastFreteEmission)
     }
     if(value===ShippingCalculator.PacOuSedex.SEDEX){
       this.pacOuSedex = ShippingCalculator.PacOuSedex.SEDEX;
-      this.onFreteChange.emit({
+      this.lastFreteEmission = {
         tipo:Pedidos.TipoFrete.SEDEX,
         valorFrete:this.propostaFrete.valorSedex
-      })
+      };
+      this.onFreteChange.emit(this.lastFreteEmission)
     }
   }
 
