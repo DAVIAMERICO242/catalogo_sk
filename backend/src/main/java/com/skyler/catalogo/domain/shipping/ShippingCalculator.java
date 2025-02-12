@@ -61,10 +61,10 @@ public class ShippingCalculator {
         List<ShippingRules> faixasCep = this.faixaCepRepository.findAllByFranquiaId(franquia.getSystemId());
         for(ShippingRules faixaCep:faixasCep){
             if(this.isCepBetween(shippingCalculationRequest.getCep(),faixaCep.getCepInicio(),faixaCep.getCepFim())){
-                return new HowShouldBeCalculatedResponse(true);
+                return new HowShouldBeCalculatedResponse(TipoCalculoEnum.FAIXA_CEP);
             }
         }
-        return new HowShouldBeCalculatedResponse(false);
+        return new HowShouldBeCalculatedResponse(TipoCalculoEnum.CORREIOS);
     }
 
     public FreteResponseDTO getFrete(ShippingCalculationRequest shippingCalculationRequest){//precisa do valor maturo aaaa

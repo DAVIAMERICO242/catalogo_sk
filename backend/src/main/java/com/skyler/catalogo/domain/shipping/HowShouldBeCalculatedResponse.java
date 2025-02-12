@@ -4,5 +4,5 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class HowShouldBeCalculatedResponse {
-    Boolean calculoPelaFaixaCep;
+    TipoCalculoEnum tipo;
 }
