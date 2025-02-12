@@ -84,6 +84,19 @@
                     </div>
                 </div>
             </div>
+            <div>
+                <div class="text-[20px] font-bold mb-5 flex  items-center gap-2">
+                    <div class="h-[35px] w-[35px] rounded-full bg-black flex items-center justify-center text-white">
+                        3
+                    </div>
+                    <div>
+                        Entrega
+                    </div>
+                </div>
+                <div>
+                    <app-frete [cep]="this.customerDetails.cep" [sacola]="this.sacola"/>
+                </div>
+            </div>
         </div>
         <div class=" h-[300px] w-[300px] p-4 bg-slate-50 ">
             <div>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { Pedidos, PedidosService } from '../../services/pedidos.service';
 import { Sacola, SacolaService } from '../../services/sacola.service';
@@ -11,13 +11,15 @@ import { ProdutoSacolaComponent } from "../sacola/produto-sacola/produto-sacola.
 import { Desconto } from '../../services/descontos.service';
 import { CepService } from '../../services/cep.service';
 import { MessageService } from 'primeng/api';
+import { FreteComponent } from "./frete/frete.component";
 
 @Component({
   selector: 'app-checkout',
-  imports: [SharedModule, ProdutoSacolaComponent],
+  imports: [SharedModule, ProdutoSacolaComponent, FreteComponent],
   templateUrl: './checkout.component.html'
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
+  @ViewChild(FreteComponent) freteComponent!:FreteComponent;
   customerDetails!:Pedidos.PedidoCustomerDetails;
   frete = 0;
   sacola!:Sacola.SacolaModel;
@@ -83,7 +85,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   manageCepChange(){
     this.preencherCamposPeloCep();
+    this.loadTipoFrete();
+  }
 
+  loadTipoFrete(){
+    const formated = this.customerDetails.cep.trim().replace("-","");
+    if(formated.length===8){
+      this.freteComponent.getTipoFrete();
+    }
   }
 
   preencherCamposPeloCep(){

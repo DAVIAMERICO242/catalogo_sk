@@ -2,10 +2,7 @@ package com.skyler.catalogo.domain.shipping;
 
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shipping-calculator")
@@ -17,7 +14,7 @@ public class FreteCalculatorController {
         this.shippingCalculator = shippingCalculator;
     }
 
-    @GetMapping("/how-should-be-calculated")
+    @PostMapping("/how-should-be-calculated")
     public ResponseEntity how(@RequestBody ShippingCalculationRequest shippingCalculationRequest){
         try{
             return ResponseEntity.ok().body(this.shippingCalculator.getHowShouldBeCalculated(shippingCalculationRequest));
@@ -27,7 +24,7 @@ public class FreteCalculatorController {
     }
 
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity calculateFrete(@RequestBody ShippingCalculationRequest shippingCalculationRequest){
         try{
             return ResponseEntity.ok().body(this.shippingCalculator.getFrete(shippingCalculationRequest));

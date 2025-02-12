@@ -10,10 +10,10 @@ import java.util.List;
 
 @Data
 public class ShippingCalculationRequest {
-    private PacSedexEnum pacSedex;
-    private String cep;
-    private String lojaId;
-    private List<ProdutoPedidoDTO> produtos = new ArrayList<>();
+    PacSedexEnum pacSedex;//pode ser nulo se for calculado por faixa de cep
+    String cep;
+    String lojaId;
+    List<ProdutoPedidoDTO> produtos = new ArrayList<>();
     public void addProdutoComprado(ProdutoPedidoDTO produto){
         this.produtos.add(produto);
     }
