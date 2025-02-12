@@ -60,7 +60,7 @@ public class ShippingCalculator {
         Franquia franquia = loja.getFranquia();
         List<ShippingRules> faixasCep = this.faixaCepRepository.findAllByFranquiaId(franquia.getSystemId());
         List<ShippingRules> faixasCepPrecificadas = faixasCep.stream().filter(o->o.getMinValueToApply()>0).toList();
-        List<ShippingRules> faixasCepNaoPrecificadas = faixasCep.stream().filter(o->o.getMinValueToApply()>0).toList();
+        List<ShippingRules> faixasCepNaoPrecificadas = faixasCep.stream().filter(o->o.getMinValueToApply()==0).toList();
         ShippingDiscountable shippingDiscountable = this.mapToDiscountable(shippingCalculationRequest,loja);
         Float valorCarrinhoComDescontos = this.discountCalculator.processChainForCurrentEpochAndDiscountable(shippingDiscountable).getValorFinal();
         for(ShippingRules faixaCepPrecificada:faixasCepPrecificadas){
