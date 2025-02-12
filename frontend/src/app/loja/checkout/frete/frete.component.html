@@ -1,67 +1,67 @@
-<div *ngIf="!this.loadingValorFrete;else loadingfretefallback">
-    <div *ngIf="this.propostaFrete;else emptycepfallback">
-        <ng-container *ngIf="this.propostaFrete.tipo==='FAIXA_CEP'">
-            <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
-                <div class="flex items-center gap-2">
-                    <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
-                        <div class="pi pi-check !text-white !text-sm"></div>
-                    </div>
-                    <div class="text-sm font-bold">
-                        Frete:{{this.propostaFrete.valorFaixaCep | currency:"BRL"}}/Prazo: {{this.propostaFrete.prazoEmDiasFaixaCep}} dias
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-        <ng-container *ngIf="this.propostaFrete.tipo==='CORREIOS'">
-            <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
-                <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <div (click)="this.onPacSedexChange(pacSedexEnum.PAC)" [ngClass]="{'bg-black':this.pacOuSedex==='PAC','bg-slate-200':this.pacOuSedex!=='PAC'}" class="cursor-pointer w-[22px] h-[22px] rounded-full flex items-center justify-center">
-                            <div *ngIf="this.pacOuSedex==='PAC'" class="pi pi-check !text-white !text-sm"></div>
-                        </div>
-                        <div>
-                            Pac: <span class="font-bold">Frete: {{this.propostaFrete.valorPac | currency:"BRL"}} / Prazo: {{this.propostaFrete.prazoEmDiasPac}} dias</span>
-                        </div>
-                    </div>
+<div *ngIf="!this.entregaLoja">
+    <div *ngIf="!this.loadingValorFrete;else loadingfretefallback">
+        <div *ngIf="this.propostaFrete;else emptycepfallback">
+            <ng-container *ngIf="this.propostaFrete.tipo==='FAIXA_CEP'">
+                <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
                     <div class="flex items-center gap-2">
-                        <div (click)="this.onPacSedexChange(pacSedexEnum.SEDEX)" [ngClass]="{'bg-black':this.pacOuSedex==='SEDEX','bg-slate-200':this.pacOuSedex!=='SEDEX'}"  class="cursor-pointer w-[22px] h-[22px]  rounded-full flex items-center justify-center">
-                            <div *ngIf="this.pacOuSedex==='SEDEX'" class="pi pi-check !text-white !text-sm"></div>
+                        <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
+                            <div class="pi pi-check !text-white !text-sm"></div>
                         </div>
-                        <div >
-                            Sedex: <span class="font-bold">Frete: {{this.propostaFrete.valorSedex | currency:"BRL"}} / Prazo: {{this.propostaFrete.prazoEmDiasSedex}} dias</span>
+                        <div class="text-sm font-bold">
+                            Frete:{{this.propostaFrete.valorFaixaCep | currency:"BRL"}}/Prazo: {{this.propostaFrete.prazoEmDiasFaixaCep}} dias
                         </div>
                     </div>
                 </div>
-            </div>
-        </ng-container>
-    </div>
+            </ng-container>
+            <ng-container *ngIf="this.propostaFrete.tipo==='CORREIOS'">
+                <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
+                    <div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <div (click)="this.onPacSedexChange(pacSedexEnum.PAC)" [ngClass]="{'bg-black':this.pacOuSedex==='PAC','bg-slate-200':this.pacOuSedex!=='PAC'}" class="cursor-pointer w-[22px] h-[22px] rounded-full flex items-center justify-center">
+                                <div *ngIf="this.pacOuSedex==='PAC'" class="pi pi-check !text-white !text-sm"></div>
+                            </div>
+                            <div>
+                                Pac: <span class="font-bold">Frete: {{this.propostaFrete.valorPac | currency:"BRL"}} / Prazo: {{this.propostaFrete.prazoEmDiasPac}} dias</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div (click)="this.onPacSedexChange(pacSedexEnum.SEDEX)" [ngClass]="{'bg-black':this.pacOuSedex==='SEDEX','bg-slate-200':this.pacOuSedex!=='SEDEX'}"  class="cursor-pointer w-[22px] h-[22px]  rounded-full flex items-center justify-center">
+                                <div *ngIf="this.pacOuSedex==='SEDEX'" class="pi pi-check !text-white !text-sm"></div>
+                            </div>
+                            <div >
+                                Sedex: <span class="font-bold">Frete: {{this.propostaFrete.valorSedex | currency:"BRL"}} / Prazo: {{this.propostaFrete.prazoEmDiasSedex}} dias</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
 
-    <ng-container *ngIf="this.entregaLoja">
-        <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
-            <div>
-                <div class="flex items-center gap-2 mb-3">
-                    <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
-                        <div class="pi pi-check !text-white !text-sm"></div>
-                    </div>
-                    <div >
-                        Coleta em loja
-                    </div>
-                </div>
+    </div>
+    <ng-template #loadingfretefallback>
+        <div class="flex items-center gap-2">
+            <div class="pi pi-spin pi-spinner">
+    
+            </div>
+            <div class="text-sm">
+                Calculando frete...
             </div>
         </div>
-    </ng-container>
+    </ng-template>
     
     <ng-template #emptycepfallback>
-        <div *ngIf="!this.entregaLoja" class="text-gray-500 text-xs">Informe o CEP para escolher a entrega</div>
+        <div class="text-gray-500 text-xs">Informe o CEP para escolher a entrega</div>
     </ng-template>
 </div>
-<ng-template #loadingfretefallback>
-    <div class="flex items-center gap-2">
-        <div class="pi pi-spin pi-spinner">
-
-        </div>
-        <div class="text-sm">
-            Calculando frete...
-        </div>
+<ng-container *ngIf="this.entregaLoja">
+    <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
+            <div class="flex items-center gap-2 ">
+                <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
+                    <div class="pi pi-check !text-white !text-sm"></div>
+                </div>
+                <div class="font-bold" >
+                    Coleta em loja
+                </div>
+            </div>
     </div>
-</ng-template>
+</ng-container>
