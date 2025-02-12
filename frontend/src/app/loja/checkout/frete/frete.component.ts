@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Sacola, SacolaService } from '../../../services/sacola.service';
 import { ShippingCalculator, ShippingCalculatorService } from '../../../services/shipping-calculator.service';
 import { SharedModule } from '../../../shared/shared.module';
@@ -17,6 +17,8 @@ export class FreteComponent {
   sacola!:Sacola.SacolaModel;
   loadingValorFrete = false;
   frete!:ShippingCalculator.FreteResponse;
+  @Output()
+  onFreteCalculation = new EventEmitter<typeof this.frete>();
   constructor(
     private shippingCalculator:ShippingCalculatorService,
     private sacolaService:SacolaService
@@ -33,6 +35,7 @@ export class FreteComponent {
     this.loadingValorFrete = true;
     this.shippingCalculator.getValorFreteSemDesconto(payload).pipe(takeUntil(this.prevRequestDestroyer$)).subscribe({
       next:(data)=>{
+        this.loadingValorFrete = false;
         this.frete = data;
       }
     })
