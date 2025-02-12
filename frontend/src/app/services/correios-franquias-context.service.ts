@@ -29,6 +29,15 @@ export namespace CorreiosFranquiasContext{
     comprimento:number,
     altura:number
   }
+
+  export interface FaixaCep{
+    systemId:string,
+    franquiaId:string,
+    cepInicio:string,
+    cepFim:string,
+    minValueToApply:number,
+    valorFixo:number
+  }
 }
 @Injectable({
   providedIn: 'root'
@@ -60,4 +69,14 @@ export class CorreiosFranquiasContextService {
   getDimensoesByFranquiaId(franquiaId:string){
     return this.http.get<CorreiosFranquiasContext.DimensaoCaixa>(env.BACKEND_URL+"/comprimento-caixa?franquiaId="+franquiaId);
   }
+
+  cadastrarAtualizarFaixa(faixa:CorreiosFranquiasContext.FaixaCep){
+    return this.http.post<CorreiosFranquiasContext.FaixaCep>(env.BACKEND_URL+"/faixas-cep",faixa);
+  }
+
+  getFaixas(franquiaId:string){
+    return this.http.get<CorreiosFranquiasContext.FaixaCep[]>(env.BACKEND_URL+"/faixa-cep?franquiaId="+franquiaId);
+  }
+
+
 }
