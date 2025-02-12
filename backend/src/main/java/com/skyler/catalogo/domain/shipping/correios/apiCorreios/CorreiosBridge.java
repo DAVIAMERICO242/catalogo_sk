@@ -20,10 +20,10 @@ public class CorreiosBridge {//BY DAVI AMERICO SANCHES XDDDDDDDDDDDDDDDDDD
             String nuDR,
             String cepOrigem,
             String cepDestino,
-            Integer pesoEmGramas,
-            Integer comprimento,
-            Integer altura,
-            Integer largura
+            Float pesoEmGramas,
+            Float comprimento,
+            Float altura,
+            Float largura
     ){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -55,10 +55,10 @@ public class CorreiosBridge {//BY DAVI AMERICO SANCHES XDDDDDDDDDDDDDDDDDD
             String nuDR,
             String cepOrigem,
             String cepDestino,
-            Integer pesoEmGramas,
-            Integer comprimento,
-            Integer altura,
-            Integer largura
+            Float pesoEmGramas,
+            Float comprimento,
+            Float altura,
+            Float largura
     ){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class ShippingCalculationRequest {
+    private String lojaId;
     private String cep;
     private List<ProdutoPedidoDTO> produtos = new ArrayList<>();
     public void addProdutoComprado(ProdutoPedidoDTO produto){
