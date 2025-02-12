@@ -40,6 +40,13 @@ export class CriarFaixaComponent implements OnInit {
   }
 
   cadastrarAtualizar(){
+    if(!this.payload.nome.length){
+      this.message.add({
+        severity:"error",
+        summary:"Nome inválido"
+      })
+      return;
+    }
     if(this.payload.cepFim.length!==8 && this.payload.cepInicio.length!==8){
       this.message.add({
         severity:"error",
