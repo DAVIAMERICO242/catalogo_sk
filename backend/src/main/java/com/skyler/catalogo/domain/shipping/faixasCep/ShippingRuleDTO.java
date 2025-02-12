@@ -1,4 +1,4 @@
-package com.skyler.catalogo.domain.shipping.rules;
+package com.skyler.catalogo.domain.shipping.faixasCep;
 
 
 import lombok.Data;

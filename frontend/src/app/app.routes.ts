@@ -65,6 +65,10 @@ export const routes: Routes = [
                     ,{
                         path:"dimensoes",
                         loadComponent:()=>import("./admin/entregas/dimensoes/dimensoes.component").then(m=>m.DimensoesComponent),
+                    },
+                    {
+                        path:"faixas-cep",
+                        loadComponent:()=>import("./admin/entregas/faixas-cep/faixas-cep.component").then(m=>m.FaixasCepComponent),
                     }
                 ]
             }

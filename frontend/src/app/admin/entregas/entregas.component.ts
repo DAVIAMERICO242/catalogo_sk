@@ -6,7 +6,8 @@ import { CorreiosFranquiasContextService } from '../../services/correios-franqui
 export enum EntregasPage{
   INTEGRACAO="INTEGRACAO",
   PESAGEM="PESAGEM",
-  DIMENSOES="DIMENSOES"
+  DIMENSOES="DIMENSOES",
+  FAIXA_CEP="FAIXA_CEP"
 }
 @Component({
   selector: 'app-entregas',
@@ -29,6 +30,9 @@ export class EntregasComponent implements OnInit{
     if(url.endsWith("/dimensoes")){
       this.focusedPage = EntregasPage.DIMENSOES;
     }
+    if(url.endsWith("/faixas-cep")){
+      this.focusedPage = EntregasPage.FAIXA_CEP;
+    }
   }
 
   navToSubRoute(page:EntregasPage){
@@ -42,6 +46,10 @@ export class EntregasComponent implements OnInit{
     }
     if(page===EntregasPage.DIMENSOES){
       this.router.navigate(["admin/entregas/dimensoes"]);
+      this.focusedPage = page;
+    }
+    if(page===EntregasPage.FAIXA_CEP){
+      this.router.navigate(["admin/entregas/faixas-cep"]);
       this.focusedPage = page;
     }
   }

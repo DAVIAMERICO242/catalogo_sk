@@ -23,6 +23,13 @@
                 </div>
                 <div [ngClass]="{'bg-black':this.focusedPage==='DIMENSOES','bg-slate-300':this.focusedPage!=='DIMENSOES'}" class="w-[full] h-[1px]  mt-2 "></div>
             </div>
+            <div (click)="this.navToSubRoute(EntregaesPage.FAIXA_CEP)" class="cursor-pointer">
+                <div class="flex items-center gap-2 cursor-pointer">
+                    <div></div>
+                    <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='FAIXA_CEP'}">Faixas CEP</div>
+                </div>
+                <div [ngClass]="{'bg-black':this.focusedPage==='FAIXA_CEP','bg-slate-300':this.focusedPage!=='FAIXA_CEP'}" class="w-[full] h-[1px]  mt-2 "></div>
+            </div>
         </div>
         <router-outlet/>
     </div>

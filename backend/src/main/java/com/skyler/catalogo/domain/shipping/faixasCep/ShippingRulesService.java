@@ -1,4 +1,4 @@
-package com.skyler.catalogo.domain.shipping.rules;
+package com.skyler.catalogo.domain.shipping.faixasCep;
 
 import com.skyler.catalogo.domain.franquias.Franquia;
 import com.skyler.catalogo.domain.franquias.FranquiaRepository;
@@ -29,9 +29,9 @@ public class ShippingRulesService {
         return output;
     }
 
-    public void updateOrSave(ShippingRuleDTO shippingRuleDTO){
+    public ShippingRuleDTO updateOrSave(ShippingRuleDTO shippingRuleDTO){
         ShippingRules shippingRule = this.dtoToEntity(shippingRuleDTO);
-        this.shippingRulesRepository.save(shippingRule);
+        return this.entityToDTO(this.shippingRulesRepository.save(shippingRule));
     }
 
     public ShippingRules dtoToEntity(ShippingRuleDTO shippingRuleDTO){
