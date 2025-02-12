@@ -7,6 +7,7 @@ import lombok.Data;
 public class ShippingRuleDTO {
     private String systemId;
     private String franquiaId;
+    private String nome;
     private String cepInicio;
     private String cepFim;
     private Float minValueToApply;

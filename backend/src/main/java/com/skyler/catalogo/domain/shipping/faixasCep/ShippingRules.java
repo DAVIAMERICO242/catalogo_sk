@@ -17,6 +17,7 @@ public class ShippingRules {
 
     @Id
     private String systemId = UUID.randomUUID().toString();
+    private String nome;
     private String cepInicio;
     private String cepFim;
     private Float minValueToApply;

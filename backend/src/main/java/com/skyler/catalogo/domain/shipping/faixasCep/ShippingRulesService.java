@@ -46,6 +46,7 @@ public class ShippingRulesService {
         output.setFranquia(franquiaOptional.get());
         output.setCepInicio(shippingRuleDTO.getCepInicio());
         output.setCepFim(shippingRuleDTO.getCepFim());
+        output.setNome(shippingRuleDTO.getNome());
         output.setMinValueToApply(shippingRuleDTO.getMinValueToApply());
         output.setValorFixo(shippingRuleDTO.getValorFixo());
         output.setPrazo(shippingRuleDTO.getPrazo());
@@ -56,6 +57,7 @@ public class ShippingRulesService {
         ShippingRuleDTO output = new ShippingRuleDTO();
         output.setSystemId(shippingRules.getSystemId());
         output.setFranquiaId(shippingRules.getFranquia().getSystemId());
+        output.setNome(shippingRules.getNome());
         output.setCepInicio(shippingRules.getCepInicio());
         output.setCepFim(shippingRules.getCepFim());
         output.setMinValueToApply(shippingRules.getMinValueToApply());

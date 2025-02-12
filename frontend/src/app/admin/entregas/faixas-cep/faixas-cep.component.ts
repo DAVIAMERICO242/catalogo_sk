@@ -5,10 +5,11 @@ import { UserService } from '../../../services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CepPipePipe } from '../../../pipes/cep-pipe.pipe';
 import { CriarFaixaComponent } from "./criar-faixa/criar-faixa.component";
+import { EditarFaixaComponent } from "./editar-faixa/editar-faixa.component";
 
 @Component({
   selector: 'app-faixas-cep',
-  imports: [SharedModule, CepPipePipe, CriarFaixaComponent],
+  imports: [SharedModule, CepPipePipe, CriarFaixaComponent, EditarFaixaComponent],
   templateUrl: './faixas-cep.component.html'
 })
 export class FaixasCepComponent implements OnInit {
@@ -37,6 +38,20 @@ export class FaixasCepComponent implements OnInit {
 
   forceType(row:any){
     return row as CorreiosFranquiasContext.FaixaCep;
+  }
+
+  onCadastro(novo:CorreiosFranquiasContext.FaixaCep){
+    this.faixas.unshift(novo);
+  }
+
+  onUpdate(updated:CorreiosFranquiasContext.FaixaCep){
+    this.faixas = this.faixas.map((e)=>{
+      if(e.systemId===updated.systemId){
+        return updated;
+      }else{
+        return e;
+      }
+    })
   }
 
 

@@ -32,6 +32,7 @@ export namespace CorreiosFranquiasContext{
 
   export interface FaixaCep{
     systemId:string,
+    nome:string,
     franquiaId:string,
     cepInicio:string,
     cepFim:string,

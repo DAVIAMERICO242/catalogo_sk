@@ -1,42 +1,31 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { SharedModule } from '../../../../shared/shared.module';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CorreiosFranquiasContext, CorreiosFranquiasContextService } from '../../../../services/correios-franquias-context.service';
 import { UserService } from '../../../../services/user.service';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
-  selector: 'app-criar-faixa',
+  selector: 'app-editar-faixa',
   imports: [SharedModule],
-  templateUrl: './criar-faixa.component.html'
+  templateUrl: './editar-faixa.component.html'
 })
-export class CriarFaixaComponent implements OnInit {
+export class EditarFaixaComponent implements OnInit {
+
+  @Input({required:true})
   payload!:CorreiosFranquiasContext.FaixaCep;
   loading = false;
   open = false;
   @Output()
-  onCadastro = new EventEmitter<typeof this.payload>();
+  onUpdate = new EventEmitter<typeof this.payload>();
 
   constructor(
     private auth:UserService,
-    private correiosFranquiasContext:CorreiosFranquiasContextService,
+    private correiosFranquiasContext:CorreiosFranquiasContextService ,
     private message:MessageService
   ){}
   ngOnInit(): void {
-    this.initializePayload();
-  }
-
-  initializePayload(){
-    this.payload = {
-      nome:"",
-      cepFim:"",
-      cepInicio:"",
-      franquiaId:this.auth.getContext()?.franquia.systemId as string,
-      minValueToApply:0,
-      systemId:"",
-      valorFixo:0,
-      prazo:3
-    }
+    this.payload = {...this.payload};
   }
 
   cadastrarAtualizar(){
@@ -53,7 +42,7 @@ export class CriarFaixaComponent implements OnInit {
         this.payload = data;
         this.loading = false;
         this.open = false;
-        this.onCadastro.emit(data);
+        this.onUpdate.emit(data);
       },
       error:(e:HttpErrorResponse)=>{
         this.message.add({
@@ -63,7 +52,4 @@ export class CriarFaixaComponent implements OnInit {
       }
     })
   }
-
-
-
 }

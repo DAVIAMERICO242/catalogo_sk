@@ -1,29 +1,42 @@
 
 <div class="p-5">
-    <div class="mb-3">
-        <app-criar-faixa/>
+    <div *ngIf="this.faixas" class="mb-3">
+        <app-criar-faixa (onCadastro)="this.onCadastro($event)"/>
     </div>
-    <p-table styleClass="!w-[600px]" [value]="this.faixas" >
+    <p-table  [showGridlines]="true" [stripedRows]="true" *ngIf="this.faixas;else fallback" styleClass="!w-fit" [value]="this.faixas" >
         <ng-template #header>
             <tr>
-                <th>Faixa ínicio</th>
-                <th>Faixa fim</th>
-                <th>Valor mínimo pedido</th>
-                <th>Frete fixo</th>
-                <th>Prazo fixo</th>
+                <th class="text-nowrap">Nome</th>
+                <th class="text-nowrap">Faixa ínicio</th>
+                <th class="text-nowrap">Faixa fim</th>
+                <th class="text-nowrap">Valor mínimo pedido</th>
+                <th class="text-nowrap">Frete fixo</th>
+                <th class="text-nowrap">Prazo fixo</th>
+                <th></th>
             </tr>
         </ng-template>
         <ng-template #body let-faixa>
             <tr>
-                <th>{{this.forceType(faixa).cepInicio | cepPipe}}</th>
-                <th>{{this.forceType(faixa).cepFim | cepPipe}}<</th>
-                <th>{{this.forceType(faixa).minValueToApply | currency:"BRL"}}</th>
-                <th>{{this.forceType(faixa).valorFixo | currency:"BRL"}}</th>
-                <th>{{this.forceType(faixa).prazo }}</th>
+                <td class="text-nowrap">{{this.forceType(faixa).nome}}</td>
+                <td>{{this.forceType(faixa).cepInicio | cepPipe}}</td>
+                <td>{{this.forceType(faixa).cepFim | cepPipe}}</td>
+                <td>{{this.forceType(faixa).minValueToApply | currency:"BRL"}}</td>
+                <td>{{this.forceType(faixa).valorFixo | currency:"BRL"}}</td>
+                <td>{{this.forceType(faixa).prazo }}</td>
+                <td><app-editar-faixa (onUpdate)="this.onUpdate($event)" [payload]="faixa"/></td>
             </tr>
         </ng-template>
         <ng-template #emptymessage>
-            <div class="text-xs">Nenhuma faixa cadastrada</div>
+            <div class="text-xs text-nowrap">Nenhuma faixa cadastrada</div>
         </ng-template>
     </p-table>
+    <ng-template #fallback >
+        <div class="w-full xl:w-6/12 p-4">
+            <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
+        </div>
+    </ng-template>
 </div>
