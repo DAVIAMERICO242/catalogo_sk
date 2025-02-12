@@ -80,6 +80,7 @@ public class PedidoService {
         output.setNome(pedidoBeforeCalculationsDTO.getNome());
         output.setNumero(pedidoBeforeCalculationsDTO.getNumero());
         output.setEntregaLoja(pedidoBeforeCalculationsDTO.getEntregaLoja());
+        output.setTipoFrete(pedidoBeforeCalculationsDTO.getTipoFrete());
         output.setRua(pedidoBeforeCalculationsDTO.getRua());
         output.setBairro(pedidoBeforeCalculationsDTO.getBairro());
         output.setCidade(pedidoBeforeCalculationsDTO.getCidade());
@@ -113,6 +114,7 @@ public class PedidoService {
         dto.setRua(pedido.getRua());
         dto.setBairro(pedido.getBairro());
         dto.setCidade(pedido.getCidade());
+        dto.setTipoFrete(pedido.getTipoFrete());
         dto.setEstado(pedido.getEstado());
         dto.setCep(pedido.getCep());
         dto.setTelefone(pedido.getTelefone());
@@ -171,6 +173,7 @@ public class PedidoService {
         pedido.setNumero(pedidoDTO.getNumero());
         pedido.setRua(pedidoDTO.getRua());
         pedido.setEntregaLoja(pedidoDTO.getEntregaLoja());
+        pedido.setTipoFrete(pedidoDTO.getTipoFrete());
         pedido.setBairro(pedidoDTO.getBairro());
         pedido.setCidade(pedidoDTO.getCidade());
         pedido.setEstado(pedidoDTO.getEstado());

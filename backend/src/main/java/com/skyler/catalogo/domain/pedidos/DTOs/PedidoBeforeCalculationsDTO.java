@@ -1,6 +1,7 @@
 package com.skyler.catalogo.domain.pedidos.DTOs;
 import com.skyler.catalogo.domain.descontos.interfaces.Discountable;
 import com.skyler.catalogo.domain.pedidos.BasicOrder;
+import com.skyler.catalogo.domain.pedidos.FreteEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class PedidoBeforeCalculationsDTO implements Discountable,BasicOrder {
     private String documento;
     private String nome;
     private Boolean entregaLoja;
+    private FreteEnum tipoFrete;//so existe se entrega loja nao for true
     private Integer numero;
     private String rua;
     private String bairro;

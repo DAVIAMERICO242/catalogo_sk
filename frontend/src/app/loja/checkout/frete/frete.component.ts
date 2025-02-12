@@ -3,7 +3,12 @@ import { Sacola, SacolaService } from '../../../services/sacola.service';
 import { ShippingCalculator, ShippingCalculatorService } from '../../../services/shipping-calculator.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { Subject, takeUntil } from 'rxjs';
+import { Pedidos } from '../../../services/pedidos.service';
 
+export interface FreteEmissionSignature{
+  tipo:Pedidos.TipoFrete | undefined,//caso a busca for em loja
+  valorFrete:number
+}
 @Component({
   selector: 'app-frete',
   imports: [SharedModule],
@@ -16,9 +21,9 @@ export class FreteComponent {
   @Input({required:true})
   sacola!:Sacola.SacolaModel;
   loadingValorFrete = false;
-  frete!:ShippingCalculator.FreteResponse;
+  propostaFrete!:ShippingCalculator.FreteResponse;
   @Output()
-  onFreteCalculation = new EventEmitter<typeof this.frete>();
+  onFreteChange = new EventEmitter<FreteEmissionSignature>();
   constructor(
     private shippingCalculator:ShippingCalculatorService,
     private sacolaService:SacolaService
@@ -36,9 +41,19 @@ export class FreteComponent {
     this.shippingCalculator.getValorFreteSemDesconto(payload).pipe(takeUntil(this.prevRequestDestroyer$)).subscribe({
       next:(data)=>{
         this.loadingValorFrete = false;
-        this.frete = data;
+        this.propostaFrete = data;
+        if(data.tipo==ShippingCalculator.TipoCalculo.FAIXA_CEP){
+          this.onFreteChange.emit({
+            tipo:Pedidos.TipoFrete.FAIXA_CEP,
+            valorFrete:data.valorFaixaCep
+          })
+        }
       }
     })
+  }
+
+  onPacSedexChange(){
+    
   }
 
 

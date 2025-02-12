@@ -7,6 +7,12 @@ import { Sacola } from './sacola.service';
 
 
 export namespace Pedidos{
+
+  export enum TipoFrete{
+    PAC="PAC",
+    SEDEX="SEDEX",
+    FAIXA_CEP="FAIXA_CEP"
+  }
   export interface PedidoCustomerDetails{
     documento:string,
     nome:string,
@@ -24,6 +30,7 @@ export namespace Pedidos{
     moment:Date,
     loja:LojaPedido,
     pago:boolean,
+    tipoFrete?:TipoFrete,
     valorFrete:number
     valor:number,
     produtos:ProdutoPedido[],

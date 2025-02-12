@@ -2,6 +2,7 @@ package com.skyler.catalogo.domain.pedidos.DTOs;
 
 import com.skyler.catalogo.domain.descontos.DTOs.DescontoAplicadoDTO;
 import com.skyler.catalogo.domain.pedidos.BasicOrder;
+import com.skyler.catalogo.domain.pedidos.FreteEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ public class PedidoAfterCalculationsDTO implements BasicOrder {
     private LojaPedidoDTO loja;
     private LocalDateTime moment;
     private Boolean entregaLoja;
+    private FreteEnum tipoFrete;//so existe se entrega loja nao for true
     private String documento;
     private String nome;
     private Integer numero;

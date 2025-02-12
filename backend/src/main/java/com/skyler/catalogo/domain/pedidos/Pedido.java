@@ -33,6 +33,8 @@ public class Pedido {
     private String cep;
     private String telefone;
     private Float valor;
+    @Enumerated(EnumType.STRING)
+    private FreteEnum tipoFrete;//so existe se entrega loja nao for true
     private Float valorFrete;
     private Boolean pago = false;
 
