@@ -16,16 +16,16 @@
             <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
                 <div>
                     <div class="flex items-center gap-2 mb-3">
-                        <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
-                            <div class="pi pi-check !text-white !text-sm"></div>
+                        <div (click)="this.onPacSedexChange(pacSedexEnum.PAC)" [ngClass]="{'bg-black':this.pacOuSedex==='PAC','bg-slate-200':this.pacOuSedex!=='PAC'}" class="cursor-pointer w-[22px] h-[22px] rounded-full flex items-center justify-center">
+                            <div *ngIf="this.pacOuSedex==='PAC'" class="pi pi-check !text-white !text-sm"></div>
                         </div>
-                        <div >
+                        <div>
                             Pac: <span class="font-bold">Frete: {{this.propostaFrete.valorPac | currency:"BRL"}} / Prazo: {{this.propostaFrete.prazoEmDiasPac}} dias</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
-                            <div class="pi pi-check !text-white !text-sm"></div>
+                        <div (click)="this.onPacSedexChange(pacSedexEnum.SEDEX)" [ngClass]="{'bg-black':this.pacOuSedex==='SEDEX','bg-slate-200':this.pacOuSedex!=='SEDEX'}"  class="cursor-pointer w-[22px] h-[22px]  rounded-full flex items-center justify-center">
+                            <div *ngIf="this.pacOuSedex==='SEDEX'" class="pi pi-check !text-white !text-sm"></div>
                         </div>
                         <div >
                             Sedex: <span class="font-bold">Frete: {{this.propostaFrete.valorSedex | currency:"BRL"}} / Prazo: {{this.propostaFrete.prazoEmDiasSedex}} dias</span>

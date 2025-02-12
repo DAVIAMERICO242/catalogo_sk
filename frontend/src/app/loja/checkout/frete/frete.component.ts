@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Sacola, SacolaService } from '../../../services/sacola.service';
 import { ShippingCalculator, ShippingCalculatorService } from '../../../services/shipping-calculator.service';
 import { SharedModule } from '../../../shared/shared.module';
@@ -14,7 +14,7 @@ export interface FreteEmissionSignature{
   imports: [SharedModule],
   templateUrl: './frete.component.html'
 })
-export class FreteComponent {
+export class FreteComponent{
   private prevRequestDestroyer$ = new Subject<void>();
   @Input({required:true})
   entregaLoja!:boolean;
@@ -26,10 +26,13 @@ export class FreteComponent {
   propostaFrete!:ShippingCalculator.FreteResponse;
   @Output()
   onFreteChange = new EventEmitter<FreteEmissionSignature>();
+  pacOuSedex!:ShippingCalculator.PacOuSedex;
+  pacSedexEnum = ShippingCalculator.PacOuSedex;
   constructor(
     private shippingCalculator:ShippingCalculatorService,
     private sacolaService:SacolaService
   ){}
+
 
   getValorFrete(){
     this.prevRequestDestroyer$.next();
@@ -50,18 +53,23 @@ export class FreteComponent {
             valorFrete:data.valorFaixaCep
           })
         }
+        if(data.tipo===ShippingCalculator.TipoCalculo.CORREIOS){
+          this.pacOuSedex = ShippingCalculator.PacOuSedex.PAC;
+        }
       }
     })
   }
 
   onPacSedexChange(value:ShippingCalculator.PacOuSedex){
     if(value===ShippingCalculator.PacOuSedex.PAC){
+      this.pacOuSedex = ShippingCalculator.PacOuSedex.PAC;
       this.onFreteChange.emit({
         tipo:Pedidos.TipoFrete.PAC,
         valorFrete:this.propostaFrete.valorPac
       })
     }
     if(value===ShippingCalculator.PacOuSedex.SEDEX){
+      this.pacOuSedex = ShippingCalculator.PacOuSedex.SEDEX;
       this.onFreteChange.emit({
         tipo:Pedidos.TipoFrete.SEDEX,
         valorFrete:this.propostaFrete.valorSedex
