@@ -1,0 +1,30 @@
+<button (click)="open=true" pButton class="!bg-black !w-fit !text-sm !text-white">
+    + Cadastrar faixa
+</button>
+<p-dialog [modal]="true" styleClass="!w-[500px]" [(visible)]="this.open">
+    <div class="space-y-3">
+        <div>
+            <div class="text-xs">CEP início</div>
+            <p-input-mask  [unmask]="true" [(ngModel)]="this.payload.cepInicio" styleClass="!text-sm !p-0 !w-full !border-t-0 !border-l-0 !border-r-0 !rounded-none" mask="99999-999" placeholder="XXXXX-XXX" />
+        </div>
+        <div>
+            <div class="text-xs">CEP fim</div>
+            <p-input-mask  [unmask]="true" [(ngModel)]="this.payload.cepFim" styleClass="!text-sm !p-0 !w-full !border-t-0 !border-l-0 !border-r-0 !rounded-none" mask="99999-999" placeholder="XXXXX-XXX" />
+        </div>
+        <div>
+            <div class="text-xs">Valor mínimo para aplicar</div>
+            <p-input-number locale="en-US" mode="currency" currency="BRL"  [(ngModel)]="this.payload.minValueToApply" class="!w-full [&_input]:!text-sm [&_input]:!p-0 [&_input]:!w-full [&_input]:!border-t-0 [&_input]:!border-l-0 [&_input]:!border-r-0 [&_input]:!rounded-none"  />
+        </div>
+        <div>
+            <div class="text-xs">Valor fixo</div>
+            <p-input-number locale="en-US" mode="currency" currency="BRL"  [(ngModel)]="this.payload.valorFixo" class="!w-full  [&_input]:!text-sm [&_input]:!p-0 [&_input]:!w-full [&_input]:!border-t-0 [&_input]:!border-l-0 [&_input]:!border-r-0 [&_input]:!rounded-none"  />
+        </div>
+        <div>
+            <div class="text-xs">Prazo entrega (dias)</div>
+            <p-input-number [(ngModel)]="this.payload.prazo" class="!w-full  [&_input]:!text-sm [&_input]:!p-0 [&_input]:!w-full [&_input]:!border-t-0 [&_input]:!border-l-0 [&_input]:!border-r-0 [&_input]:!rounded-none"  />
+        </div>
+    </div>
+    <button (click)="this.cadastrarAtualizar()" pButton class="!bg-black !w-full mt-3 !text-sm !text-white">
+        Pronto
+    </button>
+</p-dialog>

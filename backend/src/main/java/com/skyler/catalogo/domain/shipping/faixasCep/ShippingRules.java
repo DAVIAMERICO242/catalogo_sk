@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @Data
 @EqualsAndHashCode(of="systemId")
-@Table(name="faixa_cep_precos")
+@Table(name="faixa_cep")
 public class ShippingRules {
 
     @Id
@@ -21,6 +21,7 @@ public class ShippingRules {
     private String cepFim;
     private Float minValueToApply;
     private Float valorFixo;
+    private Integer prazo;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="franquia_id")
     @JsonBackReference

@@ -36,7 +36,8 @@ export namespace CorreiosFranquiasContext{
     cepInicio:string,
     cepFim:string,
     minValueToApply:number,
-    valorFixo:number
+    valorFixo:number,
+    prazo:number
   }
 }
 @Injectable({
@@ -75,7 +76,7 @@ export class CorreiosFranquiasContextService {
   }
 
   getFaixas(franquiaId:string){
-    return this.http.get<CorreiosFranquiasContext.FaixaCep[]>(env.BACKEND_URL+"/faixa-cep?franquiaId="+franquiaId);
+    return this.http.get<CorreiosFranquiasContext.FaixaCep[]>(env.BACKEND_URL+"/faixas-cep?franquiaId="+franquiaId);
   }
 
 

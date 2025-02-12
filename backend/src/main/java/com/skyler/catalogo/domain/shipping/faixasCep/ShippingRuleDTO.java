@@ -11,4 +11,5 @@ public class ShippingRuleDTO {
     private String cepFim;
     private Float minValueToApply;
     private Float valorFixo;
+    private Integer prazo;
 }

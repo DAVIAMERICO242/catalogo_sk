@@ -48,6 +48,7 @@ public class ShippingRulesService {
         output.setCepFim(shippingRuleDTO.getCepFim());
         output.setMinValueToApply(shippingRuleDTO.getMinValueToApply());
         output.setValorFixo(shippingRuleDTO.getValorFixo());
+        output.setPrazo(shippingRuleDTO.getPrazo());
         return output;
     }
 
@@ -59,6 +60,7 @@ public class ShippingRulesService {
         output.setCepFim(shippingRules.getCepFim());
         output.setMinValueToApply(shippingRules.getMinValueToApply());
         output.setValorFixo(shippingRules.getValorFixo());
+        output.setPrazo(shippingRules.getPrazo());
         return output;
     }
 }
