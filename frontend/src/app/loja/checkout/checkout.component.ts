@@ -11,7 +11,7 @@ import { ProdutoSacolaComponent } from "../sacola/produto-sacola/produto-sacola.
 import { Desconto } from '../../services/descontos.service';
 import { CepService } from '../../services/cep.service';
 import { MessageService } from 'primeng/api';
-import { FreteComponent } from "./frete/frete.component";
+import { FreteComponent, FreteEmissionSignature } from "./frete/frete.component";
 
 @Component({
   selector: 'app-checkout',
@@ -21,6 +21,7 @@ import { FreteComponent } from "./frete/frete.component";
 export class CheckoutComponent implements OnInit, OnDestroy {
   @ViewChild(FreteComponent) freteComponent!:FreteComponent;
   customerDetails!:Pedidos.PedidoCustomerDetails;
+  tipoFrete!:Pedidos.TipoFrete | undefined;
   frete = 0;
   sacola!:Sacola.SacolaModel;
   loja!:Loja.Loja;
@@ -86,6 +87,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   manageCepChange(){
     this.preencherCamposPeloCep();
     this.loadTipoFrete();
+  }
+
+  manageColetaLojaChange(){
+    if(this.customerDetails.entregaLoja){
+      this.frete = 0;
+      this.tipoFrete = undefined;
+    }
+  }
+
+  manageFreteChange(frete:FreteEmissionSignature){
+    this.tipoFrete = frete.tipo;
+    this.frete = frete.valorFrete;
   }
 
   loadTipoFrete(){
@@ -209,6 +222,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
     const rawSacola = this.sacolaService.mapModelToRawSacola(this.sacola);
     const preparedPayload = this.pedidoService.mapRawSacolaAndCustomerAndValorFreteToPedidoRequest(rawSacola,this.customerDetails,this.frete);
+    preparedPayload.tipoFrete = this.tipoFrete;
     this.loadingNovoPedido = true;
     this.pedidoService.novoPedido(preparedPayload).subscribe({
       next:()=>{

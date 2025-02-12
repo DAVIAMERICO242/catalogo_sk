@@ -79,6 +79,7 @@ export namespace Pedidos{
     export interface PedidoRequest extends PedidoCustomerDetails{
       loja:LojaPedidoRequest,
       valorFrete:number,
+      tipoFrete?:TipoFrete,
       produtos: ProdutoPedidoRequest[]
     }
     export interface LojaPedidoRequest{

@@ -6,7 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Pedidos } from '../../../services/pedidos.service';
 
 export interface FreteEmissionSignature{
-  tipo:Pedidos.TipoFrete | undefined,//caso a busca for em loja
+  tipo:Pedidos.TipoFrete,//caso a busca for em loja
   valorFrete:number
 }
 @Component({
@@ -16,6 +16,8 @@ export interface FreteEmissionSignature{
 })
 export class FreteComponent {
   private prevRequestDestroyer$ = new Subject<void>();
+  @Input({required:true})
+  entregaLoja!:boolean;
   @Input({required:true})
   cep!:string;
   @Input({required:true})
@@ -52,8 +54,19 @@ export class FreteComponent {
     })
   }
 
-  onPacSedexChange(){
-    
+  onPacSedexChange(value:ShippingCalculator.PacOuSedex){
+    if(value===ShippingCalculator.PacOuSedex.PAC){
+      this.onFreteChange.emit({
+        tipo:Pedidos.TipoFrete.PAC,
+        valorFrete:this.propostaFrete.valorPac
+      })
+    }
+    if(value===ShippingCalculator.PacOuSedex.SEDEX){
+      this.onFreteChange.emit({
+        tipo:Pedidos.TipoFrete.SEDEX,
+        valorFrete:this.propostaFrete.valorSedex
+      })
+    }
   }
 
 

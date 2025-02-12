@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div>
-                    <app-frete [cep]="this.customerDetails.cep" [sacola]="this.sacola"/>
+                    <app-frete (onFreteChange)="this.manageFreteChange($event)" [entregaLoja]="this.customerDetails.entregaLoja" [cep]="this.customerDetails.cep" [sacola]="this.sacola"/>
                 </div>
             </div>
         </div>

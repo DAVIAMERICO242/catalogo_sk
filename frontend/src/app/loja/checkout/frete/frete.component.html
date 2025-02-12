@@ -35,9 +35,24 @@
             </div>
         </ng-container>
     </div>
+
+    <ng-container *ngIf="this.entregaLoja">
+        <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
+                        <div class="pi pi-check !text-white !text-sm"></div>
+                    </div>
+                    <div >
+                        Coleta em loja
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
     
     <ng-template #emptycepfallback>
-        <div class="text-gray-500 text-xs">Informe o CEP para escolher a entrega</div>
+        <div *ngIf="!this.entregaLoja" class="text-gray-500 text-xs">Informe o CEP para escolher a entrega</div>
     </ng-template>
 </div>
 <ng-template #loadingfretefallback>
