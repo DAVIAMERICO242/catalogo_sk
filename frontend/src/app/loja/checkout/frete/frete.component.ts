@@ -16,7 +16,6 @@ export interface FreteEmissionSignature{
 })
 export class FreteComponent{
   private prevRequestDestroyer$ = new Subject<void>();
-  @Input({required:true})
   entregaLoja!:boolean;
   @Input({required:true})
   cep!:string;
@@ -25,7 +24,7 @@ export class FreteComponent{
   loadingValorFrete = false;
   propostaFrete!:ShippingCalculator.FreteResponse;
   @Output()
-  onFreteChange = new EventEmitter<FreteEmissionSignature>();
+  onFreteChange = new EventEmitter<FreteEmissionSignature|undefined>();
   pacOuSedex!:ShippingCalculator.PacOuSedex;
   pacSedexEnum = ShippingCalculator.PacOuSedex;
   lastFreteEmission!:FreteEmissionSignature; 
@@ -34,10 +33,14 @@ export class FreteComponent{
     private sacolaService:SacolaService
   ){}
 
-  manageColetaLojaChange(){
-    if(!this.entregaLoja && this.lastFreteEmission){
+  manageColetaLojaChange(entregaLoja:boolean){
+    if(!entregaLoja && this.lastFreteEmission){
       this.onFreteChange.emit(this.lastFreteEmission);
     }
+    if(entregaLoja){
+      this.onFreteChange.emit(undefined);
+    }
+    this.entregaLoja = entregaLoja;
   }
 
 

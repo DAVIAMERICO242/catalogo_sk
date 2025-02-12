@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2 mb-4">
-                    <input [(ngModel)]="this.customerDetails.entregaLoja" (ngModelChange)="this.showEntregaLoja()" type="checkbox"/>
+                    <input [(ngModel)]="this.customerDetails.entregaLoja" (ngModelChange)="this.manageColetaLojaChange()" type="checkbox"/>
                     <div class="text-xs">Buscar em loja?</div>
                 </div>
                 <div [ngClass]="{'pointer-events-none':this.loadingCepAutoComplete || this.customerDetails.entregaLoja,'opacity-45':this.loadingCepAutoComplete || this.customerDetails.entregaLoja}">
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div>
-                    <app-frete (onFreteChange)="this.manageFreteChange($event)" [entregaLoja]="this.customerDetails.entregaLoja" [cep]="this.customerDetails.cep" [sacola]="this.sacola"/>
+                    <app-frete (onFreteChange)="this.manageFreteChange($event)"  [cep]="this.customerDetails.cep" [sacola]="this.sacola"/>
                 </div>
             </div>
         </div>
@@ -106,8 +106,12 @@
                     <div class="font-bold">{{this.totalBruto | currency:"BRL"}}</div>
                 </div>
                 <div class="flex justify-between">
-                    <div class="text-xs mb-4">Descontos:</div>
+                    <div class="text-xs mb-4"> - Descontos:</div>
                     <div class="font-bold">{{this.totalDescontos | currency:"BRL"}}</div>
+                </div>
+                <div class="flex justify-between">
+                    <div class="text-xs mb-4"> + Frete:</div>
+                    <div class="font-bold">{{this.frete | currency:"BRL"}}</div>
                 </div>
                 <div class="h-[1px] w-full bg-slate-300 mb-3"></div>
                 <div class="flex justify-between">
@@ -115,7 +119,6 @@
                     <div class="font-bold">{{this.total| currency:"BRL"}}</div>
                 </div>
             </div>
-            <div class="font-bold text-xs mb-5">O frete será calculado no momento da entrega.</div>
             <button [loading]="this.loadingNovoPedido" (click)="this.postPedido()" pButton class="!w-full  !bg-black !text-sm">
                 Solicitar pedido
             </button>

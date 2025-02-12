@@ -80,16 +80,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  showEntregaLoja(){
-    console.log(this.customerDetails.entregaLoja)
-  }
-
   manageCepChange(){
     this.preencherCamposPeloCep();
     this.loadTipoFrete();
   }
 
   manageColetaLojaChange(){
+    this.freteComponent.manageColetaLojaChange(this.customerDetails.entregaLoja);
     if(this.customerDetails.entregaLoja){
       this.total = this.total - this.frete;
       this.frete = 0;
@@ -97,7 +94,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  manageFreteChange(frete:FreteEmissionSignature){
+  manageFreteChange(frete?:FreteEmissionSignature){
+    if(!frete){
+      this.total = this.total - this.frete;
+      this.frete = 0;
+      this.tipoFrete = undefined;
+      return;
+    }
     if(!this.customerDetails.entregaLoja){//esse if e importante caso o usuario veja que o frete demora calcular e clique em coletar loja
       this.total = this.total - this.frete;
       this.tipoFrete = frete.tipo;
