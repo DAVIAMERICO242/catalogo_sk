@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 public class ShippingCalculationRequest {
+    private PacSedexEnum pacSedex;
     private String cep;
     private String lojaId;
     private List<ProdutoPedidoDTO> produtos = new ArrayList<>();

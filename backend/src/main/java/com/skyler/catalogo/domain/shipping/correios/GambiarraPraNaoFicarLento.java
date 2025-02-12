@@ -24,12 +24,12 @@ public class GambiarraPraNaoFicarLento {
         List<CorreiosFranquiaContext> correiosFranquiaContexts = this.correiosFranquiaRepository.findAll();
         for(CorreiosFranquiaContext x:correiosFranquiaContexts){
             try{
-                this.correiosAuth.getToken(
-                        x.getNumeroContrato(),
-                        x.getNumeroCartaoPostal(),
+                String token = this.correiosAuth.getRefreshedToken(
                         x.getUsuario(),
-                        x.getSenha()
+                        x.getSenha(),
+                        x.getNumeroCartaoPostal()
                 );
+                token.toString();
             }catch (Exception e){
                 System.out.println("Exception na gambiarra");
             }

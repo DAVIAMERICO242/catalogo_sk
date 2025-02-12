@@ -131,9 +131,10 @@ public class ShippingCalculator {
                 ,comprimentoCaixa.getAltura()
         );
         peso = (pesoCubado>peso)?pesoCubado:peso;
+        String pacSedexCodigo = (shippingCalculationRequest.getPacSedex().equals(PacSedexEnum.PAC))?correiosFranquiaContext.getCodigoPac():correiosFranquiaContext.getCodigoSedex();
         Float valorFrete = this.correiosBridge.getPrecoFrete(
                 token,
-                correiosFranquiaContext.getCodigoPac(),
+                pacSedexCodigo,
                 correiosFranquiaContext.getNumeroContrato(),
                 correiosFranquiaContext.getNumeroDiretoriaRegional(),
                 correiosFranquiaContext.getCepOrigem(),
@@ -145,7 +146,7 @@ public class ShippingCalculator {
             );
         Integer prazoFrete = this.correiosBridge.getPrazoFrete(
                 token,
-                correiosFranquiaContext.getCodigoPac(),
+                pacSedexCodigo,
                 correiosFranquiaContext.getNumeroContrato(),
                 correiosFranquiaContext.getNumeroDiretoriaRegional(),
                 correiosFranquiaContext.getCepOrigem(),

@@ -43,7 +43,7 @@ public class CorreiosAuth {
         }
     }
 
-    private String getRefreshedToken(
+    public String getRefreshedToken(
             String username,
             String password,
             String cartaoPostagem
@@ -56,7 +56,7 @@ public class CorreiosAuth {
         TokenRequestPayload body = new TokenRequestPayload();
         body.setNumero(cartaoPostagem);
         HttpEntity<TokenRequestPayload> entity = new HttpEntity<>(body, headers);
-        TokenAcessoResponse response = restTemplate.exchange("https://api.correios.com.br/token/v1/autentica/cartaopostagem", HttpMethod.GET,entity,TokenAcessoResponse.class).getBody();
+        TokenAcessoResponse response = restTemplate.exchange("https://api.correios.com.br/token/v1/autentica/cartaopostagem", HttpMethod.POST,entity,TokenAcessoResponse.class).getBody();
         return response.getToken();
     }
 
