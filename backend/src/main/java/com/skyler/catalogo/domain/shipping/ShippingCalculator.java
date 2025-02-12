@@ -55,6 +55,17 @@ public class ShippingCalculator {
         this.discountCalculator = discountCalculator;
     }
 
+    public HowShouldBeCalculatedResponse getHowShouldBeCalculated(ShippingCalculationRequest shippingCalculationRequest){
+        Loja loja = this.lojaRepository.findById(shippingCalculationRequest.getLojaId()).get();
+        Franquia franquia = loja.getFranquia();
+        List<ShippingRules> faixasCep = this.faixaCepRepository.findAllByFranquiaId(franquia.getSystemId());
+        for(ShippingRules faixaCep:faixasCep){
+            if(this.isCepBetween(shippingCalculationRequest.getCep(),faixaCep.getCepInicio(),faixaCep.getCepFim())){
+                return new HowShouldBeCalculatedResponse(true);
+            }
+        }
+        return new HowShouldBeCalculatedResponse(false);
+    }
 
     public FreteResponseDTO getFrete(ShippingCalculationRequest shippingCalculationRequest){//precisa do valor maturo aaaa
         Loja loja = this.lojaRepository.findById(shippingCalculationRequest.getLojaId()).get();
