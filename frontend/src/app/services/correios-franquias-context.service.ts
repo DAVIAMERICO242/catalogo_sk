@@ -80,5 +80,9 @@ export class CorreiosFranquiasContextService {
     return this.http.get<CorreiosFranquiasContext.FaixaCep[]>(env.BACKEND_URL+"/faixas-cep?franquiaId="+franquiaId);
   }
 
+  deletarFaixa(id:string){
+    return this.http.delete<void>(env.BACKEND_URL+"/faixas-cep?id="+id);
+  }
+
 
 }

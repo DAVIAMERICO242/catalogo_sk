@@ -20,6 +20,10 @@ public class ShippingRulesService {
         this.shippingRulesRepository = shippingRulesRepository;
     }
 
+    public void deletarFaixa(String id){
+        this.shippingRulesRepository.deleteById(id);
+    }
+
     public List<ShippingRuleDTO> getRules(String franquiaId){
         List<ShippingRuleDTO> output = new ArrayList<>();
         List<ShippingRules> shippingRules = this.shippingRulesRepository.findAllByFranquiaId(franquiaId);

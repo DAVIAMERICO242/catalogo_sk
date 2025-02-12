@@ -10,6 +10,7 @@ public class ShippingRulesController {
 
     private final ShippingRulesService shippingRulesService;
 
+
     public ShippingRulesController(ShippingRulesService shippingRulesService) {
         this.shippingRulesService = shippingRulesService;
     }
@@ -27,6 +28,16 @@ public class ShippingRulesController {
     public ResponseEntity getFaixas(String franquiaId){
         try{
             return ResponseEntity.ok().body(this.shippingRulesService.getRules(franquiaId));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity deletarFaixa(String id){
+        try{
+            this.shippingRulesService.deletarFaixa(id);
+            return ResponseEntity.ok().build();
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

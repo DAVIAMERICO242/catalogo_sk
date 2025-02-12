@@ -13,6 +13,7 @@
                 <th class="text-nowrap">Frete fixo</th>
                 <th class="text-nowrap">Prazo fixo</th>
                 <th></th>
+                <th></th>
             </tr>
         </ng-template>
         <ng-template #body let-faixa>
@@ -24,6 +25,7 @@
                 <td>{{this.forceType(faixa).valorFixo | currency:"BRL"}}</td>
                 <td>{{this.forceType(faixa).prazo }}</td>
                 <td><app-editar-faixa (onUpdate)="this.onUpdate($event)" [payload]="faixa"/></td>
+                <td><app-deletar-faixa (onDelete)="this.onDelete($event)" [faixa]="faixa"/></td>
             </tr>
         </ng-template>
         <ng-template #emptymessage>

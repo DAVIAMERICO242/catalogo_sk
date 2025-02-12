@@ -6,10 +6,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CepPipePipe } from '../../../pipes/cep-pipe.pipe';
 import { CriarFaixaComponent } from "./criar-faixa/criar-faixa.component";
 import { EditarFaixaComponent } from "./editar-faixa/editar-faixa.component";
+import { DeletarFaixaComponent } from "./deletar-faixa/deletar-faixa.component";
 
 @Component({
   selector: 'app-faixas-cep',
-  imports: [SharedModule, CepPipePipe, CriarFaixaComponent, EditarFaixaComponent],
+  imports: [SharedModule, CepPipePipe, CriarFaixaComponent, EditarFaixaComponent, DeletarFaixaComponent],
   templateUrl: './faixas-cep.component.html'
 })
 export class FaixasCepComponent implements OnInit {
@@ -52,6 +53,10 @@ export class FaixasCepComponent implements OnInit {
         return e;
       }
     })
+  }
+
+  onDelete(id:string){
+    this.faixas = this.faixas.filter(e=>e.systemId!==id);
   }
 
 
