@@ -149,7 +149,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       let bruto = 0;
       for(let produto of this.sacola.produtos){
         for(let variacao of produto.produtoBase.variacoes){
-          bruto = bruto + produto.produtoBase.preco;
+          bruto = bruto + produto.produtoBase.preco*variacao.quantidade;
         }
       }
       this.totalBruto = bruto;

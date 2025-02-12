@@ -1,6 +1,6 @@
 <div [class]="'text-sm ' + this.styleClass">
     <div class="flex items-center gap-1">
         <div [class]="this.styleClass" [ngClass]="{'line-through':this.precoComDesconto<this.produto.produtoBase.preco}">{{produto.produtoBase.preco| currency:"BRL"}}</div>
-        <div *ngIf="this.precoComDesconto<this.produto.produtoBase.preco" [class]="'font-bold ' +this.styleClass">{{this.precoComDesconto*this.multiplier| currency:"BRL"}}</div>
+        <div *ngIf="this.precoComDesconto<this.produto.produtoBase.preco" [class]="'font-bold ' +this.styleClass + this.multiplier">{{this.precoComDesconto*this.multiplier| currency:"BRL"}}</div>
     </div>
 </div>
