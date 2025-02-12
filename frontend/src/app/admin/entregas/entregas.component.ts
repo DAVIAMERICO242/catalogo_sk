@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AdminPageTitleComponent } from "../admin-page-title/admin-page-title.component";
 import { Router, RouterModule } from '@angular/router';
+import { CorreiosFranquiasContextService } from '../../services/correios-franquias-context.service';
 export enum EntregasPage{
   INTEGRACAO="INTEGRACAO",
-  PESAGEM_COMPRIMENTAGEM="PESAGEM_COMPRIMENTAGEM"
+  PESAGEM="PESAGEM",
+  DIMENSOES="DIMENSOES"
 }
 @Component({
   selector: 'app-entregas',
@@ -21,8 +23,11 @@ export class EntregasComponent implements OnInit{
     if(url.endsWith("/integracao-correios")){
       this.focusedPage = EntregasPage.INTEGRACAO
     }
-    if(url.endsWith("/pesagem-comprimentagem")){
-      this.focusedPage = EntregasPage.PESAGEM_COMPRIMENTAGEM;
+    if(url.endsWith("/pesagem")){
+      this.focusedPage = EntregasPage.PESAGEM;
+    }
+    if(url.endsWith("/dimensoes")){
+      this.focusedPage = EntregasPage.DIMENSOES;
     }
   }
 
@@ -31,8 +36,12 @@ export class EntregasComponent implements OnInit{
       this.router.navigate(["admin/entregas/integracao-correios"]);
       this.focusedPage = page;
     }
-    if(page===EntregasPage.PESAGEM_COMPRIMENTAGEM){
-      this.router.navigate(["admin/entregas/pesagem-comprimentagem"]);
+    if(page===EntregasPage.PESAGEM){
+      this.router.navigate(["admin/entregas/pesagem"]);
+      this.focusedPage = page;
+    }
+    if(page===EntregasPage.DIMENSOES){
+      this.router.navigate(["admin/entregas/dimensoes"]);
       this.focusedPage = page;
     }
   }

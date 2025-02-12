@@ -1,0 +1,27 @@
+<div *ngIf="this.payload;else fallback" class="flex flex-col mt-5 p-5 gap-3 w-fit">
+    <div>
+        <div class="text-sm">Comprimento</div>
+        <p-input-number locale="en-US" mode="decimal" [minFractionDigits]="1"  [maxFractionDigits]="2" [(ngModel)]="this.payload.comprimento" class="[&_input]:!text-sm [&_input]:!p-0 [&_input]:!w-[300px] [&_input]:!border-t-0 [&_input]:!border-l-0 [&_input]:!border-r-0 [&_input]:!rounded-none"  />
+    </div>
+    <div>
+        <div class="text-sm">Largura</div>
+        <p-input-number locale="en-US" mode="decimal" [minFractionDigits]="1" [maxFractionDigits]="2" [(ngModel)]="this.payload.largura" class="[&_input]:!text-sm [&_input]:!p-0 [&_input]:!w-[300px] [&_input]:!border-t-0 [&_input]:!border-l-0 [&_input]:!border-r-0 [&_input]:!rounded-none"  />
+    </div>
+    <div>
+        <div class="text-sm">Altura</div>
+        <p-input-number locale="en-US" mode="decimal" [minFractionDigits]="1" [maxFractionDigits]="2" [(ngModel)]="this.payload.altura" class="[&_input]:!text-sm [&_input]:!p-0 [&_input]:!w-[300px] [&_input]:!border-t-0 [&_input]:!border-l-0 [&_input]:!border-r-0 [&_input]:!rounded-none"  />
+
+    </div>
+    <button (click)="this.cadastrarAtualizar()" [loading]="this.loadingChange" pButton class="!text-xs !bg-black !text-white !w-full">
+        Salvar
+    </button>
+</div>
+<ng-template #fallback >
+    <div class="w-full xl:w-6/12 p-4">
+        <p-skeleton height="1rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton height="2rem" width="10rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton height="2rem" width="5rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton height="10rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
+    </div>
+</ng-template>

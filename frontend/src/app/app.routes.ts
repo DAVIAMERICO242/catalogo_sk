@@ -59,8 +59,12 @@ export const routes: Routes = [
                         path:"integracao-correios",
                         loadComponent:()=>import("./admin/entregas/configuracao-franquia/configuracao-franquia.component").then(m=>m.ConfiguracaoFranquiaComponent),
                     },{
-                        path:"pesagem-comprimentagem",
-                        loadComponent:()=>import("./admin/entregas/pesagem-comprimentagem/pesagem-comprimentagem.component").then(m=>m.PesagemComprimentagemComponent),
+                        path:"pesagem",
+                        loadComponent:()=>import("./admin/entregas/pesagem/pesagem.component").then(m=>m.PesagemComponent),
+                    }
+                    ,{
+                        path:"dimensoes",
+                        loadComponent:()=>import("./admin/entregas/dimensoes/dimensoes.component").then(m=>m.DimensoesComponent),
                     }
                 ]
             }

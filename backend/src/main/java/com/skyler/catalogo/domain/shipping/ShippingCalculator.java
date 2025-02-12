@@ -1,11 +1,10 @@
 package com.skyler.catalogo.domain.shipping;
 
 
-import com.skyler.catalogo.domain.carrinho.CarrinhoRequest;
-import com.skyler.catalogo.domain.correios.CorreiosFranquiaContext;
-import com.skyler.catalogo.domain.correios.CorreiosFranquiaRepository;
-import com.skyler.catalogo.domain.correios.apiCorreios.CorreiosAuth;
-import com.skyler.catalogo.domain.correios.apiCorreios.CorreiosBridge;
+import com.skyler.catalogo.domain.shipping.correios.CorreiosFranquiaContext;
+import com.skyler.catalogo.domain.shipping.correios.CorreiosFranquiaRepository;
+import com.skyler.catalogo.domain.shipping.correios.apiCorreios.CorreiosAuth;
+import com.skyler.catalogo.domain.shipping.correios.apiCorreios.CorreiosBridge;
 import com.skyler.catalogo.domain.franquias.Franquia;
 import com.skyler.catalogo.domain.lojas.LojaRepository;
 import com.skyler.catalogo.domain.pedidos.DTOs.PedidoBeforeCalculationsDTO;

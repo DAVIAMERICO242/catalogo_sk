@@ -22,6 +22,13 @@ export namespace CorreiosFranquiasContext{
     categoria:string,
     pesoGramas:number
   }
+  export interface DimensaoCaixa{
+    systemId:string,
+    franquiaId:string,
+    largura:number,
+    comprimento:number,
+    altura:number
+  }
 }
 @Injectable({
   providedIn: 'root'
@@ -30,11 +37,11 @@ export class CorreiosFranquiasContextService {
 
   constructor(private http:HttpClient) { }
 
-  criarAtualizar(payload:CorreiosFranquiasContext.CorreiosFranquias){
+  criarAtualizarIntegracaoConfig(payload:CorreiosFranquiasContext.CorreiosFranquias){
     return this.http.post<CorreiosFranquiasContext.CorreiosFranquias>(env.BACKEND_URL+"/correio-franquia-context",payload);
   }
 
-  getByFranquiaId(franquiaId:string){
+  getIntegracaoConfigByFranquiaId(franquiaId:string){
     return this.http.get<CorreiosFranquiasContext.CorreiosFranquias | undefined | null>(env.BACKEND_URL+"/correio-franquia-context?franquiaId="+franquiaId);
   }
 
@@ -44,5 +51,13 @@ export class CorreiosFranquiasContextService {
 
   cadastrarAtualizarPeso(payload:CorreiosFranquiasContext.PesoCategoria){
     return this.http.post<CorreiosFranquiasContext.PesoCategoria>(env.BACKEND_URL+"/peso-categoria",payload);
+  }
+
+  cadastrarAtualizarDimensoes(payload:CorreiosFranquiasContext.DimensaoCaixa){
+    return this.http.post<CorreiosFranquiasContext.DimensaoCaixa>(env.BACKEND_URL+"/comprimento-caixa",payload);
+  }
+
+  getDimensoesByFranquiaId(franquiaId:string){
+    return this.http.get<CorreiosFranquiasContext.DimensaoCaixa>(env.BACKEND_URL+"/comprimento-caixa?franquiaId="+franquiaId);
   }
 }

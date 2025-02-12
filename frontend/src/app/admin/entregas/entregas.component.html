@@ -9,12 +9,19 @@
                 </div>
                 <div [ngClass]="{'bg-black':this.focusedPage==='INTEGRACAO','bg-slate-300':this.focusedPage!=='INTEGRACAO'}" class="w-[full] h-[1px]  mt-2 "></div>
             </div>
-            <div (click)="this.navToSubRoute(EntregaesPage.PESAGEM_COMPRIMENTAGEM)" class="cursor-pointer">
+            <div (click)="this.navToSubRoute(EntregaesPage.PESAGEM)" class="cursor-pointer">
                 <div class="flex items-center gap-2 cursor-pointer">
                     <div></div>
-                    <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='PESAGEM_COMPRIMENTAGEM'}">Peso/Comprimento para cálculo de frete</div>
+                    <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='PESAGEM'}">Pesagem</div>
                 </div>
-                <div [ngClass]="{'bg-black':this.focusedPage==='PESAGEM_COMPRIMENTAGEM','bg-slate-300':this.focusedPage!=='PESAGEM_COMPRIMENTAGEM'}" class="w-[full] h-[1px]  mt-2 "></div>
+                <div [ngClass]="{'bg-black':this.focusedPage==='PESAGEM','bg-slate-300':this.focusedPage!=='PESAGEM'}" class="w-[full] h-[1px]  mt-2 "></div>
+            </div>
+            <div (click)="this.navToSubRoute(EntregaesPage.DIMENSOES)" class="cursor-pointer">
+                <div class="flex items-center gap-2 cursor-pointer">
+                    <div></div>
+                    <div class="text-sm" [ngClass]="{'font-bold':this.focusedPage==='DIMENSOES'}">Dimensões caixa</div>
+                </div>
+                <div [ngClass]="{'bg-black':this.focusedPage==='DIMENSOES','bg-slate-300':this.focusedPage!=='DIMENSOES'}" class="w-[full] h-[1px]  mt-2 "></div>
             </div>
         </div>
         <router-outlet/>

@@ -22,7 +22,7 @@ export class ConfiguracaoFranquiaComponent implements OnInit {
   ){}
   ngOnInit(): void {
     this.loadingConfigs = true;
-    this.correiosContextService.getByFranquiaId(this.auth.getContext()?.franquia.systemId as string).subscribe({
+    this.correiosContextService.getIntegracaoConfigByFranquiaId(this.auth.getContext()?.franquia.systemId as string).subscribe({
       next:(data)=>{
         if(data){
           this.currentConfig = data;
@@ -77,7 +77,7 @@ export class ConfiguracaoFranquiaComponent implements OnInit {
       return;
     }
     this.loadingSave = true;
-    this.correiosContextService.criarAtualizar(this.currentConfig).subscribe({
+    this.correiosContextService.criarAtualizarIntegracaoConfig(this.currentConfig).subscribe({
       next:(data)=>{
         this.message.add({
           severity:"success",
