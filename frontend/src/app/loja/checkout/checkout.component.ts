@@ -91,7 +91,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   loadTipoFrete(){
     const formated = this.customerDetails.cep.trim().replace("-","");
     if(formated.length===8){
-      this.freteComponent.getTipoFrete();
+      this.freteComponent.getValorFrete();
     }
   }
 

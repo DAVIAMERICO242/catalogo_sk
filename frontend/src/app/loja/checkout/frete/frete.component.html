@@ -11,6 +11,28 @@
             </div>
         </div>
     </ng-container>
+    <ng-container *ngIf="this.frete.tipo==='CORREIOS'">
+        <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
+                        <div class="pi pi-check !text-white !text-sm"></div>
+                    </div>
+                    <div >
+                        Pac: <span class="font-bold">Frete: {{this.frete.valorPac | currency:"BRL"}} / Prazo: {{this.frete.prazoEmDiasPac}} dias</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
+                        <div class="pi pi-check !text-white !text-sm"></div>
+                    </div>
+                    <div >
+                        Sedex: <span class="font-bold">Frete: {{this.frete.valorSedex | currency:"BRL"}} / Prazo: {{this.frete.prazoEmDiasSedex}} dias</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
 </div>
 
 <ng-template #fallback>
