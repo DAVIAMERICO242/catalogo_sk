@@ -1,1 +1,18 @@
-<p>frete works!</p>
+<div *ngIf="this.frete;else fallback">
+    <ng-container *ngIf="this.frete.tipo==='FAIXA_CEP'">
+        <div class="bg-slate-50 h-[100px] w-full p-3 rounded-lg flex items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-[22px] h-[22px] bg-black rounded-full flex items-center justify-center">
+                    <div class="pi pi-check !text-white !text-sm"></div>
+                </div>
+                <div class="text-sm font-bold">
+                    Frete:{{this.frete.valorFaixaCep | currency:"BRL"}}/Prazo: {{this.frete.prazoEmDiasFaixaCep}} dias
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #fallback>
+    <div class="text-gray-500 text-xs">Informe o CEP para escolher a entrega</div>
+</ng-template>

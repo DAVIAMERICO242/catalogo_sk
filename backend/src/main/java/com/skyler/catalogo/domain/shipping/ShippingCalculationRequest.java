@@ -10,7 +10,6 @@ import java.util.List;
 
 @Data
 public class ShippingCalculationRequest {
-    PacSedexEnum pacSedex;//pode ser nulo se for calculado por faixa de cep
     String cep;
     String lojaId;
     List<ProdutoPedidoDTO> produtos = new ArrayList<>();

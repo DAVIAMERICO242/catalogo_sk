@@ -14,15 +14,6 @@ public class FreteCalculatorController {
         this.shippingCalculator = shippingCalculator;
     }
 
-    @PostMapping("/how-should-be-calculated")
-    public ResponseEntity how(@RequestBody ShippingCalculationRequest shippingCalculationRequest){
-        try{
-            return ResponseEntity.ok().body(this.shippingCalculator.getHowShouldBeCalculated(shippingCalculationRequest));
-        }catch (Exception e){
-            return ResponseEntity.status(500).body(e.getLocalizedMessage());
-        }
-    }
-
 
     @PostMapping
     public ResponseEntity calculateFrete(@RequestBody ShippingCalculationRequest shippingCalculationRequest){

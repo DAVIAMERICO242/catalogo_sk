@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FreteResponseDTO {
-    Float valor;
-    Integer prazoEmDias;
+    TipoCalculoEnum tipo;
+    Float valorFaixaCep;
+    Integer prazoEmDiasFaixaCep;
+    Float valorPac;
+    Integer prazoEmDiasPac;
+    Float valorSedex;
+    Integer prazoEmDiasSedex;
 }

@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Sacola, SacolaService } from '../../../services/sacola.service';
 import { ShippingCalculator, ShippingCalculatorService } from '../../../services/shipping-calculator.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-frete',
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './frete.component.html'
 })
 export class FreteComponent {
@@ -13,8 +14,7 @@ export class FreteComponent {
   @Input({required:true})
   sacola!:Sacola.SacolaModel;
   loadingTipoFrete = false;
-  tipoFrete!:ShippingCalculator.TipoCalculo;
-
+  frete!:ShippingCalculator.FreteResponse;
   constructor(
     private shippingCalculator:ShippingCalculatorService,
     private sacolaService:SacolaService
@@ -25,13 +25,12 @@ export class FreteComponent {
     const payload:ShippingCalculator.ShippingCalculationRequest = {
       cep:this.cep,
       lojaId:this.sacola.loja.systemId,
-      produtos:rawSacola.produtos,
-      pacSedex:null
+      produtos:rawSacola.produtos
     }
     this.loadingTipoFrete = true;
-    this.shippingCalculator.getHowShoulBeCalculated(payload).subscribe({
+    this.shippingCalculator.getValorFreteSemDesconto(payload).subscribe({
       next:(data)=>{
-        this.tipoFrete = data.tipo;
+        this.frete = data;
       }
     })
   }

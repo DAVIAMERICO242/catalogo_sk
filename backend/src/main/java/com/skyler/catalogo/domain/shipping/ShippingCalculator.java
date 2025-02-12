@@ -55,18 +55,6 @@ public class ShippingCalculator {
         this.discountCalculator = discountCalculator;
     }
 
-    public HowShouldBeCalculatedResponse getHowShouldBeCalculated(ShippingCalculationRequest shippingCalculationRequest){
-        Loja loja = this.lojaRepository.findById(shippingCalculationRequest.getLojaId()).get();
-        Franquia franquia = loja.getFranquia();
-        List<ShippingRules> faixasCep = this.faixaCepRepository.findAllByFranquiaId(franquia.getSystemId());
-        for(ShippingRules faixaCep:faixasCep){
-            if(this.isCepBetween(shippingCalculationRequest.getCep(),faixaCep.getCepInicio(),faixaCep.getCepFim())){
-                return new HowShouldBeCalculatedResponse(TipoCalculoEnum.FAIXA_CEP);
-            }
-        }
-        return new HowShouldBeCalculatedResponse(TipoCalculoEnum.CORREIOS);
-    }
-
     public FreteResponseDTO getFrete(ShippingCalculationRequest shippingCalculationRequest){//precisa do valor maturo aaaa
         Loja loja = this.lojaRepository.findById(shippingCalculationRequest.getLojaId()).get();
         Franquia franquia = loja.getFranquia();
@@ -78,16 +66,26 @@ public class ShippingCalculator {
         for(ShippingRules faixaCepPrecificada:faixasCepPrecificadas){
             if(valorCarrinhoComDescontos>=faixaCepPrecificada.getMinValueToApply() && this.isCepBetween(shippingCalculationRequest.getCep(),faixaCepPrecificada.getCepInicio(),faixaCepPrecificada.getCepFim())){
                 return new FreteResponseDTO(
+                        TipoCalculoEnum.FAIXA_CEP,
                   faixaCepPrecificada.getValorFixo(),
-                  faixaCepPrecificada.getPrazo()
+                  faixaCepPrecificada.getPrazo(),
+                        null,
+                        null,
+                        null,
+                        null
                 );
             }
         }
         for(ShippingRules faixaCepNaoPrecificada:faixasCepNaoPrecificadas){
             if(this.isCepBetween(shippingCalculationRequest.getCep(),faixaCepNaoPrecificada.getCepInicio(),faixaCepNaoPrecificada.getCepFim())){
                 return new FreteResponseDTO(
+                        TipoCalculoEnum.FAIXA_CEP,
                         faixaCepNaoPrecificada.getValorFixo(),
-                        faixaCepNaoPrecificada.getPrazo()
+                        faixaCepNaoPrecificada.getPrazo(),
+                        null,
+                        null,
+                        null,
+                        null
                 );
             }
         }
@@ -142,10 +140,9 @@ public class ShippingCalculator {
                 ,comprimentoCaixa.getAltura()
         );
         peso = (pesoCubado>peso)?pesoCubado:peso;
-        String pacSedexCodigo = (shippingCalculationRequest.getPacSedex().equals(PacSedexEnum.PAC))?correiosFranquiaContext.getCodigoPac():correiosFranquiaContext.getCodigoSedex();
-        Float valorFrete = this.correiosBridge.getPrecoFrete(
+        Float valorFretePac = this.correiosBridge.getPrecoFrete(
                 token,
-                pacSedexCodigo,
+                correiosFranquiaContext.getCodigoPac(),
                 correiosFranquiaContext.getNumeroContrato(),
                 correiosFranquiaContext.getNumeroDiretoriaRegional(),
                 correiosFranquiaContext.getCepOrigem(),
@@ -155,9 +152,9 @@ public class ShippingCalculator {
                 comprimentoCaixa.getAltura(),
                 comprimentoCaixa.getLargura()
             );
-        Integer prazoFrete = this.correiosBridge.getPrazoFrete(
+        Integer prazoFretePac = this.correiosBridge.getPrazoFrete(
                 token,
-                pacSedexCodigo,
+                correiosFranquiaContext.getCodigoPac(),
                 correiosFranquiaContext.getNumeroContrato(),
                 correiosFranquiaContext.getNumeroDiretoriaRegional(),
                 correiosFranquiaContext.getCepOrigem(),
@@ -168,9 +165,41 @@ public class ShippingCalculator {
                 comprimentoCaixa.getLargura()
         );
 
+        Float valorFreteSedex = this.correiosBridge.getPrecoFrete(
+                token,
+                correiosFranquiaContext.getCodigoSedex(),
+                correiosFranquiaContext.getNumeroContrato(),
+                correiosFranquiaContext.getNumeroDiretoriaRegional(),
+                correiosFranquiaContext.getCepOrigem(),
+                shippingCalculationRequest.getCep(),
+                peso==0f?500f:peso,
+                comprimentoCaixa.getComprimento(),
+                comprimentoCaixa.getAltura(),
+                comprimentoCaixa.getLargura()
+        );
+
+        Integer prazoFreteSedex = this.correiosBridge.getPrazoFrete(
+                token,
+                correiosFranquiaContext.getCodigoSedex(),
+                correiosFranquiaContext.getNumeroContrato(),
+                correiosFranquiaContext.getNumeroDiretoriaRegional(),
+                correiosFranquiaContext.getCepOrigem(),
+                shippingCalculationRequest.getCep(),
+                peso==0f?500f:peso,
+                comprimentoCaixa.getComprimento(),
+                comprimentoCaixa.getAltura(),
+                comprimentoCaixa.getLargura()
+        );
+
+
         return new FreteResponseDTO(
-                valorFrete,
-                prazoFrete
+                TipoCalculoEnum.CORREIOS,
+                null,
+                null,
+                valorFretePac,
+                prazoFretePac,
+                valorFreteSedex,
+                prazoFreteSedex
         );
     }
 
