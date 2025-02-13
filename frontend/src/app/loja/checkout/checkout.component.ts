@@ -15,6 +15,7 @@ import { FreteComponent} from "./frete/frete.component";
 import { FreteContextService, FreteEmissionSignature } from './frete/frete-context.service';
 import { VerLocalizacaoLojaComponent } from "../ver-localizacao-loja/ver-localizacao-loja.component";
 import { Router } from '@angular/router';
+import { CustomerCache } from './customer-cache.service';
 
 @Component({
   selector: 'app-checkout',
@@ -46,6 +47,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private cepService:CepService,
     private message:MessageService,
     private freteContext:FreteContextService,
+    private customerCache:CustomerCache,
     private router:Router
   ){
 
@@ -56,6 +58,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         if(loja){
           this.loja = loja;
           this.loadSacola();
+          this.configurePayload();
         }
       }));
 
@@ -77,7 +80,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.loadingFrete = loadingFrete;
       })
     );
-    this.configurePayload();
   }
   
   ngOnDestroy(): void {
@@ -85,18 +87,24 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
+
   configurePayload(){
+    const cache = this.customerCache.getCachedCheckout();
     this.customerDetails = {
-      bairro:"",
-      cep:"",
-      cidade:"",
-      documento:"",
-      estado:"",
-      nome:"",
-      numero:0,
-      rua:"",
-      telefone:"",
+      bairro:cache?.bairro || "",
+      cep:cache?.cep || "",
+      cidade:cache?.cidade || "",
+      documento:cache?.documento || "",
+      estado:cache?.estado || "",
+      nome:cache?.nome || "",
+      numero:cache?.numero || 0,
+      rua:cache?.rua || "",
+      telefone:cache?.telefone || "",
       entregaLoja:false
+    }
+    if(cache){
+      this.manageCepChange();
+      this.loadTipoFrete();
     }
   }
 
@@ -269,6 +277,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       next:(pedido)=>{
         this.loadingNovoPedido = false;
         this.sacolaContext.limparSacola(this.loja);
+        this.customerCache.cacheCheckoutFields({
+          bairro:pedido.bairro,
+          cep:pedido.cep,
+          cidade:pedido.cidade,
+          documento:pedido.documento,
+          estado:pedido.estado,
+          nome:pedido.nome,
+          numero:pedido.numero,
+          rua:pedido.rua,
+          telefone:pedido.telefone
+        })
         this.gotToThankYouPage(this.pedidoService.reducePedido(pedido));
       },
       error:(err:HttpErrorResponse)=>{
