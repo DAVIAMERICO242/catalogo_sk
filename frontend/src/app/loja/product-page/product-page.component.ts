@@ -149,6 +149,7 @@ export class ProductPageComponent implements OnInit{
   }
 
   manageCorChange(){
+    this.selectedTamanho = undefined;
     this.changeFocusedSku();
     this.overAddedTheSameSku = false;
     this.changeFotoAfterCorChange();
