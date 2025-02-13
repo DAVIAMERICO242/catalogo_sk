@@ -33,6 +33,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   descontosAplicados!:Desconto.DescontoAplicado[];
   totalDescontos!:number;
   loadingCepAutoComplete = false;
+  loadingFrete = false;
 
   constructor(
     private sacolaContext:SacolaUiContextService,
@@ -62,6 +63,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.freteContext.freteEmissor$.subscribe((val)=>{
         this.manageFreteChange(val);
+      })
+    );
+    this.subscriptions.add(
+      this.freteContext.loadingValorFrete$.subscribe((loadingFrete)=>{
+        this.loadingFrete = loadingFrete;
       })
     );
     this.configurePayload();

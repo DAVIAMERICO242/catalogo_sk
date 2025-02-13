@@ -1,4 +1,4 @@
-<div class="h-[calc(100vh-220px)] max-sm:h-[130vh] flex items-center justify-center ">
+<div class="mt-[100px] max-sm:mt-[40px] flex items-center justify-center ">
     <div class="flex max-sm:flex-col gap-5 ">
         <div class="space-y-3">
             <div class="mb-10" >
@@ -119,7 +119,7 @@
                     <div class="font-bold">{{this.total| currency:"BRL"}}</div>
                 </div>
             </div>
-            <button [loading]="this.loadingNovoPedido" (click)="this.postPedido()" pButton class="!w-full  !bg-black !text-sm">
+            <button [disabled]="this.loadingFrete" [loading]="this.loadingNovoPedido" (click)="this.postPedido()" pButton class="!w-full  !bg-black !text-sm">
                 Solicitar pedido
             </button>
         </div>
