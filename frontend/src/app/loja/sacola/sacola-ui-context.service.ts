@@ -186,9 +186,10 @@ export class SacolaUiContextService {
       let sacolaForLoja = sacolas.find(e=>e.loja.systemId===loja.systemId);
       if(sacolaForLoja){
         let foundProduto = sacolaForLoja.produtos.find((e)=>e.produtoBase.variacoes.map((e)=>e.systemId).includes(variationSystemId)) as Sacola.ProdutoCatalogoModel;
-        if(foundProduto.produtoBase.variacoes.length===1){
+        const quantidadeVariacoes = foundProduto.produtoBase.variacoes.reduce((a,b)=>a+b.quantidade,0);
+        if(quantidadeVariacoes===1){
           sacolaForLoja.produtos = [...sacolaForLoja.produtos.filter((e)=>!e.produtoBase.variacoes.map((e)=>e.systemId).includes(variationSystemId))];
-        }else if(foundProduto.produtoBase.variacoes.length>1){
+        }else if(quantidadeVariacoes>1){
           const regardingVariacao = foundProduto.produtoBase.variacoes.find((e)=>e.systemId===variationSystemId);
           if(regardingVariacao?.quantidade===1){
             foundProduto.produtoBase.variacoes = foundProduto.produtoBase.variacoes.filter((e)=>e.systemId!==variationSystemId);

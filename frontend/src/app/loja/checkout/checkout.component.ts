@@ -59,6 +59,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.sacolaContext.onSacolaChange$.subscribe(()=>{
       if(this.loja){
         this.loadSacola();
+        this.freteContext.setValorFrete(this.sacola);
       }
     }));
     this.subscriptions.add(
