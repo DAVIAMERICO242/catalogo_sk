@@ -37,15 +37,19 @@
                             <th>
                                 Endereço
                             </th>
-                            <th>
-                                Total com descontos (sem frete)
+                            <th class="!text-sm">
+                                
+                                    Total líquido (com descontos e sem frete)
                             </th>
                             <th>
                                 Descontos
                             </th>
-                            <!-- <th>
+                            <th>
                                 Frete
-                            </th> -->
+                            </th>
+                            <th>
+                                Tipo frete
+                            </th>
                             <th>
 
                             </th>
@@ -81,9 +85,12 @@
                             <td>
                                 <app-detalhar-desconto [descontosAplicados]="this.forceType(row).descontosAplicados"/>
                             </td>
-                            <!-- <td>
+                            <td>
                                 {{this.forceType(row).valorFrete | currency:"BRL"}}
-                            </td> -->
+                            </td>
+                            <td class="text-nowrap">
+                                {{this.forceType(row).tipoFrete || "Não se aplica"}}
+                            </td>
                             <td>
                                 <app-deletar-pedido (onDelete)="this.onDelete($event)" [pedido]="this.forceType(row)"/>
                             </td>

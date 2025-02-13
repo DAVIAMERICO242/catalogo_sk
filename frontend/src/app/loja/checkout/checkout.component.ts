@@ -243,6 +243,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         });
         return false;
       }
+      if(!this.customerDetails.telefone){
+        this.message.add({
+          severity:"error",
+          summary:"Telefone inválido"
+        });
+        return false;
+      }
     }
     return true;
   }
