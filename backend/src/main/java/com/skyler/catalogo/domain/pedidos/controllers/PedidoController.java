@@ -48,8 +48,7 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity postarPedido(@RequestBody PedidoBeforeCalculationsDTO pedidoBeforeCalculationsDTO){
         try{
-            this.pedidoService.novoPedido(pedidoBeforeCalculationsDTO);
-            return ResponseEntity.status(200).build();
+            return ResponseEntity.status(200).body(this.pedidoService.novoPedido(pedidoBeforeCalculationsDTO));
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());
         }

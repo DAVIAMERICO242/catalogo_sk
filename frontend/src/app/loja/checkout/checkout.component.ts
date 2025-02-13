@@ -14,6 +14,7 @@ import { MessageService } from 'primeng/api';
 import { FreteComponent} from "./frete/frete.component";
 import { FreteContextService, FreteEmissionSignature } from './frete/frete-context.service';
 import { VerLocalizacaoLojaComponent } from "../ver-localizacao-loja/ver-localizacao-loja.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -36,6 +37,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   loadingCepAutoComplete = false;
   loadingFrete = false;
 
+
   constructor(
     private sacolaContext:SacolaUiContextService,
     private sacolaService:SacolaService,
@@ -43,7 +45,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private pedidoService:PedidosService,
     private cepService:CepService,
     private message:MessageService,
-    private freteContext:FreteContextService
+    private freteContext:FreteContextService,
+    private router:Router
   ){
 
   }
@@ -263,14 +266,20 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     preparedPayload.tipoFrete = this.tipoFrete;
     this.loadingNovoPedido = true;
     this.pedidoService.novoPedido(preparedPayload).subscribe({
-      next:()=>{
+      next:(pedido)=>{
         this.loadingNovoPedido = false;
+        this.sacolaContext.limparSacola(this.loja);
+        this.gotToThankYouPage(this.pedidoService.reducePedido(pedido));
       },
       error:(err:HttpErrorResponse)=>{
         this.loadingNovoPedido = false;
         alert("Erro crítico: " + err.error);
       }
     });
+  }
+
+  gotToThankYouPage(pedido:Pedidos.PedidoReducedTypes.PedidoReduced){
+    this.router.navigate([this.loja.slug + "/thank-you"],{state:pedido})
   }
 
 }

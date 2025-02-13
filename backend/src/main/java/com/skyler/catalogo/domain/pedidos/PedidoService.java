@@ -54,9 +54,9 @@ public class PedidoService {
         return output.stream().sorted(Comparator.comparing(PedidoAfterCalculationsDTO::getMoment).reversed()).toList();
     }
 
-    public void novoPedido(PedidoBeforeCalculationsDTO pedidoSemValores){
+    public PedidoAfterCalculationsDTO novoPedido(PedidoBeforeCalculationsDTO pedidoSemValores){
         PedidoAfterCalculationsDTO mature = this.getPedidoMature(pedidoSemValores);
-        this.pedidoRepository.save(this.dtoToEntity(mature));
+        return this.entityToDto(this.pedidoRepository.save(this.dtoToEntity(mature)));
     }
 
     public void mudarStatus(String pedidoId){

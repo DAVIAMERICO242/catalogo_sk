@@ -116,7 +116,7 @@ export class PedidosService {
   }
 
   novoPedido(payload:Pedidos.PedidoRequestTypes.PedidoRequest){//eu te oodeio, ME DEIXA EM PAZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ, ME DEIXA EM PAZ
-    return this.http.post(env.BACKEND_URL+"/pedidos",payload);
+    return this.http.post<Pedidos.Pedido>(env.BACKEND_URL+"/pedidos",payload);
   }
 
   deletarPedido(id:string){

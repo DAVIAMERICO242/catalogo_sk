@@ -90,6 +90,9 @@ export const routes: Routes = [
             },{
                 path:"checkout",
                 loadComponent:()=>import("./loja/checkout/checkout.component").then(m=>m.CheckoutComponent)
+            },{
+                path:"thank-you",
+                loadComponent:()=>import("./loja/thank-you/thank-you.component").then(m=>m.ThankYouComponent)
             }
         ]
     },
