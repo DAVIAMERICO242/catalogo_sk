@@ -11,7 +11,8 @@ import { ProdutoSacolaComponent } from "../sacola/produto-sacola/produto-sacola.
 import { Desconto } from '../../services/descontos.service';
 import { CepService } from '../../services/cep.service';
 import { MessageService } from 'primeng/api';
-import { FreteComponent, FreteEmissionSignature } from "./frete/frete.component";
+import { FreteComponent} from "./frete/frete.component";
+import { FreteContextService, FreteEmissionSignature } from './frete/frete-context.service';
 
 @Component({
   selector: 'app-checkout',
@@ -19,7 +20,7 @@ import { FreteComponent, FreteEmissionSignature } from "./frete/frete.component"
   templateUrl: './checkout.component.html'
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
-  @ViewChild(FreteComponent) freteComponent!:FreteComponent;
+
   customerDetails!:Pedidos.PedidoCustomerDetails;
   tipoFrete!:Pedidos.TipoFrete | undefined;
   frete = 0;
@@ -39,7 +40,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private lojaContext:LojaContextService,
     private pedidoService:PedidosService,
     private cepService:CepService,
-    private message:MessageService
+    private message:MessageService,
+    private freteContext:FreteContextService
   ){
 
   }
@@ -50,14 +52,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           this.loja = loja;
           this.loadSacola();
         }
-      })
-    )
+      }));
 
     this.subscriptions.add(this.sacolaContext.onSacolaChange$.subscribe(()=>{
       if(this.loja){
         this.loadSacola();
       }
     }));
+    this.subscriptions.add(
+      this.freteContext.freteEmissor$.subscribe((val)=>{
+        this.manageFreteChange(val);
+      })
+    );
     this.configurePayload();
   }
   
@@ -81,12 +87,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   manageCepChange(){
+    this.freteContext.setCep(this.customerDetails.cep);
     this.preencherCamposPeloCep();
     this.loadTipoFrete();
   }
 
   manageColetaLojaChange(){
-    this.freteComponent.manageColetaLojaChange(this.customerDetails.entregaLoja);
+    this.freteContext.setColetaLoja(this.customerDetails.entregaLoja);
     if(this.customerDetails.entregaLoja){
       this.total = this.total - this.frete;
       this.frete = 0;
@@ -112,7 +119,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   loadTipoFrete(){
     const formated = this.customerDetails.cep.trim().replace("-","");
     if(formated.length===8){
-      this.freteComponent.getValorFrete();
+      this.freteContext.setValorFrete(this.sacola);
     }
   }
 
