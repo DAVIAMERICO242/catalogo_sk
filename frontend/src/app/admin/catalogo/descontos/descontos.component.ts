@@ -56,7 +56,7 @@ export class DescontosComponent implements OnInit {
           beauty_name = "Desconto progressivo"
           break;
       }
-      if(key!==Desconto.DescontoTipo.DESCONTO_SIMPLES_PRODUTO){//NÃO TEM UI BOA
+      if(key!==Desconto.DescontoTipo.DESCONTO_SIMPLES_PRODUTO && key!==Desconto.DescontoTipo.DESCONTO_FRETE){//DESCONTINUADO
         this.descontosTipos.push({
           beauty_name:beauty_name,
           pure_name:pure_name as Desconto.DescontoTipo

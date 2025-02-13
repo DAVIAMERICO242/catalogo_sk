@@ -74,8 +74,8 @@ export class FreteContextService {
     }
   }
 
-  setValorFrete(sacola:Sacola.SacolaModel){
-    if(this.cepAnterior===this.cepSub.getValue()){
+  setValorFrete(sacola:Sacola.SacolaModel,forceEvenCepDidntChange:boolean){
+    if(this.cepAnterior===this.cepSub.getValue() && !forceEvenCepDidntChange){
       return;
     }
     this.prevFreteRequestDestroyer$.next();

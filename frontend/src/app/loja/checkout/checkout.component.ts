@@ -59,7 +59,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.sacolaContext.onSacolaChange$.subscribe(()=>{
       if(this.loja){
         this.loadSacola();
-        this.freteContext.setValorFrete(this.sacola);
+        this.freteContext.setValorFrete(this.sacola,true);
       }
     }));
     this.subscriptions.add(
@@ -127,7 +127,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   loadTipoFrete(){
     const formated = this.customerDetails.cep.trim().replace("-","");
     if(formated.length===8){
-      this.freteContext.setValorFrete(this.sacola);
+      this.freteContext.setValorFrete(this.sacola,false);
     }
   }
 
