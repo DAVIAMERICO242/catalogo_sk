@@ -11,9 +11,6 @@ export interface CheckoutCache{
   bairro:string,
   numero:number
 }
-interface NotFormattedCheckoutCache extends Omit<CheckoutCache, 'numero'> {
-  numero: string;
-}
 @Injectable({providedIn:"root"})
 export class CustomerCache {
 
@@ -24,12 +21,7 @@ export class CustomerCache {
   getCachedCheckout():CheckoutCache|undefined{
     const jsonString = localStorage.getItem("checkout-cache");
     if(jsonString){
-      const notFormatted = {...JSON.parse(jsonString)} as NotFormattedCheckoutCache;
-      const formatted:CheckoutCache = {
-        ...notFormatted,
-        numero:parseInt(notFormatted.numero)
-      }
-      return formatted;
+      return {...JSON.parse(jsonString)} as CheckoutCache;
     }
     return undefined
   }
