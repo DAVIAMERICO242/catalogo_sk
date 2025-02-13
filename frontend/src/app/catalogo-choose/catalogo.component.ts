@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { Loja, LojaService } from '../services/loja.service';
 import { Router } from '@angular/router';
+import { GoogleMapsComponent } from "./google-maps/google-maps.component";
 
 @Component({
   selector: 'app-catalogo',
-  imports: [SharedModule],
+  imports: [SharedModule, GoogleMapsComponent],
   templateUrl: './catalogo.component.html'
 })
 export class CatalogoComponent implements OnInit {

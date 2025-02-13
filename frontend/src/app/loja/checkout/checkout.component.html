@@ -37,7 +37,12 @@
                 </div>
                 <div class="flex items-center gap-2 mb-4">
                     <input [(ngModel)]="this.customerDetails.entregaLoja" (ngModelChange)="this.manageColetaLojaChange()" type="checkbox"/>
-                    <div class="text-xs">Buscar em loja?</div>
+                    <div class="text-xs">
+                        <div>
+                            Buscar em loja?
+                        </div>
+                    </div>
+                    <app-ver-localizacao-loja/>
                 </div>
                 <div [ngClass]="{'pointer-events-none':this.loadingCepAutoComplete || this.customerDetails.entregaLoja,'opacity-45':this.loadingCepAutoComplete || this.customerDetails.entregaLoja}">
                     <div class="flex lg:items-center max-lg:flex-col gap-5 mb-4">

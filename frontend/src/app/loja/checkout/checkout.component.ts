@@ -13,10 +13,11 @@ import { CepService } from '../../services/cep.service';
 import { MessageService } from 'primeng/api';
 import { FreteComponent} from "./frete/frete.component";
 import { FreteContextService, FreteEmissionSignature } from './frete/frete-context.service';
+import { VerLocalizacaoLojaComponent } from "../ver-localizacao-loja/ver-localizacao-loja.component";
 
 @Component({
   selector: 'app-checkout',
-  imports: [SharedModule, ProdutoSacolaComponent, FreteComponent],
+  imports: [SharedModule, ProdutoSacolaComponent, FreteComponent, VerLocalizacaoLojaComponent],
   templateUrl: './checkout.component.html'
 })
 export class CheckoutComponent implements OnInit, OnDestroy {

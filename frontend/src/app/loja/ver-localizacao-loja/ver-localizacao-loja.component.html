@@ -1,0 +1,16 @@
+<div (click)="open=true" [class]="'flex items-center gap-2 text-[10px] cursor-pointer bg-slate-100 p-2 rounded-sm'+this.styleClass">
+    <div class="pi pi-map-marker"></div>
+    <div class="underline">Ver localização</div>
+</div>
+
+<p-dialog styleClass="max-sm:w[300px]" [modal]="true" [dismissableMask]="true" [(visible)]="this.open">
+    <div class="mb-10">
+        {{this.loja.endereco}}
+    </div>
+    <button (click)="this.abrirGoogleMaps()" pButton class="!w-full !text-xs !flex !items-center !gap-2 !bg-black !text-white">
+        <div class="pi pi-google"></div>
+        <div>
+            Ver no Google Maps
+        </div>
+    </button>
+</p-dialog>
