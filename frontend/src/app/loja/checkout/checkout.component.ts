@@ -59,7 +59,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.sacolaContext.onSacolaChange$.subscribe(()=>{
       if(this.loja){
         this.loadSacola();
-        this.freteContext.setValorFrete(this.sacola,true);
+        if(this.sacola.produtos.length && this.customerDetails.cep){
+          this.freteContext.setValorFrete(this.sacola,true);
+        }
       }
     }));
     this.subscriptions.add(
@@ -76,6 +78,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy(): void {
+    console.log("checkout destruido")
     this.subscriptions.unsubscribe();
   }
 
@@ -155,6 +158,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if(sacola){
       this.sacola = sacola;
       this.sacolaContext.setDescontos(this.sacola);
+    }else{
+      this.sacola = {
+        loja:this.loja,
+        produtos:[] 
+      };
     }
     this.setValores();
   }
