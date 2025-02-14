@@ -1,6 +1,6 @@
 <div>
-    <button [loading]="this.loading" (click)="this.getVariacao();" class="bg-black !text-xs w-[200px] text-nowrap    " pButton >
-        Ver produto
+    <button [loading]="this.loading" (click)="this.getVariacao();" class="!bg-black !text-xs w-[200px] text-nowrap    " pButton >
+        {{this.buttonText || "Ver produto"}}
     </button>
 </div>
 <p-drawer styleClass="!h-[70vh] overflow-auto" position="bottom" [modal]="true" [(visible)]="this.openVariacao">

@@ -13,6 +13,8 @@ import { UserService } from '../../../services/user.service';
 export class ProductVariationViewComponent {
   @Input({required:true})
   lojaSlug = "";
+  @Input()
+  buttonText = "";
   variacoes!:Produto.ProdutoVariacao[];
   @Input({required:true})
   skuBase!:string;

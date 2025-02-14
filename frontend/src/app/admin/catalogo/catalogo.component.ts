@@ -9,10 +9,11 @@ import { ExcluirProdutoComponent } from "./excluir-produto/excluir-produto.compo
 import { MessageService } from 'primeng/api';
 import { DescontosComponent } from "./descontos/descontos.component";
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { ProductVariationViewComponent } from "../produtos/product-variation-view/product-variation-view.component";
 
 @Component({
   selector: 'app-catalogo',
-  imports: [SharedModule, AdminPageTitleComponent, ExcluirProdutoComponent, DescontosComponent,DragDropModule],
+  imports: [SharedModule, AdminPageTitleComponent, ExcluirProdutoComponent, DescontosComponent, DragDropModule, ProductVariationViewComponent],
   templateUrl: './catalogo.component.html',
   providers:[CatalogoService]
 })

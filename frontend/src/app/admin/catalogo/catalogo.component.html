@@ -16,8 +16,8 @@
         cdkDropListOrientation="mixed" 
         (cdkDropListDropped)="this.drop($event)" 
         class="flex flex-wrap gap-10  " *ngIf="this.catalogo.length;else empty">
-            <div cdkDrag *ngFor="let item of this.catalogo" class="p-3 border-[1px] border-solid bg-white border-slate-100 shadow-sm rounded-sm ">
-                    <div class="w-[200px] relative">
+            <div cdkDrag *ngFor="let item of this.catalogo" class="p-3 border-[1px] border-solid bg-white border-slate-100 shadow-sm rounded-sm relative">
+                    <div class="w-[200px] h-[370px] relative">
                         <div class="flex w-full justify-between items-center absolute top-[0px]">
                             <app-excluir-produto (onExclude)="handleExclude($event)" [produtoCatalogo]="item"/>
                             <div class="example-handle cursor-grab flex justify-end" cdkDragHandle>
@@ -35,6 +35,9 @@
                             <div class="text-xs text-slate-400">{{item.produtoBase.sku}}</div>
                             <div class="text-sm mt-5 mb-2">Preço : {{item.produtoBase.preco| currency:"BRL"}}</div>
                             <div class="font-bold text-xs">{{item.produtoBase.descricao}}</div>
+                        </div>
+                        <div class="absolute bottom-[10px]">
+                            <app-product-variation-view [skuBase]="item.produtoBase.sku" buttonText="Ver estoque" [lojaSlug]="this.selectedLoja.slug" [productId]="item.produtoBase.systemId" />
                         </div>
                     </div>
             </div>
