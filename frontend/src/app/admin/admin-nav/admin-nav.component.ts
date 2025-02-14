@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { User, UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 enum Page{
   PRODUTOS="PRODUTOS",
   PEDIDOS="PEDIDOS",
@@ -24,10 +25,13 @@ export class AdminNavComponent implements OnInit {
   beautyName=""
   focused = Page.PRODUTOS
 
-  constructor(protected auth:UserService, private router:Router){
+  constructor(protected auth:UserService, private router:Router,@Inject(PLATFORM_ID) private platformId: Object){
 
   }
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const name = this.auth.getContext()?.beautyName
     this.beautyName = name || ""
     const endPath = window.location.href;
@@ -66,6 +70,9 @@ export class AdminNavComponent implements OnInit {
   }
 
   navigateToLoja(){
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     if(this.auth.getContext()?.role === User.Role.OPERACIONAL){
       window.open("/" + (this.auth.getContext()?.loja.slug),"_blank")
     }else{

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Pedidos } from '../../services/pedidos.service';
 import { Sacola, SacolaService } from '../../services/sacola.service';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -7,6 +7,7 @@ import { Loja } from '../../services/loja.service';
 import { Catalogo } from '../../services/catalogo.service';
 import { Produto } from '../../services/produtos.service';
 import { SacolaComponent } from './sacola.component';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class SacolaUiContextService {
     descontosAplicados$ = this.descontosAplicadosSub.asObservable();
     loadingDescontosSub = new BehaviorSubject<boolean>(false);
 
-  constructor(private sacolaService:SacolaService) { }
+  constructor(private sacolaService:SacolaService,@Inject(PLATFORM_ID) private platformId: Object) { }
 
   openSacola(){
     this.openSub.next(true);
@@ -47,30 +48,37 @@ export class SacolaUiContextService {
 
 
   getSacolaForLoja(loja:Loja.Loja):Sacola.SacolaModel | undefined{
-    const sacolasString = localStorage.getItem(this.sacolasStorageName);
-    if(sacolasString){
-      let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];
-      return sacolas.find((e)=>e.loja.systemId===loja.systemId)
+    if (isPlatformBrowser(this.platformId)) {
+      const sacolasString = localStorage.getItem(this.sacolasStorageName);
+      if(sacolasString){
+        let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];
+        return sacolas.find((e)=>e.loja.systemId===loja.systemId)
+      }
     }
     return undefined;
   }
 
 
   limparSacola(loja:Loja.Loja){
-    const sacolasString = localStorage.getItem(this.sacolasStorageName);
-    if(sacolasString){
-      let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];
-      let sacolaForLoja = sacolas.find(e=>e.loja.systemId===loja.systemId);
-      if(sacolaForLoja){
-        sacolas = sacolas.filter((e)=>e.loja.systemId!==loja.systemId);
+    if (isPlatformBrowser(this.platformId)) {
+      const sacolasString = localStorage.getItem(this.sacolasStorageName);
+      if(sacolasString){
+        let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];
+        let sacolaForLoja = sacolas.find(e=>e.loja.systemId===loja.systemId);
+        if(sacolaForLoja){
+          sacolas = sacolas.filter((e)=>e.loja.systemId!==loja.systemId);
+        }
+        localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
       }
-      localStorage.setItem(this.sacolasStorageName,JSON.stringify(sacolas));
+      this.descontosAplicadosSub.next([]);
+      this.notifySacolaChange();
     }
-    this.descontosAplicadosSub.next([]);
-    this.notifySacolaChange();
   }
 
   addToSacolaForLoja(loja:Loja.Loja,produto:Catalogo.Produto,variacao:Produto.ProdutoVariacao):void{
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const sacolasString = localStorage.getItem(this.sacolasStorageName);
     if(sacolasString){
       let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];
@@ -181,6 +189,9 @@ export class SacolaUiContextService {
   }
 
   removeExactlyOneQuantityOfItemFromSacolaLoja(loja:Loja.Loja,variationSystemId:string){//id do produto base
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const sacolasString = localStorage.getItem(this.sacolasStorageName);
     if(sacolasString){
       let sacolas = JSON.parse(sacolasString) as Sacola.SacolaModel[];

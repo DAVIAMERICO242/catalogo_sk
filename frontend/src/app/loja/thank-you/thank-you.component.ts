@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Pedidos } from '../../services/pedidos.service';
 import { fadeIn } from '../../animations/fadeIn';
@@ -7,6 +7,7 @@ import { Loja } from '../../services/loja.service';
 import { CepPipePipe } from '../../pipes/cep-pipe.pipe';
 import { PhonePipePipe } from '../../pipes/phone-pipe.pipe';
 import { DocumentoPipe } from '../../pipes/documento.pipe';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-thank-you',
@@ -24,7 +25,8 @@ export class ThankYouComponent implements OnInit {
     private lojaContext:LojaContextService,
     private cepPipe:CepPipePipe,
     private phonePipe:PhonePipePipe,
-    private documentoPipe:DocumentoPipe
+    private documentoPipe:DocumentoPipe,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
@@ -95,6 +97,7 @@ export class ThankYouComponent implements OnInit {
   }
 
   goToWhatsapp(){
+    if (!isPlatformBrowser(this.platformId)) {return}
     const waUrl = this.generateWhatsAppUrl();
     // window.location.href = waUrl;
     window.open(waUrl, '_blank');

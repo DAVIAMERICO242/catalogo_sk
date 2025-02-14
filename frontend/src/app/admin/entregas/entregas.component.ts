@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AdminPageTitleComponent } from "../admin-page-title/admin-page-title.component";
 import { Router, RouterModule } from '@angular/router';
 import { CorreiosFranquiasContextService } from '../../services/correios-franquias-context.service';
+import { isPlatformBrowser } from '@angular/common';
 export enum EntregasPage{
   INTEGRACAO="INTEGRACAO",
   PESAGEM="PESAGEM",
@@ -18,8 +19,11 @@ export class EntregasComponent implements OnInit{
   focusedPage!:EntregasPage;
   EntregaesPage = EntregasPage;
 
-  constructor(private router:Router){}
+  constructor(private router:Router,@Inject(PLATFORM_ID) private platformId: Object){}
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const url = window.location.href;
     if(url.endsWith("/integracao-correios")){
       this.focusedPage = EntregasPage.INTEGRACAO

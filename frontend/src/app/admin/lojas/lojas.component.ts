@@ -15,7 +15,7 @@ import { PhonePipePipe } from '../../pipes/phone-pipe.pipe';
 export class LojasComponent implements OnInit{
   lojas!:Loja.Loja[];//se eu ainda estiver viver e deus nao tiver me matado aqui será Loja.loja[]
   constructor(private lojaService:LojaService,private userService:UserService){}
-  ngOnInit(): void {//o localstorage tem tipagem pessimista por isso o 'as'
+  ngOnInit(): void {
     const role = this.userService.getContext()?.role;
     const loja = this.userService.getContext()?.loja;
     if(role===User.Role.OPERACIONAL){

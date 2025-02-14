@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { env } from '../../env';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 
 export namespace User{
@@ -45,7 +46,7 @@ export namespace User{
 })
 export class UserService {
 
-  constructor(private http:HttpClient, private route:Router){}
+  constructor(private http:HttpClient, private route:Router,@Inject(PLATFORM_ID) private platformId: Object){}
 
   login(payload:User.LoginRequest){
      return this.http.post<User.LoginResponse>(env.BACKEND_URL+"/login",payload);
@@ -56,15 +57,21 @@ export class UserService {
   }
 
   setContext(payload:User.LoginRequest){
-    localStorage.setItem("context",JSON.stringify(payload));
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem("context",JSON.stringify(payload));
+    }
   }
 
+
   getContext():User.LoginResponse|undefined{
-    const storage = localStorage.getItem("context");
-    if(!storage){
-      return undefined;
+    if (isPlatformBrowser(this.platformId)) {
+      const storage = localStorage.getItem("context");
+      if(!storage){
+        return undefined;
+      }
+      return JSON.parse(storage) as User.LoginResponse;
     }
-    return JSON.parse(storage) as User.LoginResponse;
+    return undefined
   }
 
   isAuthRoute(){
@@ -84,8 +91,9 @@ export class UserService {
   }
 
   private clearContext(){
-    localStorage.clear();
-
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.clear();
+    }
   }
 
 }

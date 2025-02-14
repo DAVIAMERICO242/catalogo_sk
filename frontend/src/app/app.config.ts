@@ -2,11 +2,12 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { definePreset } from '@primeng/themes';
 import { routes } from './app.routes';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './jwt.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 export const MyTheme = definePreset(Aura, {
   semantic: {
@@ -31,12 +32,13 @@ export const appConfig: ApplicationConfig = {
   [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideHttpClient(withFetch()),
     provideHttpClient(withInterceptors([jwtInterceptor])),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
           preset: Aura
       }
-  })
+  }), provideClientHydration(withEventReplay())
   ]
 };

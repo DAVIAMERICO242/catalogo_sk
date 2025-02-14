@@ -1,4 +1,5 @@
-import { Injectable } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 
 export interface CheckoutCache{
   nome:string,
@@ -14,16 +15,22 @@ export interface CheckoutCache{
 @Injectable({providedIn:"root"})
 export class CustomerCache {
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
   cacheCheckoutFields(payload:CheckoutCache){//nao cachea metodo de entrega
-    localStorage.setItem("checkout-cache",JSON.stringify(payload));
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('checkout-cache', JSON.stringify(payload));
+    }  
   }
 
   getCachedCheckout():CheckoutCache|undefined{
-    const jsonString = localStorage.getItem("checkout-cache");
-    if(jsonString){
-      return {...JSON.parse(jsonString)} as CheckoutCache;
+    if (isPlatformBrowser(this.platformId)) {
+      const jsonString = localStorage.getItem('checkout-cache');
+      if (jsonString) {
+        return { ...JSON.parse(jsonString) } as CheckoutCache;
+      }
     }
-    return undefined
+    return undefined;
   }
 
 
