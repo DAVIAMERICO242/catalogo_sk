@@ -4,6 +4,9 @@
     </button>
 </div>
 <p-drawer styleClass="!h-[70vh] overflow-auto" position="bottom" [modal]="true" [(visible)]="this.openVariacao">
+    <div class="mb-3 font-bold">
+        Estoque total: {{this.estoqueTotal}}
+    </div>
     <div class="w-full flex flex-wrap gap-3">
         <div *ngFor="let item of this.variacoes">
             <div class="p-2 border-[1px] border-solid border-slate-300 shadow-sm">

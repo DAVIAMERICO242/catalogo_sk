@@ -24,6 +24,7 @@ export class ProductVariationViewComponent {
   @Input({required:true})
   productId!:string;
   estoquesUI:{[key:string]:number}={};
+  estoqueTotal = 0;
   
   constructor(private produtoService:ProdutosService,private auth:UserService){}
 
@@ -63,6 +64,7 @@ export class ProductVariationViewComponent {
                 }
         })
         const skusEstoque = this.variacoes.map(e=>e.sku);
+        this.estoqueTotal = data.flatMap(e=>e.estoque).reduce((a,b)=>a+b.estoque,0);
         skusEstoque.map((e)=>{
           const keys = Object.keys(this.estoquesUI || {});
           if(!keys.includes(e)){

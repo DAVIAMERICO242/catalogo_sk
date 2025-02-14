@@ -16,7 +16,7 @@
         cdkDropListOrientation="mixed" 
         (cdkDropListDropped)="this.drop($event)" 
         class="flex flex-wrap gap-10  " *ngIf="this.catalogo.length;else empty">
-            <div cdkDrag *ngFor="let item of this.catalogo" class="p-3 border-[1px] border-solid bg-white border-slate-100 shadow-sm rounded-sm relative">
+            <div cdkDrag *ngFor="let item of this.catalogo" class="p-3 border-[1px] border-solid bg-white border-slate-100 shadow-sm rounded-sm">
                     <div class="w-[200px] h-[370px] relative">
                         <div class="flex w-full justify-between items-center absolute top-[0px]">
                             <app-excluir-produto (onExclude)="handleExclude($event)" [produtoCatalogo]="item"/>
