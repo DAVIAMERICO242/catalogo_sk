@@ -152,7 +152,7 @@ public class ProdutoService {
     public ProdutoDTO entityToDTO(Produto produtoEnt,List<ProdutoCatalogo> catalogo){
         ProdutoDTO produto = new ProdutoDTO();
         ProdutoDTO.Franquia franquia = new ProdutoDTO.Franquia();
-        String produtoCatalogoId = catalogo.stream().filter(o->o.getProdutoBaseFranquia().equals(produtoEnt)).findFirst().orElse(null).getSystemId();
+        String produtoCatalogoId = catalogo.stream().filter(o->o.getProdutoBaseFranquia().equals(produtoEnt)).map(o->o.getSystemId()).findFirst().orElse(null);
         franquia.setFranquia(produtoEnt.getFranquia().getNome());
         franquia.setFranquiaSystemId(produtoEnt.getFranquia().getSystemId());
         produto.setFranquia(franquia);
