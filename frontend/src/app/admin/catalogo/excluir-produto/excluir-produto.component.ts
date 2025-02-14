@@ -11,7 +11,7 @@ export class ExcluirProdutoComponent {
   open = false;
   loading = false;
   @Input({required:true})
-  payload!:Catalogo.DeletarModel;
+  produtoCatalogo!:Catalogo.Produto;
   @Output()
   onExclude = new EventEmitter<string>();
 
@@ -21,11 +21,11 @@ export class ExcluirProdutoComponent {
 
   excluir(){
     this.loading = true;
-    this.catalogoService.removerProduto(this.payload).subscribe({
+    this.catalogoService.removerProduto(this.produtoCatalogo.systemId).subscribe({
       next:()=>{
         this.loading = false;
         this.open = false;
-        this.onExclude.emit(this.payload.systemId);
+        this.onExclude.emit(this.produtoCatalogo.systemId);
       },
       error:()=>{
         alert("Erro")

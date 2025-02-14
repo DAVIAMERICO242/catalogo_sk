@@ -23,7 +23,7 @@ public class ProdutoDTO {//as variações nem sempre são carregadas
     String subgrupo;
     Float preco;
     String photoUrl;
-    Boolean onCatalogo;
+    String produtoCatalogoId;
     List<Variacao> variacoes = new ArrayList<>();
 
     public void addVariacao(Variacao variacao){

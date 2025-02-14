@@ -49,6 +49,15 @@ public class ProdutoCatalogoService {
     }
 
     @Transactional
+    public void delete(String id){
+        ProdutoCatalogo produtoCatalogo = this.produtoCatalogoRepository.findById(id).get();
+        String lojaId = produtoCatalogo.getLoja().getSystemId();
+        Integer index = produtoCatalogo.getIndexOnStore();
+        this.produtoCatalogoRepository.deleteById(id);
+        this.produtoCatalogoRepository.reindexAfterDeletedIndex(lojaId,index);
+    }
+
+    @Transactional
     public synchronized void reindex(String lojaId, Integer fromIndex, Integer toIndex){
         this.produtoCatalogoRepository.reindex(lojaId,fromIndex,toIndex);
     }
@@ -101,7 +110,7 @@ public class ProdutoCatalogoService {
     public ProdutoCatalogoDTO entityToDTO(ProdutoCatalogo catalogoEnt,Boolean withVariations){
         ProdutoCatalogoDTO produtoCatalogo = new ProdutoCatalogoDTO();
         Produto produtoEnt = catalogoEnt.getProdutoBaseFranquia();
-        ProdutoDTO produto = this.produtoService.entityToDTOExistingOnCatalogo(produtoEnt);
+        ProdutoDTO produto = this.produtoService.entityToDTOExistingOnCatalogo(produtoEnt,catalogoEnt.getSystemId());
         ProdutoCatalogoDTO.Loja loja = new ProdutoCatalogoDTO.Loja();
         loja.setLoja(catalogoEnt.getLoja().getNome());
         loja.setSystemId(catalogoEnt.getLoja().getSystemId());

@@ -9,10 +9,6 @@ export namespace Catalogo{
     systemId:string,
     lojaSlug:string
   }
-  export interface DeletarModel{
-    systemId:string,
-    lojaSlug:string
-  }
   export interface Produto{
     systemId:string,
     produtoBase:ProdutoModel.Produto,
@@ -64,10 +60,10 @@ export class CatalogoService {
      );
   }
 
-  removerProduto(payload:Catalogo.DeletarModel){
-    return this.http.delete<void>(env.BACKEND_URL+"/catalogo",{body:payload}).pipe(
+  removerProduto(id:string){
+    return this.http.delete<void>(env.BACKEND_URL+"/catalogo?id="+id).pipe(
       tap(()=>{
-        this.contextualCatalogoSub.next(this.contextualCatalogoSub.value.filter(e=>e.produtoBase.systemId!==payload.systemId && e.lojaCatalogo.slug!==payload.lojaSlug))
+        this.contextualCatalogoSub.next(this.contextualCatalogoSub.value.filter(e=>e.systemId!==id))
       })
     )
   }

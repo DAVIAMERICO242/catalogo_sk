@@ -39,9 +39,9 @@ public class ProdutoCatalogoController {
     }
 
     @DeleteMapping
-    public ResponseEntity delete(@RequestBody ProdutoDelecaoDTO payload){
+    public ResponseEntity delete(String id){
         try{
-            this.produtoCatalogoRepository.deleteByProductIdAndLojaSlug(payload.getSystemId(), payload.getLojaSlug());
+            this.produtoCatalogoService.delete(id);
             return ResponseEntity.ok().build();
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getLocalizedMessage());

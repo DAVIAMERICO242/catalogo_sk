@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col gap-3">
-                            <app-adicionar-loaded-produto-ao-catalogo [lojaSlug]="this.selectedLoja.slug" [alreadyOnCatalogo]="item.onCatalogo" [productId]="item.systemId"/>
+                            <app-adicionar-loaded-produto-ao-catalogo [lojaSlug]="this.selectedLoja.slug" [produtoCatalogoId]="item.produtoCatalogoId" [productId]="item.systemId"/>
                             <app-product-variation-view [lojaSlug]="this.selectedLoja.slug" [skuBase]="item.sku" [productId]="item.systemId"/>
                         </div>
                     </div>

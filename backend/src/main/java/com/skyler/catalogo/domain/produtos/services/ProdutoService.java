@@ -152,7 +152,7 @@ public class ProdutoService {
     public ProdutoDTO entityToDTO(Produto produtoEnt,List<ProdutoCatalogo> catalogo){
         ProdutoDTO produto = new ProdutoDTO();
         ProdutoDTO.Franquia franquia = new ProdutoDTO.Franquia();
-        Boolean onCatalogo = catalogo.stream().anyMatch(o->o.getProdutoBaseFranquia().equals(produtoEnt));
+        String produtoCatalogoId = catalogo.stream().filter(o->o.getProdutoBaseFranquia().equals(produtoEnt)).findFirst().orElse(null).getSystemId();
         franquia.setFranquia(produtoEnt.getFranquia().getNome());
         franquia.setFranquiaSystemId(produtoEnt.getFranquia().getSystemId());
         produto.setFranquia(franquia);
@@ -170,11 +170,11 @@ public class ProdutoService {
         produto.setSubgrupo(produtoEnt.getSubgrupo());
         produto.setPreco(produtoEnt.getPreco());
         produto.setPhotoUrl(produtoEnt.getPhotoUrl());
-        produto.setOnCatalogo(onCatalogo);
+        produto.setProdutoCatalogoId(produtoCatalogoId);
         return produto;
     }
 
-    public ProdutoDTO entityToDTOExistingOnCatalogo(Produto produtoEnt){
+    public ProdutoDTO entityToDTOExistingOnCatalogo(Produto produtoEnt,String produtoCatalogoId){
         ProdutoDTO produto = new ProdutoDTO();
         ProdutoDTO.Franquia franquia = new ProdutoDTO.Franquia();
         franquia.setFranquia(produtoEnt.getFranquia().getNome());
@@ -194,7 +194,7 @@ public class ProdutoService {
         produto.setSubgrupo(produtoEnt.getSubgrupo());
         produto.setPreco(produtoEnt.getPreco());
         produto.setPhotoUrl(produtoEnt.getPhotoUrl());
-        produto.setOnCatalogo(true);
+        produto.setProdutoCatalogoId(produtoCatalogoId);
         return produto;
     }
 

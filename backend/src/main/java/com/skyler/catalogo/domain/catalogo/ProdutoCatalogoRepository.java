@@ -41,6 +41,15 @@ public interface ProdutoCatalogoRepository extends JpaRepository<ProdutoCatalogo
             Integer fromIndex,
             Integer toIndex);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE ProdutoCatalogo pc SET pc.indexOnStore = pc.indexOnStore - 1 " +
+            "WHERE pc.loja.systemId = :lojaId AND pc.indexOnStore > :deletedIndex ")
+    void reindexAfterDeletedIndex(
+            String lojaId,
+            Integer deletedIndex
+    );
+
 
 //    @Modifying
 //    @Transactional

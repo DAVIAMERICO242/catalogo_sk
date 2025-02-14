@@ -53,15 +53,15 @@ export class CatalogoComponent implements OnInit{
     })
   }
 
-  handleExclude(productId:string){
-    this.catalogo = this.catalogo.filter((e)=>e.produtoBase.systemId!==productId);
+  handleExclude(productCatalogoId:string){
+    this.catalogo = this.catalogo.filter((e)=>e.systemId!==productCatalogoId);
     this.message.add({
       severity:"success",
       summary:"Sucesso"
     })
   }
 
-  drop(event: CdkDragDrop<number[]>) {
+  drop(event: CdkDragDrop<number[]>) {// o index vai ta desatualizado no frontend, mas talvez n seja um problema
       moveItemInArray(this.catalogo, event.previousIndex, event.currentIndex);
       this.catalogoService.reindex(this.selectedLoja.systemId,event.previousIndex,event.currentIndex).subscribe();
   }

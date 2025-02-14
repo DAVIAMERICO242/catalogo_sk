@@ -24,7 +24,7 @@ export namespace Produto{
     subgrupo:string,
     photoUrl:string,
     preco:number,
-    onCatalogo:boolean,
+    produtoCatalogoId?:string,
     variacoes:ProdutoVariacao[]
   }
   export interface ProdutoVariacao{

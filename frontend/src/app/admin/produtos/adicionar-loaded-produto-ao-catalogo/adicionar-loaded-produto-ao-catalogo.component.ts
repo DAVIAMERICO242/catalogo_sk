@@ -18,9 +18,8 @@ export class AdicionarLoadedProdutoAoCatalogoComponent implements OnInit {
   @Input({required:true})
   productId!:string;
   @Input({required:true})
-  alreadyOnCatalogo!:boolean;
+  produtoCatalogoId!:string | undefined;
   payloadCadastro!:Catalogo.CadastroModel;
-  payloadDelecao!:Catalogo.DeletarModel;
   loadingAdd = false;
   loadingRemove = false;
 
@@ -31,19 +30,14 @@ export class AdicionarLoadedProdutoAoCatalogoComponent implements OnInit {
       systemId:this.productId,
       lojaSlug:this.lojaSlug || ""
     }
-
-    this.payloadDelecao = {
-      systemId:this.productId,
-      lojaSlug:this.lojaSlug || ""
-    }
   }
 
   adicionarAoCatalogo(){
     this.loadingAdd = true;
     this.catalogService.adicionarProduto(this.payloadCadastro).subscribe({
-      next:()=>{
+      next:(data)=>{
         this.loadingAdd = false;
-        this.alreadyOnCatalogo = true;
+        this.produtoCatalogoId = data.systemId;
       },error:(erro:HttpErrorResponse)=>{
         this.loadingAdd = false;
         this.message.add({
@@ -56,18 +50,20 @@ export class AdicionarLoadedProdutoAoCatalogoComponent implements OnInit {
 
   removerDoCatalogo(){
     this.loadingRemove = true;
-    this.catalogService.removerProduto(this.payloadDelecao).subscribe({
-      next:()=>{
-        this.loadingRemove = false;
-        this.alreadyOnCatalogo = false;
-      },error:(erro:HttpErrorResponse)=>{
-        this.loadingRemove = false;
-        this.message.add({
-          severity:"error",
-          summary:erro.error
-        })
-      }
-    })
+    if(this.produtoCatalogoId){
+      this.catalogService.removerProduto(this.produtoCatalogoId).subscribe({
+        next:()=>{
+          this.loadingRemove = false;
+          this.produtoCatalogoId = undefined;
+        },error:(erro:HttpErrorResponse)=>{
+          this.loadingRemove = false;
+          this.message.add({
+            severity:"error",
+            summary:erro.error
+          })
+        }
+      })
+    }
   }
 
 
