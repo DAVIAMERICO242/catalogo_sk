@@ -26,4 +26,5 @@ public class ProdutoCatalogo {
     @JoinColumn(name="loja_system_id")
     @JsonBackReference
     private Loja loja;
+    private Integer indexOnStore;
 }

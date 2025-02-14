@@ -19,6 +19,41 @@ public interface ProdutoCatalogoRepository extends JpaRepository<ProdutoCatalogo
             "WHERE l.slug = :slug")
     List<ProdutoCatalogo> findAllByLojaSlug(String slug);
 
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE ProdutoCatalogo pc SET pc.indexOnStore = pc.indexOnStore + 1 " +
+            "WHERE pc.loja.systemId = :lojaId AND pc.systemId != :newId ")
+    Integer updateAllIndexesAfterNewProdutoCatalogo(String lojaId,String newId);
+
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE ProdutoCatalogo pc SET pc.indexOnStore = CASE " +
+            "WHEN pc.indexOnStore = :fromIndex THEN :toIndex " +
+            "WHEN pc.indexOnStore > :fromIndex AND pc.indexOnStore <= :toIndex THEN pc.indexOnStore - 1 " +
+            "WHEN pc.indexOnStore < :fromIndex AND pc.indexOnStore >= :toIndex THEN pc.indexOnStore + 1 " +
+            "ELSE pc.indexOnStore " +
+            "END " +
+            "WHERE pc.loja.systemId = :lojaId ")
+    void reindex(
+            String lojaId,
+            Integer fromIndex,
+            Integer toIndex);
+
+
+//    @Modifying
+//    @Transactional
+//    @Query("UPDATE ProdutoCatalogo pc SET pc.indexOnStore = pc.indexOnStore - 1 " +
+//            "WHERE pc.indexOnStore <= :toIndex AND pc.indexOnStore > :fromIndex  " +
+//            "AND pc.systemId != :movedProdutoCatalogoId " +
+//            "AND pc.lojaId = :lojaId ")
+//    void reindexIndexIncreasedCase(
+//            String lojaId,
+//            String movedProdutoCatalogoId,
+//            Integer fromIndex,
+//            Integer toIndex);
+
     @Query("SELECT pc FROM ProdutoCatalogo pc " +
             "JOIN FETCH pc.loja l " +
             "JOIN FETCH pc.produtoBaseFranquia pb " +

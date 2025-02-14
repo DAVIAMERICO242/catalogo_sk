@@ -12,7 +12,7 @@
                         </div>
                         <div class="text-center text-sm text-gray-600">{{item.endereco}}</div>
                         <div class="absolute bottom-[0px] left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-                            <app-google-maps class="mb-3" *ngIf="item.endereco" [loja]="item"/>
+                            <app-google-maps class="mb-1" *ngIf="item.endereco" [loja]="item"/>
                             <button (click)="this.goToCatalogo(item.slug)" class="w-[200px] flex items-center justify-center gap-2 text-xs h-[40px] bg-black text-white border-[1px] px-2 py-1 rounded-lg cursor-pointer shadow-sm">
                                 <div class="text-nowrap">
                                     Catálogo

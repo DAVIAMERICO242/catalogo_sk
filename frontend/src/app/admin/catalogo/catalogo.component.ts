@@ -8,10 +8,11 @@ import { ConfirmationDialogComponent } from "../../pure-ui-components/confirmati
 import { ExcluirProdutoComponent } from "./excluir-produto/excluir-produto.component";
 import { MessageService } from 'primeng/api';
 import { DescontosComponent } from "./descontos/descontos.component";
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-catalogo',
-  imports: [SharedModule, AdminPageTitleComponent, ExcluirProdutoComponent, DescontosComponent],
+  imports: [SharedModule, AdminPageTitleComponent, ExcluirProdutoComponent, DescontosComponent,DragDropModule],
   templateUrl: './catalogo.component.html',
   providers:[CatalogoService]
 })
@@ -58,6 +59,11 @@ export class CatalogoComponent implements OnInit{
       severity:"success",
       summary:"Sucesso"
     })
+  }
+
+  drop(event: CdkDragDrop<number[]>) {
+      moveItemInArray(this.catalogo, event.previousIndex, event.currentIndex);
+      this.catalogoService.reindex(this.selectedLoja.systemId,event.previousIndex,event.currentIndex).subscribe();
   }
 
 }

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Produto as ProdutoModel} from "./produtos.service"
 import { env } from '../../env';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, map, tap } from 'rxjs';
 
 export namespace Catalogo{
   export interface CadastroModel{
@@ -17,6 +17,7 @@ export namespace Catalogo{
     systemId:string,
     produtoBase:ProdutoModel.Produto,
     lojaCatalogo:Loja,
+    indexOnStore:number
   }
   export interface Loja{
     systemId:string,
@@ -34,8 +35,15 @@ export class CatalogoService {
   contextualCatalogoSub = new BehaviorSubject<Catalogo.Produto[]>([]);
   contextualCatalogo$ = this.contextualCatalogoSub.asObservable();
 
+  reindex(lojaId:string, from:number, to:number){
+    return this.http.post<void>(env.BACKEND_URL+`/catalogo/reindex?lojaId=${lojaId}&fromIndex=${from}&toIndex=${to}`,{})
+  }
+
   getCatalogo(slug:string){
     return this.http.get<Catalogo.Produto[]>(env.BACKEND_URL+"/catalogo?lojaSlug="+slug).pipe(
+      map((data)=>{
+        return data.sort((a,b)=>a.indexOnStore - b.indexOnStore)
+      }),
       tap((data)=>{
         this.contextualCatalogoSub.next(data);
       })

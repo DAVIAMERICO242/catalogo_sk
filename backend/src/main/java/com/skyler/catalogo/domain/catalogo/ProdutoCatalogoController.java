@@ -25,6 +25,19 @@ public class ProdutoCatalogoController {
         }
     }
 
+    @PostMapping("/reindex")
+    public ResponseEntity reindex(
+            @RequestParam String lojaId,
+            @RequestParam Integer fromIndex,
+            @RequestParam Integer toIndex){
+        try{
+            this.produtoCatalogoService.reindex(lojaId,fromIndex,toIndex);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getLocalizedMessage());
+        }
+    }
+
     @DeleteMapping
     public ResponseEntity delete(@RequestBody ProdutoDelecaoDTO payload){
         try{

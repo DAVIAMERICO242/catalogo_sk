@@ -8,6 +8,7 @@ public class ProdutoCatalogoDTO {
     String systemId;
     ProdutoDTO produtoBase;
     Loja lojaCatalogo;
+    Integer indexOnStore;
     @Data
     public static class Loja{
         String systemId;

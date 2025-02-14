@@ -127,7 +127,8 @@ export class SacolaUiContextService {
           const produtoSacola:Sacola.ProdutoCatalogoModel = {
             lojaCatalogo:loja,
             systemId:produto.systemId,
-            produtoBase:produtoBase
+            produtoBase:produtoBase,
+            indexOnStore:produto.indexOnStore
           }
           sacolaForLoja.produtos.unshift(produtoSacola);
         }

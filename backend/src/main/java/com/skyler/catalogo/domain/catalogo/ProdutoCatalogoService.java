@@ -49,7 +49,12 @@ public class ProdutoCatalogoService {
     }
 
     @Transactional
-    public ProdutoCatalogoDTO cadastrarProdutoCatalogo(ProdutoCadastroDTO payload){
+    public synchronized void reindex(String lojaId, Integer fromIndex, Integer toIndex){
+        this.produtoCatalogoRepository.reindex(lojaId,fromIndex,toIndex);
+    }
+
+    @Transactional
+    public synchronized ProdutoCatalogoDTO cadastrarProdutoCatalogo(ProdutoCadastroDTO payload){//sincronizado por causa da segurança de index
         Optional<Produto> produtoOPT = this.produtoRepository.findById(payload.getSystemId());
         if(produtoOPT.isEmpty()){
             throw new RuntimeException("Produto não encontrado");
@@ -72,9 +77,11 @@ public class ProdutoCatalogoService {
         }
         ProdutoCatalogo produtoCatalogo = new ProdutoCatalogo();
         produtoCatalogo.setLoja(loja);
-        produtoCatalogo.setProdutoBaseFranquia(produto);
-//        produtoCatalogo.setCatalogPrice(produto.getPreco());
-        return this.entityToDTO(this.produtoCatalogoRepository.save(produtoCatalogo),false);
+        produtoCatalogo.setProdutoBaseFranquia(produto);//e o index??
+        produtoCatalogo.setIndexOnStore(0);
+        ProdutoCatalogo saved = this.produtoCatalogoRepository.save(produtoCatalogo);
+        this.produtoCatalogoRepository.updateAllIndexesAfterNewProdutoCatalogo(loja.getSystemId(),produtoCatalogo.getSystemId());
+        return this.entityToDTO(saved,false);
     }
 
     public List<ProdutoCatalogoDTO> getProdutosCatalogo(String lojaSlug, Boolean loadVariations){
@@ -101,6 +108,7 @@ public class ProdutoCatalogoService {
         loja.setSlug(catalogoEnt.getLoja().getSlug());
         produtoCatalogo.setSystemId(catalogoEnt.getSystemId());
         produtoCatalogo.setProdutoBase(produto);
+        produtoCatalogo.setIndexOnStore(catalogoEnt.getIndexOnStore());
         produtoCatalogo.setLojaCatalogo(loja);
         if(withVariations){
             for(ProdutoVariacao variacaoEnt:produtoEnt.getVariacoes()){
