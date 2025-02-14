@@ -15,7 +15,19 @@ import { ProductVariationViewComponent } from "../produtos/product-variation-vie
   selector: 'app-catalogo',
   imports: [SharedModule, AdminPageTitleComponent, ExcluirProdutoComponent, DescontosComponent, DragDropModule, ProductVariationViewComponent],
   templateUrl: './catalogo.component.html',
-  providers:[CatalogoService]
+  providers:[CatalogoService],
+  styles:[
+    `
+    .text-vertical-overflow {
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* Define o número máximo de linhas */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis; /* Adiciona os "..." no final */
+      height: 30px; /* Ajuste conforme necessário */
+    }
+    `
+  ]
 })
 export class CatalogoComponent implements OnInit{
 
